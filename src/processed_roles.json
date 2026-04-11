@@ -1,0 +1,2794 @@
+{
+  "Performance And Talent": {
+    "color": "#ead6f5",
+    "accent": "#8a4ad9",
+    "roles": [
+      {
+        "name": "Musician / Singer",
+        "models": [
+          {
+            "type": "Per Performance / Gig",
+            "unit": "flat fee",
+            "base": 150
+          },
+          {
+            "type": "Hourly Rehearsal Rate",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Residency / Weekly",
+            "unit": "per week",
+            "base": 500
+          },
+          {
+            "type": "Session Recording",
+            "unit": "per 3-hr session",
+            "base": 150
+          },
+          {
+            "type": "Licensing / Royalties",
+            "unit": "per use / stream",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Instrument (guitar, keys, etc.)",
+            "cost": 200
+          },
+          {
+            "name": "Instrument Maintenance / Strings / Reeds",
+            "cost": 20
+          },
+          {
+            "name": "In-Ear Monitors (IEM)",
+            "cost": 100
+          },
+          {
+            "name": "Microphone (personal)",
+            "cost": 100
+          },
+          {
+            "name": "Amplifier",
+            "cost": 200
+          },
+          {
+            "name": "Cables & Accessories",
+            "cost": 50
+          },
+          {
+            "name": "Gig Bag / Case",
+            "cost": 40
+          },
+          {
+            "name": "Sheet Music / Charts",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Actor / Performer",
+        "models": [
+          {
+            "type": "Day Rate (Union)",
+            "unit": "per day",
+            "base": 900
+          },
+          {
+            "type": "Day Rate (Non-Union)",
+            "unit": "per day",
+            "base": 100
+          },
+          {
+            "type": "Weekly Contract",
+            "unit": "per week",
+            "base": 3000
+          },
+          {
+            "type": "Theater Run",
+            "unit": "per production",
+            "base": 500
+          },
+          {
+            "type": "Commercial Buyout",
+            "unit": "flat fee + residuals",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Headshots (professional)",
+            "cost": 200
+          },
+          {
+            "name": "Acting Classes / Workshops",
+            "cost": 100
+          },
+          {
+            "name": "Demo Reel Production",
+            "cost": 300
+          },
+          {
+            "name": "Wardrobe for Auditions",
+            "cost": 200
+          },
+          {
+            "name": "Sides / Script Printing",
+            "cost": 5
+          },
+          {
+            "name": "Agent Commission (typically)",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Comedian / MC / Host",
+        "models": [
+          {
+            "type": "Club Set",
+            "unit": "per set",
+            "base": 50
+          },
+          {
+            "type": "Corporate Event",
+            "unit": "flat fee",
+            "base": 1500
+          },
+          {
+            "type": "Festival / Headliner",
+            "unit": "flat fee",
+            "base": 5000
+          },
+          {
+            "type": "MC / Hosting (event)",
+            "unit": "per event",
+            "base": 500
+          },
+          {
+            "type": "Podcast / Media Appearance",
+            "unit": "per appearance",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Microphone",
+            "cost": 100
+          },
+          {
+            "name": "Stage Wardrobe",
+            "cost": 200
+          },
+          {
+            "name": "Promotional Materials (flyers, cards)",
+            "cost": 50
+          },
+          {
+            "name": "Demo / Sizzle Reel",
+            "cost": 300
+          },
+          {
+            "name": "Website & Press Kit",
+            "cost": 200
+          }
+        ]
+      },
+      {
+        "name": "Dancer / Choreographer",
+        "models": [
+          {
+            "type": "Per Performance",
+            "unit": "flat fee",
+            "base": 100
+          },
+          {
+            "type": "Choreography Fee",
+            "unit": "per project",
+            "base": 500
+          },
+          {
+            "type": "Teaching / Class Rate",
+            "unit": "per class",
+            "base": 30
+          },
+          {
+            "type": "Music Video / Commercial",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Tour Contract",
+            "unit": "per week",
+            "base": 1500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Dance Shoes (style-specific)",
+            "cost": 50
+          },
+          {
+            "name": "Rehearsal Attire",
+            "cost": 100
+          },
+          {
+            "name": "Knee Pads / Braces",
+            "cost": 20
+          },
+          {
+            "name": "Studio Rental (rehearsal)",
+            "cost": 15
+          },
+          {
+            "name": "Music Licensing for Class",
+            "cost": 100
+          },
+          {
+            "name": "Video Recording (self-tapes)",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Voice Actor",
+        "models": [
+          {
+            "type": "Per Word Rate",
+            "unit": "per word",
+            "base": 0.1
+          },
+          {
+            "type": "Per Finished Minute",
+            "unit": "per minute of audio",
+            "base": 100
+          },
+          {
+            "type": "Project / Script Fee",
+            "unit": "flat fee",
+            "base": 200
+          },
+          {
+            "type": "Audiobook (per hour finished)",
+            "unit": "per finished hour",
+            "base": 100
+          },
+          {
+            "type": "Character / Animation",
+            "unit": "per session",
+            "base": 700
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Microphone (condenser)",
+            "cost": 200
+          },
+          {
+            "name": "Audio Interface",
+            "cost": 100
+          },
+          {
+            "name": "Soundproofing / Acoustic Treatment",
+            "cost": 100
+          },
+          {
+            "name": "DAW Software",
+            "cost": 10
+          },
+          {
+            "name": "Headphones (studio)",
+            "cost": 80
+          },
+          {
+            "name": "Mic Stand & Pop Filter",
+            "cost": 30
+          },
+          {
+            "name": "Demo Reel Production",
+            "cost": 300
+          }
+        ]
+      },
+      {
+        "name": "DJ / Live Electronic Artist",
+        "models": [
+          {
+            "type": "Club / Bar Gig",
+            "unit": "per night",
+            "base": 200
+          },
+          {
+            "type": "Private Event / Wedding",
+            "unit": "flat fee",
+            "base": 500
+          },
+          {
+            "type": "Festival Set",
+            "unit": "flat fee",
+            "base": 2000
+          },
+          {
+            "type": "Online Mix / Radio Show",
+            "unit": "per episode",
+            "base": 50
+          },
+          {
+            "type": "Music Licensing (original tracks)",
+            "unit": "per sync",
+            "base": 200
+          }
+        ],
+        "materials": [
+          {
+            "name": "DJ Controller / CDJs",
+            "cost": 300
+          },
+          {
+            "name": "Mixer (standalone)",
+            "cost": 300
+          },
+          {
+            "name": "Laptop + DJ Software (Serato/Rekordbox)",
+            "cost": 100
+          },
+          {
+            "name": "Headphones (DJ monitoring)",
+            "cost": 100
+          },
+          {
+            "name": "Hard Drive / USB (music library)",
+            "cost": 50
+          },
+          {
+            "name": "Speakers / Monitors (personal)",
+            "cost": 200
+          },
+          {
+            "name": "Flight Case / Transport",
+            "cost": 100
+          },
+          {
+            "name": "Music Purchases / Subscriptions",
+            "cost": 30
+          }
+        ]
+      }
+    ]
+  },
+  "Music": {
+    "color": "#d6e8f5",
+    "accent": "#2a70d9",
+    "roles": [
+      {
+        "name": "Songwriter / Composer",
+        "models": [
+          {
+            "type": "Co-Write Fee",
+            "unit": "flat fee",
+            "base": 200
+          },
+          {
+            "type": "Publishing Royalties",
+            "unit": "per stream / play",
+            "base": 50
+          },
+          {
+            "type": "Work-for-Hire (jingle/ad)",
+            "unit": "flat buyout",
+            "base": 500
+          },
+          {
+            "type": "Sync Licensing",
+            "unit": "per placement",
+            "base": 500
+          },
+          {
+            "type": "Score / Soundtrack",
+            "unit": "per project",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "DAW Software (Logic, Ableton, etc.)",
+            "cost": 10
+          },
+          {
+            "name": "MIDI Keyboard / Controller",
+            "cost": 100
+          },
+          {
+            "name": "Plugin Bundles (VST instruments)",
+            "cost": 100
+          },
+          {
+            "name": "Sample Libraries",
+            "cost": 50
+          },
+          {
+            "name": "Lead Sheets / Notation Software",
+            "cost": 10
+          },
+          {
+            "name": "PRO Registration Fees (ASCAP/BMI)",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Music Producer / Beatmaker",
+        "models": [
+          {
+            "type": "Beat Lease (non-exclusive)",
+            "unit": "per beat",
+            "base": 25
+          },
+          {
+            "type": "Beat Exclusive Sale",
+            "unit": "per beat",
+            "base": 200
+          },
+          {
+            "type": "Production Fee (full)",
+            "unit": "per song",
+            "base": 500
+          },
+          {
+            "type": "Album Production Deal",
+            "unit": "per project",
+            "base": 5000
+          },
+          {
+            "type": "Points (royalty backend)",
+            "unit": "% of royalties",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "DAW Software",
+            "cost": 10
+          },
+          {
+            "name": "Studio Monitors",
+            "cost": 200
+          },
+          {
+            "name": "Audio Interface",
+            "cost": 100
+          },
+          {
+            "name": "MIDI Controller / Drum Pads",
+            "cost": 100
+          },
+          {
+            "name": "Plugin / VST Instruments",
+            "cost": 200
+          },
+          {
+            "name": "Sample Packs",
+            "cost": 30
+          },
+          {
+            "name": "Acoustic Treatment",
+            "cost": 100
+          },
+          {
+            "name": "Headphones",
+            "cost": 80
+          }
+        ]
+      },
+      {
+        "name": "Audio Engineer / Mixer / Mastering",
+        "models": [
+          {
+            "type": "Mix Per Song",
+            "unit": "per song",
+            "base": 100
+          },
+          {
+            "type": "Mastering Per Song",
+            "unit": "per song",
+            "base": 50
+          },
+          {
+            "type": "Hourly Studio Rate",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Album Package",
+            "unit": "per album",
+            "base": 500
+          },
+          {
+            "type": "Live Sound (event)",
+            "unit": "per event",
+            "base": 300
+          }
+        ],
+        "materials": [
+          {
+            "name": "DAW (Pro Tools, Logic, etc.)",
+            "cost": 10
+          },
+          {
+            "name": "Studio Monitors",
+            "cost": 300
+          },
+          {
+            "name": "Audio Interface / Console",
+            "cost": 200
+          },
+          {
+            "name": "Plugins (EQ, Comp, Reverb, etc.)",
+            "cost": 500
+          },
+          {
+            "name": "Headphones",
+            "cost": 100
+          },
+          {
+            "name": "Acoustic Treatment / Panels",
+            "cost": 200
+          },
+          {
+            "name": "Hard Drives (project storage)",
+            "cost": 80
+          },
+          {
+            "name": "Cables & Patchbay",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Session Musician",
+        "models": [
+          {
+            "type": "Union Studio Session (AFM)",
+            "unit": "per 3-hr session",
+            "base": 400
+          },
+          {
+            "type": "Non-Union Studio Session",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Remote Recording",
+            "unit": "per track/song",
+            "base": 75
+          },
+          {
+            "type": "Live Touring",
+            "unit": "per week",
+            "base": 1000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Primary Instrument",
+            "cost": 300
+          },
+          {
+            "name": "Backup Instrument",
+            "cost": 200
+          },
+          {
+            "name": "Consumables (strings/reeds/sticks)",
+            "cost": 20
+          },
+          {
+            "name": "Audio Interface (remote sessions)",
+            "cost": 100
+          },
+          {
+            "name": "Microphone (home recording)",
+            "cost": 100
+          },
+          {
+            "name": "Effects Pedals / Rack Gear",
+            "cost": 100
+          }
+        ]
+      },
+      {
+        "name": "Music Video Director",
+        "models": [
+          {
+            "type": "Indie / Low Budget",
+            "unit": "flat fee",
+            "base": 500
+          },
+          {
+            "type": "Mid-Level Production",
+            "unit": "flat fee",
+            "base": 5000
+          },
+          {
+            "type": "Major Label Budget",
+            "unit": "flat fee",
+            "base": 50000
+          },
+          {
+            "type": "Day Rate (crew hire)",
+            "unit": "per day",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Camera (rental or owned)",
+            "cost": 200
+          },
+          {
+            "name": "Lenses",
+            "cost": 100
+          },
+          {
+            "name": "Lighting Kit",
+            "cost": 100
+          },
+          {
+            "name": "Gimbal / Stabilizer",
+            "cost": 50
+          },
+          {
+            "name": "Editing Software (Premiere, DaVinci)",
+            "cost": 10
+          },
+          {
+            "name": "Location Permits",
+            "cost": 100
+          },
+          {
+            "name": "Art Direction / Props",
+            "cost": 100
+          },
+          {
+            "name": "Hard Drives / Storage",
+            "cost": 80
+          }
+        ]
+      }
+    ]
+  },
+  "Film And Tv": {
+    "color": "#f5ead6",
+    "accent": "#c4622d",
+    "roles": [
+      {
+        "name": "Director",
+        "models": [
+          {
+            "type": "DGA Day Rate (TV)",
+            "unit": "per day",
+            "base": 5000
+          },
+          {
+            "type": "Indie Film Flat Fee",
+            "unit": "per project",
+            "base": 5000
+          },
+          {
+            "type": "Commercial Director",
+            "unit": "per day",
+            "base": 3000
+          },
+          {
+            "type": "Back-End Points",
+            "unit": "% of profits",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Script Breakdown Software",
+            "cost": 30
+          },
+          {
+            "name": "Shot Listing / Storyboard Tools",
+            "cost": 10
+          },
+          {
+            "name": "Viewfinder / Director's Monitor",
+            "cost": 200
+          },
+          {
+            "name": "Reference Books / Research",
+            "cost": 50
+          },
+          {
+            "name": "Laptop + Editing Suite (review)",
+            "cost": 1000
+          }
+        ]
+      },
+      {
+        "name": "Screenwriter / Script Editor",
+        "models": [
+          {
+            "type": "WGA Minimum (feature)",
+            "unit": "per script",
+            "base": 50000
+          },
+          {
+            "type": "Spec Script Sale",
+            "unit": "flat fee",
+            "base": 10000
+          },
+          {
+            "type": "TV Episode (WGA)",
+            "unit": "per episode",
+            "base": 10000
+          },
+          {
+            "type": "Script Coverage / Notes",
+            "unit": "per script",
+            "base": 50
+          },
+          {
+            "type": "Ghostwriting / Indie",
+            "unit": "per project",
+            "base": 1000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Screenwriting Software (Final Draft, etc.)",
+            "cost": 80
+          },
+          {
+            "name": "WGA Registration",
+            "cost": 20
+          },
+          {
+            "name": "Copyright Registration",
+            "cost": 65
+          },
+          {
+            "name": "Research / Books",
+            "cost": 50
+          },
+          {
+            "name": "Writing Software Subscription",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Cinematographer / Director of Photography",
+        "models": [
+          {
+            "type": "Day Rate (indie)",
+            "unit": "per day",
+            "base": 500
+          },
+          {
+            "type": "Day Rate (union/IATSE)",
+            "unit": "per day",
+            "base": 2000
+          },
+          {
+            "type": "Weekly Rate",
+            "unit": "per week",
+            "base": 5000
+          },
+          {
+            "type": "Package Rate (camera included)",
+            "unit": "per day",
+            "base": 1500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Cinema Camera (owned or rental)",
+            "cost": 500
+          },
+          {
+            "name": "Lens Set",
+            "cost": 200
+          },
+          {
+            "name": "Lighting Package",
+            "cost": 200
+          },
+          {
+            "name": "Camera Accessories (filters, matte box)",
+            "cost": 100
+          },
+          {
+            "name": "Light Meter",
+            "cost": 100
+          },
+          {
+            "name": "Monitor (on-set)",
+            "cost": 300
+          },
+          {
+            "name": "Memory Cards / Media",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Film Editor",
+        "models": [
+          {
+            "type": "Indie Film Flat Fee",
+            "unit": "per project",
+            "base": 2000
+          },
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Weekly Rate (union)",
+            "unit": "per week",
+            "base": 4000
+          },
+          {
+            "type": "Trailer / Sizzle Reel",
+            "unit": "per deliverable",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Editing Software (Premiere, AVID, DaVinci)",
+            "cost": 10
+          },
+          {
+            "name": "High-Performance Workstation",
+            "cost": 2000
+          },
+          {
+            "name": "External Hard Drives (RAID)",
+            "cost": 200
+          },
+          {
+            "name": "Color Calibrated Monitor",
+            "cost": 300
+          },
+          {
+            "name": "Plugins / LUTs",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Producer / Line Producer",
+        "models": [
+          {
+            "type": "Producing Fee (% of budget)",
+            "unit": "% of total budget",
+            "base": 50
+          },
+          {
+            "type": "Flat Fee (indie)",
+            "unit": "per project",
+            "base": 5000
+          },
+          {
+            "type": "Weekly Rate",
+            "unit": "per week",
+            "base": 2000
+          },
+          {
+            "type": "Back-End Points",
+            "unit": "% of profits",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Production Management Software (Studiobinder, etc.)",
+            "cost": 30
+          },
+          {
+            "name": "Budgeting Software (Movie Magic)",
+            "cost": 50
+          },
+          {
+            "name": "Scheduling / Breakdown Tools",
+            "cost": 20
+          },
+          {
+            "name": "Insurance (E&O, production)",
+            "cost": 500
+          },
+          {
+            "name": "Office Supplies / Communications",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Casting Director",
+        "models": [
+          {
+            "type": "Flat Fee (TV pilot)",
+            "unit": "per project",
+            "base": 5000
+          },
+          {
+            "type": "Weekly Rate (episodic)",
+            "unit": "per week",
+            "base": 2000
+          },
+          {
+            "type": "Commercial Casting",
+            "unit": "per project",
+            "base": 1500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Casting Software (Breakdown Services, Casting Networks)",
+            "cost": 50
+          },
+          {
+            "name": "Audition Room / Studio Rental",
+            "cost": 100
+          },
+          {
+            "name": "Camera / Recording Setup",
+            "cost": 200
+          },
+          {
+            "name": "Sides / Script Printing",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "Set Designer / Art Director",
+        "models": [
+          {
+            "type": "Day Rate (indie)",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Weekly Rate (union)",
+            "unit": "per week",
+            "base": 3000
+          },
+          {
+            "type": "Flat Fee (commercial)",
+            "unit": "per project",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Set Construction Materials (wood, paint, hardware)",
+            "cost": 500
+          },
+          {
+            "name": "Furniture / Dressing Rentals",
+            "cost": 200
+          },
+          {
+            "name": "Design Software (SketchUp, AutoCAD)",
+            "cost": 10
+          },
+          {
+            "name": "Fabric & Upholstery",
+            "cost": 100
+          },
+          {
+            "name": "Props (purchase or rental)",
+            "cost": 200
+          },
+          {
+            "name": "Paint & Finishing Supplies",
+            "cost": 100
+          }
+        ]
+      },
+      {
+        "name": "Prop Master",
+        "models": [
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 300
+          },
+          {
+            "type": "Weekly Rate",
+            "unit": "per week",
+            "base": 1500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Prop Purchases (per project)",
+            "cost": 200
+          },
+          {
+            "name": "Prop Rentals",
+            "cost": 100
+          },
+          {
+            "name": "Fabrication Materials",
+            "cost": 100
+          },
+          {
+            "name": "Prop Storage / Transport",
+            "cost": 100
+          },
+          {
+            "name": "Prop Repair Supplies",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Costume Designer",
+        "models": [
+          {
+            "type": "Flat Fee (indie film)",
+            "unit": "per project",
+            "base": 2000
+          },
+          {
+            "type": "Weekly Rate (TV/union)",
+            "unit": "per week",
+            "base": 2000
+          },
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 300
+          }
+        ],
+        "materials": [
+          {
+            "name": "Fabric & Textiles (per project)",
+            "cost": 200
+          },
+          {
+            "name": "Sewing Machine",
+            "cost": 200
+          },
+          {
+            "name": "Notions (thread, buttons, zippers)",
+            "cost": 50
+          },
+          {
+            "name": "Costume Rentals",
+            "cost": 100
+          },
+          {
+            "name": "Wardrobe Rack & Steamer",
+            "cost": 100
+          },
+          {
+            "name": "Garment Bags & Labels",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Videographer",
+        "models": [
+          {
+            "type": "Wedding / Event Film",
+            "unit": "flat fee",
+            "base": 1500
+          },
+          {
+            "type": "Corporate Day Rate",
+            "unit": "per day",
+            "base": 800
+          },
+          {
+            "type": "Social Media Content",
+            "unit": "per video",
+            "base": 250
+          },
+          {
+            "type": "Promo / Commercial",
+            "unit": "flat fee",
+            "base": 3000
+          }
+        ],
+        "materials": [
+          {
+            "name": "4K Camera Body",
+            "cost": 800
+          },
+          {
+            "name": "Lens Set (Prime/Zoom)",
+            "cost": 300
+          },
+          {
+            "name": "Lighting Kit (portable)",
+            "cost": 200
+          },
+          {
+            "name": "Audio Package (Lavalier/Shotgun)",
+            "cost": 150
+          },
+          {
+            "name": "Gimbal / Stabilizer",
+            "cost": 100
+          },
+          {
+            "name": "Editing Software Subscription",
+            "cost": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Visual And Graphic Arts": {
+    "color": "#d6f5e3",
+    "accent": "#2a9d5c",
+    "roles": [
+      {
+        "name": "Graphic Designer",
+        "models": [
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 35
+          },
+          {
+            "type": "Logo Design (flat fee)",
+            "unit": "per project",
+            "base": 300
+          },
+          {
+            "type": "Album / Poster Design",
+            "unit": "per project",
+            "base": 200
+          },
+          {
+            "type": "Retainer",
+            "unit": "per month",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Adobe Creative Cloud",
+            "cost": 55
+          },
+          {
+            "name": "Drawing Tablet (Wacom, etc.)",
+            "cost": 80
+          },
+          {
+            "name": "Font Licenses",
+            "cost": 20
+          },
+          {
+            "name": "Stock Image Subscriptions",
+            "cost": 30
+          },
+          {
+            "name": "Color Calibrated Monitor",
+            "cost": 300
+          },
+          {
+            "name": "Mockup Packs",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Illustrator / Storyboard Artist",
+        "models": [
+          {
+            "type": "Per Panel (storyboard)",
+            "unit": "per panel",
+            "base": 25
+          },
+          {
+            "type": "Per Illustration",
+            "unit": "per piece",
+            "base": 100
+          },
+          {
+            "type": "Editorial / Publishing",
+            "unit": "per project",
+            "base": 200
+          },
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 40
+          }
+        ],
+        "materials": [
+          {
+            "name": "Drawing Tablet (Wacom / iPad Pro)",
+            "cost": 80
+          },
+          {
+            "name": "Procreate / Clip Studio License",
+            "cost": 10
+          },
+          {
+            "name": "Traditional Media (pencils, inks)",
+            "cost": 30
+          },
+          {
+            "name": "Lightbox",
+            "cost": 30
+          },
+          {
+            "name": "Scanner",
+            "cost": 80
+          },
+          {
+            "name": "Bristol Board / Marker Paper",
+            "cost": 15
+          }
+        ]
+      },
+      {
+        "name": "Animator / Motion Graphics Artist",
+        "models": [
+          {
+            "type": "Per Second of Animation",
+            "unit": "per second",
+            "base": 50
+          },
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Project Flat Fee",
+            "unit": "per deliverable",
+            "base": 500
+          },
+          {
+            "type": "Retainer",
+            "unit": "per month",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "After Effects / Cinema 4D / Blender",
+            "cost": 10
+          },
+          {
+            "name": "Animation Plugins (Duik, etc.)",
+            "cost": 10
+          },
+          {
+            "name": "Stock Footage / Sound FX",
+            "cost": 30
+          },
+          {
+            "name": "Render Farm Credits",
+            "cost": 50
+          },
+          {
+            "name": "High-Performance GPU Workstation",
+            "cost": 2000
+          }
+        ]
+      },
+      {
+        "name": "VFX Artist",
+        "models": [
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Per Shot Rate",
+            "unit": "per VFX shot",
+            "base": 200
+          },
+          {
+            "type": "Weekly Rate (studio)",
+            "unit": "per week",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "VFX Software (Nuke, Houdini, Blender)",
+            "cost": 10
+          },
+          {
+            "name": "Render Credits / Farm",
+            "cost": 100
+          },
+          {
+            "name": "High-Performance Workstation + GPU",
+            "cost": 3000
+          },
+          {
+            "name": "Storage (NAS / External)",
+            "cost": 300
+          },
+          {
+            "name": "Asset / Texture Libraries",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Photographer",
+        "models": [
+          {
+            "type": "Portrait / Headshot Session",
+            "unit": "per session",
+            "base": 150
+          },
+          {
+            "type": "Event Photography",
+            "unit": "per event",
+            "base": 500
+          },
+          {
+            "type": "Commercial / Editorial Day Rate",
+            "unit": "per day",
+            "base": 1000
+          },
+          {
+            "type": "Licensing Fee",
+            "unit": "per image use",
+            "base": 100
+          },
+          {
+            "type": "Retouching",
+            "unit": "per image",
+            "base": 10
+          }
+        ],
+        "materials": [
+          {
+            "name": "Camera Body",
+            "cost": 800
+          },
+          {
+            "name": "Lenses (per focal length)",
+            "cost": 200
+          },
+          {
+            "name": "Studio Lighting Kit (strobes)",
+            "cost": 300
+          },
+          {
+            "name": "Memory Cards",
+            "cost": 30
+          },
+          {
+            "name": "Editing Software (Lightroom/Capture One)",
+            "cost": 10
+          },
+          {
+            "name": "Backdrops / Background Paper",
+            "cost": 30
+          },
+          {
+            "name": "Camera Bag / Transport",
+            "cost": 50
+          },
+          {
+            "name": "Cloud Storage / Delivery",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Painter / Artist",
+        "models": [
+          {
+            "type": "Commissioned Canvas",
+            "unit": "per piece",
+            "base": 150
+          },
+          {
+            "type": "Mural Production",
+            "unit": "per sq ft",
+            "base": 50
+          },
+          {
+            "type": "Live Event Painting",
+            "unit": "per event",
+            "base": 500
+          },
+          {
+            "type": "Solo Exhibition Piece",
+            "unit": "per project",
+            "base": 1000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Paints (set)",
+            "cost": 150
+          },
+          {
+            "name": "Canvas / Substrate",
+            "cost": 40
+          },
+          {
+            "name": "Brushes / Palettes / Knives",
+            "cost": 60
+          },
+          {
+            "name": "Varnish / Finishing Supplies",
+            "cost": 25
+          },
+          {
+            "name": "Easel / Studio Gear",
+            "cost": 200
+          }
+        ]
+      }
+    ]
+  },
+  "Fashion And Styling": {
+    "color": "#ffd6e8",
+    "accent": "#d94a8a",
+    "roles": [
+      {
+        "name": "Wardrobe Stylist",
+        "models": [
+          {
+            "type": "Editorial Day Rate",
+            "unit": "per day",
+            "base": 500
+          },
+          {
+            "type": "Celebrity / Personal Styling",
+            "unit": "per event",
+            "base": 500
+          },
+          {
+            "type": "Commercial Day Rate",
+            "unit": "per day",
+            "base": 700
+          },
+          {
+            "type": "Retainer (personal styling)",
+            "unit": "per month",
+            "base": 1000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Pull / Garment Returns (transport)",
+            "cost": 50
+          },
+          {
+            "name": "Steamer",
+            "cost": 80
+          },
+          {
+            "name": "Garment Bags & Hangers",
+            "cost": 50
+          },
+          {
+            "name": "Tailoring / Alterations (outsourced)",
+            "cost": 50
+          },
+          {
+            "name": "Styling Tape / Pins / Accessories",
+            "cost": 20
+          },
+          {
+            "name": "Portfolio / Lookbook Printing",
+            "cost": 100
+          }
+        ]
+      },
+      {
+        "name": "Fashion Designer",
+        "models": [
+          {
+            "type": "Custom / Bespoke Garment",
+            "unit": "per piece",
+            "base": 500
+          },
+          {
+            "type": "Collection Design Fee",
+            "unit": "per collection",
+            "base": 5000
+          },
+          {
+            "type": "Costume Design (production)",
+            "unit": "per project",
+            "base": 2000
+          },
+          {
+            "type": "Licensing Deal",
+            "unit": "royalty %",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Fabric (per yard, varies by type)",
+            "cost": 5
+          },
+          {
+            "name": "Pattern Paper & Cutting Tools",
+            "cost": 50
+          },
+          {
+            "name": "Industrial Sewing Machine",
+            "cost": 300
+          },
+          {
+            "name": "Serger / Overlock Machine",
+            "cost": 200
+          },
+          {
+            "name": "Notions (buttons, zippers, thread)",
+            "cost": 50
+          },
+          {
+            "name": "Dress Form / Mannequin",
+            "cost": 100
+          },
+          {
+            "name": "Design Software (CLO3D, Adobe)",
+            "cost": 50
+          },
+          {
+            "name": "Fabric Samples / Swatches",
+            "cost": 100
+          }
+        ]
+      },
+      {
+        "name": "Hair Stylist",
+        "models": [
+          {
+            "type": "Film / TV Day Rate",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Editorial / Print Day Rate",
+            "unit": "per day",
+            "base": 300
+          },
+          {
+            "type": "Event / Wedding",
+            "unit": "per person",
+            "base": 100
+          },
+          {
+            "type": "Music Video",
+            "unit": "per day",
+            "base": 350
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Hair Products (per kit)",
+            "cost": 300
+          },
+          {
+            "name": "Curling Irons / Flat Irons Set",
+            "cost": 100
+          },
+          {
+            "name": "Hair Dryer (professional)",
+            "cost": 80
+          },
+          {
+            "name": "Extensions / Hairpieces",
+            "cost": 50
+          },
+          {
+            "name": "Sanitizers & Disposables",
+            "cost": 30
+          },
+          {
+            "name": "Kit Bag / Rollaway Case",
+            "cost": 80
+          }
+        ]
+      },
+      {
+        "name": "Makeup Artist / SFX Makeup",
+        "models": [
+          {
+            "type": "Bridal / Event",
+            "unit": "per person",
+            "base": 100
+          },
+          {
+            "type": "Film / TV Day Rate",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "SFX / Prosthetics Day Rate",
+            "unit": "per day",
+            "base": 600
+          },
+          {
+            "type": "Editorial / Print",
+            "unit": "per day",
+            "base": 300
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Makeup Kit",
+            "cost": 500
+          },
+          {
+            "name": "SFX Supplies (latex, foam, gelatin)",
+            "cost": 100
+          },
+          {
+            "name": "Airbrush System",
+            "cost": 100
+          },
+          {
+            "name": "Brush Set (pro)",
+            "cost": 100
+          },
+          {
+            "name": "Skincare Prep Products",
+            "cost": 50
+          },
+          {
+            "name": "Disposables (sponges, wipes)",
+            "cost": 20
+          },
+          {
+            "name": "Kit Bag / Case",
+            "cost": 80
+          }
+        ]
+      }
+    ]
+  },
+  "Live Events And Production": {
+    "color": "#f5f0d6",
+    "accent": "#b8860b",
+    "roles": [
+      {
+        "name": "Event Producer / Promoter",
+        "models": [
+          {
+            "type": "Flat Production Fee",
+            "unit": "per event",
+            "base": 2000
+          },
+          {
+            "type": "Percentage of Ticket Revenue",
+            "unit": "% of gross",
+            "base": 50
+          },
+          {
+            "type": "Retainer (ongoing events)",
+            "unit": "per month",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Venue Rental",
+            "cost": 500
+          },
+          {
+            "name": "Ticketing Platform Fees",
+            "cost": 10
+          },
+          {
+            "name": "Marketing / Advertising",
+            "cost": 500
+          },
+          {
+            "name": "Event Insurance",
+            "cost": 200
+          },
+          {
+            "name": "Production Permits",
+            "cost": 100
+          },
+          {
+            "name": "Décor / Staging",
+            "cost": 500
+          }
+        ]
+      },
+      {
+        "name": "Stage Manager",
+        "models": [
+          {
+            "type": "Theater (weekly)",
+            "unit": "per week",
+            "base": 800
+          },
+          {
+            "type": "Live Event Day Rate",
+            "unit": "per day",
+            "base": 300
+          },
+          {
+            "type": "Tour (weekly)",
+            "unit": "per week",
+            "base": 1500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Production Binder / Script",
+            "cost": 20
+          },
+          {
+            "name": "Headset / Comm System (personal)",
+            "cost": 100
+          },
+          {
+            "name": "Stopwatch / Timer",
+            "cost": 20
+          },
+          {
+            "name": "Flashlight / Work Light",
+            "cost": 20
+          },
+          {
+            "name": "First Aid Kit (on-set)",
+            "cost": 30
+          }
+        ]
+      },
+      {
+        "name": "Lighting Designer / Operator",
+        "models": [
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 300
+          },
+          {
+            "type": "Tour (weekly)",
+            "unit": "per week",
+            "base": 1500
+          },
+          {
+            "type": "Design Fee (theatrical)",
+            "unit": "per production",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Lighting Console (owned)",
+            "cost": 500
+          },
+          {
+            "name": "Lighting Fixtures (LED, moving heads)",
+            "cost": 200
+          },
+          {
+            "name": "DMX Cables & Accessories",
+            "cost": 50
+          },
+          {
+            "name": "Design Software (Vectorworks, MA 3D)",
+            "cost": 50
+          },
+          {
+            "name": "Gels & Gobos",
+            "cost": 50
+          },
+          {
+            "name": "Rigging Hardware",
+            "cost": 100
+          }
+        ]
+      },
+      {
+        "name": "Sound Technician / FOH Engineer",
+        "models": [
+          {
+            "type": "Live Event Day Rate",
+            "unit": "per day",
+            "base": 300
+          },
+          {
+            "type": "Tour Weekly Rate",
+            "unit": "per week",
+            "base": 1500
+          },
+          {
+            "type": "Install / System Design",
+            "unit": "per project",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Personal Mixing Console",
+            "cost": 1000
+          },
+          {
+            "name": "In-Ear Monitor System",
+            "cost": 500
+          },
+          {
+            "name": "Cables (XLR, TRS, etc.)",
+            "cost": 100
+          },
+          {
+            "name": "Audio Analyzer / RTA",
+            "cost": 100
+          },
+          {
+            "name": "Hearing Protection",
+            "cost": 20
+          },
+          {
+            "name": "Laptop + Audio Software",
+            "cost": 1000
+          }
+        ]
+      },
+      {
+        "name": "Tour Manager",
+        "models": [
+          {
+            "type": "Weekly Rate",
+            "unit": "per week",
+            "base": 1500
+          },
+          {
+            "type": "Per Show Rate",
+            "unit": "per show",
+            "base": 300
+          },
+          {
+            "type": "Flat Fee (short tour)",
+            "unit": "per tour",
+            "base": 3000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Travel Documents / Insurance",
+            "cost": 100
+          },
+          {
+            "name": "Advance Sheets / Software (Bandsintown, etc.)",
+            "cost": 10
+          },
+          {
+            "name": "Per Diem Float (manage for band)",
+            "cost": 10
+          },
+          {
+            "name": "Mobile Phone / Data Plan",
+            "cost": 80
+          },
+          {
+            "name": "First Aid / Emergency Kit",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Rigger / Stagehand",
+        "models": [
+          {
+            "type": "Day Rate (IATSE union)",
+            "unit": "per day",
+            "base": 400
+          },
+          {
+            "type": "Hourly (non-union)",
+            "unit": "per hour",
+            "base": 18
+          }
+        ],
+        "materials": [
+          {
+            "name": "Safety Harness & PPE",
+            "cost": 200
+          },
+          {
+            "name": "Rigging Hardware (personal set)",
+            "cost": 200
+          },
+          {
+            "name": "Tool Belt & Hand Tools",
+            "cost": 100
+          },
+          {
+            "name": "Steel-Toed Boots",
+            "cost": 80
+          },
+          {
+            "name": "Work Gloves",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "Pyrotechnics / Special Effects",
+        "models": [
+          {
+            "type": "Show Design + Operation",
+            "unit": "per show",
+            "base": 2000
+          },
+          {
+            "type": "Day Rate",
+            "unit": "per day",
+            "base": 800
+          }
+        ],
+        "materials": [
+          {
+            "name": "Pyrotechnic Devices / Materials",
+            "cost": 500
+          },
+          {
+            "name": "Licensed Storage (required)",
+            "cost": 200
+          },
+          {
+            "name": "Fire Suppression Equipment",
+            "cost": 100
+          },
+          {
+            "name": "Licensing / Certification Fees",
+            "cost": 200
+          },
+          {
+            "name": "Insurance (specialized)",
+            "cost": 1000
+          }
+        ]
+      }
+    ]
+  },
+  "Writing And Content": {
+    "color": "#b5d5f5",
+    "accent": "#4a90d9",
+    "roles": [
+      {
+        "name": "Entertainment Journalist / Writer",
+        "models": [
+          {
+            "type": "Per Word Rate",
+            "unit": "per word",
+            "base": 0.1
+          },
+          {
+            "type": "Per Article Flat Fee",
+            "unit": "per article",
+            "base": 50
+          },
+          {
+            "type": "Column / Retainer",
+            "unit": "per month",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Press Pass / Credential Fees",
+            "cost": 10
+          },
+          {
+            "name": "Recording Device (interviews)",
+            "cost": 50
+          },
+          {
+            "name": "Transcription Software / Service",
+            "cost": 10
+          },
+          {
+            "name": "CMS / Portfolio Hosting",
+            "cost": 10
+          },
+          {
+            "name": "Research Subscriptions",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "Publicist / PR Specialist",
+        "models": [
+          {
+            "type": "Monthly Retainer",
+            "unit": "per month",
+            "base": 2000
+          },
+          {
+            "type": "Project Fee (album, film, tour)",
+            "unit": "per campaign",
+            "base": 3000
+          },
+          {
+            "type": "Per Placement Fee",
+            "unit": "per media placement",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "PR Software (Cision, Muck Rack)",
+            "cost": 100
+          },
+          {
+            "name": "Press Kit Design / Printing",
+            "cost": 200
+          },
+          {
+            "name": "Media Database Subscriptions",
+            "cost": 100
+          },
+          {
+            "name": "Press Release Distribution Service",
+            "cost": 200
+          }
+        ]
+      },
+      {
+        "name": "Social Media Manager",
+        "models": [
+          {
+            "type": "Monthly Retainer",
+            "unit": "per month",
+            "base": 500
+          },
+          {
+            "type": "Per Platform Rate",
+            "unit": "per platform/mo",
+            "base": 300
+          },
+          {
+            "type": "Per Post Rate",
+            "unit": "per post",
+            "base": 25
+          }
+        ],
+        "materials": [
+          {
+            "name": "Scheduling Tools (Hootsuite, Later)",
+            "cost": 20
+          },
+          {
+            "name": "Graphic Design Tools (Canva Pro)",
+            "cost": 15
+          },
+          {
+            "name": "Stock Photo Subscription",
+            "cost": 30
+          },
+          {
+            "name": "Analytics Tools",
+            "cost": 10
+          },
+          {
+            "name": "Caption Writing / Copywriting Tools",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Content Creator / Influencer",
+        "models": [
+          {
+            "type": "Sponsored Post (flat fee)",
+            "unit": "per post",
+            "base": 100
+          },
+          {
+            "type": "Brand Deal / Campaign",
+            "unit": "per campaign",
+            "base": 1000
+          },
+          {
+            "type": "Platform Ad Revenue (CPM)",
+            "unit": "per 1,000 views",
+            "base": 1
+          },
+          {
+            "type": "Affiliate Commission",
+            "unit": "% of sales",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Camera / Phone Setup",
+            "cost": 300
+          },
+          {
+            "name": "Ring Light / Lighting Kit",
+            "cost": 50
+          },
+          {
+            "name": "Microphone",
+            "cost": 50
+          },
+          {
+            "name": "Editing Software",
+            "cost": 10
+          },
+          {
+            "name": "Props / Set Dressing",
+            "cost": 50
+          },
+          {
+            "name": "Internet / Data (high-speed)",
+            "cost": 60
+          }
+        ]
+      },
+      {
+        "name": "Podcast Producer",
+        "models": [
+          {
+            "type": "Per Episode Production",
+            "unit": "per episode",
+            "base": 100
+          },
+          {
+            "type": "Monthly Retainer",
+            "unit": "per month",
+            "base": 500
+          },
+          {
+            "type": "Ad Insertion / CPM",
+            "unit": "per 1,000 downloads",
+            "base": 15
+          }
+        ],
+        "materials": [
+          {
+            "name": "Microphone (studio-grade)",
+            "cost": 100
+          },
+          {
+            "name": "Audio Interface",
+            "cost": 100
+          },
+          {
+            "name": "DAW / Editing Software",
+            "cost": 10
+          },
+          {
+            "name": "Podcast Hosting (Buzzsprout, etc.)",
+            "cost": 12
+          },
+          {
+            "name": "Acoustic Treatment",
+            "cost": 50
+          },
+          {
+            "name": "Music Licensing (intro/outro)",
+            "cost": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Business And Management": {
+    "color": "#f5d6d6",
+    "accent": "#d94a4a",
+    "roles": [
+      {
+        "name": "Talent Agent",
+        "models": [
+          {
+            "type": "Commission on Client Earnings",
+            "unit": "% of gross",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Industry Database (IMDbPro, Pollstar)",
+            "cost": 100
+          },
+          {
+            "name": "Contract / Legal Templates",
+            "cost": 10
+          },
+          {
+            "name": "CRM Software",
+            "cost": 20
+          },
+          {
+            "name": "Agency Licensing (state required)",
+            "cost": 100
+          },
+          {
+            "name": "Office / Communication",
+            "cost": 200
+          }
+        ]
+      },
+      {
+        "name": "Artist Manager",
+        "models": [
+          {
+            "type": "Commission on All Earnings",
+            "unit": "% of gross",
+            "base": 50
+          },
+          {
+            "type": "Flat Monthly Fee (early-career)",
+            "unit": "per month",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Industry Subscriptions (Spotify for Artists, Billboard)",
+            "cost": 50
+          },
+          {
+            "name": "Marketing / Promo Budget",
+            "cost": 200
+          },
+          {
+            "name": "Phone / Travel",
+            "cost": 200
+          },
+          {
+            "name": "CRM & Scheduling Tools",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "Entertainment Lawyer",
+        "models": [
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 200
+          },
+          {
+            "type": "Flat Fee (contract review)",
+            "unit": "per contract",
+            "base": 300
+          },
+          {
+            "type": "Retainer",
+            "unit": "per month",
+            "base": 1000
+          },
+          {
+            "type": "Commission (deal negotiation)",
+            "unit": "% of deal",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Legal Research Software (Westlaw, LexisNexis)",
+            "cost": 100
+          },
+          {
+            "name": "Bar Association Dues",
+            "cost": 300
+          },
+          {
+            "name": "CLE Credits / Continuing Education",
+            "cost": 200
+          },
+          {
+            "name": "Document Management Software",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "Business Manager / Accountant",
+        "models": [
+          {
+            "type": "Monthly Retainer",
+            "unit": "per month",
+            "base": 500
+          },
+          {
+            "type": "Percentage of Gross Income",
+            "unit": "% of income managed",
+            "base": 50
+          },
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 100
+          }
+        ],
+        "materials": [
+          {
+            "name": "Accounting Software (QuickBooks, Xero)",
+            "cost": 30
+          },
+          {
+            "name": "Tax Preparation Software / CPA License",
+            "cost": 200
+          },
+          {
+            "name": "Financial Reporting Tools",
+            "cost": 20
+          }
+        ]
+      },
+      {
+        "name": "A&R Representative",
+        "models": [
+          {
+            "type": "Salaried (label staff)",
+            "unit": "annual salary",
+            "base": 40000
+          },
+          {
+            "type": "Freelance / Consulting",
+            "unit": "per project",
+            "base": 1000
+          },
+          {
+            "type": "Points on Signed Artists",
+            "unit": "% of royalties",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Music Discovery Platforms (Spotify, SoundCloud pro)",
+            "cost": 10
+          },
+          {
+            "name": "Travel (scouting shows)",
+            "cost": 200
+          },
+          {
+            "name": "Industry Event Passes",
+            "cost": 200
+          },
+          {
+            "name": "Demo Recording Costs (funded)",
+            "cost": 500
+          }
+        ]
+      }
+    ]
+  },
+  "Tech And Digital": {
+    "color": "#ead6f5",
+    "accent": "#8a4ad9",
+    "roles": [
+      {
+        "name": "Web Developer (Media / Streaming)",
+        "models": [
+          {
+            "type": "Hourly Rate",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Project Flat Fee",
+            "unit": "per project",
+            "base": 2000
+          },
+          {
+            "type": "Monthly Retainer (maintenance)",
+            "unit": "per month",
+            "base": 500
+          }
+        ],
+        "materials": [
+          {
+            "name": "Domain & Hosting",
+            "cost": 10
+          },
+          {
+            "name": "Development Tools / IDE",
+            "cost": 10
+          },
+          {
+            "name": "Design Assets / UI Kits",
+            "cost": 20
+          },
+          {
+            "name": "Cloud Services (AWS, Vercel)",
+            "cost": 20
+          },
+          {
+            "name": "Security / SSL Certificates",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Streaming Platform Manager",
+        "models": [
+          {
+            "type": "Salaried (in-house)",
+            "unit": "annual salary",
+            "base": 50000
+          },
+          {
+            "type": "Consulting Day Rate",
+            "unit": "per day",
+            "base": 500
+          },
+          {
+            "type": "Project Fee",
+            "unit": "per project",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Streaming Platform Subscriptions (research)",
+            "cost": 50
+          },
+          {
+            "name": "Analytics Tools (Chartmetric, Spotify for Artists)",
+            "cost": 20
+          },
+          {
+            "name": "Content Delivery Network (CDN)",
+            "cost": 50
+          }
+        ]
+      },
+      {
+        "name": "Game Designer / Developer",
+        "models": [
+          {
+            "type": "Salaried (studio)",
+            "unit": "annual salary",
+            "base": 55000
+          },
+          {
+            "type": "Freelance Per Project",
+            "unit": "per project",
+            "base": 5000
+          },
+          {
+            "type": "Revenue Share (indie)",
+            "unit": "% of sales",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Game Engine License (Unreal, Unity)",
+            "cost": 10
+          },
+          {
+            "name": "Art & Sound Assets",
+            "cost": 100
+          },
+          {
+            "name": "Developer Console Licenses (Xbox, PlayStation)",
+            "cost": 100
+          },
+          {
+            "name": "Version Control Tools",
+            "cost": 10
+          },
+          {
+            "name": "QA / Testing Software",
+            "cost": 10
+          }
+        ]
+      }
+    ]
+  },
+  "Education And Coaching": {
+    "color": "#d6e8f5",
+    "accent": "#2a70d9",
+    "roles": [
+      {
+        "name": "Acting Coach",
+        "models": [
+          {
+            "type": "Private Session",
+            "unit": "per hour",
+            "base": 75
+          },
+          {
+            "type": "Group Workshop",
+            "unit": "per workshop",
+            "base": 50
+          },
+          {
+            "type": "Ongoing Class (weekly)",
+            "unit": "per month",
+            "base": 200
+          }
+        ],
+        "materials": [
+          {
+            "name": "Script / Scene Materials",
+            "cost": 20
+          },
+          {
+            "name": "Space Rental (studio/classroom)",
+            "cost": 20
+          },
+          {
+            "name": "Recording Equipment (self-tapes)",
+            "cost": 200
+          },
+          {
+            "name": "Reference Books / Methodologies",
+            "cost": 30
+          }
+        ]
+      },
+      {
+        "name": "Vocal Coach",
+        "models": [
+          {
+            "type": "Private Lesson",
+            "unit": "per hour",
+            "base": 60
+          },
+          {
+            "type": "Group Session",
+            "unit": "per session",
+            "base": 30
+          },
+          {
+            "type": "Online Lesson (remote)",
+            "unit": "per session",
+            "base": 50
+          }
+        ],
+        "materials": [
+          {
+            "name": "Piano / Keyboard",
+            "cost": 200
+          },
+          {
+            "name": "Practice Room Rental",
+            "cost": 15
+          },
+          {
+            "name": "Sheet Music / Songbooks",
+            "cost": 10
+          },
+          {
+            "name": "Recording Device (lesson playback)",
+            "cost": 50
+          },
+          {
+            "name": "Voice Software (apps)",
+            "cost": 10
+          }
+        ]
+      },
+      {
+        "name": "Instrument Teacher",
+        "models": [
+          {
+            "type": "Private Lesson (30 min)",
+            "unit": "per 30 minutes",
+            "base": 30
+          },
+          {
+            "type": "Private Lesson (1 hr)",
+            "unit": "per hour",
+            "base": 50
+          },
+          {
+            "type": "Group Class",
+            "unit": "per person per session",
+            "base": 15
+          },
+          {
+            "type": "Online (remote)",
+            "unit": "per session",
+            "base": 40
+          }
+        ],
+        "materials": [
+          {
+            "name": "Instrument (for demos)",
+            "cost": 200
+          },
+          {
+            "name": "Sheet Music / Method Books",
+            "cost": 10
+          },
+          {
+            "name": "Metronome (digital)",
+            "cost": 15
+          },
+          {
+            "name": "Recording / Playback Device",
+            "cost": 50
+          },
+          {
+            "name": "Music Stand",
+            "cost": 15
+          }
+        ]
+      },
+      {
+        "name": "Dance Instructor",
+        "models": [
+          {
+            "type": "Per Class (group)",
+            "unit": "per class",
+            "base": 15
+          },
+          {
+            "type": "Private Lesson",
+            "unit": "per hour",
+            "base": 60
+          },
+          {
+            "type": "Workshop / Intensive",
+            "unit": "per day",
+            "base": 100
+          },
+          {
+            "type": "Monthly Studio Salary",
+            "unit": "per month",
+            "base": 2000
+          }
+        ],
+        "materials": [
+          {
+            "name": "Studio Rental",
+            "cost": 20
+          },
+          {
+            "name": "Sound System / Bluetooth Speaker",
+            "cost": 100
+          },
+          {
+            "name": "Music Licensing (for classes)",
+            "cost": 100
+          },
+          {
+            "name": "Dance Shoes (style-specific)",
+            "cost": 50
+          },
+          {
+            "name": "Attire / Uniform",
+            "cost": 50
+          },
+          {
+            "name": "Mirrors / Barre (if own space)",
+            "cost": 200
+          }
+        ]
+      }
+    ]
+  },
+  "Cosmetology": {
+    "color": "#ffd2b8",
+    "accent": "#de5e2f",
+    "roles": [
+      {
+        "name": "Hair Stylist",
+        "models": [
+          { "type": "Cut & Style", "unit": "flat fee", "base": 80 },
+          { "type": "Color / Highlights", "unit": "flat fee", "base": 120 },
+          { "type": "Extensions", "unit": "per hour", "base": 90 },
+          { "type": "Bridal / Event", "unit": "per event", "base": 250 },
+          { "type": "Consultation", "unit": "flat fee", "base": 45 }
+        ],
+        "materials": [
+          { "name": "Shampoo / Conditioner", "cost": 10 },
+          { "name": "Color Product", "cost": 30 },
+          { "name": "Styling Product", "cost": 15 },
+          { "name": "Hair Tools Rental", "cost": 20 }
+        ]
+      },
+      {
+        "name": "Makeup Artist",
+        "models": [
+          { "type": "Natural Makeup", "unit": "flat fee", "base": 70 },
+          { "type": "Bridal Makeup", "unit": "per event", "base": 180 },
+          { "type": "Photoshoot", "unit": "per hour", "base": 95 },
+          { "type": "Theatrical / Special FX", "unit": "per hour", "base": 110 },
+          { "type": "Trial Session", "unit": "per session", "base": 60 }
+        ],
+        "materials": [
+          { "name": "Foundation / Concealer", "cost": 25 },
+          { "name": "Eye Makeup", "cost": 20 },
+          { "name": "Lip Product", "cost": 15 },
+          { "name": "Brush Kit", "cost": 40 }
+        ]
+      },
+      {
+        "name": "Nail Technician",
+        "models": [
+          { "type": "Basic Manicure / Pedicure", "unit": "flat fee", "base": 45 },
+          { "type": "Gel / Acrylic", "unit": "flat fee", "base": 65 },
+          { "type": "Nail Art", "unit": "per design", "base": 15 },
+          { "type": "Spa Package", "unit": "per package", "base": 110 },
+          { "type": "Mobile Visit", "unit": "flat fee", "base": 90 }
+        ],
+        "materials": [
+          { "name": "Polishes", "cost": 10 },
+          { "name": "Tools / Files", "cost": 12 },
+          { "name": "Nail Extensions", "cost": 25 },
+          { "name": "Sanitization Supplies", "cost": 15 }
+        ]
+      }
+    ]
+  },
+  "Culinary Arts": {
+    "color": "#f5ead6",
+    "accent": "#c4622d",
+    "roles": [
+      {
+        "name": "Private Chef / Caterer",
+        "models": [
+          {
+            "type": "Private Dinner (per head)",
+            "unit": "per person",
+            "base": 75
+          },
+          {
+            "type": "Event Catering",
+            "unit": "per person",
+            "base": 45
+          },
+          {
+            "type": "Weekly Meal Prep",
+            "unit": "flat fee",
+            "base": 300
+          },
+          {
+            "type": "Culinary Consultant",
+            "unit": "per hour",
+            "base": 100
+          }
+        ],
+        "materials": [
+          {
+            "name": "Professional Knife Set",
+            "cost": 250
+          },
+          {
+            "name": "Specialized Cookware (pots/pans)",
+            "cost": 300
+          },
+          {
+            "name": "Serving Supplies",
+            "cost": 100
+          },
+          {
+            "name": "Commercial Kitchen Rental",
+            "cost": 50
+          },
+          {
+            "name": "Packaging / Transport Containers",
+            "cost": 30
+          },
+          {
+            "name": "Food Safety Licensing / Insurance",
+            "cost": 100
+          }
+        ]
+      }
+    ]
+  }
+}

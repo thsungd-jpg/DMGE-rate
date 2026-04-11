@@ -1,0 +1,98 @@
+80:  </div>
+493:      </div>
+497:  if (authLoading) return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pixel-text, #2a2a2a)", padding: "3.125rem", fontFamily: "'Press Start 2P'", background: "#d5d5d5" }}>LOADING...</div>;
+1009:              </div>
+1019:              </div>
+1020:            </div>
+1035:            </div>
+1076:              </div>
+1077:            </div>
+1078:          </div>
+1079:        </div>
+1080:        </div>
+1103:              </div>
+1105:            </div>
+1114:              </div>
+1128:            </div>
+1157:            </div>
+1163:              </div>
+1182:              </div>
+1189:              </div>
+1198:                </div>
+1199:              </div>
+1206:              </div>
+1224:                  </div>
+1229:              </div>
+1230:              </div>
+1234:                </div>
+1237:            </div>
+1249:            </div>
+1250:            </div>
+1255:            </div>
+1261:                    <div style={{ fontSize: "1.125rem", color: "#FFB347", marginBottom: "1.5625rem", display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#FFB347" /> ESTIMATED TOTAL <IconStar size={24} color="#FFB347" /></div>
+1262:                    <div style={{ fontSize: "5rem", color: "#FFB347" }}>${Math.round(price.fair)}</div>
+1263:                  </div>
+1267:                        <div style={{ fontSize: "2.0625rem", color: bg === "#FFB347" ? "#0A0A0A" : "#FFB347", marginBottom: "0.625rem" }}>${Math.round(val)}</div>
+1268:                        <div style={{ fontSize: "0.9375rem", color: bg === "#FFB347" ? "#0A0A0A88" : "#888" }}>{typeof lbl === 'string' ? lbl : lbl}</div>
+1271:                  </div>
+1279:                  </div>
+1281:              </div>
+1308:                </div>
+1309:              </div>
+1321:              </div>
+1322:            </div>
+1324:              <div style={{ fontSize: "clamp(0.7rem, 2.5vw, 0.9375rem)", color: "#FFB34788", marginBottom: "0.9375rem" }}>TOTAL REVENUE</div>
+1325:              <div style={{ fontSize: "clamp(2rem, 8vw, 3.125rem)", color: "#FFB347" }}>${Math.round(totalBilled)}</div>
+1331:                    <div style={{ fontSize: "clamp(1.5rem, 5vw, 2.0625rem)", color: "#FFB347" }}>${Math.round(j.price)}</div>
+1334:                    </div>
+1337:                    </div>
+1343:                    </div>
+1344:                  </div>
+1349:                      </div>
+1352:                      </div>
+1353:                      <div style={{ marginLeft: "auto", fontSize: "0.9375rem", color: "#FFB34788" }}>{fmtDate(j.date)}</div>
+1354:                    </div>
+1412:                    </div>
+1442:                    </div>
+1443:                  </div>
+1444:                </div>
+1449:                    </div>
+1452:                    </div>
+1457:                    </div>
+1458:                  </div>
+1522:            </div>
+1576:                </div>
+1583:                        <div style={{ fontSize: "0.625rem", color: '#999', marginBottom: "0.5rem" }}>CLIENTS</div>
+1586:                        </div>
+1587:                      </div>
+1589:                        <div style={{ fontSize: "0.625rem", color: '#999', marginBottom: "0.5rem" }}>TEMPLATES</div>
+1592:                        </div>
+1593:                      </div>
+1595:                        <div style={{ fontSize: "0.625rem", color: '#999', marginBottom: "0.5rem" }}>PDFS TODAY</div>
+1598:                        </div>
+1599:                      </div>
+1601:                        <div style={{ fontSize: "0.625rem", color: '#999', marginBottom: "0.5rem" }}>HISTORY</div>
+1604:                        </div>
+1605:                      </div>
+1606:                    </div>
+1612:                    <div style={{ fontSize: "0.5625rem", color: "#999", marginBottom: "0.625rem" }}>STRIPE ACCOUNT</div>
+1618:                    </div>
+1638:              </div>
+1641:                <div style={{ fontSize: "1.4375rem", color: "#4CAF50" }}>{profile.invoicePrefix}{(profile.lastInvoiceNumber || (profile.invoiceStartNumber - 1)) + 1}</div>
+1659:              </div>
+1691:              </div>
+1701:                  <div style={{ color: "#E040FB", fontSize: "0.75rem", marginBottom: "1rem" }}>AGENCY TIER REQUIRED</div>
+1725:                        </div>
+1731:                    </div>
+1772:                  </div>
+1792:                  </div>
+1816:                <div style={{ color: "#f44336", fontSize: "0.625rem", marginBottom: "1.25rem" }}>PERMANENTLY DELETE ALL LOCAL DATA</div>
+1818:                <div style={{ color: "#666", fontSize: "0.4375rem", marginTop: "0.9375rem" }}>This will clear jobs, clients, templates, and profile settings.</div>
+1824:        </div>
+1825:      </div>
+1839:          </div>
+1840:        </div>
+1890:          </div>
+1891:        </div>
+1930:          </div>
+1931:        </div>

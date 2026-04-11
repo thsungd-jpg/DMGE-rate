@@ -1,0 +1,306 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap');
+  :root {
+    --or: #FFB347; --or-d: #C47D1A; --or-dk: #7A4A00;
+    --pk: #FF3D8C; --pk-d: #B02860;
+    --bl: #080808; --pn: #111111; --pm: #1A1A1A; --pl: #222222;
+    --bd: #2E2E2E; --bh: #3A3A3A;
+    --tx: #E8D8B0; --td: #7A6A50; --tm: #4A3E2E;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#050505; font-family:'Share Tech Mono',monospace; color:var(--tx); display:flex; justify-content:center; padding:32px 16px; }
+  .page { background:var(--bl); width:860px; position:relative; border:1px solid var(--bd); overflow:hidden; }
+  .page::before { content:''; position:absolute; inset:0; background:repeating-linear-gradient(to bottom,transparent 0,transparent 3px,rgba(255,179,71,0.04) 3px,rgba(255,179,71,0.04) 4px); pointer-events:none; z-index:10; }
+  .top-bar { height:6px; background:linear-gradient(90deg,var(--pk) 0%,var(--or) 40%,var(--or) 60%,var(--pk) 100%); }
+  .corner { position:absolute; width:10px; height:10px; border-color:var(--or-d); border-style:solid; opacity:0.4; }
+  .corner-tl { top:14px; left:14px; border-width:2px 0 0 2px; }
+  .corner-tr { top:14px; right:14px; border-width:2px 2px 0 0; }
+  .corner-bl { bottom:14px; left:14px; border-width:0 0 2px 2px; }
+  .corner-br { bottom:14px; right:14px; border-width:0 2px 2px 0; }
+  .header { padding:44px 60px 36px; display:flex; align-items:flex-start; justify-content:space-between; border-bottom:1px solid var(--bd); position:relative; }
+  .header::after { content:''; position:absolute; bottom:-1px; left:60px; width:60px; height:3px; background:var(--or); }
+  .logo-dmge { font-family:'Press Start 2P',monospace; font-size:28px; color:var(--or); letter-spacing:4px; line-height:1; text-shadow:4px 4px 0 var(--or-dk),8px 8px 0 rgba(0,0,0,0.5); }
+  .logo-sub { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--pk); letter-spacing:5px; margin-top:10px; }
+  .invoice-meta { text-align:right; }
+  .invoice-label { font-family:'Press Start 2P',monospace; font-size:22px; color:var(--or); letter-spacing:3px; margin-bottom:20px; text-shadow:3px 3px 0 var(--or-dk); }
+  .meta-row { display:flex; justify-content:flex-end; align-items:baseline; gap:16px; margin-bottom:6px; }
+  .meta-key { font-size:11px; color:var(--td); text-transform:uppercase; letter-spacing:1px; }
+  .status-badge { display:inline-block; font-family:'Press Start 2P',monospace; font-size:7px; color:var(--pk); border:1px solid var(--pk); padding:4px 8px; letter-spacing:1px; }
+  .address-block { padding:32px 60px; display:grid; grid-template-columns:1fr 1fr; gap:40px; border-bottom:1px solid var(--bd); }
+  .address-label { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--or); letter-spacing:2px; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .address-label::before { content:'▶'; color:var(--pk); font-size:6px; }
+  .items-section { padding:32px 60px; }
+  .section-heading { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--or); letter-spacing:2px; margin-bottom:18px; display:flex; align-items:center; gap:12px; }
+  .section-heading::before { content:'▶'; color:var(--pk); font-size:6px; }
+  .section-heading::after { content:''; flex:1; height:1px; background:repeating-linear-gradient(to right,var(--bd) 0,var(--bd) 6px,transparent 6px,transparent 10px); }
+  table { width:100%; border-collapse:collapse; }
+  thead tr { background:var(--pl); border-top:1px solid var(--bh); border-bottom:1px solid var(--bh); }
+  thead th { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--td); letter-spacing:1px; padding:12px 14px; text-align:left; text-transform:uppercase; }
+  thead th.right { text-align:right; }
+  tbody tr { border-bottom:1px solid var(--bd); }
+  .totals-section { padding:0 60px 40px; display:flex; justify-content:flex-end; }
+  .totals-box { width:340px; }
+  .total-row { display:flex; justify-content:space-between; align-items:center; padding:9px 0; border-bottom:1px solid var(--bd); }
+  .total-key { font-size:12px; color:var(--td); text-transform:uppercase; letter-spacing:1px; }
+  .total-val { font-size:14px; color:var(--tx); }
+  .due-block { margin-top:14px; border:1px solid var(--or-d); background:var(--pl); padding:22px 24px; display:flex; justify-content:space-between; align-items:center; position:relative; overflow:hidden; }
+  .due-block::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--pk),var(--or),var(--pk)); }
+  .due-label { font-family:'Press Start 2P',monospace; font-size:8px; color:var(--pk); letter-spacing:2px; line-height:2; }
+  .due-amount { font-family:'Press Start 2P',monospace; font-size:18px; color:var(--or); letter-spacing:2px; text-shadow:3px 3px 0 var(--or-dk); position:relative; z-index:1; }
+  .footer-info { padding:32px 60px 40px; display:grid; grid-template-columns:1fr 1fr; gap:40px; border-top:1px solid var(--bd); }
+  .footer-label { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--or); letter-spacing:2px; margin-bottom:14px; display:flex; align-items:center; gap:10px; }
+  .footer-label::before { content:'▶'; color:var(--pk); font-size:6px; }
+  .payment-row { display:flex; gap:12px; margin-bottom:7px; }
+  .payment-key { font-size:12px; color:var(--or-d); min-width:72px; text-transform:uppercase; letter-spacing:0.5px; }
+  .page-footer { padding:16px 60px; background:var(--pn); display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--bd); }
+  .page-footer-brand { font-family:'Press Start 2P',monospace; font-size:6px; color:var(--or-d); letter-spacing:2px; opacity:0.7; }
+  .page-footer-note { font-size:12px; color:var(--tm); }
+
+  /* EDITABLE FIELDS */
+  [contenteditable] { outline:none; cursor:text; border-bottom:1px dashed rgba(255,179,71,0.25); transition:border-color 0.15s; min-width:4px; display:inline-block; }
+  [contenteditable]:hover { border-bottom-color:rgba(255,179,71,0.5); }
+  [contenteditable]:focus { border-bottom-color:var(--or); background:rgba(255,179,71,0.04); }
+  .edit-block[contenteditable] { display:block; }
+
+  /* LINE ITEM ROWS */
+  .item-desc { font-size:15px; color:var(--tx); padding:16px 14px 3px; letter-spacing:0.5px; }
+  .item-note { font-size:12px; color:var(--tm); padding:0 14px 16px; }
+  td.qty, td.rate, td.amount { font-size:14px; color:var(--td); padding:16px 14px; text-align:right; vertical-align:middle; }
+  td.amount { color:var(--or); font-size:15px; }
+
+  /* STATUS SELECTOR */
+  .status-select { font-family:'Press Start 2P',monospace; font-size:7px; color:var(--pk); border:1px solid var(--pk); padding:4px 8px; letter-spacing:1px; background:transparent; cursor:pointer; appearance:none; -webkit-appearance:none; }
+  .status-select option { background:#222; color:var(--tx); font-family:monospace; }
+
+  /* ADD / REMOVE BUTTONS */
+  .add-row-btn { display:block; margin:8px 60px; font-family:'Press Start 2P',monospace; font-size:7px; color:var(--or-d); background:transparent; border:1px dashed var(--bd); padding:10px 14px; cursor:pointer; letter-spacing:1px; text-align:left; width:calc(100% - 120px); transition:all 0.15s; }
+  .add-row-btn:hover { border-color:var(--or-d); color:var(--or); }
+  .del-btn { font-size:10px; color:var(--tm); background:transparent; border:none; cursor:pointer; padding:0 6px; line-height:1; vertical-align:middle; }
+  .del-btn:hover { color:var(--pk); }
+
+  /* TAX INPUT */
+  .tax-input { font-family:'Share Tech Mono',monospace; font-size:12px; color:var(--tx); background:transparent; border:none; border-bottom:1px dashed rgba(255,179,71,0.25); width:36px; text-align:right; outline:none; padding:0; }
+  .tax-input:focus { border-bottom-color:var(--or); }
+  .discount-input { font-family:'Share Tech Mono',monospace; font-size:14px; color:var(--tx); background:transparent; border:none; border-bottom:1px dashed rgba(255,179,71,0.25); width:60px; text-align:right; outline:none; padding:0; }
+  .discount-input:focus { border-bottom-color:var(--or); }
+</style>
+
+<div class="page">
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+  <div class="top-bar"></div>
+
+  <div class="header">
+    <div>
+      <div class="logo-dmge">DMGE</div>
+      <div class="logo-sub">RATE SYSTEM</div>
+    </div>
+    <div class="invoice-meta">
+      <div class="invoice-label">INVOICE</div>
+      <div class="meta-row">
+        <span class="meta-key">INV NO.</span>
+        <span class="meta-val" contenteditable="true">#INV-0001</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">ISSUED</span>
+        <span class="meta-val" contenteditable="true">MM / DD / YYYY</span>
+      </div>
+      <div class="meta-row">
+        <span class="meta-key">DUE</span>
+        <span class="meta-val" contenteditable="true">MM / DD / YYYY</span>
+      </div>
+      <div class="meta-row" style="margin-top:8px;">
+        <span class="meta-key"></span>
+        <span class="meta-val">
+          <select class="status-select" id="statusSel">
+            <option value="UNPAID">UNPAID</option>
+            <option value="PAID">PAID</option>
+            <option value="OVERDUE">OVERDUE</option>
+            <option value="DRAFT">DRAFT</option>
+            <option value="SENT">SENT</option>
+          </select>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="address-block">
+    <div>
+      <div class="address-label">FROM</div>
+      <div class="address-name" contenteditable="true">DMGE RATE SYSTEM</div>
+      <div class="edit-block" contenteditable="true" style="font-size:13px;color:var(--td);line-height:1.9;">
+        Your Street Address<br>City, State  ZIP<br>hello@dmgeratesystem.com<br>+1 (000) 000-0000
+      </div>
+    </div>
+    <div>
+      <div class="address-label">BILLED TO</div>
+      <div class="address-name" contenteditable="true">CLIENT NAME / CO.</div>
+      <div class="edit-block" contenteditable="true" style="font-size:13px;color:var(--td);line-height:1.9;">
+        Client Street Address<br>City, State  ZIP<br>client@email.com<br>+1 (000) 000-0000
+      </div>
+    </div>
+  </div>
+
+  <div class="items-section">
+    <div class="section-heading">SERVICES</div>
+    <div style="position:relative;">
+      <table id="itemsTable">
+        <thead>
+          <tr>
+            <th style="width:44%">DESCRIPTION</th>
+            <th class="right" style="width:9%">QTY</th>
+            <th class="right" style="width:17%">RATE</th>
+            <th class="right" style="width:18%">AMOUNT</th>
+            <th style="width:4%"></th>
+          </tr>
+        </thead>
+        <tbody id="itemsBody">
+          <tr>
+            <td>
+              <div class="item-desc" contenteditable="true">Service / Project Name</div>
+              <div class="item-note" contenteditable="true">// Brief description of deliverable or scope</div>
+            </td>
+            <td class="qty" contenteditable="true" data-qty="1">1</td>
+            <td class="rate" contenteditable="true" data-rate="0">$0.00</td>
+            <td class="amount">$0.00</td>
+            <td style="text-align:center;vertical-align:middle;padding:0 4px;"><button class="del-btn" onclick="removeRow(this)">✕</button></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="item-desc" contenteditable="true">Service / Project Name</div>
+              <div class="item-note" contenteditable="true">// Brief description of deliverable or scope</div>
+            </td>
+            <td class="qty" contenteditable="true" data-qty="1">1</td>
+            <td class="rate" contenteditable="true" data-rate="0">$0.00</td>
+            <td class="amount">$0.00</td>
+            <td style="text-align:center;vertical-align:middle;padding:0 4px;"><button class="del-btn" onclick="removeRow(this)">✕</button></td>
+          </tr>
+          <tr>
+            <td>
+              <div class="item-desc" contenteditable="true">Service / Project Name</div>
+              <div class="item-note" contenteditable="true">// Brief description of deliverable or scope</div>
+            </td>
+            <td class="qty" contenteditable="true" data-qty="1">1</td>
+            <td class="rate" contenteditable="true" data-rate="0">$0.00</td>
+            <td class="amount">$0.00</td>
+            <td style="text-align:center;vertical-align:middle;padding:0 4px;"><button class="del-btn" onclick="removeRow(this)">✕</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <button class="add-row-btn" onclick="addRow()">▶ + ADD LINE ITEM</button>
+
+  <div class="totals-section">
+    <div class="totals-box">
+      <div class="total-row">
+        <span class="total-key">SUBTOTAL</span>
+        <span class="total-val" id="subtotalVal">$0.00</span>
+      </div>
+      <div class="total-row">
+        <span class="total-key">DISCOUNT</span>
+        <span class="total-val">— $<input class="discount-input" id="discountInput" type="number" min="0" step="0.01" value="0" placeholder="0.00"></span>
+      </div>
+      <div class="total-row">
+        <span class="total-key">TAX (<input class="tax-input" id="taxRate" type="number" min="0" max="100" step="0.1" value="0" placeholder="0">%)</span>
+        <span class="total-val" id="taxVal">$0.00</span>
+      </div>
+      <div class="due-block">
+        <div class="due-label">TOTAL<br>DUE</div>
+        <div class="due-amount" id="totalDue">$0.00</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-info">
+    <div>
+      <div class="footer-label">NOTES</div>
+      <div class="edit-block" contenteditable="true" style="font-size:13px;color:var(--td);line-height:1.9;">
+        Thank you for your business.<br>Reach out with any questions<br>regarding this invoice.
+      </div>
+    </div>
+    <div>
+      <div class="footer-label">PAYMENT DETAILS</div>
+      <div class="payment-row">
+        <span class="payment-key" contenteditable="true">PAYPAL</span>
+        <span style="font-size:13px;color:var(--td);" contenteditable="true">pay@dmgeratesystem.com</span>
+      </div>
+      <div class="payment-row" id="extraPayRows"></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <div class="page-footer-brand">DMGE RATE SYSTEM</div>
+    <div class="page-footer-note" contenteditable="true" style="font-size:12px;color:var(--tm);">questions? hello@dmgeratesystem.com</div>
+  </div>
+</div>
+
+<script>
+function fmt(n){return '$'+n.toFixed(2);}
+
+function parseAmt(str){
+  var v=parseFloat(str.replace(/[^0-9.\-]/g,''));
+  return isNaN(v)?0:v;
+}
+
+function recalc(){
+  var rows=document.querySelectorAll('#itemsBody tr');
+  var sub=0;
+  rows.forEach(function(row){
+    var qCell=row.querySelector('td.qty');
+    var rCell=row.querySelector('td.rate');
+    var aCell=row.querySelector('td.amount');
+    if(!qCell||!rCell||!aCell)return;
+    var q=parseAmt(qCell.textContent)||0;
+    var r=parseAmt(rCell.textContent)||0;
+    var a=q*r;
+    sub+=a;
+    aCell.textContent=fmt(a);
+  });
+  var disc=parseFloat(document.getElementById('discountInput').value)||0;
+  var tax=parseFloat(document.getElementById('taxRate').value)||0;
+  var taxAmt=(sub-disc)*(tax/100);
+  var total=sub-disc+taxAmt;
+  if(total<0)total=0;
+  document.getElementById('subtotalVal').textContent=fmt(sub);
+  document.getElementById('taxVal').textContent=fmt(taxAmt);
+  document.getElementById('totalDue').textContent=fmt(total);
+}
+
+function addRow(){
+  var tbody=document.getElementById('itemsBody');
+  var tr=document.createElement('tr');
+  tr.innerHTML='<td><div class="item-desc" contenteditable="true">Service / Project Name</div><div class="item-note" contenteditable="true">// Brief description</div></td>'
+    +'<td class="qty" contenteditable="true">1</td>'
+    +'<td class="rate" contenteditable="true">$0.00</td>'
+    +'<td class="amount">$0.00</td>'
+    +'<td style="text-align:center;vertical-align:middle;padding:0 4px;"><button class="del-btn" onclick="removeRow(this)">✕</button></td>';
+  tbody.appendChild(tr);
+  attachRowListeners(tr);
+  recalc();
+  tr.querySelector('.item-desc').focus();
+}
+
+function removeRow(btn){
+  var row=btn.closest('tr');
+  var tbody=document.getElementById('itemsBody');
+  if(tbody.querySelectorAll('tr').length>1){row.remove();recalc();}
+}
+
+function attachRowListeners(row){
+  var qty=row.querySelector('td.qty');
+  var rate=row.querySelector('td.rate');
+  if(qty)qty.addEventListener('input',recalc);
+  if(rate)rate.addEventListener('input',recalc);
+}
+
+document.querySelectorAll('#itemsBody tr').forEach(attachRowListeners);
+document.getElementById('taxRate').addEventListener('input',recalc);
+document.getElementById('discountInput').addEventListener('input',recalc);
+
+recalc();
+</script>
