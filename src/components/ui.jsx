@@ -56,7 +56,13 @@ export function PInput({ value, onChange, placeholder, style = {}, type = "text"
     <input
       type={type}
       value={value}
-      onChange={e => onChange(type === "number" ? (parseFloat(e.target.value) || 0) : e.target.value)}
+      onChange={e => {
+        if (type === "number") {
+          onChange(e.target.value === "" ? "" : Number(e.target.value));
+        } else {
+          onChange(e.target.value);
+        }
+      }}
       placeholder={placeholder}
       min={min}
       step={step}
@@ -94,7 +100,7 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
             ref={inputRef}
             type="number"
             value={value}
-            onChange={e => onChange(parseFloat(e.target.value) || 0)}
+            onChange={e => onChange(e.target.value === "" ? "" : Number(e.target.value))}
             onBlur={() => setEditing(false)}
             onKeyDown={e => e.key === "Enter" && setEditing(false)}
             style={{ width: "100%", border: "none", background: "transparent", textAlign: "center", fontFamily: "inherit", fontSize: "inherit", outline: "none", color: "var(--pixel-text, #2a2a2a)" }}

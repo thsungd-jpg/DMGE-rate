@@ -55,10 +55,12 @@ export default function TutorialPage({ onBack }) {
     <div className="tutorial-page fade-in" style={{ paddingBottom: "4rem", maxWidth: "900px", margin: "0 auto" }}>
       
       {/* HEADER ROW */}
-      <div style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "2.5rem", borderBottom: `4px solid ${THEME.orange}`, paddingBottom: "1.5rem", minHeight: "80px" }}>
-        <PBtn small color={THEME.orange} onClick={onBack} style={{ position: "absolute", left: 0, display: "flex", alignItems: "center", gap: "0.5rem", color: THEME.black }}>
-          <IconArrowLeft size={18} color={THEME.black} /> CALC
-        </PBtn>
+      <div style={{ marginBottom: "2.5rem", borderBottom: `4px solid ${THEME.orange}`, paddingBottom: "1.5rem" }}>
+        <div style={{ marginBottom: "1rem" }}>
+          <PBtn small color={THEME.orange} onClick={onBack} style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: THEME.black }}>
+            <IconArrowLeft size={18} color={THEME.black} /> CALC
+          </PBtn>
+        </div>
         <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem", width: "100%", alignItems: "center" }}>
           <GlitchLogo text="HOW IT WORKS" fontSize="clamp(1.8rem, 6vw, 3rem)" primaryColor={THEME.orange} secondaryColor={THEME.pink} />
         </div>

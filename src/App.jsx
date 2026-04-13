@@ -519,6 +519,12 @@ export default function App() {
   useEffect(() => {
     if (!currentUser) return;
     loadSubscription().then(setSubscription);
+
+    const hasSeen = localStorage.getItem('rateapp_has_seen_tutorial');
+    if (!hasSeen) {
+      setTab('tutorial');
+      localStorage.setItem('rateapp_has_seen_tutorial', 'true');
+    }
   }, [currentUser]);
 
   // 2. Load data once tier is known
