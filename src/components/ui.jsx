@@ -36,7 +36,7 @@ export function PModal({ isOpen, onClose, title, children }) {
   if (!isOpen) return null;
   return (
     <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
-      <PBox style={{ maxWidth: "50rem", width: "100%", position: "relative", maxHeight: "95vh", overflowY: "auto" }} bg="#1A1A1A">
+      <PBox style={{ maxWidth: "min(50rem, calc(100vw - 1rem))", width: "100%", position: "relative", maxHeight: "95vh", overflowY: "auto" }} bg="#1A1A1A">
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
           <div style={{ fontSize: "clamp(1rem, 4vw, 1.5625rem)", color: "#FFB347", fontFamily: "'Press Start 2P'" }}>{title}</div>
           <PBtn small color="#E91E63" onClick={onClose}>X</PBtn>
@@ -90,7 +90,7 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
         onClick={() => setEditing(true)}
         style={{
           fontFamily: "'Press Start 2P'", fontSize: "clamp(1.25rem, 4.16vw, 2.0625rem)", color: "#FFB347", 
-          flex: 1, minWidth: "7.5rem", maxWidth: "15.625rem", textAlign: "center",
+          flex: 1, minWidth: "clamp(4rem, 20vw, 7.5rem)", maxWidth: "15.625rem", textAlign: "center",
           background: "#0A0A0A", border: "0.5rem solid #FFB347", boxShadow: "0.5rem 0.5rem 0 #E91E63", padding: "1.25rem 0.625rem",
           cursor: "text"
         }}

@@ -70,7 +70,7 @@ const ColorSwatches = ({ value, onChange }) => (
         key={c}
         onClick={() => onChange(c)}
         style={{
-          width: "2.5rem", height: "2.5rem", background: c, cursor: "pointer",
+          width: "clamp(1.75rem, 7vw, 2.5rem)", height: "clamp(1.75rem, 7vw, 2.5rem)", background: c, cursor: "pointer",
           border: (value || "").toLowerCase() === c.toLowerCase() ? "3px solid #fff" : "3px solid #2a2a2a",
           boxShadow: (value || "").toLowerCase() === c.toLowerCase() ? "0 0 0 3px #2a2a2a" : "none",
           boxSizing: "border-box"
@@ -1111,6 +1111,10 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
           /* Price grid stacks on narrow screens */
           .price-grid { grid-template-columns: 1fr !important; }
+
+          /* Modal: keep within viewport on tablets and landscape phones */
+          .modal-overlay { padding: 0.75rem !important; }
+          .modal-overlay > div { max-width: calc(100vw - 1.5rem) !important; }
         }
 
         /* ──── PHONE (≤480px) ──── */
@@ -1967,11 +1971,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
                     <PLbl>CUSTOM LOGO (MAX 2MB)</PLbl>
                     <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
                       {profile.branding?.logoBase64 && (
-                        <div style={{ position: "relative", width: 60, height: 60, border: "4px solid var(--pixel-text, #2a2a2a)", background: "var(--pixel-surface, #fff)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible" }}>
+                        <div style={{ position: "relative", width: "clamp(48px, 14vw, 60px)", height: "clamp(48px, 14vw, 60px)", border: "4px solid var(--pixel-text, #2a2a2a)", background: "var(--pixel-surface, #fff)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible", flexShrink: 0 }}>
                           <img src={profile.branding.logoBase64} style={{ maxWidth: "100%", maxHeight: "100%", imageRendering: "pixelated" }} alt="Logo" />
                           <button
                             onClick={() => { const p = { ...profile, branding: { ...profile.branding, logoBase64: "" } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                            style={{ position: "absolute", top: "-10px", right: "-10px", background: "#f44336", color: "#fff", width: "24px", height: "24px", display: "flex", alignItems: "center", justifyContent: "center", border: "4px solid var(--pixel-text, #2a2a2a)", cursor: "pointer", fontFamily: "'Press Start 2P'", fontSize: "10px", padding: 0 }}
+                            style={{ position: "absolute", top: "-10px", right: "-10px", background: "#f44336", color: "#fff", width: "clamp(20px, 6vw, 24px)", height: "clamp(20px, 6vw, 24px)", display: "flex", alignItems: "center", justifyContent: "center", border: "4px solid var(--pixel-text, #2a2a2a)", cursor: "pointer", fontFamily: "'Press Start 2P'", fontSize: "10px", padding: 0 }}
                           >X</button>
                         </div>
                       )}
