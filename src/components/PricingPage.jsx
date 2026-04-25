@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { PBox, PBtn } from './ui';
 import { TIERS } from '../utils/subscription';
-import { IconTierFree, IconTierPro, IconTierAgency, IconCheck, IconCross } from '../icons';
+import { IconTierFree, IconTierPro, IconTierAgency, IconCheck, IconCross, IconArrowLeft } from '../icons';
 
 const CHECK = 'CHECK';
 const CROSS = 'CROSS';
