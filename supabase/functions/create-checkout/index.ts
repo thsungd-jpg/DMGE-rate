@@ -12,9 +12,11 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const isTestMode = (Deno.env.get('STRIPE_SECRET_KEY') || '').startsWith('sk_test')
+
 const TIERS = {
-  pro: 'prod_UGTiwPARiKg9eJ',
-  agency: 'prod_UGTiL1xq0h7T4g',
+  pro: isTestMode ? 'prod_UGTiwPARiKg9eJ' : 'prod_UGSa63cBVrF1Ro',
+  agency: isTestMode ? 'prod_UGTiL1xq0h7T4g' : 'prod_UGSfHkV8NfkgSt',
 }
 
 serve(async (req: any) => {
