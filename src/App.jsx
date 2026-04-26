@@ -388,6 +388,7 @@ export default function App() {
   const [clients, setClients] = useState([]);
   const [selectedClientId, setSelectedClientId] = useState("");
   const [price, setPrice] = useState(null);
+  const [selectedTier, setSelectedTier] = useState("fair");
   const [saved, setSaved] = useState(false);
   const [tab, setTab] = useState("calc");
   const [jobStatusFilter, setJobStatusFilter] = useState("all");
@@ -607,6 +608,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   function handleCalc() {
     const cMult = clients.find(c => c.id === selectedClientId)?.rateMultiplier || 1.0;
     setPrice(calcPrice({ ...form, baseRate, materialsCost, clientMultiplier: cMult }));
+    setSelectedTier("fair");
     setSaved(false);
   }
 
@@ -662,7 +664,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         materialsCost,
         materials: activeMaterials,
         travelExpense: form.travelExpense,
-        price: price.fair,
+        price: price[selectedTier === "low" ? "low" : selectedTier === "premium" ? "premium" : "fair"],
         date: invoiceDate,
         status: form.status || "pending",
         clientId: selectedClientId || null,
@@ -1436,15 +1438,19 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
                 <PBox bg="#1A1A1A" shadowColor="#E91E63" style={{ boxShadow: `0.9375rem 0.9375rem 0 #E91E63` }}>
                   <div style={{ textAlign: "center", marginBottom: "2.1875rem" }}>
                     <div style={{ fontSize: "1.125rem", color: "#FFB347", marginBottom: "1.5625rem", display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#FFB347" /> ESTIMATED TOTAL <IconStar size={24} color="#FFB347" /></div>
-                    <div style={{ fontSize: "5rem", color: "#FFB347" }}>${Math.round(price.fair)}</div>
+                    <div style={{ fontSize: "5rem", color: "#FFB347" }}>${Math.round(price[selectedTier])}</div>
+                    <div style={{ fontSize: "0.75rem", color: "#FFB34788", marginTop: "0.5rem" }}>TAP A TIER BELOW TO CHANGE</div>
                   </div>
                   <div className="price-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.25rem", marginBottom: "2.1875rem" }}>
-                    {[["BUDGET", price.low, "#121212"], [<span key="fairlbl" style={{ display: "flex", gap: "4px", justifyContent: "center", alignItems: "center" }}>FAIR <IconStar size={20} color="#0A0A0A" /></span>, price.fair, "#FFB347"], ["PREMIUM", price.premium, "#1A1A1A"]].map(([lbl, val, bg]) => (
-                      <PBox key={typeof lbl === 'string' ? lbl : 'fair'} bg={bg} shadowColor="#E91E63" style={{ textAlign: "center", padding: "1.5625rem 0.625rem" }}>
-                        <div style={{ fontSize: "2.0625rem", color: bg === "#FFB347" ? "#0A0A0A" : "#FFB347", marginBottom: "0.625rem" }}>${Math.round(val)}</div>
-                        <div style={{ fontSize: "0.9375rem", color: bg === "#FFB347" ? "#0A0A0A88" : "#888" }}>{typeof lbl === 'string' ? lbl : lbl}</div>
-                      </PBox>
-                    ))}
+                    {[["BUDGET", "low", price.low, "#121212"], [<span key="fairlbl" style={{ display: "flex", gap: "4px", justifyContent: "center", alignItems: "center" }}>FAIR <IconStar size={20} color="#0A0A0A" /></span>, "fair", price.fair, "#FFB347"], ["PREMIUM", "premium", price.premium, "#1A1A1A"]].map(([lbl, tierKey, val, bg]) => {
+                      const isSelected = selectedTier === tierKey;
+                      return (
+                        <PBox key={tierKey} bg={bg} shadowColor="#E91E63" onClick={() => setSelectedTier(tierKey)} style={{ textAlign: "center", padding: "1.5625rem 0.625rem", cursor: "pointer", border: isSelected ? "0.375rem solid #E91E63" : undefined, transform: isSelected ? "translate(-0.125rem, -0.125rem)" : "none", boxShadow: isSelected ? "0.625rem 0.625rem 0 #E91E63" : undefined, transition: "transform 0.05s, box-shadow 0.05s" }}>
+                          <div style={{ fontSize: "2.0625rem", color: bg === "#FFB347" ? "#0A0A0A" : "#FFB347", marginBottom: "0.625rem" }}>${Math.round(val)}</div>
+                          <div style={{ fontSize: "0.9375rem", color: bg === "#FFB347" ? "#0A0A0A88" : "#888" }}>{lbl}</div>
+                        </PBox>
+                      );
+                    })}
                   </div>
                   <div className="btn-row" style={{ display: "flex", gap: "0.9375rem" }}>
                     <PBtn full color={saved ? "#FFB347" : "#E91E63"} onClick={handleSave} style={{ flex: 1.5 }}>
