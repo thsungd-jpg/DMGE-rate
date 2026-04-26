@@ -16,7 +16,7 @@ import GlitchLogo from "./components/GlitchLogo";
 import HexBackground from "./components/HexBackground";
 import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
 import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
-import { redirectToCheckout, redirectToBillingPortal } from "./utils/stripe";
+import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, complexityMods, usageRightsMods, clientMods } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
 
@@ -954,16 +954,10 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         pdfName: `${selectedJobForEmail.invoiceNumber || 'INV'}_${selectedJobForEmail.role.replace(/\s+/g, '_')}.pdf`,
         fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing"
       };
-      const resp = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/send-invoice`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify(invoicePayload),
-      });
-      const data = await resp.json();
-      if (!resp.ok) throw new Error(data?.error || `Server error ${resp.status}`);
+      const session = await getValidSession();
+      if (!session?.access_token) throw new Error('You must be signed in to send invoices.');
+
+      const data = await invokeEdgeFunction('send-invoice', invoicePayload, session.access_token);
       if (data?.error) throw new Error(data.error);
       // Successfully sent
       setEmailStatus({ type: "success", message: "Invoice successfully dispatched!" });

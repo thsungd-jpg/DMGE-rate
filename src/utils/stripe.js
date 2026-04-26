@@ -22,7 +22,7 @@ function getSupabaseEdgeConfig() {
  * Call Edge Functions with explicit headers. Avoids supabase.functions.invoke quirks
  * (e.g. custom fetch / header merge) that can yield 401 on verify_jwt.
  */
-async function invokeEdgeFunction(name, body, accessToken) {
+export async function invokeEdgeFunction(name, body, accessToken) {
   const { url, anon } = getSupabaseEdgeConfig();
   const res = await fetch(`${url}/functions/v1/${encodeURIComponent(name)}`, {
     method: 'POST',
@@ -54,7 +54,7 @@ async function invokeEdgeFunction(name, body, accessToken) {
   return data;
 }
 
-async function getValidSession() {
+export async function getValidSession() {
   const { data, error } = await supabase.auth.getSession();
   if (error) throw error;
   let session = data?.session ?? null;
