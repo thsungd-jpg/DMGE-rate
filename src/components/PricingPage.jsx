@@ -1,10 +1,28 @@
 import React, { useState } from 'react';
 import { PBox, PBtn } from './ui';
-import { TIERS } from '../utils/subscription';
+import { TIERS, PROMO } from '../utils/subscription';
 import { IconTierFree, IconTierPro, IconTierAgency, IconCheck, IconCross, IconArrowLeft } from '../icons';
 
 const CHECK = 'CHECK';
 const CROSS = 'CROSS';
+
+function PromoBadge({ text, bg = '#4CAF50' }) {
+  return (
+    <div style={{
+      display: 'inline-block',
+      background: bg,
+      color: '#fff',
+      fontSize: '0.5rem',
+      padding: '0.3125rem 0.625rem',
+      border: '0.1875rem solid #000',
+      boxShadow: '3px 3px 0 #000',
+      letterSpacing: '0.04em',
+      lineHeight: 1.4,
+    }}>
+      {text}
+    </div>
+  );
+}
 
 function FeatureRow({ label, free, pro, agency }) {
   const isIcon = (v) => v === '∞';
@@ -132,8 +150,27 @@ export default function PricingPage({ currentTier, onSelectPlan, onBack }) {
             <IconTierPro size={30} color="#FFD700" />
           </div>
           <div style={{ fontSize: "1rem", color: '#FFD700', marginBottom: "0.9375rem" }}>PRO</div>
-          <div style={{ fontSize: "1.75rem", color: '#2a2a2a', marginBottom: "0.3125rem" }}>${billingCycle === 'year' ? Math.floor(TIERS.pro.prices.annual / 12) : TIERS.pro.prices.monthly}</div>
-          <div style={{ fontSize: "0.5rem", color: '#999', marginBottom: "1.25rem" }}>{billingCycle === 'year' ? `($${TIERS.pro.prices.annual} BILLED ANNUALLY)` : 'PER MONTH'}</div>
+          {billingCycle === 'year' ? (
+            <>
+              <PromoBadge text={`${PROMO.annualPercentOff}% OFF YEAR ONE`} bg="#4CAF50" />
+              <div style={{ fontSize: "0.6875rem", color: '#999', textDecoration: 'line-through', marginTop: '0.375rem' }}>
+                ${TIERS.pro.prices.annual}/YR
+              </div>
+              <div style={{ fontSize: "1.75rem", color: '#2a2a2a', marginTop: "0.25rem", marginBottom: "0.3125rem" }}>
+                ${Math.round(TIERS.pro.prices.annual * (100 - PROMO.annualPercentOff) / 100)}
+              </div>
+              <div style={{ fontSize: "0.5rem", color: '#999', marginBottom: "1.25rem" }}>FIRST YEAR — RENEWS AT FULL PRICE</div>
+            </>
+          ) : (
+            <>
+              <PromoBadge text={`FIRST MONTH $${PROMO.firstMonthPrice}`} bg="#4CAF50" />
+              <div style={{ fontSize: "0.6875rem", color: '#999', textDecoration: 'line-through', marginTop: '0.375rem' }}>
+                ${TIERS.pro.prices.monthly}/MO
+              </div>
+              <div style={{ fontSize: "1.75rem", color: '#2a2a2a', marginTop: "0.25rem", marginBottom: "0.3125rem" }}>${PROMO.firstMonthPrice}</div>
+              <div style={{ fontSize: "0.5rem", color: '#999', marginBottom: "1.25rem" }}>FIRST MONTH — THEN ${TIERS.pro.prices.monthly}/MO</div>
+            </>
+          )}
           <div style={{ fontSize: "0.625rem", color: '#666', lineHeight: 2.2, marginBottom: "1.25rem" }}>
             {TIERS.pro.limits.clients} CLIENTS<br />
             {TIERS.pro.limits.templates} TEMPLATES<br />
@@ -157,8 +194,27 @@ export default function PricingPage({ currentTier, onSelectPlan, onBack }) {
             <IconTierAgency size={30} color="#E040FB" />
           </div>
           <div style={{ fontSize: "1rem", color: '#E040FB', marginBottom: "0.9375rem" }}>AGENCY</div>
-          <div style={{ fontSize: "1.75rem", color: '#fff', marginBottom: "0.3125rem" }}>${billingCycle === 'year' ? Math.floor(TIERS.agency.prices.annual / 12) : TIERS.agency.prices.monthly}</div>
-          <div style={{ fontSize: "0.5rem", color: '#999', marginBottom: "1.25rem" }}>{billingCycle === 'year' ? `($${TIERS.agency.prices.annual} BILLED ANNUALLY)` : 'PER MONTH'}</div>
+          {billingCycle === 'year' ? (
+            <>
+              <PromoBadge text={`${PROMO.annualPercentOff}% OFF YEAR ONE`} bg="#4CAF50" />
+              <div style={{ fontSize: "0.6875rem", color: '#bbb', textDecoration: 'line-through', marginTop: '0.375rem' }}>
+                ${TIERS.agency.prices.annual}/YR
+              </div>
+              <div style={{ fontSize: "1.75rem", color: '#fff', marginTop: "0.25rem", marginBottom: "0.3125rem" }}>
+                ${Math.round(TIERS.agency.prices.annual * (100 - PROMO.annualPercentOff) / 100)}
+              </div>
+              <div style={{ fontSize: "0.5rem", color: '#aaa', marginBottom: "1.25rem" }}>FIRST YEAR — RENEWS AT FULL PRICE</div>
+            </>
+          ) : (
+            <>
+              <PromoBadge text={`FIRST MONTH $${PROMO.firstMonthPrice}`} bg="#4CAF50" />
+              <div style={{ fontSize: "0.6875rem", color: '#bbb', textDecoration: 'line-through', marginTop: '0.375rem' }}>
+                ${TIERS.agency.prices.monthly}/MO
+              </div>
+              <div style={{ fontSize: "1.75rem", color: '#fff', marginTop: "0.25rem", marginBottom: "0.3125rem" }}>${PROMO.firstMonthPrice}</div>
+              <div style={{ fontSize: "0.5rem", color: '#aaa', marginBottom: "1.25rem" }}>FIRST MONTH — THEN ${TIERS.agency.prices.monthly}/MO</div>
+            </>
+          )}
           <div style={{ fontSize: "0.625rem", color: '#aaa', lineHeight: 2.2, marginBottom: "1.25rem" }}>
             {TIERS.agency.limits.clients} CLIENTS / TEMPLATES<br />
             {TIERS.agency.limits.historyDays}-DAY JOB HISTORY<br />

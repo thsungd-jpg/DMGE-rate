@@ -4,20 +4,21 @@ import { IconHelp, IconEdit } from "../icons";
 // ─────────────────────────────────────────────
 // PIXEL COMPONENTS (SCALED 2.5X)
 // ─────────────────────────────────────────────
-export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB347", shadowColor = "#E91E63", onClick }) {
+export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB347", shadowColor = "#E91E63", onClick, glow = false, className = "" }) {
   return (
-    <div onClick={onClick} style={{ 
-      background: bg, border: "0.375rem solid " + borderColor, boxShadow: "0.375rem 0.375rem 0 " + shadowColor, padding: "clamp(0.5rem,2vw,1.25rem)", boxSizing: "border-box", ...style, position: "relative", zIndex: 1 
+    <div onClick={onClick} className={(glow ? "dmge-glow " : "") + className} style={{
+      background: bg, border: "0.375rem solid " + borderColor, boxShadow: "0.375rem 0.375rem 0 " + shadowColor, padding: "clamp(0.5rem,2vw,1.25rem)", boxSizing: "border-box", ...style, position: "relative", zIndex: 1
     }}>
       {children}
     </div>
   );
 }
 
-export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small = false, disabled = false, style = {} }) {
+export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small = false, disabled = false, style = {}, glow = false, className = "" }) {
   const [p, setP] = useState(false);
   return (
     <button onClick={onClick} onMouseDown={() => setP(true)} onMouseUp={() => setP(false)} onMouseLeave={() => setP(false)} disabled={disabled}
+      className={(glow ? "dmge-glow " : "") + className}
       style={{
         fontFamily: "'Press Start 2P', monospace", fontSize: small ? "1.125rem" : "1.25rem", color: "#0A0A0A",
         background: color, border: "0.5rem solid #0A0A0A",

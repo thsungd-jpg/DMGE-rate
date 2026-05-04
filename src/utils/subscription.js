@@ -1,6 +1,14 @@
 import { supabase } from './supabaseClient';
 
 // ─────────────────────────────────────────────
+// PROMO OFFERS (auto-applied at Stripe checkout)
+// ─────────────────────────────────────────────
+export const PROMO = {
+  firstMonthPrice: 1,         // monthly subs: first month $1, then full price
+  annualPercentOff: 75,       // annual subs: 75% off year one
+};
+
+// ─────────────────────────────────────────────
 // TIER DEFINITIONS
 // ─────────────────────────────────────────────
 export const TIERS = {

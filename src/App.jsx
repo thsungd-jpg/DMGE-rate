@@ -15,6 +15,9 @@ import TutorialPage from "./components/TutorialPage";
 import GlitchLogo from "./components/GlitchLogo";
 import HexBackground from "./components/HexBackground";
 import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
+import SplashScreen from "./components/SplashScreen";
+import PixelArrow from "./components/PixelArrow";
+import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, complexityMods, usageRightsMods, clientMods } from "./utils/pricing";
@@ -426,6 +429,29 @@ export default function App() {
   const [upgradeFeature, setUpgradeFeature] = useState('clients');
   const [todayPdfCount, setTodayPdfCount] = useState(0);
 
+  // Splash + guided UX state
+  const [splashDone, setSplashDone] = useState(() => {
+    try { return sessionStorage.getItem('rateapp_splash_seen') === '1'; } catch { return false; }
+  });
+  // Glow walks: role -> clientType -> usage -> calculate -> null
+  const [glowStep, setGlowStep] = useState('role');
+  const [muted, setMutedState] = useState(() => isMuted());
+
+  function advanceGlow(from) {
+    setGlowStep(prev => {
+      if (prev !== from) return prev;
+      const NEXT = { role: 'clientType', clientType: 'usage', usage: 'calculate', calculate: null };
+      const next = NEXT[from] ?? null;
+      if (next) { try { playGlow(); } catch {} }
+      return next;
+    });
+  }
+
+  function handleToggleMute() {
+    const next = toggleMuted();
+    setMutedState(next);
+  }
+
   const handleLogoUpload = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -577,6 +603,15 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     );
   }
 
+  if (!splashDone) {
+    return (
+      <SplashScreen onDone={() => {
+        try { sessionStorage.setItem('rateapp_splash_seen', '1'); } catch {}
+        setSplashDone(true);
+      }} />
+    );
+  }
+
   if (authLoading) return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pixel-text, #2a2a2a)", padding: "3.125rem", fontFamily: "'Press Start 2P'", background: "#d5d5d5" }}>LOADING...</div>;
   if (!currentUser || recoveredMode) {
     return (
@@ -610,6 +645,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     setPrice(calcPrice({ ...form, baseRate, materialsCost, clientMultiplier: cMult }));
     setSelectedTier("fair");
     setSaved(false);
+    setGlowStep(null);
+    try { playCalculate(); } catch {}
   }
 
   function handleReset() {
@@ -629,6 +666,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     setPrice(null);
     setSaved(false);
     setResetKey(prev => prev + 1);
+    setGlowStep('role');
   }
   async function handleSave() {
     try {
@@ -679,6 +717,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
       setJobs(updatedJobs);
       setSaved(true);
+      try { playSave(); } catch {}
       setTimeout(() => setTab("history"), 500);
     } catch (e) {
       console.error("handleSave Error:", e);
@@ -960,6 +999,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       const data = await invokeEdgeFunction('send-invoice', invoicePayload, session.access_token);
       if (data?.error) throw new Error(data.error);
       // Successfully sent
+      try { playEmail(); } catch {}
       setEmailStatus({ type: "success", message: "Invoice successfully dispatched!" });
       setTimeout(() => {
         alert("Invoice successfully dispatched!");
@@ -1012,6 +1052,26 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
           font-size: clamp(8px, 1.1vh + 0.4vw, 14px);
         }
         *{box-sizing:border-box;margin:0;padding:0;}
+
+        /* DMGE guided-UX animations */
+        @keyframes dmgeGlow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(255,179,71,0.0), 0.375rem 0.375rem 0 #E91E63; }
+          50% { box-shadow: 0 0 24px 6px rgba(255,179,71,0.85), 0.375rem 0.375rem 0 #E91E63; }
+        }
+        .dmge-glow { animation: dmgeGlow 1.4s ease-in-out infinite; }
+
+        @keyframes dmgeSplashPulse {
+          0%, 100% { transform: scale(1); filter: brightness(1); }
+          50% { transform: scale(1.06); filter: brightness(1.25); }
+        }
+        .dmge-splash-pulse { animation: dmgeSplashPulse 1s ease-in-out infinite; }
+
+        @keyframes dmgeArrowBounce {
+          0%, 100% { transform: translateX(0); }
+          50% { transform: translateX(6px); }
+        }
+        .dmge-arrow-bounce { animation: dmgeArrowBounce 0.7s ease-in-out infinite; display: inline-block; }
+
         html, body { overflow: hidden; height: 100%; }
         body{background:#d5d5d5; font-size: 1rem;}
         input[type=range]{-webkit-appearance:none;height:0.625rem;background:#dedede;border:0.1875rem solid #2a2a2a;border-radius:0;outline:none;cursor:pointer;overflow:visible;}
@@ -1279,9 +1339,14 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
                   EDITING MODE: {form.invoiceNumber}
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", gap: "0.5rem" }}>
                 <PLbl style={{ marginBottom: 0 }}>QUICK CLIENT SELECT</PLbl>
-                <PBtn small color="#E91E63" onClick={() => setTab("tutorial")} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem" }}>TUTORIAL</PBtn>
+                <div style={{ display: "flex", gap: "0.5rem" }}>
+                  <PBtn small color="#FFB347" onClick={handleToggleMute} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem", color: "#0A0A0A" }} title={muted ? "SFX OFF" : "SFX ON"}>
+                    {muted ? "SFX:OFF" : "SFX:ON"}
+                  </PBtn>
+                  <PBtn small color="#E91E63" onClick={() => setTab("tutorial")} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem" }}>TUTORIAL</PBtn>
+                </div>
               </div>
               <PSelect
                 value={selectedClientId}
@@ -1299,7 +1364,12 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <div style={{ gridColumn: "1 / -1" }}>
+              <div style={{ gridColumn: "1 / -1", position: "relative" }} className={glowStep === 'role' ? 'dmge-glow' : ''} onClick={() => advanceGlow('role')}>
+                {glowStep === 'role' && (
+                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
+                    <PixelArrow direction="right" size={48} bounce />
+                  </span>
+                )}
                 <PCollapsible key={`discipline-${resetKey}`} title="ROLE" defaultOpen={false} collapsedInfo={`${category} / ${role.name} / ${model.type}`}>
                   <PLbl>CATEGORY</PLbl>
                   <PSelect
@@ -1338,13 +1408,27 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
                 <OptionGrid options={complexityMods} value={form.complexity} onChange={set("complexity")} cols={4} />
               </PCollapsible>
 
-              <PCollapsible key={`clientType-${resetKey}`} title="CLIENT" defaultOpen={false} collapsedInfo={form.clientType} tooltip="Corporate clients typically pay 2-2.5x more">
-                <OptionGrid options={clientMods} value={form.clientType} onChange={set("clientType")} cols={4} />
-              </PCollapsible>
+              <div style={{ position: "relative" }} className={glowStep === 'clientType' ? 'dmge-glow' : ''} onClick={() => advanceGlow('clientType')}>
+                {glowStep === 'clientType' && (
+                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
+                    <PixelArrow direction="right" size={48} bounce />
+                  </span>
+                )}
+                <PCollapsible key={`clientType-${resetKey}`} title="CLIENT" defaultOpen={false} collapsedInfo={form.clientType} tooltip="Corporate clients typically pay 2-2.5x more">
+                  <OptionGrid options={clientMods} value={form.clientType} onChange={(v) => { set("clientType")(v); advanceGlow('clientType'); }} cols={4} />
+                </PCollapsible>
+              </div>
 
-              <PCollapsible key={`usage-${resetKey}`} title="USAGE" defaultOpen={false} collapsedInfo={form.usage} tooltip="Personal = one-time use; Commercial = broader rights">
-                <OptionGrid options={usageRightsMods} value={form.usage} onChange={set("usage")} cols={2} />
-              </PCollapsible>
+              <div style={{ position: "relative" }} className={glowStep === 'usage' ? 'dmge-glow' : ''} onClick={() => advanceGlow('usage')}>
+                {glowStep === 'usage' && (
+                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
+                    <PixelArrow direction="right" size={48} bounce />
+                  </span>
+                )}
+                <PCollapsible key={`usage-${resetKey}`} title="USAGE" defaultOpen={false} collapsedInfo={form.usage} tooltip="Personal = one-time use; Commercial = broader rights">
+                  <OptionGrid options={usageRightsMods} value={form.usage} onChange={(v) => { set("usage")(v); advanceGlow('usage'); }} cols={2} />
+                </PCollapsible>
+              </div>
 
               <PCollapsible key={`revisions-${resetKey}`} title="REVS" defaultOpen={false} collapsedInfo={`${form.revisions} revisions`} tooltip="0 revisions = discount; 3+ revisions = premium">
                 <div style={{ padding: "0.25rem 0" }}>
@@ -1422,8 +1506,13 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
               </div>
             </div>
 
-            <div className="action-buttons" style={{ display: "flex", gap: "1.25rem", marginBottom: "2.5rem" }}>
-              <PBtn color="#E91E63" onClick={handleCalc} style={{ flex: 1, display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#0A0A0A" /> CALCULATE <IconStar size={24} color="#0A0A0A" /></PBtn>
+            <div className="action-buttons" style={{ display: "flex", gap: "1.25rem", marginBottom: "2.5rem", position: "relative" }}>
+              {glowStep === 'calculate' && (
+                <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
+                  <PixelArrow direction="right" size={56} bounce />
+                </span>
+              )}
+              <PBtn color="#E91E63" onClick={handleCalc} glow={glowStep === 'calculate'} style={{ flex: 1, display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#0A0A0A" /> CALCULATE <IconStar size={24} color="#0A0A0A" /></PBtn>
               <PBtn color="#FFB347" onClick={handleReset} style={{ flex: 1 }}>↺ RESET</PBtn>
             </div>
 

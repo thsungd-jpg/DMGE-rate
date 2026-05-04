@@ -1,7 +1,99 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { PBox, PBtn, PLbl } from "./ui";
 import { IconArrowLeft, IconHelp, IconTech, IconBiz, IconMoney, IconStar, IconCheck } from "../icons";
 import GlitchLogo from "./GlitchLogo";
+import PixelArrow from "./PixelArrow";
+
+// Guided-tour steps. Real PNGs go into /public/pixel/ at the listed paths;
+// until then a labeled placeholder renders so the page is non-broken.
+const TOUR_STEPS = [
+  {
+    src: "/pixel/screenshot-1-role.png",
+    title: "1. PICK YOUR ROLE",
+    blurb: "Start by selecting your category, role, and pricing model. This sets your base rate.",
+    arrows: [
+      { direction: "right", top: "28%", left: "-12%", label: "START HERE" },
+    ],
+  },
+  {
+    src: "/pixel/screenshot-2-fill.png",
+    title: "2. FILL THE BOXES",
+    blurb: "Step through each glowing box top-to-bottom — quantity, complexity, client type, usage rights.",
+    arrows: [
+      { direction: "down", top: "-12%", left: "45%", label: "FOLLOW THE GLOW" },
+    ],
+  },
+  {
+    src: "/pixel/screenshot-3-calculate.png",
+    title: "3. HIT CALCULATE",
+    blurb: "Once every box is filled the CALCULATE button glows. Click it for your DMGE rate.",
+    arrows: [
+      { direction: "up", top: "70%", left: "45%", label: "TAP THIS" },
+    ],
+  },
+  {
+    src: "/pixel/screenshot-4-saved.png",
+    title: "4. SAVE OR SEND",
+    blurb: "Save the quote to your job log, or send a polished invoice straight to the client.",
+    arrows: [
+      { direction: "left", top: "30%", left: "92%", label: "ACTIONS" },
+    ],
+  },
+];
+
+function ScreenshotCard({ step }) {
+  const [errored, setErrored] = useState(false);
+  return (
+    <div style={{
+      background: "#0A0A0A",
+      border: "0.375rem solid #FFB347",
+      boxShadow: "6px 6px 0 #E91E63",
+      padding: "1rem",
+      marginBottom: "1.25rem",
+    }}>
+      <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.7rem", color: "#FFB347", marginBottom: "0.75rem" }}>
+        {step.title}
+      </div>
+      <div style={{ position: "relative", width: "100%", aspectRatio: "4 / 3", background: "#1A1A1A", border: "0.25rem dashed #FFB34744", display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible" }}>
+        {!errored ? (
+          <img
+            src={step.src}
+            alt={step.title}
+            onError={() => setErrored(true)}
+            style={{ width: "100%", height: "100%", objectFit: "cover", imageRendering: "pixelated" }}
+          />
+        ) : (
+          <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.55rem", color: "#FFB34788", textAlign: "center", padding: "0 1rem", lineHeight: 1.8 }}>
+            SCREENSHOT<br />PLACEHOLDER<br /><span style={{ color: "#FFB34744", fontSize: "0.45rem" }}>{step.src}</span>
+          </div>
+        )}
+
+        {step.arrows?.map((a, i) => (
+          <div key={i} style={{
+            position: "absolute",
+            top: a.top,
+            left: a.left,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: "0.25rem",
+            pointerEvents: "none",
+          }}>
+            <PixelArrow direction={a.direction} bounce size={36} />
+            {a.label && (
+              <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.45rem", color: "#FFB347", background: "#0A0A0A", padding: "0.25rem 0.375rem", border: "0.125rem solid #FFB347", whiteSpace: "nowrap" }}>
+                {a.label}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+      <p style={{ fontFamily: "'Press Start 2P'", fontSize: "0.6rem", color: "#FFFFFF", lineHeight: 1.8, marginTop: "0.875rem", marginBottom: 0 }}>
+        {step.blurb}
+      </p>
+    </div>
+  );
+}
 
 export default function TutorialPage({ onBack }) {
 
@@ -95,6 +187,16 @@ export default function TutorialPage({ onBack }) {
       <p style={{ lineHeight: 1.8, marginBottom: "3rem", color: "#FFFFFF", fontFamily: "'Press Start 2P'", textAlign: "center", fontSize: "0.7rem" }}>
         Welcome to the DMGE framework! This guide explains exactly how each variable influences your final quote. We use a modular calculation engine to ensure you are paid fairly for your time, expertise, and expenses.
       </p>
+
+      {/* GUIDED TOUR (screenshots + pixel arrows) */}
+      <div style={{ marginBottom: "3rem" }}>
+        <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.85rem", color: THEME.orange, textAlign: "center", marginBottom: "1.5rem" }}>
+          GUIDED TOUR
+        </div>
+        {TOUR_STEPS.map((step, i) => (
+          <ScreenshotCard key={i} step={step} />
+        ))}
+      </div>
 
       {/* TUTORIAL CARDS - LIST LAYOUT */}
       <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>

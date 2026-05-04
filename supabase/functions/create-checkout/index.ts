@@ -19,6 +19,21 @@ const TIERS = {
   agency: isTestMode ? 'prod_UGTiL1xq0h7T4g' : 'prod_UGSfHkV8NfkgSt',
 }
 
+// Auto-applied promo coupons (Emergent-style sales offer).
+// Coupons must be created in Stripe (duration: once) and IDs set as env vars.
+// Monthly: amount_off = (priceCents - 100) so first month resolves to $1.
+// Annual: percent_off = 75 (75% off year one).
+function pickCouponId(tier: string, interval: string): string | null {
+  if (interval === 'year') {
+    return Deno.env.get('STRIPE_COUPON_ANNUAL_75') || null;
+  }
+  if (interval === 'month') {
+    if (tier === 'pro') return Deno.env.get('STRIPE_COUPON_PRO_MONTHLY') || null;
+    if (tier === 'agency') return Deno.env.get('STRIPE_COUPON_AGENCY_MONTHLY') || null;
+  }
+  return null;
+}
+
 serve(async (req: any) => {
   if (req.method === 'OPTIONS') {
     return new Response('ok', { headers: corsHeaders })
@@ -109,7 +124,12 @@ serve(async (req: any) => {
       console.log(`[create-checkout] Created new customer: ${customerId}`)
     }
 
-    const session = await stripe.checkout.sessions.create({
+    const couponId = pickCouponId(tier, interval)
+    if (couponId) {
+      console.log(`[create-checkout] Auto-applying coupon: ${couponId} (tier=${tier}, interval=${interval})`)
+    }
+
+    const sessionParams: any = {
       customer: customerId,
       line_items: [
         {
@@ -125,7 +145,12 @@ serve(async (req: any) => {
         tier: tier,
         annual: interval === 'year' ? 'true' : 'false',
       },
-    })
+    }
+    if (couponId) {
+      sessionParams.discounts = [{ coupon: couponId }]
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams)
 
     console.log(`[create-checkout] Session created: ${session.id}`)
 
