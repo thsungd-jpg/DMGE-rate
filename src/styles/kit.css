@@ -1,0 +1,99 @@
+/* Screen kit styles (src/components/kit.jsx). px/clamp sizing only. */
+.kit-screen {
+  box-sizing: border-box; width: 100%; max-width: 1080px; margin: 0 auto;
+  padding: clamp(88px, 12vh, 120px) clamp(16px, 4vw, 40px) clamp(120px, 16vh, 150px);
+  color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.5;
+}
+.kit-screen--wide { max-width: 1280px; }
+.kit-screen *, .kit-screen *::before, .kit-screen *::after { box-sizing: border-box; }
+
+.kit-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; margin-bottom: clamp(20px, 3vw, 32px); }
+.kit-head-text { min-width: 0; flex: 1 1 320px; }
+.kit-eyebrow { margin: 0 0 12px; font: 700 12px/1 var(--font-body); letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-2); display: inline-flex; align-items: center; gap: 10px; }
+.kit-eyebrow::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: linear-gradient(135deg, var(--pink), var(--blue)); }
+.kit-title { margin: 0; font: 400 clamp(40px, 6vw, 76px)/0.95 var(--font-display); letter-spacing: -0.03em; }
+.kit-title em { font-style: italic; letter-spacing: -0.02em; }
+.kit-sub { margin: 14px 0 0; max-width: 40em; color: var(--ink-2); font-size: clamp(15px, 1.4vw, 18px); }
+.kit-head-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* card */
+.kit-card { position: relative; border-radius: 24px; border: 1px solid var(--line); box-shadow: var(--sh-1); background: var(--paper); color: var(--ink); }
+.kit-card--glass { background: var(--glass); -webkit-backdrop-filter: blur(14px) saturate(1.3); backdrop-filter: blur(14px) saturate(1.3); }
+.kit-card--pink { background: color-mix(in srgb, var(--pink) 28%, var(--paper)); }
+.kit-card--blue { background: color-mix(in srgb, var(--blue) 28%, var(--paper)); }
+.kit-card--mint { background: color-mix(in srgb, var(--mint) 28%, var(--paper)); }
+.kit-card--butter { background: color-mix(in srgb, var(--butter) 34%, var(--paper)); }
+.kit-card--lilac { background: color-mix(in srgb, var(--lilac) 28%, var(--paper)); }
+.kit-pad-none { padding: 0; } .kit-pad-sm { padding: 14px; } .kit-pad-md { padding: clamp(16px, 2.4vw, 24px); } .kit-pad-lg { padding: clamp(22px, 3.4vw, 36px); }
+
+.kit-sectiontitle { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin: clamp(24px, 4vw, 40px) 0 14px; }
+.kit-sectiontitle h2 { margin: 0; font: 400 clamp(26px, 3.2vw, 36px)/1.05 var(--font-display); letter-spacing: -0.02em; }
+
+/* stat */
+.kit-stat { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.kit-stat-label { font: 700 11px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.kit-stat-value { font: 400 clamp(36px, 4.6vw, 56px)/0.95 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: lining-nums tabular-nums; }
+.kit-stat-hint { font-size: 13px; color: var(--ink-2); }
+.kit-stat--pink .kit-stat-value { color: var(--pink-deep); } .kit-stat--blue .kit-stat-value { color: var(--blue-deep); }
+.kit-stat--mint .kit-stat-value { color: var(--mint-deep); } .kit-stat--lilac .kit-stat-value { color: var(--lilac-deep); }
+
+/* pill */
+.kit-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px; font: 700 12px/1.2 var(--font-body); letter-spacing: 0.04em; white-space: nowrap; border: 1px solid transparent; }
+.kit-pill i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.kit-pill--ink { background: var(--line); color: var(--ink); }
+.kit-pill--pink { background: var(--pink-soft); color: var(--pink-deep); }
+.kit-pill--blue { background: var(--blue-soft); color: var(--blue-deep); }
+.kit-pill--mint { background: var(--mint-soft); color: var(--mint-deep); }
+.kit-pill--butter { background: var(--butter-soft); color: var(--butter-deep); }
+.kit-pill--lilac { background: var(--lilac-soft); color: var(--lilac-deep); }
+.kit-pill--danger { background: var(--danger-soft); color: var(--danger); }
+
+/* field */
+.kit-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.kit-field-label { font: 700 12px/1.2 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+.kit-field-hint { font-size: 13px; color: var(--ink-2); }
+.kit-field-error { font-size: 13px; color: var(--danger); font-weight: 600; }
+.kit-screen textarea, .kit-screen select {
+  width: 100%; font: 500 16px/1.5 var(--font-body); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-strong); border-radius: 16px; padding: 12px 16px; outline: none;
+}
+.kit-screen textarea { min-height: 110px; resize: vertical; }
+.kit-screen textarea:focus, .kit-screen select:focus { border-color: var(--blue-deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--blue) 45%, transparent); }
+
+/* empty */
+.kit-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px; padding: clamp(32px, 6vw, 64px) 20px; }
+.kit-empty-icon { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; color: var(--ink); background: linear-gradient(135deg, var(--pink-soft), var(--blue-soft)); }
+.kit-empty h3 { margin: 6px 0 0; font: 400 clamp(26px, 3vw, 34px)/1.05 var(--font-display); letter-spacing: -0.02em; }
+.kit-empty p { margin: 0 0 8px; max-width: 32em; color: var(--ink-2); }
+
+/* segmented */
+.kit-seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); }
+.kit-seg-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 16px; border: none; border-radius: 999px; background: none; color: var(--ink-2); font: 700 14px var(--font-body); cursor: pointer; transition: background .2s, color .2s; }
+.kit-seg-btn:hover { color: var(--ink); }
+.kit-seg-btn[aria-pressed="true"] { background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 60%), var(--butter); color: var(--on-fill); box-shadow: var(--sh-1); }
+.kit-seg-count { font: 500 12px var(--font-mono); opacity: .7; }
+
+/* row */
+.kit-row { display: flex; align-items: center; gap: 16px; width: 100%; padding: 16px 18px; text-align: left; font: inherit; color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--sh-1); }
+button.kit-row { cursor: pointer; transition: transform .2s var(--ease-out), box-shadow .2s; }
+button.kit-row:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
+.kit-row-lead { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--butter-soft); color: var(--ink); }
+.kit-row-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+.kit-row-title { font-weight: 700; font-size: 16px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kit-row-meta { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kit-row-aside { flex: none; display: flex; align-items: center; gap: 10px; font: 400 26px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+
+/* icon button */
+.kit-iconbtn { display: inline-grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; cursor: pointer; color: var(--ink); background: var(--paper); box-shadow: var(--sh-1); transition: transform .2s var(--ease-spring), box-shadow .2s; }
+.kit-iconbtn:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
+.kit-iconbtn:active { transform: scale(.94); }
+.kit-iconbtn--pink { background: var(--pink); color: var(--on-fill); } .kit-iconbtn--blue { background: var(--blue); color: var(--on-fill); }
+.kit-iconbtn--mint { background: var(--mint); color: var(--on-fill); } .kit-iconbtn--butter { background: var(--butter); color: var(--on-fill); }
+
+.kit-grid { display: grid; }
+.kit-stack { display: flex; flex-direction: column; gap: 12px; }
+
+/* page enter animation, applied by the shell when the screen changes */
+@keyframes kitPageIn { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: none; } }
+.kit-page-enter { animation: kitPageIn 0.7s var(--ease-out) both; }
+@media (prefers-reduced-motion: reduce) { .kit-page-enter { animation: none; } }

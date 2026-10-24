@@ -24,6 +24,7 @@ export default function ProfileScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <>
                 <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
                   <IconArrowLeft size={18} color="#0A0A0A" /> CALC
@@ -310,5 +311,6 @@ export default function ProfileScreen({ ctx }) {
     
                 <PBtn full color="#1A1A1A" style={{ border: "0.5rem solid #E91E63", color: "#E91E63", marginTop: "2.1875rem" }} onClick={() => supabase.auth.signOut()}>LOGOUT</PBtn>
               </>
+    </div>
   );
 }

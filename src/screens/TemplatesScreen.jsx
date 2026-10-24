@@ -17,6 +17,7 @@ export default function TemplatesScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <TemplateManager
                   templates={templates}
                   onUseTemplate={handleUseTemplate}
@@ -31,5 +32,6 @@ export default function TemplatesScreen({ ctx }) {
                   }}
                   onBack={() => setTab("calc")}
                 />
+    </div>
   );
 }

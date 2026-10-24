@@ -38,6 +38,7 @@ export default function HistoryScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <>
                 <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
                   <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", flexWrap: "wrap", paddingBottom: "0.5rem" }}>
@@ -216,5 +217,6 @@ export default function HistoryScreen({ ctx }) {
                   </PBox>
                 ))}
               </>
+    </div>
   );
 }

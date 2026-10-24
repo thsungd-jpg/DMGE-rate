@@ -13,6 +13,7 @@ export default function AnalyticsScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <>
                 <div style={{ marginBottom: "1rem" }}>
                   <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
@@ -22,5 +23,6 @@ export default function AnalyticsScreen({ ctx }) {
                 </div>
                 <AnalyticsDashboard jobs={windowedJobs} catData={catData} />
               </>
+    </div>
   );
 }

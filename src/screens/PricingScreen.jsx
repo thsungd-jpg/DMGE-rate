@@ -11,10 +11,12 @@ export default function PricingScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <PricingPage
                   currentTier={userTier}
                   onSelectPlan={handlePlanSelect}
                   onBack={() => setTab('calc')}
                 />
+    </div>
   );
 }

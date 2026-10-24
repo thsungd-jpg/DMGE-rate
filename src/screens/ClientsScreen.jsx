@@ -21,6 +21,7 @@ export default function ClientsScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <ClientManager
                   clients={clients}
                   jobs={jobs}
@@ -58,5 +59,6 @@ export default function ClientsScreen({ ctx }) {
                   }}
                   onBack={() => setTab("calc")}
                 />
+    </div>
   );
 }

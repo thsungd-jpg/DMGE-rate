@@ -21,6 +21,7 @@ export default function InvoiceEditorScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <div style={{ maxWidth: "1000px", margin: "0 auto", paddingBottom: "2rem" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.75rem" }}>
                     <PBtn small color="#FFB347" onClick={() => { setTab("history"); setEmailStatus({ type: null, message: "" }); }} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
@@ -89,5 +90,6 @@ export default function InvoiceEditorScreen({ ctx }) {
                     )}
                   </div>
                 </div>
+    </div>
   );
 }

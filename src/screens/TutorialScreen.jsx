@@ -9,6 +9,8 @@ export default function TutorialScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <TutorialPage onBack={() => setTab("calc")} />
+    </div>
   );
 }

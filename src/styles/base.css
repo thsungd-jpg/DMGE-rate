@@ -222,3 +222,5 @@ body {
 .lq-btn.auth-primary:hover:not(:disabled) { filter: none; opacity: 0.92; }
 .auth-link { background: none; border: none; padding: 0; font: inherit; font-weight: 700; color: var(--blue-deep); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .auth-link:hover { color: var(--ink); }
+
+.ll-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display: block; }

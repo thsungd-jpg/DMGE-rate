@@ -45,7 +45,7 @@ export default function FloatingDock({ items, activeId, onSelect, position = "bo
   const rightDur = ind.dir > 0 ? fast : slow;
 
   return (
-    <nav className={`lq-dock lq-dock--${position} ${items.some((i) => i.short) ? "lq-dock-has-short" : ""} ${className}`} aria-label={ariaLabel}>
+    <nav className={`lq-dock lq-dock--${position} ${items.some((i) => i.short) ? "lq-dock-has-short" : ""} ${items.some((i) => i.icon) ? "lq-dock-has-icons" : ""} ${className}`} aria-label={ariaLabel}>
       <div className="lq-dock-inner" ref={wrapRef}>
         {leading && <div className="lq-dock-lead">{leading}</div>}
         <span
@@ -66,6 +66,7 @@ export default function FloatingDock({ items, activeId, onSelect, position = "bo
             aria-current={it.id === activeId ? "page" : undefined}
             onClick={(e) => onSelect?.(it.id, e)}
           >
+            {it.icon && <span className="lq-dock-icon" aria-hidden="true">{it.icon}</span>}
             <span className="lq-dock-label">{it.label}</span>
             {it.short && <span className="lq-dock-short" aria-hidden="true">{it.short}</span>}
             {it.badge != null && it.badge !== "" && <span className="lq-dock-badge">{it.badge}</span>}

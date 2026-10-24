@@ -53,6 +53,7 @@ export default function CalcScreen({ ctx }) {
   } = ctx;
 
   return (
+    <div className="legacy-page">
     <>
                 <div style={{ marginBottom: "2.1875rem" }}>
                   {form.id && (
@@ -272,5 +273,6 @@ export default function CalcScreen({ ctx }) {
                   </div>
                 )}
               </>
+    </div>
   );
 }

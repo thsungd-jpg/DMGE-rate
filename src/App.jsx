@@ -17,6 +17,7 @@ import HexBackground from "./components/HexBackground";
 import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
 import { Mark } from "./components/Brand";
 import { devMock } from "./dev/mock";
+import { AppTopBar, AppDock } from "./app/AppChrome";
 import PixelArrow from "./components/PixelArrow";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
@@ -36,6 +37,8 @@ import AppModals from "./screens/AppModals";
 
 // Landing is code-split: it pulls in WebGL/GSAP/Lenis only for logged-out visitors.
 const Landing = React.lazy(() => import("./landing/Landing"));
+// Ambient liquid behind the app (shader + textures are code-split).
+const AppLiquid = React.lazy(() => import("./app/AppLiquid"));
 
 // Add Legacy disciplines to the data (No emojis)
 const LEGACY_DISCIPLINES = {
@@ -1069,7 +1072,16 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     .map(([name, qty]) => `${name} x${qty}`)
     .join(", ") || "None";
 
-    // Everything the extracted screens need, in one bag (see src/screens/*).
+    // White-label colors only count when the user really customised them: the old retro defaults saved in existing
+  // profiles (#1A1A1A, #0A0A0A, #FFB347, #E91E63) are treated as unset so they do not fight the new look.
+  const LEGACY_BRAND_DEFAULTS = ["#1a1a1a", "#0a0a0a", "#ffb347", "#e91e63"];
+  const brandColor = (key) => {
+    const v = profile.branding?.[key];
+    const custom = canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && v && !LEGACY_BRAND_DEFAULTS.includes(String(v).toLowerCase());
+    return custom ? v : null;
+  };
+
+  // Everything the extracted screens need, in one bag (see src/screens/*).
   const ctx = {
     ALL_DATA,
     ColorSwatches,
@@ -1177,8 +1189,6 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
 return (
     <>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
       <style>{`
         :root {
           font-size: clamp(8px, 1.1vh + 0.4vw, 14px);
@@ -1202,40 +1212,16 @@ return (
 
         html, body { overflow: hidden; height: 100%; }
         body{background:var(--cream, #FFF6E8); font-size: 1rem;}
-        input[type=range]{-webkit-appearance:none;height:0.625rem;background:#dedede;border:0.1875rem solid #2a2a2a;border-radius:0;outline:none;cursor:pointer;overflow:visible;}
-        input[type=range]::-webkit-slider-thumb{
-          -webkit-appearance:none;
-          width:3.6rem;
-          height:3.6rem;
-          background-color:transparent;
-          background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M7 0h2v2h3v2H5v3h6v2h3v4h-2v1h-3v2H7v-2H4v-2h7V9H5V7H2V4h2v-2h3z' fill='%23FFB347' stroke='%23000' stroke-width='0.6' stroke-linejoin='round'/%3E%3C/svg%3E");
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-          border:none;
-          cursor:pointer;
-          filter: drop-shadow(0.3125rem 0.3125rem 0 %23E91E63);
-          margin-top: -1.5rem; /* Center the larger icon on the slimmer track */
-        }
-        input[type=range]::-moz-range-thumb{
-          width:3.6rem;
-          height:3.6rem;
-          background-color:transparent;
-          background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M7 0h2v2h3v2H5v3h6v2h3v4h-2v1h-3v2H7v-2H4v-2h7V9H5V7H2V4h2v-2h3z' fill='%23FFB347' stroke='%23000' stroke-width='0.6' stroke-linejoin='round'/%3E%3C/svg%3E");
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-          border:none;
-          cursor:pointer;
-          filter: drop-shadow(0.3125rem 0.3125rem 0 %23E91E63);
-        }
-        ::-webkit-scrollbar{width:1.25rem;}
-        ::-webkit-scrollbar-track{background:#c0c0c0;}
-        ::-webkit-scrollbar-thumb{background:#2a2a2a;}
+        .app-wrapper{scrollbar-width:thin;}
+        input[type=range]{-webkit-appearance:none;appearance:none;height:10px;background:var(--line-strong);border:none;border-radius:999px;outline:none;cursor:pointer;}
+        input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--paper);background:radial-gradient(circle at 35% 30%,#fff,var(--pink) 55%,var(--blue));box-shadow:var(--sh-2);cursor:pointer;}
+        input[type=range]::-moz-range-thumb{width:30px;height:30px;border-radius:50%;border:2px solid var(--paper);background:radial-gradient(circle at 35% 30%,#fff,var(--pink) 55%,var(--blue));box-shadow:var(--sh-2);cursor:pointer;}
+        ::-webkit-scrollbar{width:10px;}
+        ::-webkit-scrollbar-track{background:transparent;}
+        ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:999px;}
         @keyframes slideUp{from{opacity:0;transform:translateY(1.5625rem)}to{opacity:1;transform:translateY(0)}}
         .res-in{animation:slideUp(0.18s steps(3,end));}
         input{outline:none;}
-        input:focus{outline:0.5rem solid ${activeTheme.roleColor};}
         
         /* TUTORIAL ANIMATIONS */
         @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-0.625rem); } }
@@ -1311,8 +1297,6 @@ return (
           .nav-btn { padding: 0.625rem 0.75rem !important; font-size: 0.75rem !important; }
 
           /* Even smaller slider thumb on phone */
-          input[type=range]::-webkit-slider-thumb { width: 2rem !important; height: 2rem !important; margin-top: -0.4rem !important; }
-          input[type=range]::-moz-range-thumb { width: 2rem !important; height: 2rem !important; }
 
           /* Tighten modal */
           .modal-overlay { padding: 0.5rem !important; }
@@ -1320,119 +1304,40 @@ return (
         }
 
         :root {
-          --pixel-bg: ${(canWhiteLabel(userTier) && profile.branding?.bgColor) || CARTRIDGE.bg};
-          --pixel-surface: ${(canWhiteLabel(userTier) && profile.branding?.surfaceColor) || CARTRIDGE.surface};
-          --pixel-text: ${(canWhiteLabel(userTier) && profile.branding?.textColor) || CARTRIDGE.text};
-          --pixel-accent: ${(canWhiteLabel(userTier) && profile.branding?.accentColor) || "#FFD700"};
+          --pixel-bg: ${brandColor("bgColor") || "var(--cream)"};
+          --pixel-surface: ${brandColor("surfaceColor") || "var(--paper)"};
+          --pixel-text: ${brandColor("textColor") || "var(--ink)"};
+          --pixel-accent: ${brandColor("accentColor") || "var(--pink)"};
         }
       `}</style>
+
+      <React.Suspense fallback={null}><AppLiquid tab={tab} /></React.Suspense>
+
+      <AppTopBar
+        tab={tab}
+        userTier={userTier}
+        setTab={setTab}
+        baseRate={baseRate}
+        baseRateHasCents={baseRateHasCents}
+        onBaseRateChange={(n) => { setBaseRate(n); setBaseRateHasCents(!!(n % 1)); }}
+      />
 
       <div className="app-wrapper" style={{
         height: "100vh",
         overflowY: "auto",
         overflowX: "hidden",
-        background: "var(--pixel-bg)",
-        fontFamily: "'Press Start 2P',monospace",
-        transition: "background 0.3s, color 0.3s",
-        paddingBottom: 30,
+        background: "transparent",
+        position: "relative",
+        zIndex: 1,
+        fontFamily: "var(--font-body)",
         color: "var(--pixel-text)",
-        "--pixel-surface": (canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && profile.branding?.surfaceColor) ? profile.branding.surfaceColor : activeTheme.roleBoxColor,
-        "--pixel-accent": (canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && profile.branding?.accentColor) ? profile.branding.accentColor : activeTheme.catColor,
-        "--pixel-text": (canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && profile.branding?.textColor) ? profile.branding.textColor : CARTRIDGE.text,
-        "--pixel-bg": (canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && profile.branding?.bgColor) ? profile.branding.bgColor : CARTRIDGE.bg
+        "--pixel-surface": brandColor("surfaceColor") || "var(--paper)",
+        "--pixel-accent": brandColor("accentColor") || "var(--pink)",
+        "--pixel-text": brandColor("textColor") || "var(--ink)",
+        "--pixel-bg": brandColor("bgColor") || "var(--cream)",
       }}>
-        <HexBackground color={profile.branding?.textColor || "#FFB347"} />
-        <div className="main-sticky-header" style={{ position: "sticky", top: 0, zIndex: 20 }}>
-          {/* HEADER (SCALED & CENTERED) */}
-          {tab !== "invoice_editor" && (
-            <div className="header-main" style={{
-              background: "#0A0A0A",
-              borderBottom: `0.375rem solid ${CARTRIDGE.border}`,
-              boxShadow: `0 0.375rem 0 ${activeTheme.modelShadow}`,
-              padding: "1rem 2rem",
-              transition: "background 0.3s, box-shadow 0.3s"
-            }}>
-              <div className="header-grid" style={{ maxWidth: "90vw", margin: "0 auto", display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: "1rem" }}>
-
-                {/* LEFT: ROLE INFO */}
-                <div className="header-left" style={{ textAlign: "left", minWidth: 0, overflow: "hidden" }}>
-                  <div className="role-title" style={{ fontSize: "clamp(0.65rem, 1.8vw, 1.25rem)", color: "#FFB347", lineHeight: 1.8, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                    {role.name.toUpperCase()}
-                  </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: "0.25rem" }}>
-                    <span onClick={() => setTab('pricing')} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', flexShrink: 0, background: (TIERS[userTier]?.color || '#9E9E9E') + '33', padding: '0.35rem', borderRadius: '4px', border: `0.125rem solid ${TIERS[userTier]?.color || '#9E9E9E'}` }}>
-                      {userTier === 'free' && <IconTierFree size={16} color={TIERS[userTier]?.color || '#9E9E9E'} />}
-                      {userTier === 'pro' && <IconTierPro size={16} color={TIERS[userTier]?.color || '#FFD700'} />}
-                      {userTier === 'agency' && <IconTierAgency size={16} color={TIERS[userTier]?.color || '#E040FB'} />}
-                    </span>
-                    <span onClick={() => setTab('dashboard')} style={{ cursor: 'pointer', display: 'inline-flex', alignItems: 'center', flexShrink: 0, padding: '0.35rem', borderRadius: '4px', background: '#FFB34722', border: '0.125rem solid #FFB347' }}>
-                      <IconMenu size={16} color="#FFB347" />
-                    </span>
-                  </div>
-                </div>
-
-                {/* CENTER: TITLE (HOME LINK) */}
-                <div className="header-center" style={{ textAlign: "center", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }} onClick={() => setTab("calc")}>
-                  <GlitchLogo
-                    text="DMGE"
-                    fontSize="clamp(1.8rem, 6vw, 3rem)"
-                    primaryColor="#FFB347"
-                    secondaryColor="#E91E63"
-                    isLoaded={true}
-                  />
-                  <div style={{ color: '#E91E63', fontSize: "clamp(0.5rem, 1.5vw, 0.75rem)", letterSpacing: "clamp(3px, 0.8vw, 6px)", marginTop: "0.75rem", fontFamily: "'Press Start 2P'" }}>RATE SYSTEM</div>
-                </div>
-
-                {/* RIGHT: BASE RATE CONTROLS */}
-                <div className="header-right" style={{ textAlign: "right", minWidth: 0, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end" }}>
-                  <div
-                    className="base-rate-text"
-                    onClick={() => { setIsEditingBase(true); setBaseRateInputStr(baseRate.toString()); }}
-                    style={{ fontSize: "clamp(0.875rem, 2vw, 1.5rem)", color: "#FFB347", cursor: "pointer", background: isEditingBase ? "#0A0A0A" : "transparent", padding: isEditingBase ? "0.3125rem" : "0", border: isEditingBase ? "0.25rem solid #FFB347" : "none", display: "inline-flex", alignItems: "center", gap: "0.35rem", fontFamily: "'Press Start 2P'", whiteSpace: "nowrap" }}
-                  >
-                    <IconBigMoney size={Math.min(36, Math.max(20, window.innerWidth * 0.03))} />
-                    {isEditingBase ? (
-                      <input
-                        className="base-rate-input"
-                        autoFocus
-                        ref={baseInputRef}
-                        type="number"
-                        value={baseRateInputStr}
-                        onChange={e => setBaseRateInputStr(e.target.value)}
-                        onBlur={() => {
-                          const newRate = parseFloat(baseRateInputStr);
-                          if (!isNaN(newRate) && newRate > 0) {
-                            setBaseRate(newRate);
-                            setBaseRateHasCents(!!(newRate % 1));
-                          }
-                          setIsEditingBase(false);
-                        }}
-                        onKeyDown={e => {
-                          if (e.key === "Enter") {
-                            const newRate = parseFloat(baseRateInputStr);
-                            if (!isNaN(newRate) && newRate > 0) {
-                              setBaseRate(newRate);
-                              setBaseRateHasCents(!!(newRate % 1));
-                            }
-                            setIsEditingBase(false);
-                          }
-                        }}
-                        style={{ width: "4.5rem", border: "none", background: "transparent", fontFamily: "inherit", fontSize: "inherit", outline: "none", textAlign: "left", color: "var(--pixel-text)" }}
-                      />
-                    ) : (
-                      <span>{baseRateHasCents ? baseRate.toFixed(2) : Math.round(baseRate)}</span>
-                    )}
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="content-wrapper" style={{ maxWidth: "90vw", margin: "0 auto", padding: "1rem 1.5rem" }}>
-
-          {/* DASHBOARD */}
-          
+        {/* each tab remounts on change and eases in while the liquid flies out and back in */}
+        <div className="app-stage kit-page-enter" key={tab}>
 
           {/* MAIN CALCULATION CONTENT */}
           {tab === "calc" && <CalcScreen ctx={ctx} />}
@@ -1456,6 +1361,15 @@ return (
           {tab === "profile" && <ProfileScreen ctx={ctx} />}
         </div>
       </div>
+
+      <AppDock
+        tab={tab}
+        setTab={setTab}
+        canViewInsights={canViewAnalytics(userTier)}
+        onLockedInsights={() => { setUpgradeFeature("analytics"); setShowUpgradeModal(true); }}
+        jobCount={dashboardJobCount}
+        onSignOut={() => (devMock ? window.location.assign("/") : supabase.auth.signOut())}
+      />
 
       <AppModals ctx={ctx} />
     </>
