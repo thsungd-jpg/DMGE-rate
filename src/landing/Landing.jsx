@@ -4,6 +4,7 @@ import LiquidCanvas from "./LiquidCanvas";
 import FloatingDock from "../components/FloatingDock";
 import { Wordmark } from "../components/Brand";
 import { Hero, Pick, Context, Price, InvoiceCh, Plans, Launch } from "./chapters";
+import { pointer } from "./scene";
 
 const DOCK = [
   { id: "pick", label: "Craft", short: "01" },
@@ -83,6 +84,13 @@ export default function Landing({ onAuthSuccess, initialMode = "login" }) {
 
     return () => { cancelled = true; cleanup(); root.classList.remove("ll-js"); };
   }, [reduced]);
+
+  // Pointer position drives a gentle parallax on the liquid (hero + craft chapters).
+  useEffect(() => {
+    const onMove = (e) => { pointer.x = e.clientX / window.innerWidth; pointer.y = e.clientY / window.innerHeight; };
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => window.removeEventListener("pointermove", onMove);
+  }, []);
 
   // Which chapter is under the viewport center -> dock indicator.
   useEffect(() => {

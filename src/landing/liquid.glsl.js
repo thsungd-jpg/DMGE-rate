@@ -29,6 +29,7 @@ uniform sampler2D uTex2;
 uniform vec3  uTexMix;     // per-chapter texture weights (sum ~1)
 uniform float uTexOn;      // 0 until textures finish loading
 uniform vec2  uSeed;       // per-craft texture offset
+uniform vec2  uCenter;     // centroid of the liquid (device px): texture is anchored here, not to the screen
 
 float hash(vec2 p) {
   p = fract(p * vec2(123.34, 456.21));
@@ -61,6 +62,12 @@ float scene(vec2 p) {
   return d;
 }
 
+// smooth maximum (polynomial) so overlapping domes blend without a crease
+float smax(float a, float b, float k) {
+  float h = max(k - abs(a - b), 0.0);
+  return max(a, b) + h * h * 0.25 / k;
+}
+
 // dome height (px): a hemisphere of radius s rising from the shape edge; flat once deeper than s
 float dome(float d, float s) {
   float u = clamp(-d, 0.0, s);
@@ -74,7 +81,7 @@ float height(vec2 p) {
     vec4 a = uA[i];
     if (a.z < 0.5) continue;
     float s = min(min(a.z, a.w) * 0.95, uBevel);
-    h = max(h, dome(sdRBox(p, a.xy + wob(float(i)), a.zw, uB[i].x), s));
+    h = smax(h, dome(sdRBox(p, a.xy + wob(float(i)), a.zw, uB[i].x), s), max(uBevel * 0.5, 4.0));
   }
   return h;
 }
@@ -93,7 +100,7 @@ float marbleField(vec2 q, float t) {
 vec3 texMarble(vec2 q, float t) {
   vec2 uv = q * 0.36 + 0.5 + uSeed;
   uv += 0.05 * vec2(sin(q.y * 2.3 + t * 5.0), cos(q.x * 2.1 - t * 4.0));
-  uv += vec2(t * 0.9, -t * 0.6);
+  uv += 0.08 * vec2(sin(t * 6.0), cos(t * 4.6));   // bounded sway: keeps sampling inside the texture
   return texture2D(uTex0, uv).rgb * uTexMix.x + texture2D(uTex1, uv).rgb * uTexMix.y + texture2D(uTex2, uv).rgb * uTexMix.z;
 }
 
@@ -123,9 +130,10 @@ void main() {
 
   float d = scene(p);
 
-  // soft contact shadow, cast down-left
-  float sh = smoothstep(0.24 * uUnit, -0.05 * uUnit, scene(p + vec2(0.03, 0.11) * uUnit));
-  bg = mix(bg, bg * vec3(0.80, 0.64, 0.80), sh * 0.40 * uShadow);
+  // soft contact shadow, cast down-left, tinted with the palette like a rainbow caustic
+  float sh = smoothstep(0.26 * uUnit, -0.05 * uUnit, scene(p + vec2(0.03, 0.12) * uUnit));
+  vec3 caustic = ramp(fract(q.x * 0.42 + q.y * 0.18 + uTime * 0.01 + 0.15));
+  bg = mix(bg, bg * mix(vec3(0.86, 0.74, 0.86), caustic * 1.04, 0.6), sh * 0.55 * uShadow);
 
   vec3 col = bg;
   float mask = 1.0 - smoothstep(-1.5, 1.5, d);
@@ -142,7 +150,7 @@ void main() {
     // base color: marbled palette vs per-shape solid color
     float v = marbleField(q, t);
     vec3 marble = ramp(v * 1.7);
-    if (uTexOn > 0.001) marble = mix(marble, texMarble(q, t), uTexOn);
+    if (uTexOn > 0.001) marble = mix(marble, texMarble((p - uCenter) / uUnit, t), uTexOn);
 
     vec3 solid = vec3(0.0);
     float ws = 0.0;
@@ -178,7 +186,7 @@ void main() {
 
     // studio softboxes reflected on the glossy surface
     vec3 r = reflect(-V, n);
-    float gloss = 1.0 - 0.45 * uTexOn;   // the textures already carry baked highlights
+    float gloss = 1.0 - 0.85 * uTexOn;   // the textures already carry baked highlights; keep only a hint of window gloss
     float win1 = smoothstep(0.93, 0.985, dot(r, L1)) * 0.55 * gloss;
     float win2 = smoothstep(0.95, 0.99, dot(r, L2)) * 0.3 * gloss;
     float spec = pow(max(dot(reflect(-L1, n), V), 0.0), 90.0) * 0.35 * gloss;
@@ -192,6 +200,9 @@ void main() {
     lit = mix(lit, vec3(1.0), 0.16 * fres);
     lit += (1.0 - inner) * 0.05 * vec3(1.0, 0.55, 0.75);
     lit = lit * 1.05 + 0.025;
+    // candy saturation lift (reference is more saturated than the raw textures)
+    float lum = dot(lit, vec3(0.299, 0.587, 0.114));
+    lit = mix(vec3(lum), lit, 1.22);
 
     col = mix(bg, clamp(lit, 0.0, 1.0), mask);
   }

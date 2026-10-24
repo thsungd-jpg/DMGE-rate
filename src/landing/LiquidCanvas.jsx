@@ -67,7 +67,7 @@ export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reduced
     U.uB = gl.getUniformLocation(program, "uB");
     U.uPal = gl.getUniformLocation(program, "uPal");
 
-    ["uTexMix", "uTexOn", "uSeed", "uTex0", "uTex1", "uTex2"].forEach((n) => { U[n] = gl.getUniformLocation(program, n); });
+    ["uTexMix", "uTexOn", "uSeed", "uCenter", "uTex0", "uTex1", "uTex2"].forEach((n) => { U[n] = gl.getUniformLocation(program, n); });
     gl.uniform1i(U.uTex0, 0); gl.uniform1i(U.uTex1, 1); gl.uniform1i(U.uTex2, 2);
 
     // marble textures: 1x1 cream placeholder until each image decodes; shader fades them in once all are ready
@@ -166,6 +166,10 @@ export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reduced
       gl.uniform1f(U.uTexOn, texFade);
       gl.uniform3f(U.uTexMix, cur.tex[0], cur.tex[1], cur.tex[2]);
       gl.uniform2f(U.uSeed, cur.seed[0], cur.seed[1]);
+      // centroid of the active shapes, so the marble texture travels with the liquid
+      let cxs = 0, cys = 0, cn = 0;
+      for (let i = 0; i < MAX_SHAPES; i++) { const s = cur.shapes[i]; if (s.hw > 0.5) { cxs += s.cx; cys += s.cy - sy; cn += 1; } }
+      if (cn) gl.uniform2f(U.uCenter, (cxs / cn) * dpr, (H - cys / cn) * dpr);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
     raf = requestAnimationFrame(frame);

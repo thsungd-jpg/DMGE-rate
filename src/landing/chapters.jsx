@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { registerChapter, rectOf, COLORS, PALS } from "./scene";
+import { registerChapter, rectOf, COLORS, PALS, pointer } from "./scene";
 import { PBtn } from "../components/ui";
 import Auth from "../components/Auth";
 import { TIERS, PROMO } from "../utils/subscription";
@@ -98,10 +98,12 @@ export function Hero({ onStart, onFlow }) {
   const ref = useRef(null);
   const stage = useRef(null);
 
-  useChapter("hero", ref, () => {
-    const S = rectOf(stage.current);
-    const m = Math.min(S.w, S.h) * 0.5;
-    return { shapes: rowsToShapes(S, CLOUD, 1.1, PALS[0]), k: m * 0.42, bevel: m * 0.78, wob: m * 0.045, marble: 1, shadow: 1, pal: PALS[0], tex: [1, 0, 0], seed: [0, 0] };
+  useChapter("hero", ref, ({ W }) => {
+    const S0 = rectOf(stage.current);
+    const m = Math.min(S0.w, S0.h) * 0.5;
+    // lean toward the cursor a little, and sit a touch to the right like the reference render
+    const S = { ...S0, cx: S0.cx + S0.w * 0.05 + (pointer.x - 0.5) * m * 0.22, cy: S0.cy + (pointer.y - 0.5) * m * 0.16 };
+    return { shapes: rowsToShapes(S, CLOUD, W >= 900 ? 1.34 : 0.98, PALS[0]), k: m * 0.42, bevel: m * 0.78, wob: m * 0.045, marble: 1, shadow: 1, pal: PALS[0], tex: [1, 0, 0], seed: [0, 0] };
   });
 
   return (
@@ -137,8 +139,9 @@ export function Pick({ demo, demoRef, setDemo }) {
   const stage = useRef(null);
 
   useChapter("pick", ref, () => {
-    const S = rectOf(stage.current);
-    const m = Math.min(S.w, S.h) * 0.5;
+    const S0 = rectOf(stage.current);
+    const m = Math.min(S0.w, S0.h) * 0.5;
+    const S = { ...S0, cx: S0.cx + (pointer.x - 0.5) * m * 0.16, cy: S0.cy + (pointer.y - 0.5) * m * 0.12 };
     const i = demoRef.current.catIdx;
     return { shapes: rowsToShapes(S, variantRows(i), 1, PALS[i % PALS.length]), k: m * 0.4, bevel: m * 0.72, wob: m * 0.05, marble: 1, shadow: 1, pal: PALS[i % PALS.length], tex: texFor(i), seed: seedFor(i) };
   });
