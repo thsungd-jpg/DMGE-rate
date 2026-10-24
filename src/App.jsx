@@ -16,6 +16,7 @@ import GlitchLogo from "./components/GlitchLogo";
 import HexBackground from "./components/HexBackground";
 import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
 import { Mark } from "./components/Brand";
+import { devMock } from "./dev/mock";
 import PixelArrow from "./components/PixelArrow";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
@@ -396,7 +397,7 @@ export default function App() {
   const [price, setPrice] = useState(null);
   const [selectedTier, setSelectedTier] = useState("fair");
   const [saved, setSaved] = useState(false);
-  const [tab, setTab] = useState("calc");
+  const [tab, setTab] = useState((devMock && devMock.tab) || "calc");
   const [jobStatusFilter, setJobStatusFilter] = useState("all");
   const [resetKey, setResetKey] = useState(0);
 
@@ -484,8 +485,8 @@ export default function App() {
 
   useEffect(() => { if (isEditingBase) baseInputRef.current?.focus(); }, [isEditingBase]);
 
-  const [currentUser, setCurrentUser] = useState(null);
-  const [authLoading, setAuthLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState(devMock ? devMock.user : null);
+  const [authLoading, setAuthLoading] = useState(!devMock);
   const [recoveredMode, setRecoveredMode] = useState(false);
 
   // Visit ?reset_auth=1 to sign out and clear a stale session (fixes Edge 401 after env/project changes).
@@ -508,6 +509,7 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (devMock) return undefined; // dev mock session: no Supabase auth
     if (
       !String(import.meta.env.VITE_SUPABASE_URL || "").trim() ||
       !String(import.meta.env.VITE_SUPABASE_ANON_KEY || "").trim()
@@ -545,7 +547,8 @@ export default function App() {
   // 1. Load user and subscription
   useEffect(() => {
     if (!currentUser) return;
-    loadSubscription().then(setSubscription);
+    if (devMock) setSubscription({ tier: devMock.tier, stripe_customer_id: null });
+    else loadSubscription().then(setSubscription);
 
     const hasSeen = localStorage.getItem('rateapp_has_seen_tutorial');
     if (!hasSeen) {
