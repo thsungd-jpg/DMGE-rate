@@ -1054,11 +1054,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         *{box-sizing:border-box;margin:0;padding:0;}
 
         /* DMGE guided-UX animations */
-        @keyframes dmgeGlow {
-          0%, 100% { box-shadow: 0 0 0 0 rgba(255,179,71,0.0), 0.375rem 0.375rem 0 #E91E63; }
-          50% { box-shadow: 0 0 24px 6px rgba(255,179,71,0.85), 0.375rem 0.375rem 0 #E91E63; }
-        }
-        .dmge-glow { animation: dmgeGlow 1.4s ease-in-out infinite; }
+        /* .dmge-glow now lives in src/styles/base.css (Sorbet Ink pastel halo) */
 
         @keyframes dmgeSplashPulse {
           0%, 100% { transform: scale(1); filter: brightness(1); }
@@ -1073,7 +1069,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         .dmge-arrow-bounce { animation: dmgeArrowBounce 0.7s ease-in-out infinite; display: inline-block; }
 
         html, body { overflow: hidden; height: 100%; }
-        body{background:#d5d5d5; font-size: 1rem;}
+        body{background:var(--cream, #FFF6E8); font-size: 1rem;}
         input[type=range]{-webkit-appearance:none;height:0.625rem;background:#dedede;border:0.1875rem solid #2a2a2a;border-radius:0;outline:none;cursor:pointer;overflow:visible;}
         input[type=range]::-webkit-slider-thumb{
           -webkit-appearance:none;

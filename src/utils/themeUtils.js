@@ -1,53 +1,62 @@
-function fastHash(str) {
-  if (!str) return 0;
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash);
-}
+import { PALETTE as P } from "../styles/palette";
 
-// ─── CARTRIDGE PASTEL BASE PALETTE ───
+// ─── SORBET INK BASE PALETTE ───
+// Export name kept as CARTRIDGE so existing imports keep working; values are the new identity.
+// Plain 6-digit hex on purpose: call sites append alpha suffixes ("22", "33").
 export const CARTRIDGE = {
-  bg: "#0A0A0A",         // deep black background
-  bgLight: "#121212",
-  bgDark: "#050505",     
-  surface: "#1A1A1A",    // dark grey surface/card
-  border: "#FFB347",     // orange borders
-  text: "#FFB347",       // primary orange text
-  textMuted: "#FFB34788",
-  shadow: "#E91E6355",   // pink glow shadow
+  bg: P.cream,
+  bgLight: P.paper,
+  bgDark: P.creamDeep,
+  surface: P.paper,
+  border: "#E7DCE0",        // soft hairline (ink @ ~12% over cream, as opaque hex)
+  text: P.ink,
+  textMuted: P.ink2,
+  shadow: P.pink,
 };
 
+// Each craft family gets its own pastel (fill = color, deep text/edge = accent).
+const CATEGORY_NAMES = [
+  "Featured Crafts", "Performance And Talent", "Music", "Film And Tv",
+  "Visual And Graphic Arts", "Fashion And Styling", "Live Events And Production",
+  "Writing And Content", "Business And Management", "Tech And Digital",
+  "Education And Coaching", "Cosmetology", "Culinary Arts",
+];
+
+const PASTELS = [
+  { color: P.pink,   accent: P.pinkDeep },
+  { color: P.blue,   accent: P.blueDeep },
+  { color: P.mint,   accent: P.mintDeep },
+  { color: P.butter, accent: P.butterDeep },
+  { color: P.lilac,  accent: P.lilacDeep },
+];
+
 export const CATEGORY_THEMES = Object.fromEntries(
-  [
-    "Featured Crafts", "Performance And Talent", "Music", "Film And Tv", 
-    "Visual And Graphic Arts", "Fashion And Styling", "Live Events And Production", 
-    "Writing And Content", "Business And Management", "Tech And Digital", 
-    "Education And Coaching", "Cosmetology", "Culinary Arts"
-  ].map(cat => [cat, { color: "#FFB347", accent: "#E91E63", activeBg: "#1A1A1A" }])
+  CATEGORY_NAMES.map((cat, i) => {
+    const p = PASTELS[i % PASTELS.length];
+    return [cat, { color: p.color, accent: p.accent, activeBg: P.paper }];
+  })
 );
 
-export const DEFAULT_THEME = { color: "#FFB347", accent: "#E91E63", activeBg: "#1A1A1A" };
+export const DEFAULT_THEME = { color: P.pink, accent: P.pinkDeep, activeBg: P.paper };
 
-/**
- * Generate a role-based orange fill color (for box/tab interiors).
- */
+/** Role tab fill (kept for compatibility). */
 export function getRoleColor(roleName) {
-  return "#FFB347"; // Always return the design orange for tabs
+  return P.butter;
 }
 
+/** Shadow/halo tint for the active pricing model. */
 export function getModelShadowColor(modelType) {
-  return "#E91E63"; // Always return the design pink for shadows
+  return P.pink;
 }
 
 export function getMashupTheme(categoryName, roleName, modelType) {
+  const theme = CATEGORY_THEMES[categoryName] || DEFAULT_THEME;
   return {
-    catColor: "#FFB347",
-    roleBoxColor: "#1A1A1A",
-    modelShadow: "#E91E63",
-    accent: "#E91E63",
-    activeBg: "#1A1A1A",
-    color: "#FFB347"
+    catColor: theme.color,
+    roleBoxColor: P.paper,
+    modelShadow: theme.accent === P.pinkDeep ? P.pink : theme.color,
+    accent: theme.accent,
+    activeBg: P.paper,
+    color: theme.color,
   };
 }

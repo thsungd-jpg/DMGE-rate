@@ -1,0 +1,52 @@
+/* Sorbet Ink design tokens. JS mirror: src/styles/palette.js */
+:root {
+  /* surfaces */
+  --cream: #FFF6E8;
+  --cream-deep: #FFEBD2;
+  --paper: #FFFBF4;
+
+  /* text */
+  --ink: #2B2140;
+  --ink-2: #5B5170;   /* secondary text, 6.9:1 on cream */
+  --ink-3: #8A809E;   /* decorative / disabled only */
+
+  /* lines */
+  --line: rgba(43, 33, 64, 0.12);
+  --line-strong: rgba(43, 33, 64, 0.28);
+
+  /* sorbet pastels: fills & accents; use the -deep variants for colored TEXT (AA on cream) */
+  --pink: #FF9EC7;    --pink-soft: #FFD3E6;    --pink-deep: #C2326F;
+  --blue: #8EC5FF;    --blue-soft: #D2E8FF;    --blue-deep: #2F6FD0;
+  --mint: #9BF0C8;    --mint-soft: #D3F8E6;    --mint-deep: #167A55;
+  --butter: #FFE98A;  --butter-soft: #FFF5C4;  --butter-deep: #8A6300;
+  --lilac: #C7B8FF;   --lilac-soft: #E5DEFF;   --lilac-deep: #6B4FD1;
+  --danger: #C42B4A;  --danger-soft: #FFD6DD;
+
+  /* pricing tiers (match the strata art) */
+  --tier-low: var(--blue);
+  --tier-fair: var(--mint);
+  --tier-premium: var(--pink);
+
+  /* type */
+  --font-display: "Bricolage Grotesque", "DM Sans", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* shape */
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-pill: 999px;
+
+  /* elevation */
+  --sh-1: 0 1px 2px rgba(43, 33, 64, 0.06), 0 8px 20px -10px rgba(43, 33, 64, 0.16);
+  --sh-2: 0 2px 4px rgba(43, 33, 64, 0.08), 0 16px 32px -14px rgba(43, 33, 64, 0.22);
+  --sh-3: 0 4px 8px rgba(43, 33, 64, 0.1), 0 28px 56px -20px rgba(43, 33, 64, 0.3);
+
+  /* motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-1: 0.15s;
+  --dur-2: 0.3s;
+  --dur-3: 0.6s;
+}

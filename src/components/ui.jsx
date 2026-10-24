@@ -1,46 +1,73 @@
 import React, { useState, useRef, useEffect } from "react";
-import { IconHelp, IconEdit } from "../icons";
+import { IconEdit } from "../icons";
+import { PALETTE as P } from "../styles/palette";
+import { fill, textOn, edge, halo } from "../styles/tone";
 
 // ─────────────────────────────────────────────
-// PIXEL COMPONENTS (SCALED 2.5X)
+// SORBET INK PRIMITIVES
+// Same exports + prop signatures as the old pixel components. Legacy hex colors passed by existing
+// call sites are translated through ../styles/tone; styling lives in src/styles/base.css.
 // ─────────────────────────────────────────────
-export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB347", shadowColor = "#E91E63", onClick, glow = false, className = "" }) {
+
+function Chevron({ className }) {
   return (
-    <div onClick={onClick} className={(glow ? "dmge-glow " : "") + className} style={{
-      background: bg, border: "0.375rem solid " + borderColor, boxShadow: "0.375rem 0.375rem 0 " + shadowColor, padding: "clamp(0.5rem,2vw,1.25rem)", boxSizing: "border-box", ...style, position: "relative", zIndex: 1
-    }}>
+    <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M3.5 6l4.5 4.5L12.5 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB347", shadowColor = "#E91E63", onClick, glow = false, className = "", ...rest }) {
+  return (
+    <div
+      onClick={onClick}
+      data-clickable={onClick ? "" : undefined}
+      className={"lq-box " + (glow ? "lq-glow " : "") + className}
+      style={{ "--lq-bg": fill(bg), "--lq-edge": edge(borderColor), "--lq-halo": halo(shadowColor), ...style, position: "relative", zIndex: 1 }}
+      {...rest}
+    >
       {children}
     </div>
   );
 }
 
-export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small = false, disabled = false, style = {}, glow = false, className = "" }) {
-  const [p, setP] = useState(false);
+export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small = false, disabled = false, style = {}, glow = false, className = "", type, ...rest }) {
+  // `type` is intentionally left undefined unless passed: Auth relies on PBtn acting as a form submit button.
   return (
-    <button onClick={onClick} onMouseDown={() => setP(true)} onMouseUp={() => setP(false)} onMouseLeave={() => setP(false)} disabled={disabled}
-      className={(glow ? "dmge-glow " : "") + className}
-      style={{
-        fontFamily: "'Press Start 2P', monospace", fontSize: small ? "1.125rem" : "1.25rem", color: "#0A0A0A",
-        background: color, border: "0.5rem solid #0A0A0A",
-        boxShadow: p ? "0.1875rem 0.1875rem 0 #0A0A0A" : "0.625rem 0.625rem 0 #0A0A0A",
-        padding: small ? "0.5rem 0.75rem" : "0.75rem 1.25rem", cursor: disabled ? "default" : "pointer",
-        width: full ? "100%" : "auto", transform: p ? "translate(0.4375rem,0.4375rem)" : "none",
-        transition: "box-shadow 0.05s, transform 0.05s", lineHeight: 1.8, opacity: disabled ? 0.5 : 1,
-        boxSizing: "border-box", wordBreak: "keep-all",
-        ...style
-      }}
-    >{children}</button>
+    <button
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      className={"lq-btn " + (small ? "lq-btn--sm " : "") + (glow ? "lq-glow " : "") + className}
+      style={{ "--lq-fill": fill(color), width: full ? "100%" : undefined, ...style }}
+      {...rest}
+    >
+      {children}
+    </button>
   );
 }
 
 export function PModal({ isOpen, onClose, title, children }) {
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay" style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, background: "rgba(0,0,0,0.6)", zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" }}>
-      <PBox style={{ maxWidth: "min(50rem, calc(100vw - 1rem))", width: "100%", position: "relative", maxHeight: "95vh", overflowY: "auto" }} bg="#1A1A1A">
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-          <div style={{ fontSize: "clamp(1rem, 4vw, 1.5625rem)", color: "#FFB347", fontFamily: "'Press Start 2P'" }}>{title}</div>
-          <PBtn small color="#E91E63" onClick={onClose}>X</PBtn>
+    <div className="modal-overlay lq-overlay">
+      <PBox
+        role="dialog"
+        aria-modal="true"
+        aria-label={typeof title === "string" ? title : undefined}
+        style={{ maxWidth: "min(50rem, calc(100vw - 1rem))", width: "100%", maxHeight: "95vh", overflowY: "auto", boxShadow: "var(--sh-3)" }}
+        bg="#1A1A1A"
+      >
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 24 }}>
+          <div className="lq-modal-title">{title}</div>
+          <PBtn small color="#E91E63" onClick={onClose} aria-label="Close" style={{ minWidth: 36, padding: "7px 12px" }}>✕</PBtn>
         </div>
         {children}
       </PBox>
@@ -49,12 +76,13 @@ export function PModal({ isOpen, onClose, title, children }) {
 }
 
 export function PLbl({ children, accent = "#FFB34788", style = {} }) {
-  return <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.875rem", color: accent, marginBottom: "0.5rem", lineHeight: 1.6, ...style }}>{children}</div>;
+  return <div className="lq-lbl" style={{ color: textOn(accent), ...style }}>{children}</div>;
 }
 
 export function PInput({ value, onChange, placeholder, style = {}, type = "text", min, step }) {
   return (
     <input
+      className="lq-input"
       type={type}
       value={value}
       onChange={e => {
@@ -67,11 +95,7 @@ export function PInput({ value, onChange, placeholder, style = {}, type = "text"
       placeholder={placeholder}
       min={min}
       step={step}
-      style={{
-        width: "100%", fontFamily: "'Press Start 2P'", fontSize: "1rem", padding: "clamp(0.5rem,1.5vw,0.75rem) clamp(0.5rem,2vw,1rem)",
-        background: "#0A0A0A", border: "0.375rem solid #FFB347", boxShadow: "0.375rem 0.375rem 0 #E91E63",
-        outline: "none", color: "#FFB347", boxSizing: "border-box", ...style
-      }}
+      style={style}
     />
   );
 }
@@ -83,18 +107,18 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
   useEffect(() => { if (editing) inputRef.current?.focus(); }, [editing]);
 
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "0.9375rem", flexWrap: "wrap", justifyContent: "center" }}>
-      <PBtn small color="#E91E63" onClick={() => onChange(Math.max(min, value - step))}>
-        -
+    <div className="lq-stepper">
+      <PBtn small className="lq-stepper-btn" color="#E91E63" aria-label="Decrease" onClick={() => onChange(Math.max(min, value - step))}>
+        −
       </PBtn>
       <div
+        className="lq-stepper-value"
         onClick={() => setEditing(true)}
-        style={{
-          fontFamily: "'Press Start 2P'", fontSize: "clamp(1.25rem, 4.16vw, 2.0625rem)", color: "#FFB347", 
-          flex: 1, minWidth: "clamp(4rem, 20vw, 7.5rem)", maxWidth: "15.625rem", textAlign: "center",
-          background: "#0A0A0A", border: "0.5rem solid #FFB347", boxShadow: "0.5rem 0.5rem 0 #E91E63", padding: "1.25rem 0.625rem",
-          cursor: "text"
-        }}
+        role="spinbutton"
+        aria-valuenow={Number(value) || 0}
+        aria-valuemin={min}
+        tabIndex={editing ? -1 : 0}
+        onKeyDown={e => { if (!editing && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); setEditing(true); } }}
       >
         {editing ? (
           <input
@@ -104,13 +128,12 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
             onChange={e => onChange(e.target.value === "" ? "" : Number(e.target.value))}
             onBlur={() => setEditing(false)}
             onKeyDown={e => e.key === "Enter" && setEditing(false)}
-            style={{ width: "100%", border: "none", background: "transparent", textAlign: "center", fontFamily: "inherit", fontSize: "inherit", outline: "none", color: "var(--pixel-text, #2a2a2a)" }}
           />
         ) : (
           <>{value}{suffix}</>
         )}
       </div>
-      <PBtn small color="#FFB347" onClick={() => onChange(value + step)}>
+      <PBtn small className="lq-stepper-btn" color="#FFB347" aria-label="Increase" onClick={() => onChange(value + step)}>
         +
       </PBtn>
     </div>
@@ -123,53 +146,46 @@ export function PSelect({ label, value, options, onChange, iconType = "cat", sty
 
   useEffect(() => {
     const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setIsOpen(false); };
+    const handleEsc = (e) => { if (e.key === "Escape") setIsOpen(false); };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEsc);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEsc);
+    };
   }, []);
 
   const currentValue = options.find(o => o.value === value) || options[0];
 
   return (
-    <div ref={ref} style={{ position: "relative", width: "100%", marginBottom: "0.75rem", ...style }}>
-      <div onClick={() => setIsOpen(!isOpen)} style={{ 
-        cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "space-between", 
-        padding: smallBtnStyle ? "0.5rem 0.75rem" : "0.625rem 1rem",
-        border: smallBtnStyle ? "0.5rem solid #FFB347" : "0.375rem solid #FFB347",
-        boxShadow: smallBtnStyle ? "0.625rem 0.625rem 0 #E91E63" : "0.375rem 0.375rem 0 #E91E63",
-        background: "#0A0A0A",
-        boxSizing: "border-box" 
-      }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", minWidth: 0, overflow: "hidden" }}>
-          <div style={{ fontSize: smallBtnStyle ? "1.125rem" : "1rem", whiteSpace: "nowrap", fontFamily: "'Press Start 2P', monospace", lineHeight: 1.8, color: "#FFB347" }}>
-            {currentValue.label}
-          </div>
-        </div>
-        <div style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.1s", display: "flex", alignItems: "center", color: "#FFB347" }}>
-          ▼
-        </div>
-      </div>
+    <div ref={ref} className="lq-select" data-open={isOpen ? "" : undefined} style={style}>
+      <button
+        type="button"
+        className={"lq-select-trigger" + (smallBtnStyle ? " lq-select-trigger--lg" : "")}
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentValue.label}</span>
+        <Chevron className="lq-select-chevron" />
+      </button>
 
       {isOpen && (
-        <PBox style={{
-          position: "absolute", top: "calc(100% + 0.9375rem)", left: 0, minWidth: "100%", width: "max-content", zIndex: 100,
-          padding: "0.625rem", paddingRight: "1.25rem", maxHeight: 450, overflowY: "auto", overflowX: "hidden", scrollbarGutter: "stable", boxShadow: "0.9375rem 0.9375rem 0 #2a2a2a"
-        }}>
+        <div className="lq-select-menu" role="listbox">
           {options.map((opt, i) => (
             <div
               key={i}
+              role="option"
+              tabIndex={0}
+              aria-selected={value === opt.value}
+              className="lq-option"
               onClick={() => { onChange(opt.value); setIsOpen(false); }}
-              style={{
-                padding: "1.25rem 1.875rem", cursor: "pointer", fontSize: "1.125rem",
-                background: value === opt.value ? "#FFB347" : "transparent",
-                color: value === opt.value ? "#0A0A0A" : "#FFB347",
-                display: "flex", alignItems: "center", justifyContent: "center", textAlign: "center", gap: "1.25rem", marginBottom: "0.3125rem",
-                whiteSpace: "nowrap"
-              }}
+              onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onChange(opt.value); setIsOpen(false); } }}
             >
               {opt.label}
             </div>
           ))}
-        </PBox>
+        </div>
       )}
     </div>
   );
@@ -177,34 +193,33 @@ export function PSelect({ label, value, options, onChange, iconType = "cat", sty
 
 export function PCollapsible({ title, accent = "#000", children, defaultOpen = false, bg = "#FFB347", activeBg, collapsedInfo = "", collapsedColor = "#FFB347", tooltip = null, modelShadow = "#E91E63", modelColor }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const toggle = () => setIsOpen(o => !o);
   return (
-    <div style={{ marginBottom: "0.75rem" }}>
+    <div className="lq-collapse" data-open={isOpen ? "" : undefined}>
       <PBox
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={toggle}
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        title={tooltip || undefined}
+        onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } }}
         bg={isOpen ? (activeBg || bg) : bg}
         borderColor="#0A0A0A"
         shadowColor={isOpen ? modelShadow : "#E91E63"}
-        style={{ cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.625rem 1rem", gap: "1rem", boxShadow: isOpen ? `0.375rem 0.375rem 0 ${modelShadow}` : "0.25rem 0.25rem 0 #E91E63", transition: "background 0.3s, box-shadow 0.3s" }}
+        className="lq-collapse-head"
+        style={{ padding: "12px 18px" }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <div>
-            <div style={{ fontSize: "clamp(0.65rem, 2.5vw, 0.875rem)", lineHeight: 1.6, fontFamily: "'Press Start 2P'", color: accent }}>{title}</div>
-          </div>
-        </div>
-        <div style={{ transform: isOpen ? "rotate(180deg)" : "none", transition: "transform 0.1s", color: "#0A0A0A" }}>
-          ▼
-        </div>
+        <div className="lq-collapse-title" style={{ color: textOn(accent) }}>{title}</div>
+        <Chevron className="lq-collapse-chevron" />
       </PBox>
-       {!isOpen && collapsedInfo && (
-        <div style={{ margin: "0.375rem 0 0 0" }}>
-          <div style={{ marginTop: 0, padding: "0.5rem 0.75rem", border: `0.375rem solid #0A0A0A`, background: modelColor || `#1A1A1A`, boxShadow: `0.25rem 0.25rem 0 ${modelShadow}`, color: "#FFB347", fontSize: "0.75rem", fontFamily: "'Press Start 2P'", maxWidth: "100%", lineHeight: 1.6, transition: "box-shadow 0.3s, background 0.3s", overflowWrap: "break-word", wordBreak: "break-word" }}>
-            {collapsedInfo}
-          </div>
+      {!isOpen && collapsedInfo && (
+        <div className="lq-collapse-info" style={{ "--lq-bg": modelColor ? fill(modelColor) : P.paper }}>
+          {collapsedInfo}
         </div>
       )}
       {isOpen && (
-        <div className="res-in" style={{ marginTop: "0.5rem" }}>
-          <PBox shadowColor={modelShadow} bg={modelColor || "#1A1A1A"} style={{ padding: "1rem 1.5rem 1.5rem 1rem", transition: "background 0.3s" }}>
+        <div className="res-in lq-collapse-body">
+          <PBox shadowColor={modelShadow} bg={modelColor || "#1A1A1A"} style={{ padding: "16px 24px 24px 16px" }}>
             {children}
           </PBox>
         </div>
@@ -215,7 +230,6 @@ export function PCollapsible({ title, accent = "#000", children, defaultOpen = f
 
 export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg }) {
   const [editingCost, setEditingCost] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const costInputRef = useRef(null);
 
   useEffect(() => { if (editingCost) costInputRef.current?.focus(); }, [editingCost]);
@@ -225,35 +239,16 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
     setEditingCost(false);
   };
 
+  const active = qty > 0;
   return (
     <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        background: qty > 0 ? bg : "#0A0A0A",
-        border: "0.5rem solid " + (qty > 0 ? accent : "#FFB347"),
-        boxShadow: qty > 0 ? "0.5rem 0.5rem 0 " + accent : "0.3125rem 0.3125rem 0 #E91E63",
-        padding: "1.25rem 1.5rem", marginBottom: "1.25rem", transition: "border 0.1s, background 0.1s",
-        cursor: isHovered ? "pointer" : "default",
-        boxSizing: "border-box", width: "100%", gap: "1rem"
-      }}
+      className="lq-chip"
+      data-active={active ? "" : undefined}
+      style={active ? { "--lq-bg": fill(bg || P.pinkSoft), "--lq-edge": edge(accent || P.pink) } : undefined}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontFamily: "'Press Start 2P'", fontSize: "0.9375rem", color: "#FFB347", lineHeight: 1.9, whiteSpace: "normal", overflowWrap: "break-word" }}>{mat.name}</div>
-        <div
-          onClick={() => setEditingCost(true)}
-          style={{
-            fontFamily: "'Press Start 2P'",
-            fontSize: "0.9375rem",
-            color: isHovered ? accent : "#FFB34788",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            gap: "0.3125rem",
-            transition: "color 0.2s"
-          }}
-        >
+        <div className="lq-chip-name">{mat.name}</div>
+        <div className="lq-chip-cost" onClick={() => setEditingCost(true)}>
           {editingCost ? (
             <input
               ref={costInputRef}
@@ -261,22 +256,21 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
               defaultValue={mat.cost}
               onBlur={(e) => handleCostChange(parseFloat(e.target.value) || 0)}
               onKeyDown={(e) => e.key === "Enter" && handleCostChange(parseFloat(e.target.value) || 0)}
-              style={{ width: "3.75rem", border: "0.25rem solid #FFB347", background: "#0A0A0A", fontFamily: "inherit", fontSize: "inherit", padding: "0.3125rem", outline: "none", color: "#FFB347" }}
             />
           ) : (
             <>
               ${mat.cost} ea.
-              {isHovered && <IconEdit size={16} color="#2a2a2a" />}
+              <IconEdit size={14} color={P.ink3} />
             </>
           )}
         </div>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flexShrink: 0, marginRight: "0.5rem" }}>
-        {qty > 0 && <>
-          <PBtn small onClick={(e) => { e.stopPropagation(); onRemove(); }} color="#ffd6e8">-</PBtn>
-          <div style={{ fontFamily: "'Press Start 2P'", fontSize: "1.25rem", minWidth: "2.5rem", textAlign: "center", color: qty > 0 ? "#0A0A0A" : "#FFB347" }}>{qty}</div>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+        {active && <>
+          <PBtn small aria-label={`Remove one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onRemove(); }} color="#ffd6e8" style={{ minWidth: 36, padding: "7px 12px" }}>−</PBtn>
+          <div className="lq-chip-qty">{qty}</div>
         </>}
-        <PBtn small onClick={(e) => { e.stopPropagation(); onAdd(); }} color="#d6f5e3">+</PBtn>
+        <PBtn small aria-label={`Add one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onAdd(); }} color="#d6f5e3" style={{ minWidth: 36, padding: "7px 12px" }}>+</PBtn>
       </div>
     </div>
   );
@@ -284,29 +278,20 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
 
 export function OptionGrid({ options, value, onChange, cols = 4, activeColor, activeShadow }) {
   return (
-    <div style={{ display: "grid", gridTemplateColumns: `repeat(auto-fit, minmax(clamp(6.25rem, 20vw, 9.375rem), 1fr))`, gap: "0.9375rem" }}>
+    <div className="lq-optgrid">
       {Object.entries(options).map(([k, v]) => {
         const active = k === value;
-        
-        let label = k;
-        if (label === "Masterpiece") label = "Master";
-        if (label === "Commercial") label = "Commrl";
-        if (label === "Individual") label = "Indiv";
-        if (label === "Corporate") label = "Corp";
-        if (label === "Exclusive") label = "Exclu";
-        if (label === "Standard") label = "Stndrd";
-        if (label === "Merch/Print") label = "Merch";
-
         return (
-          <button key={k} onClick={() => onChange(k)} style={{
-            fontFamily: "'Press Start 2P'", fontSize: "0.875rem", color: active ? "#0A0A0A" : "#FFB347", lineHeight: 1.6,
-            background: active ? activeColor : "#0A0A0A",
-            border: "0.5rem solid " + (active ? activeShadow : "#FFB347"),
-            boxShadow: active ? "0.5rem 0.5rem 0 " + activeShadow : "0.3125rem 0.3125rem 0 #E91E63",
-            padding: "0.75rem 0.625rem", cursor: "pointer", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", width: "100%", boxSizing: "border-box"
-          }}>
-            <span style={{ whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis", maxWidth: "100%" }}>{label}</span>
-            <span style={{ color: active ? "#0A0A0A88" : "#FFB34744", marginTop: "0.25rem" }}>x{v}</span>
+          <button
+            key={k}
+            type="button"
+            className="lq-opt"
+            aria-pressed={active}
+            onClick={() => onChange(k)}
+            style={active ? { "--lq-fill": fill(activeColor || P.butter), "--lq-edge": edge(activeShadow || P.butter) } : undefined}
+          >
+            <span style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{k}</span>
+            <span className="lq-opt-mult">×{v}</span>
           </button>
         );
       })}
