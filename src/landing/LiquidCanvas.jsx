@@ -36,7 +36,7 @@ const norm = (x, y) => { const m = Math.hypot(x, y) || 1; return { x: x / m, y: 
  * Fixed full-viewport WebGL canvas that renders the liquid scene from ./scene.
  * onUnsupported() fires if WebGL or the shader is unavailable so the page can show its static fallback.
  */
-export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reducedMotion = false, floaterCount = null }) {
+export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reducedMotion = false, floaterCount = null, fpsCap = null }) {
   const ref = useRef(null);
   // Keep the callback in a ref so a new inline function from the parent never restarts the GL effect.
   const unsupportedRef = useRef(onUnsupportedProp);
@@ -155,6 +155,8 @@ export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reduced
       if (stopped) return;
       raf = requestAnimationFrame(frame);
       if (document.hidden) { last = now; return; }
+      // optional frame cap (the in-app ambient liquid): full rate only while the liquid is flying between tabs
+      if (fpsCap && fl.phase === "idle" && now - last < 1000 / fpsCap - 2) return;
 
       const rawDt = (now - last) / 1000;
       const dt = Math.min(rawDt, 0.05);

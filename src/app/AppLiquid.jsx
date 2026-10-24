@@ -56,7 +56,7 @@ export default function AppLiquid({ tab }) {
 
   return (
     <>
-      <LiquidCanvas reducedMotion={!!reduced} floaterCount={4} />
+      <LiquidCanvas reducedMotion={!!reduced} floaterCount={4} fpsCap={30} />
       <div ref={rootRef} className="app-liquid-root" aria-hidden="true" />
     </>
   );

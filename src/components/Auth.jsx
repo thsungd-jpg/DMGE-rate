@@ -88,7 +88,7 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
                name: form.name,
                defaultBaseRate: 25,
                presets: [],
-               branding: { companyName: "", logoBase64: "", surfaceColor: P.paper, bgColor: P.cream, textColor: P.ink, accentColor: P.pink }
+               branding: { companyName: "", logoBase64: "", surfaceColor: "", bgColor: "", textColor: "", accentColor: "" }
              }
            }]);
         }

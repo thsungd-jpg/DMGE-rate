@@ -1,28 +1,16 @@
 import React, { useState, useEffect, useRef, Suspense } from "react";
 import rolesData from "./processed_roles.json";
-import { IconHelp, IconArrowLeft, IconArrowRight, IconArrowDown, IconEdit, IconDelete, IconTierFree, IconTierPro, IconTierAgency, IconMenu, IconMoney, IconStar, IconWrite, IconTalent, IconCheck, IconCross, IconPending, IconInProgress, IconLock, IconBigMoney, IconUpload } from "./icons";
-import AnalyticsDashboard from "./components/AnalyticsDashboard";
-import TemplateManager from "./components/TemplateManager";
-import ClientManager from "./components/ClientManager";
 import { exportJobsToCSV } from "./utils/csvExport";
 import { generateInvoicePDF } from "./utils/pdfExport";
-import { PBox, PBtn, PModal, PLbl, PInput, PStepper, PSelect, PCollapsible, OptionGrid, MatChip } from "./components/ui";
 import { supabase } from "./utils/supabaseClient";
 import Auth from "./components/Auth";
-import UpgradeModal from "./components/UpgradeModal";
-import PricingPage from "./components/PricingPage";
-import TutorialPage from "./components/TutorialPage";
-import GlitchLogo from "./components/GlitchLogo";
-import HexBackground from "./components/HexBackground";
-import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
 import { Mark } from "./components/Brand";
 import { devMock } from "./dev/mock";
 import { AppTopBar, AppDock } from "./app/AppChrome";
-import PixelArrow from "./components/PixelArrow";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
-import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
+import { TIERS, loadSubscription, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, canCloudSync } from "./utils/subscription";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
-import { calcPrice, complexityMods, usageRightsMods, clientMods } from "./utils/pricing";
+import { calcPrice } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
 import CalcScreen from "./screens/CalcScreen";
 import HistoryScreen from "./screens/HistoryScreen";
@@ -250,10 +238,11 @@ async function loadProfile(tier, user) {
     branding: {
       companyName: "",
       logoBase64: "",
-      surfaceColor: "#1A1A1A",
-      bgColor: "#0A0A0A",
-      textColor: "#FFB347",
-      accentColor: "#E91E63"
+      // empty = unset: the day/night theme tokens apply (only real white-label choices override them)
+      surfaceColor: "",
+      bgColor: "",
+      textColor: "",
+      accentColor: ""
     },
     pdfQuota: { day: "", count: 0 },
     ...p
@@ -388,10 +377,11 @@ export default function App() {
     branding: {
       companyName: "",
       logoBase64: "",
-      surfaceColor: "#1A1A1A",
-      bgColor: "#0A0A0A",
-      textColor: "#FFB347",
-      accentColor: "#E91E63"
+      // empty = unset: the day/night theme tokens apply (only real white-label choices override them)
+      surfaceColor: "",
+      bgColor: "",
+      textColor: "",
+      accentColor: ""
     }
   });
   const [category, setCategory] = useState(Object.keys(ALL_DATA)[0]);

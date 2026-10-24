@@ -15,7 +15,7 @@ export const TIERS = {
   free: {
     name: 'Free',
     badge: 'FREE',
-    color: '#9E9E9E',
+    color: '#8A809E',
     limits: {
       clients: 20,
       templates: 20,
@@ -31,7 +31,7 @@ export const TIERS = {
   pro: {
     name: 'Pro',
     badge: 'PRO',
-    color: '#FFD700',
+    color: '#FFE98A',
     prices: {
       monthly: 9,
       annual: 90,
@@ -51,7 +51,7 @@ export const TIERS = {
   agency: {
     name: 'Agency',
     badge: 'AGENCY',
-    color: '#E040FB',
+    color: '#C7B8FF',
     prices: {
       monthly: 29,
       annual: 290,
