@@ -11,7 +11,7 @@
   position: relative; pointer-events: auto;
   display: flex; align-items: center; gap: 2px; max-width: 100%;
   padding: 6px;
-  background: rgba(255, 251, 244, 0.72);
+  background: var(--glass);
   -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
   border: 1px solid rgba(43, 33, 64, 0.1);
   border-radius: 999px;
@@ -42,8 +42,17 @@
 }
 .lq-dock-item:hover { color: var(--ink); }
 .lq-dock-item:active { transform: scale(0.95); }
-.lq-dock-item[aria-current="page"], .lq-dock-item[aria-current="page"]:hover { color: var(--ink); }
+.lq-dock-item[aria-current="page"], .lq-dock-item[aria-current="page"]:hover { color: var(--on-fill); }
 .lq-dock-short { display: none; font-family: var(--font-mono); font-weight: 500; }
+.lq-dock-trail { display: flex; align-items: center; padding: 0 4px 0 8px; margin-left: 4px; border-left: 1px solid var(--line); }
+.lq-dock-toggle {
+  position: relative; z-index: 1; width: 38px; height: 38px; display: inline-grid; place-items: center;
+  color: var(--ink); background: none; border: none; border-radius: 999px; cursor: pointer;
+  transition: transform 0.4s var(--ease-spring), color 0.2s, background 0.2s;
+}
+.lq-dock-toggle:hover { background: var(--line); }
+.lq-dock-toggle:active { transform: scale(0.9) rotate(20deg); }
+.lq-dock-toggle svg { width: 20px; height: 20px; }
 .lq-dock-badge {
   min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
   display: inline-flex; align-items: center; justify-content: center;

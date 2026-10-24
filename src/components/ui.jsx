@@ -214,7 +214,7 @@ export function PCollapsible({ title, accent = "#000", children, defaultOpen = f
         <Chevron className="lq-collapse-chevron" />
       </PBox>
       {!isOpen && collapsedInfo && (
-        <div className="lq-collapse-info" style={{ "--lq-bg": modelColor ? fill(modelColor) : P.paper }}>
+        <div className="lq-collapse-info" style={{ "--lq-bg": modelColor ? fill(modelColor) : "var(--paper)" }}>
           {collapsedInfo}
         </div>
       )}
@@ -245,7 +245,7 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
     <div
       className="lq-chip"
       data-active={active ? "" : undefined}
-      style={active ? { "--lq-bg": fill(bg || P.pinkSoft), "--lq-edge": edge(accent || P.pink) } : undefined}
+      style={active ? { "--lq-bg": fill(bg || "var(--pink-soft)"), "--lq-edge": edge(accent || "var(--pink)") } : undefined}
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div className="lq-chip-name">{mat.name}</div>
@@ -289,7 +289,7 @@ export function OptionGrid({ options, value, onChange, cols = 4, activeColor, ac
             className="lq-opt"
             aria-pressed={active}
             onClick={() => onChange(k)}
-            style={active ? { "--lq-fill": fill(activeColor || P.butter), "--lq-edge": edge(activeShadow || P.butter) } : undefined}
+            style={active ? { "--lq-fill": fill(activeColor || "var(--butter)"), "--lq-edge": edge(activeShadow || "var(--butter)") } : undefined}
           >
             <span style={{ maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{k}</span>
             <span className="lq-opt-mult">×{v}</span>

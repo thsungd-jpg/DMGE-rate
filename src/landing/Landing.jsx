@@ -3,6 +3,7 @@ import "./landing.css";
 import LiquidCanvas from "./LiquidCanvas";
 import FloatingDock from "../components/FloatingDock";
 import { Wordmark } from "../components/Brand";
+import ThemeToggle from "../components/ThemeToggle";
 import { Hero, Pick, Context, Price, InvoiceCh, Plans, Launch } from "./chapters";
 import { pointer } from "./scene";
 
@@ -85,6 +86,19 @@ export default function Landing({ onAuthSuccess, initialMode = "login" }) {
     return () => { cancelled = true; cleanup(); root.classList.remove("ll-js"); };
   }, [reduced]);
 
+  // Deep links like /#price: the landing mounts after the browser's anchor jump, so do it here.
+  useEffect(() => {
+    const id = window.location.hash.slice(1);
+    if (!id || !SECTION_IDS.includes(id)) return undefined;
+    const t = setTimeout(() => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (lenisRef.current) lenisRef.current.scrollTo(el, { immediate: true, force: true });
+      else el.scrollIntoView({ behavior: "auto" });
+    }, 700);
+    return () => clearTimeout(t);
+  }, []);
+
   // Pointer position drives a gentle parallax on the liquid (hero + craft chapters).
   useEffect(() => {
     const onMove = (e) => { pointer.x = e.clientX / window.innerWidth; pointer.y = e.clientY / window.innerHeight; };
@@ -112,6 +126,7 @@ export default function Landing({ onAuthSuccess, initialMode = "login" }) {
         activeId={active}
         onSelect={scrollToId}
         ariaLabel="Page sections"
+        trailing={<ThemeToggle />}
         leading={
           <button type="button" onClick={() => scrollToId("top")} aria-label="DMGE, back to top" style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}>
             <Wordmark size={18} />

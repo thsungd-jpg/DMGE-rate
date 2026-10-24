@@ -8,7 +8,7 @@ import "../styles/dock.css";
  * items: [{ id, label, short?, badge? }]   short = compact label shown on narrow screens
  * onSelect(id, event) fires on click; the clicked button's rect is available via event.currentTarget.
  */
-export default function FloatingDock({ items, activeId, onSelect, position = "bottom", leading = null, ariaLabel = "Main navigation", className = "" }) {
+export default function FloatingDock({ items, activeId, onSelect, position = "bottom", leading = null, trailing = null, ariaLabel = "Main navigation", className = "" }) {
   const wrapRef = useRef(null);
   const itemRefs = useRef({});
   const prevIdx = useRef(-1);
@@ -71,6 +71,7 @@ export default function FloatingDock({ items, activeId, onSelect, position = "bo
             {it.badge != null && it.badge !== "" && <span className="lq-dock-badge">{it.badge}</span>}
           </button>
         ))}
+        {trailing && <div className="lq-dock-trail">{trailing}</div>}
       </div>
     </nav>
   );

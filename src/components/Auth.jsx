@@ -124,13 +124,13 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
   const switchMode = (next) => { setMode(next); setError(''); setMessage(''); };
 
   const card = (
-    <PBox bg={P.paper} className="auth-card" style={{ padding: 'clamp(20px, 5vw, 36px)', width: '100%', maxWidth: 460, boxShadow: 'var(--sh-3)' }}>
+    <PBox bg="var(--paper)" className="auth-card" style={{ padding: 'clamp(20px, 5vw, 36px)', width: '100%', maxWidth: 460, boxShadow: 'var(--sh-3)' }}>
       {variant === 'page' && (
         <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
           <Wordmark size={26} />
         </div>
       )}
-      <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(24px, 4vw, 30px)', letterSpacing: '-0.02em', lineHeight: 1.1, textAlign: variant === 'page' ? 'center' : 'left', margin: '0 0 22px' }}>
+      <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(34px, 5vw, 44px)', letterSpacing: '-0.02em', lineHeight: 1.0, textAlign: variant === 'page' ? 'center' : 'left', margin: '0 0 22px' }}>
         {TITLES[mode]}
       </h2>
 
@@ -173,7 +173,7 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
               autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
               aria-label={mode === 'update_password' ? 'New password' : 'Password'}
             />
-            {mode === 'register' && <div style={{ fontSize: 13, color: P.ink2, marginTop: 8 }}>At least 6 characters.</div>}
+            {mode === 'register' && <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 8 }}>At least 6 characters.</div>}
             {mode === 'login' && (
               <button type="button" className="auth-link" onClick={() => switchMode('forgot_password')} style={{ marginTop: 10, marginLeft: 'auto', display: 'block' }}>
                 Forgot password?
@@ -183,36 +183,36 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
         )}
 
         {error && (
-          <div role="alert" style={{ color: P.danger, background: P.dangerSoft, borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
+          <div role="alert" style={{ color: 'var(--danger)', background: 'var(--danger-soft)', borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
             {error}
           </div>
         )}
 
         {message && (
-          <div role="status" style={{ color: P.mintDeep, background: P.mintSoft, borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
+          <div role="status" style={{ color: 'var(--mint-deep)', background: 'var(--mint-soft)', borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
             {message}
           </div>
         )}
 
-        <PBtn full color={P.ink} type="submit" disabled={loading} className="auth-primary" style={{ marginBottom: 16 }}>
+        <PBtn full color="var(--ink)" type="submit" disabled={loading} className="auth-primary" style={{ marginBottom: 16 }}>
           {loading ? 'One moment…' : SUBMIT[mode]}
         </PBtn>
 
         {mode === 'login' && (
           <>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '4px 0 16px', color: P.ink3, fontSize: 13 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '4px 0 16px', color: 'var(--ink-3)', fontSize: 13 }}>
               <span style={{ height: 1, background: 'var(--line-strong)', flex: 1 }} />
               or
               <span style={{ height: 1, background: 'var(--line-strong)', flex: 1 }} />
             </div>
 
-            <PBtn full color={P.paper} type="button" onClick={handleGoogleLogin} disabled={loading} style={{ marginBottom: 18 }}>
+            <PBtn full color="var(--paper)" className="lq-btn--neutral" type="button" onClick={handleGoogleLogin} disabled={loading} style={{ marginBottom: 18 }}>
               <GoogleG /> Continue with Google
             </PBtn>
           </>
         )}
 
-        <div style={{ textAlign: 'center', fontSize: 14, color: P.ink2 }}>
+        <div style={{ textAlign: 'center', fontSize: 14, color: 'var(--ink-2)' }}>
           {mode === 'login' ? (
             <>New here? <button type="button" className="auth-link" onClick={() => switchMode('register')}>Create an account</button></>
           ) : mode === 'update_password' ? null : (

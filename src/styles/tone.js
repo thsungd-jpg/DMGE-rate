@@ -48,18 +48,25 @@ function split(c) {
 }
 
 /** Background / fill color. Keeps any alpha suffix so "#FFB34722" stays a translucent tint. */
+const THEMED_FILL = { [P.paper]: "var(--paper)", [P.cream]: "var(--cream)", [P.ink]: "var(--ink)" };
+
 export function fill(c) {
   const s = split(c);
   if (!s) return c;
-  return (LEGACY_FILL[s.base] ?? s.base) + s.alpha;
+  const mapped = LEGACY_FILL[s.base] ?? s.base;
+  // opaque neutrals follow the day/night theme; translucent tints keep their hex (alpha suffix)
+  if (!s.alpha && THEMED_FILL[mapped]) return THEMED_FILL[mapped];
+  return mapped + s.alpha;
 }
 
 /** Text color. Old orange text on dark becomes ink; old translucent orange (muted label) becomes ink-2. */
 export function textOn(c) {
   const s = split(c);
   if (!s) return c;
-  if (s.base === "#ffb347" && s.alpha) return P.ink2;
-  return (LEGACY_TEXT[s.base] ?? LEGACY_FILL[s.base] ?? s.base) + s.alpha;
+  if (s.base === "#ffb347" && s.alpha) return "var(--ink-2)";
+  const mapped = LEGACY_TEXT[s.base] ?? LEGACY_FILL[s.base] ?? s.base;
+  if (!s.alpha && mapped === P.ink) return "var(--ink)";
+  return mapped + s.alpha;
 }
 
 /** Border color. Old default borders become a soft hairline; accent borders become a deepened pastel. */

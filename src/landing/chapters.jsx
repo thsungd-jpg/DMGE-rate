@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { registerChapter, rectOf, COLORS, PALS, pointer } from "./scene";
+import { registerChapter, rectOf, COLORS, PALS, pointer, clock } from "./scene";
 import { PBtn } from "../components/ui";
 import Auth from "../components/Auth";
 import { TIERS, PROMO } from "../utils/subscription";
@@ -66,11 +66,21 @@ function variantRows(i) {
   return rows;
 }
 
-function rowsToShapes(S, rows, scale = 1, cols = [COLORS.pink]) {
+// slow spin that also follows the scroll, so the liquid keeps turning as you move through the page
+const spin = (rate = 0.2, scrollRate = 0.0006) => clock.t * rate + (window.scrollY || 0) * scrollRate;
+
+function rowsToShapes(S, rows, scale = 1, cols = [COLORS.pink], rot = 0) {
   const m = Math.min(S.w, S.h) * 0.5 * scale;
-  return rows.map((r, i) => ({
-    cx: S.cx + r[0] * m, cy: S.cy - r[1] * m, hw: r[2] * m, hh: r[3] * m, r: r[4] * m, col: cols[i % cols.length],
-  }));
+  const cos = Math.cos(rot), sin = Math.sin(rot);
+  return rows.map((r, i) => {
+    // each lobe also breathes a little on its own so the silhouette keeps warping
+    const br = 1 + 0.07 * Math.sin(clock.t * 0.9 + i * 1.9);
+    const x = r[0] * br, y = r[1] * br;
+    return {
+      cx: S.cx + (x * cos - y * sin) * m, cy: S.cy - (x * sin + y * cos) * m,
+      hw: r[2] * m * br, hh: r[3] * m * br, r: r[4] * m * br, col: cols[i % cols.length],
+    };
+  });
 }
 
 function cardShapes(refs, cols, inflate = 10, radius = 34, boost = {}) {
@@ -92,7 +102,7 @@ const dot = (i) => ["var(--pink)", "var(--blue)", "var(--mint)", "var(--butter)"
 
 // ───────────────────────── 1 · hero ─────────────────────────
 
-const HERO_WORDS = ["Know", "what", "your", "work", "is", "worth."];
+const HERO_WORDS = [["Know"], ["what"], ["your"], ["work", true], ["is"], ["worth.", true]];
 
 export function Hero({ onStart, onFlow }) {
   const ref = useRef(null);
@@ -103,7 +113,7 @@ export function Hero({ onStart, onFlow }) {
     const m = Math.min(S0.w, S0.h) * 0.5;
     // lean toward the cursor a little, and sit a touch to the right like the reference render
     const S = { ...S0, cx: S0.cx + S0.w * 0.05 + (pointer.x - 0.5) * m * 0.22, cy: S0.cy + (pointer.y - 0.5) * m * 0.16 };
-    return { shapes: rowsToShapes(S, CLOUD, W >= 900 ? 1.34 : 0.98, PALS[0]), k: m * 0.42, bevel: m * 0.78, wob: m * 0.045, marble: 1, shadow: 1, pal: PALS[0], tex: [1, 0, 0], seed: [0, 0] };
+    return { shapes: rowsToShapes(S, CLOUD, W >= 900 ? 1.6 : 1.12, PALS[0], spin(0.2, 0.0007)), k: m * 0.42, bevel: m * 0.78, wob: m * 0.07, warp: 0.085, glass: 1, smoke: 1, sun: 1, marble: 1, shadow: 1, pal: PALS[0], tex: [1, 0, 0], seed: [0, 0] };
   });
 
   return (
@@ -112,16 +122,16 @@ export function Hero({ onStart, onFlow }) {
         <div className="ll-copy">
           <p className="ll-kicker ll-reveal">Rate calculator for creative freelancers</p>
           <h1 className="ll-h1" id="ll-h1" aria-label="Know what your work is worth.">
-            {HERO_WORDS.map((w) => (
-              <span className="ll-word" key={w} aria-hidden="true"><span>{w}</span></span>
+            {HERO_WORDS.map(([w, it]) => (
+              <span className="ll-word" key={w} aria-hidden="true"><span>{it ? <em>{w}</em> : w}</span></span>
             ))}
           </h1>
           <p className="ll-lede ll-reveal">
             Pick your craft, say who it&rsquo;s for, and get three honest prices in seconds. Then turn the one you choose into an invoice.
           </p>
           <div className="ll-cta ll-reveal">
-            <PBtn color="#2B2140" onClick={onStart} style={{ color: "#FFF6E8" }}>Start free</PBtn>
-            <PBtn color="#FFFBF4" onClick={onFlow}>See how it flows</PBtn>
+            <PBtn color="var(--ink)" onClick={onStart} className="auth-primary">Start free</PBtn>
+            <PBtn color="var(--paper)" onClick={onFlow} className="lq-btn--neutral">See how it flows</PBtn>
           </div>
           <p className="ll-meta ll-reveal">{ROLE_COUNT} roles · {CATEGORIES.length} creative fields · free to start</p>
         </div>
@@ -143,7 +153,7 @@ export function Pick({ demo, demoRef, setDemo }) {
     const m = Math.min(S0.w, S0.h) * 0.5;
     const S = { ...S0, cx: S0.cx + (pointer.x - 0.5) * m * 0.16, cy: S0.cy + (pointer.y - 0.5) * m * 0.12 };
     const i = demoRef.current.catIdx;
-    return { shapes: rowsToShapes(S, variantRows(i), 1, PALS[i % PALS.length]), k: m * 0.4, bevel: m * 0.72, wob: m * 0.05, marble: 1, shadow: 1, pal: PALS[i % PALS.length], tex: texFor(i), seed: seedFor(i) };
+    return { shapes: rowsToShapes(S, variantRows(i), 1.18, PALS[i % PALS.length], spin(0.17, 0.0005)), k: m * 0.4, bevel: m * 0.72, wob: m * 0.06, warp: 0.08, glass: 1, smoke: 1, sun: 1, marble: 1, shadow: 1, pal: PALS[i % PALS.length], tex: texFor(i), seed: seedFor(i) };
   });
 
   const roles = rolesOf(CATEGORIES[demo.catIdx]).slice(0, 8);
@@ -154,7 +164,7 @@ export function Pick({ demo, demoRef, setDemo }) {
       <div className="ll-grid">
         <div>
           <p className="ll-kicker ll-reveal">01 · Craft</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-pick">Start with what you make.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-pick">Start with <em>what you make.</em></h2>
           <p className="ll-lede ll-reveal">Choose your field and DMGE loads starting rates for every role in it. Watch the liquid take a new shape for each one.</p>
           <div className="ll-chips ll-reveal" role="group" aria-label="Creative field">
             {CATEGORIES.map((c, i) => (
@@ -196,7 +206,7 @@ export function Context({ demo, demoRef, setDemo }) {
     const scale = 0.62 + 0.05 * Math.min(4.5, cm * um - 1);
     // lift the blob so the price readout can sit underneath it
     const Sb = { ...S, cy: S.cy - Math.min(S.w, S.h) * 0.12 };
-    const base = rowsToShapes(Sb, CLOUD.slice(0, 4), scale, PALS[d.catIdx % PALS.length]);
+    const base = rowsToShapes(Sb, CLOUD.slice(0, 4), scale * 1.12, PALS[d.catIdx % PALS.length], spin(0.15, 0.0005));
     const ci = Math.max(0, CLIENT_TYPES.indexOf(d.clientType));
     const ui = Math.max(0, USAGES.indexOf(d.usage));
     const aA = Math.PI * 0.85 + (ci / 3) * Math.PI * 0.6;
@@ -207,7 +217,7 @@ export function Context({ demo, demoRef, setDemo }) {
       { cx: Sb.cx + Math.cos(aA) * dA * m, cy: Sb.cy - Math.sin(aA) * dA * m, hw: 0.17 * m, hh: 0.17 * m, r: 0.17 * m, col: COLORS.butter },
       { cx: Sb.cx + Math.cos(aB) * dB * m, cy: Sb.cy - Math.sin(aB) * dB * m, hw: 0.2 * m, hh: 0.2 * m, r: 0.2 * m, col: COLORS.lilac },
     ];
-    return { shapes: [...base, ...orbs], k: m * 0.4, bevel: m * 0.62, wob: m * 0.04, marble: 0.85, shadow: 1, pal: PALS[d.catIdx % PALS.length], tex: texFor(d.catIdx), seed: seedFor(d.catIdx) };
+    return { shapes: [...base, ...orbs], k: m * 0.4, bevel: m * 0.62, wob: m * 0.05, warp: 0.075, glass: 1, smoke: 0.9, sun: 0.9, marble: 0.85, shadow: 1, pal: PALS[d.catIdx % PALS.length], tex: texFor(d.catIdx), seed: seedFor(d.catIdx) };
   });
 
   const q = quote(demo);
@@ -225,7 +235,7 @@ export function Context({ demo, demoRef, setDemo }) {
         </div>
         <div>
           <p className="ll-kicker ll-reveal">02 · Context</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-context">Say who it&rsquo;s for.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-context">Say <em>who</em> it&rsquo;s for.</h2>
           <p className="ll-lede ll-reveal">The same work is worth more to a corporation than to a friend. Client type and usage rights pull the price like magnets.</p>
           <p className="ll-label ll-reveal">Client</p>
           <div className="ll-chips ll-reveal" role="group" aria-label="Client type">
@@ -271,7 +281,7 @@ export function Price({ demo, demoRef, setDemo }) {
 
   useChapter("price", ref, () => {
     const sel = TIER_META.findIndex((t) => t.key === demoRef.current.tier);
-    return { shapes: cardShapes(refs, TIER_META.map((t) => t.col), 10, 32, { [sel]: 6 }), k: 12, bevel: 46, wob: 0, marble: 0.12, shadow: 0.5, pal: PALS[1] };
+    return { shapes: cardShapes(refs, TIER_META.map((t) => t.col), 10, 32, { [sel]: 6 }), k: 12, bevel: 46, wob: 0, warp: 0, glass: 0.3, smoke: 0.3, sun: 0.12, marble: 0.12, shadow: 0.5, pal: PALS[1] };
   });
 
   const q = quote(demo);
@@ -283,7 +293,7 @@ export function Price({ demo, demoRef, setDemo }) {
       <div className="ll-center">
         <div className="ll-head">
           <p className="ll-kicker ll-reveal">03 · Price</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-price">Three honest prices.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-price">Three <em>honest</em> prices.</h2>
           <p className="ll-lede ll-reveal">The liquid splits into three. Pick the one you&rsquo;ll quote &mdash; it carries into your invoice.</p>
         </div>
         <div className="ll-tiers ll-reveal" role="group" aria-label="Pick a price">
@@ -311,7 +321,7 @@ export function InvoiceCh({ demo, demoRef }) {
 
   useChapter("invoice", ref, () => {
     const q = card.current ? cardShapes([card], [COLORS.pink], 14, 30) : [];
-    return { shapes: q, k: 20, bevel: 54, wob: 0, marble: 1, lines: 0.6, shadow: 0.6, pal: PALS[3], tex: [0, 0, 1], seed: [0.2, 0.1] };
+    return { shapes: q, k: 20, bevel: 54, wob: 0, warp: 0, glass: 0.45, smoke: 0.35, sun: 0.12, marble: 1, lines: 0.6, shadow: 0.6, pal: PALS[3], tex: [0, 0, 1], seed: [0.2, 0.1] };
   });
 
   const q = quote(demo);
@@ -323,7 +333,7 @@ export function InvoiceCh({ demo, demoRef }) {
       <div className="ll-grid">
         <div>
           <p className="ll-kicker ll-reveal">04 · Invoice</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-invoice">Send it like a pro.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-invoice">Send it <em>like a pro.</em></h2>
           <p className="ll-lede ll-reveal">Save the job and export a PDF invoice with your logo and numbering, or email it straight to the client.</p>
           <p className="ll-meta ll-reveal">The sample on the right uses the price you just picked.</p>
         </div>
@@ -363,7 +373,7 @@ export function Plans({ onStart }) {
   const ref = useRef(null);
   const refs = [useRef(null), useRef(null), useRef(null)];
 
-  useChapter("plans", ref, () => ({ shapes: cardShapes(refs, PLAN_COLORS, 10, 34, { 1: 6 }), k: 12, bevel: 46, wob: 0, marble: 0.12, shadow: 0.5, pal: PALS[2] }));
+  useChapter("plans", ref, () => ({ shapes: cardShapes(refs, PLAN_COLORS, 10, 34, { 1: 6 }), k: 12, bevel: 46, wob: 0, warp: 0, glass: 0.3, smoke: 0.3, sun: 0.12, marble: 0.12, shadow: 0.5, pal: PALS[2] }));
 
   const plans = [
     { id: "free", t: TIERS.free, price: "$0", per: "forever" },
@@ -376,7 +386,7 @@ export function Plans({ onStart }) {
       <div className="ll-center">
         <div className="ll-head">
           <p className="ll-kicker ll-reveal">05 · Plans</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-plans">Free to start. Grow when you do.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-plans">Free to start. <em>Grow</em> when you do.</h2>
           <p className="ll-lede ll-reveal">Everything above works on the free plan. Upgrade later from inside the app.</p>
         </div>
         <div className="ll-plans ll-reveal">
@@ -388,7 +398,7 @@ export function Plans({ onStart }) {
               <ul>
                 {planFeatures(p.t).map(([label, on]) => <li key={label} data-off={on ? undefined : ""}>{label}</li>)}
               </ul>
-              <PBtn color={i === 1 ? "#FFE98A" : "#FFFBF4"} onClick={onStart}>Start free</PBtn>
+              <PBtn color={i === 1 ? "#FFE98A" : "var(--paper)"} onClick={onStart} className={i === 1 ? "" : "lq-btn--neutral"}>Start free</PBtn>
             </div>
           ))}
         </div>
@@ -414,7 +424,7 @@ export function Launch({ onAuthSuccess, initialMode }) {
         { cx: q.cx + q.w * 0.66, cy: q.cy + q.h * 0.32, hw: m * 0.4, hh: m * 0.4, r: m * 0.4, col: COLORS.mint },
         { cx: q.cx + q.w * 0.5, cy: q.cy - q.h * 0.62, hw: m * 0.22, hh: m * 0.22, r: m * 0.22, col: COLORS.butter },
       ],
-      k: 38, bevel: 80, wob: 8, marble: 0.8, shadow: 0.8, pal: PALS[4], tex: [0, 1, 0], seed: [0.1, 0.3],
+      k: 38, bevel: 80, wob: 10, warp: 0.04, glass: 0.8, smoke: 0.6, sun: 0.5, marble: 0.8, shadow: 0.8, pal: PALS[4], tex: [0, 1, 0], seed: [0.1, 0.3],
     };
   });
 
@@ -423,7 +433,7 @@ export function Launch({ onAuthSuccess, initialMode }) {
       <div className="ll-center ll-launch">
         <div className="ll-head" style={{ marginBottom: 0 }}>
           <p className="ll-kicker ll-reveal">Start</p>
-          <h2 className="ll-h2 ll-reveal" id="ll-start">Your next quote starts here.</h2>
+          <h2 className="ll-h2 ll-reveal" id="ll-start">Your next quote <em>starts here.</em></h2>
           <p className="ll-lede ll-reveal">Create a free account in seconds, or sign in to pick up where you left off.</p>
         </div>
         <div className="ll-auth ll-reveal" ref={auth}>

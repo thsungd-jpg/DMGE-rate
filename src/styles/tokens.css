@@ -10,6 +10,11 @@
   --ink-2: #5B5170;   /* secondary text, 6.9:1 on cream */
   --ink-3: #8A809E;   /* decorative / disabled only */
 
+  /* text that sits ON a pastel fill (buttons, active chips): stays dark in both themes */
+  --on-fill: #2B2140;
+  /* frosted glass behind chips / dock / readouts */
+  --glass: rgba(255, 251, 244, 0.78);
+
   /* lines */
   --line: rgba(43, 33, 64, 0.12);
   --line-strong: rgba(43, 33, 64, 0.28);
@@ -28,7 +33,7 @@
   --tier-premium: var(--pink);
 
   /* type */
-  --font-display: "Bricolage Grotesque", "DM Sans", system-ui, sans-serif;
+  --font-display: "Instrument Serif", "Iowan Old Style", "Times New Roman", Georgia, serif;
   --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-mono: "DM Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -49,4 +54,30 @@
   --dur-1: 0.15s;
   --dur-2: 0.3s;
   --dur-3: 0.6s;
+}
+
+/* ── Night: black starfield, neon-pastel accents ───────────────── */
+:root[data-theme="dark"] {
+  --cream: #05030D;
+  --cream-deep: #0B0716;
+  --paper: #120C26;
+
+  --ink: #F6F0FF;
+  --ink-2: #BDB1E0;
+  --ink-3: #7F73A8;
+
+  --glass: rgba(20, 13, 42, 0.62);
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.28);
+
+  --pink-soft: rgba(255, 158, 199, 0.16);   --pink-deep: #FF9EC7;
+  --blue-soft: rgba(142, 197, 255, 0.16);   --blue-deep: #8EC5FF;
+  --mint-soft: rgba(155, 240, 200, 0.16);   --mint-deep: #86EBBD;
+  --butter-soft: rgba(255, 233, 138, 0.16); --butter-deep: #FFE98A;
+  --lilac-soft: rgba(199, 184, 255, 0.18);  --lilac-deep: #C7B8FF;
+  --danger: #FF8AA0; --danger-soft: rgba(255, 138, 160, 0.16);
+
+  --sh-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 8px 22px -10px rgba(0, 0, 0, 0.7);
+  --sh-2: 0 2px 4px rgba(0, 0, 0, 0.55), 0 16px 34px -14px rgba(0, 0, 0, 0.8);
+  --sh-3: 0 4px 8px rgba(0, 0, 0, 0.6), 0 28px 60px -20px rgba(0, 0, 0, 0.9);
 }

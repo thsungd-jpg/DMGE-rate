@@ -18,19 +18,19 @@ const C = {
 };
 
 const F = {
-  display: "'Bricolage Grotesque','DM Sans',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif",
+  display: "'Instrument Serif','Iowan Old Style','Times New Roman',Georgia,serif",
   body: "'DM Sans',system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif",
   mono: "'DM Mono',ui-monospace,'SF Mono',Menlo,Consolas,monospace",
 };
 
 // Every face the template uses; each is loaded explicitly before capture.
 const FONT_FACES = [
-  '700 32px "Bricolage Grotesque"', '800 32px "Bricolage Grotesque"',
+  '400 32px "Instrument Serif"', 'italic 400 32px "Instrument Serif"',
   '400 14px "DM Sans"', '500 14px "DM Sans"', '600 14px "DM Sans"', '700 14px "DM Sans"',
   '400 14px "DM Mono"', '500 14px "DM Mono"',
 ];
-const FONT_FAMILIES = ['Bricolage Grotesque', 'DM Sans', 'DM Mono'];
-const FONT_CSS_URL = 'https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap';
+const FONT_FAMILIES = ['Instrument Serif', 'DM Sans', 'DM Mono'];
+const FONT_CSS_URL = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap';
 
 // ── Page geometry ─────────────────────────────────────────────────────────
 // html2pdf lays the clone out in a 210mm-wide box, html2canvas rounds that to
@@ -206,10 +206,10 @@ function brandLockup(brand, t, size = 'lg') {
       : img;
   }
   if (brand.name) {
-    return `<div style="font-family:${F.display};font-weight:800;font-size:${lg ? 30 : 17}px;line-height:1.05;letter-spacing:-0.02em;color:${t.ink};">${esc(brand.name)}</div>`;
+    return `<div style="font-family:${F.display};font-weight:400;font-size:${lg ? 36 : 21}px;line-height:1.05;letter-spacing:-0.01em;color:${t.ink};">${esc(brand.name)}</div>`;
   }
   return `<div style="display:flex;align-items:center;gap:${lg ? 12 : 8}px;">
-    <div style="font-family:${F.display};font-weight:800;font-size:${lg ? 32 : 18}px;line-height:1;letter-spacing:-0.02em;color:${t.ink};">DMGE</div>
+    <div style="font-family:${F.display};font-weight:400;font-size:${lg ? 40 : 23}px;line-height:1;letter-spacing:0.03em;color:${t.ink};">DMGE</div>
     <div style="font-family:${F.body};font-weight:700;font-size:${lg ? 9.5 : 8.5}px;letter-spacing:0.16em;text-transform:uppercase;color:${t.ink};background:${t.paper};border-radius:999px;padding:${lg ? '5px 10px' : '4px 8px'};">Rate System</div>
   </div>`;
 }
@@ -228,7 +228,7 @@ function heroHTML(d, t) {
       ${pill}
     </div>
     <div style="position:absolute;left:${SIDE}px;right:${SIDE}px;bottom:24px;display:flex;align-items:flex-end;justify-content:space-between;">
-      <div style="font-family:${F.display};font-weight:800;font-size:50px;line-height:0.86;letter-spacing:-0.035em;color:${t.ink};">Invoice</div>
+      <div style="font-family:${F.display};font-weight:400;font-size:62px;line-height:0.86;letter-spacing:-0.03em;font-style:italic;color:${t.ink};">Invoice</div>
       <div style="text-align:right;max-width:300px;">
         ${label('Invoice no.', t.ink, 'margin-bottom:6px;')}
         <div style="font-family:${F.mono};font-weight:500;font-size:17px;line-height:1.2;color:${t.ink};word-break:break-all;">${esc(d.invoiceNumber)}</div>
@@ -253,7 +253,7 @@ function metaHTML(d, t) {
 function partiesHTML(d, t) {
   const col = (title, name, addr) => `<div style="flex:1;min-width:0;overflow-wrap:anywhere;">
       ${label(title, t.labelText, 'margin-bottom:11px;')}
-      <div style="font-family:${F.display};font-weight:700;font-size:20px;line-height:1.2;letter-spacing:-0.01em;color:${t.ink};margin-bottom:7px;">${esc(name)}</div>
+      <div style="font-family:${F.display};font-weight:400;font-size:25px;line-height:1.15;letter-spacing:-0.005em;color:${t.ink};margin-bottom:7px;">${esc(name)}</div>
       <div style="font-family:${F.body};font-weight:400;font-size:13px;line-height:1.6;color:${t.ink2};">${addr}</div>
     </div>`;
   return `<div style="padding:24px ${SIDE}px 0;display:flex;gap:44px;">
