@@ -20,9 +20,9 @@ export default defineConfig({
       manifest: {
         name: 'DMGE — Freelance Rate Calculator',
         short_name: 'DMGE',
-        description: 'The 8-bit business OS for freelancers and creatives',
-        theme_color: '#FFD700',
-        background_color: '#1a1a2e',
+        description: 'The business OS for freelancers and creatives',
+        theme_color: '#FFF6E8',
+        background_color: '#FFF6E8',
         display: 'standalone',
         icons: [
           {
@@ -36,10 +36,10 @@ export default defineConfig({
             type: 'image/png'
           },
           {
-            src: 'icon-512.png',
+            src: 'icon-maskable-512.png',
             sizes: '512x512',
             type: 'image/png',
-            purpose: 'any maskable'
+            purpose: 'maskable'
           }
         ]
       }

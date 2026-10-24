@@ -7,7 +7,8 @@
 // final asset (hero.png -> src/assets/art/hero-3840.webp, ...).
 // For every still it writes:
 //   src/assets/art/<name>-<w>.webp   (quality 82, widths 3840 / 1920 / 960, never upscaled;
-//                                     marble-* are WebGL textures and get 2048 / 1024 instead)
+//                                     marble-* and cosmic-* are WebGL textures and get 2048 / 1024,
+//                                     space-bg gets 3840 / 1920 at quality 90, logo-b-* 1920 / 960)
 // and merges an entry into src/assets/art/manifest.json: name, widths, size, aspect ratio,
 // dominant + accent colors and a 24px blurred LQIP as a data URI.
 // --only limits the run to masters whose name starts with the prefix (other manifest
@@ -25,7 +26,16 @@ const WEBP_QUALITY = 82
 const LQIP_WIDTH = 24
 
 // textures sampled by WebGL want power-of-two sizes
-const WIDTH_OVERRIDES = [[/^marble-/, [2048, 1024]]]
+const WIDTH_OVERRIDES = [
+  [/^marble-/, [2048, 1024]],
+  [/^cosmic-/, [2048, 1024]],
+  [/^space-bg/, [3840, 1920]],
+  [/^logo-b-/, [1920, 960]],
+]
+
+// dark star/nebula gradients band badly at the default quality
+const QUALITY_OVERRIDES = [[/^space-bg/, 90]]
+const FLATTEN_BG = '#FFF6E8' // transparent masters (logo-b-*) are sampled over cream
 
 const args = process.argv.slice(2)
 const flag = (name) => {
@@ -54,6 +64,7 @@ const gcd = (a, b) => (b ? gcd(b, a % b) : a)
 async function colorsOf(input) {
   const { data, info } = await sharp(input)
     .resize(64, 64, { fit: 'inside' })
+    .flatten({ background: FLATTEN_BG })
     .removeAlpha()
     .raw()
     .toBuffer({ resolveWithObject: true })
@@ -100,10 +111,11 @@ async function processStill(file) {
   const { width, height } = meta
   const widths = widthsFor(name, width)
 
+  const quality = QUALITY_OVERRIDES.find(([re]) => re.test(name))?.[1] ?? WEBP_QUALITY
   for (const w of widths) {
     await sharp(input)
       .resize({ width: w, withoutEnlargement: true })
-      .webp({ quality: WEBP_QUALITY, effort: 5 })
+      .webp({ quality, alphaQuality: 100, effort: 5 })
       .toFile(path.join(ART_DIR, `${name}-${w}.webp`))
   }
 
