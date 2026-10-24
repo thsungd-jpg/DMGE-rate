@@ -6,6 +6,7 @@
 //   &tab=history        open a screen directly (calc, history, templates, clients, analytics, profile, tutorial, pricing)
 // Nothing here ships: `import.meta.env.DEV` is false in production builds, so this whole module is dead code.
 import { calcPrice } from "../utils/pricing";
+import { setSupabaseFromStub } from "../utils/supabaseClient";
 
 const day = (n) => new Date(Date.now() - n * 86400000).toISOString();
 
@@ -59,12 +60,23 @@ function seed(empty) {
 }
 
 function build() {
+  stubSupabase();
   const q = new URLSearchParams(window.location.search);
   const mode = q.get("mock");
   const want = mode === "empty" ? "empty" : "full";
   if (mode === "reset" || mode === "empty" || localStorage.getItem("rateapp_dev_seeded") !== want) seed(want === "empty");
   const tier = ["free", "pro", "agency"].includes(q.get("tier")) ? q.get("tier") : "pro";
   return { user: { id: "dev-user", email: "dev@local.test" }, tier, tab: q.get("tab") || null };
+}
+
+// In mock mode the Supabase query builder is replaced by a harmless stub: no request (read or write) ever leaves the
+// browser, whatever tier the mock session claims, and awaiting any chain resolves to an empty result.
+function stubSupabase() {
+  const chain = new Proxy(function () {}, {
+    get: (_t, prop) => (prop === "then" ? (resolve) => resolve({ data: null, error: null }) : chain),
+    apply: () => chain,
+  });
+  setSupabaseFromStub(() => chain);
 }
 
 export const devMock = import.meta.env.DEV && typeof window !== "undefined" && new URLSearchParams(window.location.search).has("mock") ? build() : null;

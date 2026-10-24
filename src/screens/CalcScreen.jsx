@@ -1,278 +1,268 @@
-import React from "react";
-import { MatChip, OptionGrid, PBox, PBtn, PCollapsible, PInput, PLbl, PSelect } from "../components/ui";
-import PixelArrow from "../components/PixelArrow";
+import React, { useEffect, useRef } from "react";
+import { MatChip, OptionGrid, PBtn, PCollapsible, PInput, PSelect, PStepper } from "../components/ui";
+import { Screen, Card, Pill, Field, Segmented, IconBtn } from "../components/kit";
 import { clientMods, complexityMods, usageRightsMods } from "../utils/pricing";
-import { IconCheck, IconStar } from "../icons";
+import { IconStar, IconCheck, IconVolume, IconVolumeOff, IconBook, IconPlus, IconCopy } from "../icons";
+import "./calc.css";
 
-// Screen for tab "calc".
-// Extracted verbatim from App.jsx: everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
+const money = (n) => "$" + Math.round(Number(n) || 0).toLocaleString("en-US");
+
+/** Numbered step heading inside a card. */
+function Step({ n, title, hint }) {
+  return (
+    <div className="calc-step">
+      <span className="calc-step-n">{n}</span>
+      <div>
+        <h2>{title}</h2>
+        {hint && <p>{hint}</p>}
+      </div>
+    </div>
+  );
+}
+
+/** Guided-flow wrapper: the card that should be filled in next glows and shows a small pill. */
+function Guided({ step, glowStep, advance, label, children }) {
+  const on = glowStep === step;
+  return (
+    <div className={"calc-guided" + (on ? " lq-glow is-on" : "")} onClick={() => advance(step)}>
+      {on && <span className="calc-guide-pill">{label}</span>}
+      {children}
+    </div>
+  );
+}
+
+const TIERS_UI = [
+  { key: "low", name: "Budget", note: "20% under fair", tone: "blue" },
+  { key: "fair", name: "Fair", note: "Your baseline", tone: "mint", star: true },
+  { key: "premium", name: "Premium", note: "30% over fair", tone: "pink" },
+];
+
 export default function CalcScreen({ ctx }) {
   const {
-    ALL_DATA,
-    advanceGlow,
-    catData,
-    category,
-    clients,
-    customMaterials,
-    form,
-    glowStep,
-    handleAddCustomMaterial,
-    handleCalc,
-    handleReset,
-    handleResetModel,
-    handleSave,
-    handleToggleMute,
-    matPriceOverrides,
-    matQtys,
-    materialSummary,
-    materialsCost,
-    mats,
-    model,
-    modelIdx,
-    muted,
-    price,
-    resetKey,
-    role,
-    roleIdx,
-    saved,
-    selectedClientId,
-    selectedTier,
-    set,
-    setCategory,
-    setForm,
-    setMatPriceOverrides,
-    setMatQtys,
-    setModelIdx,
-    setNewTemplateForm,
-    setPrice,
-    setRoleIdx,
-    setSelectedClientId,
-    setSelectedTier,
-    setShowSaveTemplateModal,
-    setTab,
+    ALL_DATA, advanceGlow, catData, category, clients, customMaterials, form, glowStep, handleAddCustomMaterial,
+    handleCalc, handleReset, handleResetModel, handleSave, handleToggleMute, matPriceOverrides, matQtys,
+    materialSummary, materialsCost, mats, model, modelIdx, muted, price, resetKey, role, roleIdx, saved,
+    selectedClientId, selectedTier, set, setCategory, setForm, setMatPriceOverrides, setMatQtys, setModelIdx,
+    setNewTemplateForm, setPrice, setRoleIdx, setSelectedClientId, setSelectedTier, setShowSaveTemplateModal, setTab,
   } = ctx;
 
+  // On phones the result panel sits under the form: bring it into view once a quote exists.
+  const panelRef = useRef(null);
+  useEffect(() => {
+    if (price && window.matchMedia?.("(max-width: 979px)").matches) {
+      panelRef.current?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+    }
+  }, [price]);
+
+  const allMats = [...mats, ...customMaterials];
+  const unitLabel = model.unit.replace("per hour", "per hr");
+  const guideLabel = { role: "Start here", clientType: "Next", usage: "Next" };
+
   return (
-    <div className="legacy-page">
-    <>
-                <div style={{ marginBottom: "2.1875rem" }}>
-                  {form.id && (
-                    <div style={{
-                      background: "rgba(233,30,99,0.1)", border: "0.25rem solid #E91E63",
-                      padding: "0.625rem", marginBottom: "1rem", textAlign: "center",
-                      fontFamily: "'Press Start 2P'", fontSize: "0.6875rem", color: "#E91E63"
-                    }}>
-                      EDITING MODE: {form.invoiceNumber}
-                    </div>
-                  )}
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", gap: "0.5rem" }}>
-                    <PLbl style={{ marginBottom: 0 }}>QUICK CLIENT SELECT</PLbl>
-                    <div style={{ display: "flex", gap: "0.5rem" }}>
-                      <PBtn small color="#FFB347" onClick={handleToggleMute} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem", color: "#0A0A0A" }} title={muted ? "SFX OFF" : "SFX ON"}>
-                        {muted ? "SFX:OFF" : "SFX:ON"}
-                      </PBtn>
-                      <PBtn small color="#E91E63" onClick={() => setTab("tutorial")} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem" }}>TUTORIAL</PBtn>
-                    </div>
-                  </div>
+    <Screen
+      eyebrow="Quote"
+      title={<>Price this <em>job.</em></>}
+      subtitle="Pick the work, say who it is for, and get three honest prices. Save the one you quote."
+      actions={
+        <>
+          {form.id && <Pill tone="pink" dot>Editing {form.invoiceNumber}</Pill>}
+          <IconBtn label={muted ? "Turn sounds on" : "Turn sounds off"} onClick={handleToggleMute}>
+            {muted ? <IconVolumeOff size={19} /> : <IconVolume size={19} />}
+          </IconBtn>
+          <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={() => setTab("tutorial")}><IconBook size={16} /> Tutorial</PBtn>
+        </>
+      }
+    >
+      <div className="calc-layout">
+        {/* ───────── inputs ───────── */}
+        <div className="calc-form">
+          <Card>
+            <Field label="Quote for">
+              <PSelect
+                value={selectedClientId}
+                onChange={(id) => {
+                  setSelectedClientId(id);
+                  const c = clients.find((cl) => cl.id === id);
+                  if (c) setForm((f) => ({ ...f, complexity: c.preferredComplexity, usage: c.preferredUsageRights, clientType: c.preferredClientType }));
+                  setPrice(null);
+                }}
+                options={[{ label: "No client (default rates)", value: "" }, ...clients.map((c) => ({ label: `${c.name} (${c.rateMultiplier}x)`, value: c.id }))]}
+                iconType="none"
+                style={{ marginBottom: 0 }}
+              />
+            </Field>
+          </Card>
+
+          <Guided step="role" glowStep={glowStep} advance={advanceGlow} label={guideLabel.role}>
+            <Card pad="lg">
+              <Step n="01" title="The work" hint="Choose your field, role and how you charge." />
+              <div className="calc-grid2">
+                <Field label="Category">
                   <PSelect
-                    value={selectedClientId}
-                    onChange={id => {
-                      setSelectedClientId(id);
-                      const c = clients.find(cl => cl.id === id);
-                      if (c) {
-                        setForm(f => ({ ...f, complexity: c.preferredComplexity, usage: c.preferredUsageRights, clientType: c.preferredClientType }));
-                      }
-                      setPrice(null);
-                    }}
-                    options={[{ label: "None (Default Rates)", value: "" }, ...clients.map(c => ({ label: `${c.name} (${c.rateMultiplier}x)`, value: c.id }))]}
-                    iconType="none"
+                    value={category}
+                    onChange={(v) => { setCategory(v); setRoleIdx(0); setModelIdx(0); handleResetModel(ALL_DATA[v].roles[0].models[0]); }}
+                    options={Object.keys(ALL_DATA).map((c) => ({ label: c, value: c }))}
+                    iconType="cat"
+                    style={{ marginBottom: 0 }}
                   />
+                </Field>
+                <Field label="Role">
+                  <PSelect
+                    value={roleIdx}
+                    onChange={(v) => { setRoleIdx(v); setModelIdx(0); handleResetModel(catData.roles[v].models[0]); }}
+                    options={catData.roles.map((r, i) => ({ label: r.name, value: i }))}
+                    iconType="none"
+                    style={{ marginBottom: 0 }}
+                  />
+                </Field>
+              </div>
+              <Field label="Pricing model">
+                <PSelect
+                  value={modelIdx}
+                  onChange={(v) => { setModelIdx(v); handleResetModel(role.models[v]); }}
+                  options={role.models.map((m, i) => ({ label: `${m.type} (${m.unit})`, value: i }))}
+                  iconType="none"
+                  style={{ marginBottom: 0 }}
+                />
+              </Field>
+              <div className="calc-qty">
+                <Field label={`Quantity · ${unitLabel}`} hint="How many units are you quoting?">
+                  <PStepper value={Number(form.units) || 0} onChange={set("units")} min={0.1} step={1} />
+                </Field>
+              </div>
+              <Field label="Complexity" hint="Simple projects get lower rates; masterpieces command premium pricing.">
+                <OptionGrid options={complexityMods} value={form.complexity} onChange={set("complexity")} activeColor="var(--butter)" activeShadow="var(--butter-deep)" />
+              </Field>
+            </Card>
+          </Guided>
+
+          <Guided step="clientType" glowStep={glowStep} advance={advanceGlow} label={guideLabel.clientType}>
+            <Card pad="lg">
+              <Step n="02" title="Who it's for" hint="Corporate clients typically pay 2 to 2.5x more." />
+              <OptionGrid options={clientMods} value={form.clientType} onChange={(v) => { set("clientType")(v); advanceGlow("clientType"); }} activeColor="var(--blue)" activeShadow="var(--blue-deep)" />
+            </Card>
+          </Guided>
+
+          <Guided step="usage" glowStep={glowStep} advance={advanceGlow} label={guideLabel.usage}>
+            <Card pad="lg">
+              <Step n="03" title="Usage rights" hint="Personal is one-time use; commercial grants broader rights." />
+              <OptionGrid options={usageRightsMods} value={form.usage} onChange={(v) => { set("usage")(v); advanceGlow("usage"); }} activeColor="var(--mint)" activeShadow="var(--mint-deep)" />
+            </Card>
+          </Guided>
+
+          <Card pad="lg">
+            <Step n="04" title="Extras" hint="Optional details that move the price." />
+            <div className="calc-extras">
+              <PCollapsible key={`revisions-${resetKey}`} title="Revisions" collapsedInfo={`${form.revisions} revisions`} tooltip="0 revisions = discount; 3+ revisions = premium">
+                <Field label="Included revisions"><PInput type="number" value={form.revisions} onChange={set("revisions")} placeholder="0" min={0} step={1} /></Field>
+              </PCollapsible>
+              <PCollapsible key={`travel-${resetKey}`} title="Commute" collapsedInfo={`$${(form.travelExpense || 0).toFixed(2)}`} tooltip="Add direct travel expenses to the quote">
+                <Field label="Travel cost ($)"><PInput type="number" value={form.travelExpense || 0} onChange={(v) => { setForm((f) => ({ ...f, travelExpense: v })); setPrice(null); }} placeholder="0.00" /></Field>
+              </PCollapsible>
+              <PCollapsible key={`rush-${resetKey}`} title="Rush" collapsedInfo={form.rush ? "Yes (+30%)" : "No"} tooltip="30% markup for expedited delivery">
+                <Field label="Expedited delivery">
+                  <Segmented
+                    ariaLabel="Rush order"
+                    value={!!form.rush}
+                    onChange={(v) => { setForm((f) => ({ ...f, rush: v })); setPrice(null); }}
+                    options={[{ value: false, label: "Standard" }, { value: true, label: "Rush +30%" }]}
+                  />
+                </Field>
+              </PCollapsible>
+              <PCollapsible key={`platform-${resetKey}`} title="Platform fee" collapsedInfo={form.platformFee ? `${form.platformFee}%` : "None"} tooltip="Add a percentage to cover payment processing costs">
+                <Field label="Fee (%)"><PInput type="number" value={form.platformFee || 0} onChange={(v) => { setForm((f) => ({ ...f, platformFee: v })); setPrice(null); }} placeholder="0" /></Field>
+              </PCollapsible>
+              <PCollapsible key={`materials-${resetKey}`} title="Supplies" collapsedInfo={materialSummary}>
+                <div className="calc-mats">
+                  {allMats.map((mat) => {
+                    const displayMat = { ...mat, cost: matPriceOverrides[mat.name] ?? mat.cost };
+                    return (
+                      <MatChip
+                        key={mat.name}
+                        mat={displayMat}
+                        qty={matQtys[mat.name] || 0}
+                        accent="var(--pink)"
+                        bg="var(--pink-soft)"
+                        onAdd={() => setMatQtys((q) => ({ ...q, [mat.name]: (q[mat.name] || 0) + 1 }))}
+                        onRemove={() => setMatQtys((q) => ({ ...q, [mat.name]: Math.max(0, (q[mat.name] || 0) - 1) }))}
+                        onCostChange={(name, cost) => setMatPriceOverrides((o) => ({ ...o, [name]: cost }))}
+                      />
+                    );
+                  })}
                 </div>
-    
-                <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-                  <div style={{ gridColumn: "1 / -1", position: "relative" }} className={glowStep === 'role' ? 'dmge-glow' : ''} onClick={() => advanceGlow('role')}>
-                    {glowStep === 'role' && (
-                      <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                        <PixelArrow direction="right" size={48} bounce />
-                      </span>
-                    )}
-                    <PCollapsible key={`discipline-${resetKey}`} title="ROLE" defaultOpen={false} collapsedInfo={`${category} / ${role.name} / ${model.type}`}>
-                      <PLbl>CATEGORY</PLbl>
-                      <PSelect
-                        value={category}
-                        onChange={v => { setCategory(v); setRoleIdx(0); setModelIdx(0); handleResetModel(ALL_DATA[v].roles[0].models[0]); }}
-                        options={Object.keys(ALL_DATA).map(c => ({ label: c, value: c }))}
-                        iconType="cat"
-                      />
-    
-                      <PLbl>ROLE</PLbl>
-                      <PSelect
-                        value={roleIdx}
-                        onChange={v => { setRoleIdx(v); setModelIdx(0); handleResetModel(catData.roles[v].models[0]); }}
-                        options={catData.roles.map((r, i) => ({ label: r.name, value: i }))}
-                        iconType="none"
-                      />
-    
-                      <PLbl>PRICING MODEL</PLbl>
-                      <PSelect
-                        value={modelIdx}
-                        onChange={v => { setModelIdx(v); handleResetModel(role.models[v]); }}
-                        options={role.models.map((m, i) => ({ label: `${m.type} (${m.unit})`, value: i }))}
-                        iconType="none"
-                      />
-                    </PCollapsible>
-                  </div>
-    
-                  <PCollapsible key={`quantity-${resetKey}`} title="QTY" defaultOpen={false} collapsedInfo={`${form.units} ${model.unit.replace("per hour", "per hr")}`}>
-                    <div style={{ padding: "0.25rem 0" }}>
-                      <PLbl style={{ marginBottom: "0.75rem" }}>QUANTITY</PLbl>
-                      <PInput type="number" value={form.units} onChange={set("units")} placeholder="1" min={0.1} step={1} />
-                    </div>
-                  </PCollapsible>
-    
-                  <PCollapsible key={`complexity-${resetKey}`} title="COMPLEX" defaultOpen={false} collapsedInfo={form.complexity} tooltip="Simple projects get lower rates; Masterpieces command premium pricing">
-                    <OptionGrid options={complexityMods} value={form.complexity} onChange={set("complexity")} cols={4} />
-                  </PCollapsible>
-    
-                  <div style={{ position: "relative" }} className={glowStep === 'clientType' ? 'dmge-glow' : ''} onClick={() => advanceGlow('clientType')}>
-                    {glowStep === 'clientType' && (
-                      <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                        <PixelArrow direction="right" size={48} bounce />
-                      </span>
-                    )}
-                    <PCollapsible key={`clientType-${resetKey}`} title="CLIENT" defaultOpen={false} collapsedInfo={form.clientType} tooltip="Corporate clients typically pay 2-2.5x more">
-                      <OptionGrid options={clientMods} value={form.clientType} onChange={(v) => { set("clientType")(v); advanceGlow('clientType'); }} cols={4} />
-                    </PCollapsible>
-                  </div>
-    
-                  <div style={{ position: "relative" }} className={glowStep === 'usage' ? 'dmge-glow' : ''} onClick={() => advanceGlow('usage')}>
-                    {glowStep === 'usage' && (
-                      <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                        <PixelArrow direction="right" size={48} bounce />
-                      </span>
-                    )}
-                    <PCollapsible key={`usage-${resetKey}`} title="USAGE" defaultOpen={false} collapsedInfo={form.usage} tooltip="Personal = one-time use; Commercial = broader rights">
-                      <OptionGrid options={usageRightsMods} value={form.usage} onChange={(v) => { set("usage")(v); advanceGlow('usage'); }} cols={2} />
-                    </PCollapsible>
-                  </div>
-    
-                  <PCollapsible key={`revisions-${resetKey}`} title="REVS" defaultOpen={false} collapsedInfo={`${form.revisions} revisions`} tooltip="0 revisions = discount; 3+ revisions = premium">
-                    <div style={{ padding: "0.25rem 0" }}>
-                      <PLbl style={{ marginBottom: "0.75rem" }}>REVISIONS</PLbl>
-                      <PInput type="number" value={form.revisions} onChange={set("revisions")} placeholder="0" min={0} step={1} />
-                    </div>
-                  </PCollapsible>
-    
-                  <PCollapsible key={`travel-${resetKey}`} title="COMMUTE" defaultOpen={false} collapsedInfo={`$${(form.travelExpense || 0).toFixed(2)}`} tooltip="Add direct travel expenses to quote">
-                    <div style={{ padding: "0.25rem 0" }}>
-                      <PLbl style={{ marginBottom: "0.75rem" }}>COMMUTE COST</PLbl>
-                      <PInput type="number" value={form.travelExpense || 0} onChange={v => { setForm(f => ({ ...f, travelExpense: v })); setPrice(null); }} placeholder="0.00" />
-                    </div>
-                  </PCollapsible>
-    
-                  <PCollapsible key={`rush-${resetKey}`} title="RUSH" defaultOpen={false} collapsedInfo={form.rush ? "Yes (+30%)" : "No"} tooltip="30% markup for expedited delivery">
-                    <div style={{ padding: "0.25rem 0" }}>
-                      <PLbl style={{ marginBottom: "0.75rem" }}>RUSH ORDER</PLbl>
-                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                        <PBtn full small color={form.rush ? "#FFB347" : "#1A1A1A"} onClick={() => { setForm(f => ({ ...f, rush: true })); setPrice(null); }}>YES</PBtn>
-                        <PBtn full small color={!form.rush ? "#FFB347" : "#1A1A1A"} onClick={() => { setForm(f => ({ ...f, rush: false })); setPrice(null); }}>NO</PBtn>
-                      </div>
-                    </div>
-                  </PCollapsible>
-    
-                  <PCollapsible key={`platform-${resetKey}`} title="FEE" defaultOpen={false} collapsedInfo={form.platformFee ? `${form.platformFee}%` : "None"} tooltip="Add % to embed payment processing costs">
-                    <div style={{ padding: "0.25rem 0" }}>
-                      <PLbl style={{ marginBottom: "0.75rem" }}>PLATFORM (%)</PLbl>
-                      <PInput type="number" value={form.platformFee || 0} onChange={v => { setForm(f => ({ ...f, platformFee: v })); setPrice(null); }} placeholder="0" />
-                    </div>
-                  </PCollapsible>
-    
-                  <div style={{ gridColumn: "1 / -1" }}>
-                    <PCollapsible key={`materials-${resetKey}`} title="SUPPLIES" defaultOpen={false} collapsedInfo={materialSummary}>
-                      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 14rem), 1fr))", gap: "0.5rem" }}>
-                        {(() => {
-                          const allMats = [...mats, ...customMaterials]; return allMats.map((mat, idx) => {
-                            const displayMat = { ...mat, cost: matPriceOverrides[mat.name] ?? mat.cost };
-                            const isLastOdd = allMats.length % 2 === 1 && idx === allMats.length - 1;
-                            return (
-                              <div key={mat.name} style={isLastOdd ? { gridColumn: "1 / -1" } : undefined}>
-                                <MatChip
-                                  mat={displayMat} qty={matQtys[mat.name] || 0}
-                                  accent="#E91E63" bg="#FFB347"
-                                  onAdd={() => setMatQtys(q => ({ ...q, [mat.name]: (q[mat.name] || 0) + 1 }))}
-                                  onRemove={() => setMatQtys(q => ({ ...q, [mat.name]: Math.max(0, (q[mat.name] || 0) - 1) }))}
-                                  onCostChange={(name, cost) => setMatPriceOverrides(o => ({ ...o, [name]: cost }))}
-                                />
-                              </div>
-                            );
-                          });
-                        })()}
-                        <div style={{ gridColumn: "1 / -1" }}>
-                          <PBtn full color="#FFB347" small onClick={handleAddCustomMaterial} style={{ marginTop: "0.5rem" }}>+ ADD CUSTOM ITEM</PBtn>
-                        </div>
-                      </div>
-                      {materialsCost > 0 && (
-                        <div style={{ fontFamily: "'Press Start 2P'", fontSize: "1.4375rem", color: "#FFB347", textAlign: "right", marginTop: "1.5625rem" }}>
-                          MT SUB: ${materialsCost.toFixed(2)}
-                        </div>
-                      )}
-                    </PCollapsible>
-                  </div>
-    
-                  <div style={{ gridColumn: "1 / -1" }}>
-                    <PCollapsible key={`notes-${resetKey}`} title="INVOICE NOTES" defaultOpen={false} collapsedInfo={form.notes ? "Has Notes" : "None"} tooltip="Specific details for this job/invoice">
-                      <PLbl>JOB NOTES</PLbl>
-                      <textarea
-                        value={form.notes}
-                        onChange={e => { setForm(f => ({ ...f, notes: e.target.value })); setPrice(null); }}
-                        placeholder="Specific job details..."
-                        style={{ width: "100%", fontFamily: "'Press Start 2P'", fontSize: "0.75rem", padding: "1.25rem", border: "0.5rem solid #FFB347", minHeight: 100, background: "#0A0A0A", color: "#FFB347" }}
-                      />
-                    </PCollapsible>
-                  </div>
+                <PBtn full small color="var(--butter)" onClick={handleAddCustomMaterial}><IconPlus size={16} /> Add custom item</PBtn>
+                {materialsCost > 0 && <div className="calc-subtotal">Supplies subtotal <b>${materialsCost.toFixed(2)}</b></div>}
+              </PCollapsible>
+              <PCollapsible key={`notes-${resetKey}`} title="Invoice notes" collapsedInfo={form.notes ? "Has notes" : "None"} tooltip="Specific details for this job or invoice">
+                <Field label="Job notes">
+                  <textarea
+                    value={form.notes}
+                    onChange={(e) => { setForm((f) => ({ ...f, notes: e.target.value })); setPrice(null); }}
+                    placeholder="Specific job details…"
+                  />
+                </Field>
+              </PCollapsible>
+            </div>
+          </Card>
+        </div>
+
+        {/* ───────── live quote panel ───────── */}
+        <aside className="calc-aside" ref={panelRef}>
+          <Card tone="glass" pad="lg" className="calc-panel">
+            <p className="kit-eyebrow">Your quote</p>
+            <div className="calc-sum-title">{role.name}</div>
+            <div className="calc-sum-meta">{category} · {model.type}</div>
+            <div className="calc-chips">
+              <Pill tone="butter">{form.units} {unitLabel}</Pill>
+              <Pill tone="butter">{form.complexity}</Pill>
+              <Pill tone="blue">{form.clientType}</Pill>
+              <Pill tone="mint">{form.usage}</Pill>
+              {form.rush && <Pill tone="pink">Rush</Pill>}
+              {materialsCost > 0 && <Pill tone="lilac">Supplies {money(materialsCost)}</Pill>}
+            </div>
+
+            <div className="calc-actions">
+              <PBtn color="var(--ink)" className="auth-primary" onClick={handleCalc} style={{ flex: 1 }}>
+                <IconStar size={18} /> Calculate
+              </PBtn>
+              <PBtn color="var(--paper)" className="lq-btn--neutral" onClick={handleReset}>Reset</PBtn>
+            </div>
+            {glowStep === "calculate" && <p className="calc-hint">Ready: press Calculate.</p>}
+
+            {price ? (
+              <div className="calc-result">
+                <div className="calc-total" aria-live="polite">
+                  <span className="kit-eyebrow">Estimated total</span>
+                  <b>{money(price[selectedTier])}</b>
+                  <small>Pick a tier below to change it</small>
                 </div>
-    
-                <div className="action-buttons" style={{ display: "flex", gap: "1.25rem", marginBottom: "2.5rem", position: "relative" }}>
-                  {glowStep === 'calculate' && (
-                    <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                      <PixelArrow direction="right" size={56} bounce />
-                    </span>
-                  )}
-                  <PBtn color="#E91E63" onClick={handleCalc} glow={glowStep === 'calculate'} style={{ flex: 1, display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#0A0A0A" /> CALCULATE <IconStar size={24} color="#0A0A0A" /></PBtn>
-                  <PBtn color="#FFB347" onClick={handleReset} style={{ flex: 1 }}>↺ RESET</PBtn>
+                <div className="calc-tiers" role="group" aria-label="Choose a price tier">
+                  {TIERS_UI.map((t) => (
+                    <button key={t.key} type="button" className={`calc-tier calc-tier--${t.tone}`} aria-pressed={selectedTier === t.key} onClick={() => setSelectedTier(t.key)}>
+                      <span className="calc-tier-name">{t.name}{t.star && <IconStar size={13} />}</span>
+                      <b>{money(price[t.key])}</b>
+                      <span className="calc-tier-note">{t.note}</span>
+                    </button>
+                  ))}
                 </div>
-    
-                {price && (
-                  <div className="res-in" style={{ marginTop: "2.5rem" }}>
-                    <PBox bg="#1A1A1A" shadowColor="#E91E63" style={{ boxShadow: `0.9375rem 0.9375rem 0 #E91E63` }}>
-                      <div style={{ textAlign: "center", marginBottom: "2.1875rem" }}>
-                        <div style={{ fontSize: "1.125rem", color: "#FFB347", marginBottom: "1.5625rem", display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#FFB347" /> ESTIMATED TOTAL <IconStar size={24} color="#FFB347" /></div>
-                        <div style={{ fontSize: "5rem", color: "#FFB347" }}>${Math.round(price[selectedTier])}</div>
-                        <div style={{ fontSize: "0.75rem", color: "#FFB34788", marginTop: "0.5rem" }}>TAP A TIER BELOW TO CHANGE</div>
-                      </div>
-                      <div className="price-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.25rem", marginBottom: "2.1875rem" }}>
-                        {[["BUDGET", "low", price.low, "#121212"], [<span key="fairlbl" style={{ display: "flex", gap: "4px", justifyContent: "center", alignItems: "center" }}>FAIR <IconStar size={20} color="#0A0A0A" /></span>, "fair", price.fair, "#FFB347"], ["PREMIUM", "premium", price.premium, "#1A1A1A"]].map(([lbl, tierKey, val, bg]) => {
-                          const isSelected = selectedTier === tierKey;
-                          return (
-                            <PBox key={tierKey} bg={bg} shadowColor="#E91E63" onClick={() => setSelectedTier(tierKey)} style={{ textAlign: "center", padding: "1.5625rem 0.625rem", cursor: "pointer", border: isSelected ? "0.375rem solid #E91E63" : undefined, transform: isSelected ? "translate(-0.125rem, -0.125rem)" : "none", boxShadow: isSelected ? "0.625rem 0.625rem 0 #E91E63" : undefined, transition: "transform 0.05s, box-shadow 0.05s" }}>
-                              <div style={{ fontSize: "2.0625rem", color: bg === "#FFB347" ? "#0A0A0A" : "#FFB347", marginBottom: "0.625rem" }}>${Math.round(val)}</div>
-                              <div style={{ fontSize: "0.9375rem", color: bg === "#FFB347" ? "#0A0A0A88" : "#888" }}>{lbl}</div>
-                            </PBox>
-                          );
-                        })}
-                      </div>
-                      <div className="btn-row" style={{ display: "flex", gap: "0.9375rem" }}>
-                        <PBtn full color={saved ? "#FFB347" : "#E91E63"} onClick={handleSave} style={{ flex: 1.5 }}>
-                          {saved ? <span style={{ display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconCheck size={24} /> SAVED</span> : "SAVE TO LOG"}
-                        </PBtn>
-                        <PBtn full color="#FFB347" onClick={() => { setNewTemplateForm({ name: "", notes: "" }); setShowSaveTemplateModal(true); }} style={{ flex: 1, display: "flex", gap: "0.5rem", justifyContent: "center", alignItems: "center" }}>
-                          <IconStar size={24} /> SAVE AS TEMPLATE
-                        </PBtn>
-                      </div>
-                    </PBox>
-                  </div>
-                )}
-              </>
-    </div>
+                <div className="calc-save">
+                  <PBtn full color={saved ? "var(--mint)" : "var(--pink)"} onClick={handleSave}>
+                    {saved ? <><IconCheck size={18} /> Saved to log</> : "Save to log"}
+                  </PBtn>
+                  <PBtn full color="var(--butter)" onClick={() => { setNewTemplateForm({ name: "", notes: "" }); setShowSaveTemplateModal(true); }}>
+                    <IconCopy size={17} /> Save as template
+                  </PBtn>
+                </div>
+              </div>
+            ) : (
+              <div className="calc-empty">
+                <div className="calc-empty-bars" aria-hidden="true"><i /><i /><i /></div>
+                <p>Fill in the details, then press <b>Calculate</b> to see Budget, Fair and Premium prices.</p>
+              </div>
+            )}
+          </Card>
+        </aside>
+      </div>
+    </Screen>
   );
 }

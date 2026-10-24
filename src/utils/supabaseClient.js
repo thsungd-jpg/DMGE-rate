@@ -1,6 +1,9 @@
 import { createClient } from '@supabase/supabase-js'
 
 let _client = null
+// DEV mock mode swaps the table query builder for a harmless stub (see src/dev/mock.js). Always null in production.
+let _stubFrom = null
+export function setSupabaseFromStub(fn) { _stubFrom = fn }
 
 function warnIfUrlRefMismatch(supabaseUrl, supabaseAnonKey) {
   try {
@@ -39,6 +42,7 @@ export const supabase = new Proxy(
   {},
   {
     get(_target, prop) {
+      if (_stubFrom && prop === 'from') return _stubFrom
       const c = getClient()
       const v = c[prop]
       return typeof v === 'function' ? v.bind(c) : v
