@@ -73,3 +73,8 @@
 @media (prefers-reduced-motion: reduce) {
   .lq-dock-inner { animation: none; }
 }
+
+/* narrow screens: drop the wordmark so the numbered chips and the day/night toggle all fit */
+@media (max-width: 640px) {
+  .lq-dock .lq-dock-lead { display: none; }
+}
