@@ -79,9 +79,10 @@ export function PLbl({ children, accent = "#FFB34788", style = {} }) {
   return <div className="lq-lbl" style={{ color: textOn(accent), ...style }}>{children}</div>;
 }
 
-export function PInput({ value, onChange, placeholder, style = {}, type = "text", min, step }) {
+export function PInput({ value, onChange, placeholder, style = {}, type = "text", min, step, ...rest }) {
   return (
     <input
+      {...rest}
       className="lq-input"
       type={type}
       value={value}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, Suspense } from "react";
 import rolesData from "./processed_roles.json";
 import { IconHelp, IconArrowLeft, IconArrowRight, IconArrowDown, IconEdit, IconDelete, IconTierFree, IconTierPro, IconTierAgency, IconMenu, IconMoney, IconStar, IconWrite, IconTalent, IconCheck, IconCross, IconPending, IconInProgress, IconLock, IconBigMoney, IconUpload } from "./icons";
 import AnalyticsDashboard from "./components/AnalyticsDashboard";
@@ -15,13 +15,16 @@ import TutorialPage from "./components/TutorialPage";
 import GlitchLogo from "./components/GlitchLogo";
 import HexBackground from "./components/HexBackground";
 import DMGEInvoiceEditor from "./components/DMGEInvoiceEditor";
-import SplashScreen from "./components/SplashScreen";
+import { Mark } from "./components/Brand";
 import PixelArrow from "./components/PixelArrow";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, getUsageStats, canCloudSync } from "./utils/subscription";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, complexityMods, usageRightsMods, clientMods } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
+
+// Landing is code-split: it pulls in WebGL/GSAP/Lenis only for logged-out visitors.
+const Landing = React.lazy(() => import("./landing/Landing"));
 
 // Add Legacy disciplines to the data (No emojis)
 const LEGACY_DISCIPLINES = {
@@ -429,10 +432,7 @@ export default function App() {
   const [upgradeFeature, setUpgradeFeature] = useState('clients');
   const [todayPdfCount, setTodayPdfCount] = useState(0);
 
-  // Splash + guided UX state
-  const [splashDone, setSplashDone] = useState(() => {
-    try { return sessionStorage.getItem('rateapp_splash_seen') === '1'; } catch { return false; }
-  });
+  // Guided UX state
   // Glow walks: role -> clientType -> usage -> calculate -> null
   const [glowStep, setGlowStep] = useState('role');
   const [muted, setMutedState] = useState(() => isMuted());
@@ -603,25 +603,38 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     );
   }
 
-  if (!splashDone) {
-    return (
-      <SplashScreen onDone={() => {
-        try { sessionStorage.setItem('rateapp_splash_seen', '1'); } catch {}
-        setSplashDone(true);
-      }} />
-    );
-  }
+  if (authLoading) return (
+    <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--cream, #FFF6E8)" }} role="status" aria-label="Loading">
+      <Mark size={44} />
+    </div>
+  );
 
-  if (authLoading) return <div style={{ height: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--pixel-text, #2a2a2a)", padding: "3.125rem", fontFamily: "'Press Start 2P'", background: "#d5d5d5" }}>LOADING...</div>;
-  if (!currentUser || recoveredMode) {
+  // Password-recovery links land straight on the new-password form.
+  if (recoveredMode) {
     return (
       <Auth
+        variant="page"
         onAuthSuccess={(user) => {
           setCurrentUser(user);
           setRecoveredMode(false);
         }}
-        initialMode={recoveredMode ? 'update_password' : 'login'}
+        initialMode="update_password"
       />
+    );
+  }
+
+  // Logged-out visitors get the animated Liquid Ledger landing, which hosts sign-in.
+  if (!currentUser) {
+    return (
+      <Suspense fallback={<div style={{ height: "100vh", background: "var(--cream, #FFF6E8)" }} />}>
+        <Landing
+          onAuthSuccess={(user) => {
+            setCurrentUser(user);
+            setRecoveredMode(false);
+          }}
+          initialMode="login"
+        />
+      </Suspense>
     );
   }
 

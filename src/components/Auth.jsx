@@ -1,25 +1,47 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { PBox, PBtn, PInput, PLbl } from './ui';
-import { IconStar, IconGoogle, IconCheck } from '../icons';
+import { Wordmark } from './Brand';
 import { supabase } from '../utils/supabaseClient';
-import GlitchLogo from './GlitchLogo';
-import HexBackground from './HexBackground';
-import LoadingBar from './LoadingBar';
+import { PALETTE as P } from '../styles/palette';
 
-export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
+function GoogleG() {
+  return (
+    <svg width="20" height="20" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+      <path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.4-.4-3.9z" />
+      <path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 8 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z" />
+      <path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z" />
+      <path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.2-2.2 4.2-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.9z" />
+    </svg>
+  );
+}
+
+const TITLES = {
+  login: 'Welcome back',
+  register: 'Create your account',
+  forgot_password: 'Reset your password',
+  update_password: 'Choose a new password',
+};
+
+const SUBMIT = {
+  login: 'Sign in',
+  register: 'Create account',
+  forgot_password: 'Send reset link',
+  update_password: 'Update password',
+};
+
+/**
+ * variant "card": the sign-in card embedded in the landing's final chapter.
+ * variant "page": standalone centered card (password-recovery link lands here).
+ * All Supabase auth logic is unchanged from the previous version.
+ */
+export default function Auth({ onAuthSuccess, initialMode = 'login', variant = 'page' }) {
   const [mode, setMode] = useState(initialMode); // 'login', 'register', 'forgot_password', 'update_password'
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [isBooted, setIsBooted] = useState(false);
-
-  const handleBootComplete = useCallback(() => {
-    setIsBooted(true);
-  }, []);
 
   const handleGoogleLogin = async () => {
-    if (!isBooted) return;
     setError('');
     setLoading(true);
     try {
@@ -29,7 +51,7 @@ export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
       });
       if (authError) throw authError;
     } catch (err) {
-      setError(err.message || 'Google login failed');
+      setError(err.message || 'Google sign-in failed');
     } finally {
       setLoading(false);
     }
@@ -37,7 +59,6 @@ export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!isBooted) return;
     setError('');
     setMessage('');
     setLoading(true);
@@ -59,16 +80,16 @@ export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
           options: { data: { name: form.name } }
         });
         if (authError) throw authError;
-        
+
         if (data.user) {
-           await supabase.from('profiles').insert([{ 
-             user_id: data.user.id, 
-             data: { 
-               name: form.name, 
-               defaultBaseRate: 25, 
+           await supabase.from('profiles').insert([{
+             user_id: data.user.id,
+             data: {
+               name: form.name,
+               defaultBaseRate: 25,
                presets: [],
-               branding: { companyName: "", logoBase64: "", surfaceColor: "#1A1A1A", bgColor: "#0A0A0A", textColor: "#FFB347", accentColor: "#E91E63" }
-             } 
+               branding: { companyName: "", logoBase64: "", surfaceColor: P.paper, bgColor: P.cream, textColor: P.ink, accentColor: P.pink }
+             }
            }]);
         }
         onAuthSuccess(data.user);
@@ -78,16 +99,16 @@ export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
           redirectTo: window.location.origin,
         });
         if (resetError) throw resetError;
-        setMessage('RECOVERY LINK TRANSMITTED... CHECK COMMS');
+        setMessage('Reset link sent. Check your email.');
       } else if (mode === 'update_password') {
         if (!form.password) throw new Error('Please enter a new password');
         const { error: updateError } = await supabase.auth.updateUser({
           password: form.password
         });
         if (updateError) throw updateError;
-        setMessage('ENCRYPTION UPDATED... ACCESS GRANTED');
-        
-        // Wait for the user to see the success message, then reveal the dashboard
+        setMessage('Password updated. Signing you in…');
+
+        // Give the user a moment to see the confirmation, then reveal the dashboard
         setTimeout(async () => {
           const { data } = await supabase.auth.getUser();
           onAuthSuccess(data.user);
@@ -100,154 +121,113 @@ export default function Auth({ onAuthSuccess, initialMode = 'login' }) {
     }
   };
 
-  const getTitle = () => {
-    if (mode === 'login') return 'LOGIN';
-    if (mode === 'register') return 'REGISTER';
-    if (mode === 'forgot_password') return 'RECOVERY';
-    if (mode === 'update_password') return 'NEW PASS';
-    return '';
-  };
+  const switchMode = (next) => { setMode(next); setError(''); setMessage(''); };
 
-  return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      padding: 20,
-      fontFamily: "'Press Start 2P', monospace",
-      background: '#0A0A0A',
-      position: 'relative',
-      overflow: 'hidden'
-    }}>
-      <HexBackground color="#FFB347" opacity={0.1} />
-      
-      <div style={{ maxWidth: 600, width: '100%', position: 'relative', zIndex: 10 }}>
-        <div style={{ textAlign: "center", marginBottom: 60 }}>
-          <GlitchLogo text="DMGE" fontSize="clamp(1.8rem, 6vw, 3rem)" primaryColor="#FFB347" secondaryColor="#E91E63" isLoaded={isBooted} />
-          <div style={{ color: isBooted ? '#E91E63' : '#FFB347', marginTop: 30, fontSize: 14, letterSpacing: '4px', transition: 'color 0.5s ease' }}>RATE SYSTEM</div>
-          
-          <LoadingBar primaryColor="#FFB347" secondaryColor="#E91E63" duration={2500} onComplete={handleBootComplete} style={{ marginTop: '20px' }} />
+  const card = (
+    <PBox bg={P.paper} className="auth-card" style={{ padding: 'clamp(20px, 5vw, 36px)', width: '100%', maxWidth: 460, boxShadow: 'var(--sh-3)' }}>
+      {variant === 'page' && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+          <Wordmark size={26} />
+        </div>
+      )}
+      <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 800, fontSize: 'clamp(24px, 4vw, 30px)', letterSpacing: '-0.02em', lineHeight: 1.1, textAlign: variant === 'page' ? 'center' : 'left', margin: '0 0 22px' }}>
+        {TITLES[mode]}
+      </h2>
 
-          {!isBooted && (
-            <div style={{ fontFamily: "'DM Mono', monospace", color: '#888', fontSize: '10px', marginTop: '12px', letterSpacing: '2px' }}>
-              INITIALIZING BOOT LOADER...
+      <form onSubmit={handleSubmit} noValidate>
+        {mode === 'register' && (
+          <div style={{ marginBottom: 16 }}>
+            <PLbl>Full name</PLbl>
+            <PInput
+              value={form.name}
+              onChange={(v) => setForm(f => ({ ...f, name: v }))}
+              placeholder="Your name"
+              autoComplete="name"
+              aria-label="Full name"
+            />
+          </div>
+        )}
+
+        {(mode === 'login' || mode === 'register' || mode === 'forgot_password') && (
+          <div style={{ marginBottom: 16 }}>
+            <PLbl>Email</PLbl>
+            <PInput
+              type="email"
+              value={form.email}
+              onChange={(v) => setForm(f => ({ ...f, email: v }))}
+              placeholder="you@studio.com"
+              autoComplete="email"
+              aria-label="Email address"
+            />
+          </div>
+        )}
+
+        {(mode === 'login' || mode === 'register' || mode === 'update_password') && (
+          <div style={{ marginBottom: 20 }}>
+            <PLbl>{mode === 'update_password' ? 'New password' : 'Password'}</PLbl>
+            <PInput
+              type="password"
+              value={form.password}
+              onChange={(v) => setForm(f => ({ ...f, password: v }))}
+              placeholder="••••••••"
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+              aria-label={mode === 'update_password' ? 'New password' : 'Password'}
+            />
+            {mode === 'register' && <div style={{ fontSize: 13, color: P.ink2, marginTop: 8 }}>At least 6 characters.</div>}
+            {mode === 'login' && (
+              <button type="button" className="auth-link" onClick={() => switchMode('forgot_password')} style={{ marginTop: 10, marginLeft: 'auto', display: 'block' }}>
+                Forgot password?
+              </button>
+            )}
+          </div>
+        )}
+
+        {error && (
+          <div role="alert" style={{ color: P.danger, background: P.dangerSoft, borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
+            {error}
+          </div>
+        )}
+
+        {message && (
+          <div role="status" style={{ color: P.mintDeep, background: P.mintSoft, borderRadius: 12, padding: '10px 14px', fontSize: 14, fontWeight: 500, marginBottom: 16 }}>
+            {message}
+          </div>
+        )}
+
+        <PBtn full color={P.ink} type="submit" disabled={loading} className="auth-primary" style={{ marginBottom: 16 }}>
+          {loading ? 'One moment…' : SUBMIT[mode]}
+        </PBtn>
+
+        {mode === 'login' && (
+          <>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 14, margin: '4px 0 16px', color: P.ink3, fontSize: 13 }}>
+              <span style={{ height: 1, background: 'var(--line-strong)', flex: 1 }} />
+              or
+              <span style={{ height: 1, background: 'var(--line-strong)', flex: 1 }} />
             </div>
+
+            <PBtn full color={P.paper} type="button" onClick={handleGoogleLogin} disabled={loading} style={{ marginBottom: 18 }}>
+              <GoogleG /> Continue with Google
+            </PBtn>
+          </>
+        )}
+
+        <div style={{ textAlign: 'center', fontSize: 14, color: P.ink2 }}>
+          {mode === 'login' ? (
+            <>New here? <button type="button" className="auth-link" onClick={() => switchMode('register')}>Create an account</button></>
+          ) : mode === 'update_password' ? null : (
+            <>Back to <button type="button" className="auth-link" onClick={() => switchMode('login')}>sign in</button></>
           )}
         </div>
+      </form>
+    </PBox>
+  );
 
-        <PBox 
-          bg="#1A1A1A" 
-          shadowColor={isBooted ? "#E91E63" : "#333"} 
-          style={{ 
-            padding: 'clamp(1rem, 5vw, 3rem)', 
-            boxShadow: isBooted ? '12px 12px 0 #E91E63' : '12px 12px 0 #222', 
-            border: `6px solid ${isBooted ? '#FFB347' : '#333'}`,
-            opacity: isBooted ? 1 : 0.3,
-            pointerEvents: isBooted ? 'auto' : 'none',
-            transition: 'all 0.5s ease'
-          }}
-        >
-          <div style={{ fontSize: 18, color: '#FFB347', marginBottom: 35, textAlign: 'center', letterSpacing: '2px' }}>
-            <span style={{display:"flex",gap:"1rem",alignItems:"center",justifyContent:"center"}}>
-              <IconStar size={24} color="#FFB347"/> {getTitle()} <IconStar size={24} color="#FFB347"/>
-            </span>
-          </div>
+  if (variant === 'card') return card;
 
-          <form onSubmit={handleSubmit}>
-            {mode === 'register' && (
-              <div style={{ marginBottom: 25 }}>
-                <PLbl accent="#FFB34788">▸ FULL NAME</PLbl>
-                <PInput 
-                  value={form.name}
-                  onChange={(v) => setForm(f => ({ ...f, name: v }))}
-                  placeholder="INSERT COIN..."
-                  style={{ fontSize: 14, padding: '20px', background: '#0A0A0A', border: '4px solid #FFB347', color: '#FFB347' }}
-                />
-              </div>
-            )}
-            
-            {(mode === 'login' || mode === 'register' || mode === 'forgot_password') && (
-              <div style={{ marginBottom: 25 }}>
-                <PLbl accent="#FFB34788">▸ EMAIL ADDRESS</PLbl>
-                <PInput 
-                  type="email"
-                  value={form.email}
-                  onChange={(v) => setForm(f => ({ ...f, email: v }))}
-                  placeholder="PLAYER1@DMGE.COM"
-                  style={{ fontSize: 14, padding: '20px', background: '#0A0A0A', border: '4px solid #FFB347', color: '#FFB347' }}
-                />
-              </div>
-            )}
-
-            {(mode === 'login' || mode === 'register' || mode === 'update_password') && (
-              <div style={{ marginBottom: 35 }}>
-                <PLbl accent="#FFB34788">▸ {mode === 'update_password' ? 'NEW PASSWORD' : 'PASSWORD'}</PLbl>
-                <PInput 
-                  type="password"
-                  value={form.password}
-                  onChange={(v) => setForm(f => ({ ...f, password: v }))}
-                  placeholder="******"
-                  style={{ fontSize: 14, padding: '20px', background: '#0A0A0A', border: '4px solid #FFB347', color: '#FFB347' }}
-                />
-                {mode === 'register' && <div style={{ fontSize: 10, color: '#E91E63', marginTop: 12 }}>MINIMUM 6 CHARACTERS</div>}
-                
-                {mode === 'login' && (
-                  <div 
-                    onClick={() => setMode('forgot_password')}
-                    style={{ fontSize: 10, color: '#E91E63', marginTop: 15, cursor: 'pointer', textAlign: 'right', letterSpacing: '1px' }}
-                  >
-                    _ FORGOT PASSWORD?
-                  </div>
-                )}
-              </div>
-            )}
-
-            {error && (
-              <div style={{ color: '#E91E63', fontSize: 12, marginBottom: 25, textAlign: 'center', textTransform: 'uppercase', background: 'rgba(233, 30, 99, 0.1)', padding: '10px', border: '2px solid #E91E63' }}>
-                ! {error} !
-              </div>
-            )}
-
-            {message && (
-              <div style={{ color: '#4CAF50', fontSize: 12, marginBottom: 25, textAlign: 'center', textTransform: 'uppercase', background: 'rgba(76, 175, 80, 0.1)', padding: '10px', border: '2px solid #4CAF50', display: "flex", alignItems: "center", justifyContent: "center", gap: "10px" }}>
-                <IconCheck size={18} color="#4CAF50" /> {message}
-              </div>
-            )}
-
-            <PBtn full color="#FFB347" type="submit" style={{ marginBottom: 25, fontSize: 18, color: '#0A0A0A' }} disabled={loading}>
-              {loading ? 'LOADING...' : mode === 'login' ? 'CONNECT' : mode === 'register' ? 'INITIALIZE' : mode === 'forgot_password' ? 'SEND LINK' : 'UPDATE'}
-            </PBtn>
-
-            {mode === 'login' && (
-              <>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: 25 }}>
-                   <div style={{ height: '4px', background: '#333', flexGrow: 1 }}></div>
-                   <div style={{ fontSize: 10, color: '#666' }}>OR</div>
-                   <div style={{ height: '4px', background: '#333', flexGrow: 1 }}></div>
-                </div>
-
-                <PBtn full color="#1A1A1A" type="button" onClick={handleGoogleLogin} style={{ marginBottom: 25, border: '4px solid #FFB347', color: '#FFB347', display: "flex", alignItems: "center", justifyContent: "center", gap: "12px" }}>
-                  <IconGoogle size={24} color="#FFB347" /> <span style={{fontSize: 14}}>GOOGLE LOGIN</span>
-                </PBtn>
-              </>
-            )}
-
-            <div 
-              onClick={() => {
-                if (mode === 'login') setMode('register');
-                else setMode('login');
-                setError('');
-                setMessage('');
-              }} 
-              style={{ fontSize: 11, color: '#888', textAlign: 'center', cursor: 'pointer', textDecoration: 'none', letterSpacing: '1px' }}
-            >
-              {mode === 'login' ? '_ CREATE NEW ACCOUNT' : '_ RETURN TO TERMINAL'}
-            </div>
-          </form>
-        </PBox>
-      </div>
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, background: 'var(--cream)' }}>
+      {card}
     </div>
   );
 }
-

@@ -1,0 +1,66 @@
+/* Floating liquid dock */
+.lq-dock {
+  position: fixed; left: 0; right: 0; z-index: 50;
+  display: flex; justify-content: center; pointer-events: none;
+  padding: 0 12px;
+}
+.lq-dock--bottom { bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+.lq-dock--top { top: calc(14px + env(safe-area-inset-top, 0px)); }
+
+.lq-dock-inner {
+  position: relative; pointer-events: auto;
+  display: flex; align-items: center; gap: 2px; max-width: 100%;
+  padding: 6px;
+  background: rgba(255, 251, 244, 0.72);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4); backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(43, 33, 64, 0.1);
+  border-radius: 999px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset, 0 10px 30px -10px rgba(43, 33, 64, 0.28), 0 30px 60px -30px rgba(255, 158, 199, 0.55);
+  animation: lqDockIn 0.7s var(--ease-spring) both;
+}
+@keyframes lqDockIn { from { opacity: 0; transform: translateY(18px) scale(0.94); } to { opacity: 1; transform: none; } }
+
+.lq-dock-lead { display: flex; align-items: center; padding: 0 10px 0 12px; }
+
+.lq-dock-ind {
+  position: absolute; top: 6px; bottom: 6px; border-radius: 999px; pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(120deg, var(--pink), var(--blue) 55%, var(--mint));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 8px 18px -8px rgba(142, 197, 255, 0.9);
+}
+
+.lq-dock-item {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 6px;
+  min-height: 42px; padding: 0 16px;
+  font-family: var(--font-body); font-weight: 700; font-size: 14px; letter-spacing: 0.02em;
+  color: var(--ink-2); background: none; border: none; border-radius: 999px; cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, transform 0.2s var(--ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+.lq-dock-item:hover { color: var(--ink); }
+.lq-dock-item:active { transform: scale(0.95); }
+.lq-dock-item[aria-current="page"], .lq-dock-item[aria-current="page"]:hover { color: var(--ink); }
+.lq-dock-short { display: none; font-family: var(--font-mono); font-weight: 500; }
+.lq-dock-badge {
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 500; color: var(--ink);
+  background: var(--butter); border: 1px solid rgba(43, 33, 64, 0.14);
+}
+
+@media (max-width: 640px) {
+  .lq-dock-item { padding: 0 12px; min-height: 40px; }
+  .lq-dock-has-short .lq-dock-label { display: none; }
+  .lq-dock-has-short .lq-dock-short { display: inline; }
+}
+@media (max-width: 520px) {
+  .lq-dock-inner { max-width: calc(100vw - 20px); overflow-x: auto; scrollbar-width: none; }
+  .lq-dock-inner::-webkit-scrollbar { display: none; }
+  .lq-dock-item { padding: 0 11px; font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lq-dock-inner { animation: none; }
+}

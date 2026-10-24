@@ -198,3 +198,9 @@ body {
 }
 .lq-modal-title { font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 4vw, 26px); letter-spacing: -0.01em; color: var(--ink); line-height: 1.2; }
 @keyframes lqFade { from { opacity: 0; } to { opacity: 1; } }
+
+/* ── auth ───────────────────────────────────────────────────── */
+.lq-btn.auth-primary { color: var(--cream); }
+.lq-btn.auth-primary:disabled { color: var(--cream); }
+.auth-link { background: none; border: none; padding: 0; font: inherit; font-weight: 700; color: var(--blue-deep); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.auth-link:hover { color: var(--ink); }
