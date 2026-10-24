@@ -23,6 +23,16 @@ import { TIERS, loadSubscription, canAddClient, canAddClientsBatch, canAddTempla
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, complexityMods, usageRightsMods, clientMods } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
+import CalcScreen from "./screens/CalcScreen";
+import HistoryScreen from "./screens/HistoryScreen";
+import TemplatesScreen from "./screens/TemplatesScreen";
+import ClientsScreen from "./screens/ClientsScreen";
+import AnalyticsScreen from "./screens/AnalyticsScreen";
+import TutorialScreen from "./screens/TutorialScreen";
+import InvoiceEditorScreen from "./screens/InvoiceEditorScreen";
+import PricingScreen from "./screens/PricingScreen";
+import ProfileScreen from "./screens/ProfileScreen";
+import AppModals from "./screens/AppModals";
 
 // Landing is code-split: it pulls in WebGL/GSAP/Lenis only for logged-out visitors.
 const Landing = React.lazy(() => import("./landing/Landing"));
@@ -1059,7 +1069,113 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     .map(([name, qty]) => `${name} x${qty}`)
     .join(", ") || "None";
 
-  return (
+    // Everything the extracted screens need, in one bag (see src/screens/*).
+  const ctx = {
+    ALL_DATA,
+    ColorSwatches,
+    advanceGlow,
+    catData,
+    category,
+    clients,
+    confirmAddMaterial,
+    confirmDelete,
+    currentUser,
+    customMaterials,
+    deleteTarget,
+    emailForm,
+    emailStatus,
+    filteredJobs,
+    fmtDate,
+    form,
+    glowStep,
+    handleAddCustomMaterial,
+    handleCalc,
+    handleDeleteJob,
+    handleEditJob,
+    handleGatedCSV,
+    handleGatedPDF,
+    handleLogoUpload,
+    handlePlanSelect,
+    handleReset,
+    handleResetModel,
+    handleSave,
+    handleSaveTemplate,
+    handleSendQuote,
+    handleToggleMute,
+    handleUpgrade,
+    handleUseTemplate,
+    historyJobs,
+    isSendingEmail,
+    jobStatusFilter,
+    jobs,
+    loadClientsFromStorage,
+    loadJobs,
+    loadTemplatesFromStorage,
+    matPriceOverrides,
+    matQtys,
+    materialSummary,
+    materialsCost,
+    mats,
+    model,
+    modelIdx,
+    muted,
+    newMatForm,
+    newTemplateForm,
+    price,
+    profile,
+    resetAppData,
+    resetKey,
+    role,
+    roleIdx,
+    saveClientToStorage,
+    saveJob,
+    saveProfile,
+    saveTemplateToStorage,
+    saved,
+    selectedClientId,
+    selectedJobForEmail,
+    selectedTier,
+    sendEmail,
+    set,
+    setCategory,
+    setClients,
+    setDeleteTarget,
+    setEmailForm,
+    setEmailStatus,
+    setForm,
+    setInvoiceEditorData,
+    setJobStatusFilter,
+    setJobs,
+    setMatPriceOverrides,
+    setMatQtys,
+    setModelIdx,
+    setNewMatForm,
+    setNewTemplateForm,
+    setPrice,
+    setProfile,
+    setRoleIdx,
+    setSelectedClientId,
+    setSelectedTier,
+    setShowDeleteModal,
+    setShowMatModal,
+    setShowSaveTemplateModal,
+    setShowUpgradeModal,
+    setTab,
+    setTemplates,
+    setUpgradeFeature,
+    showDeleteModal,
+    showMatModal,
+    showSaveTemplateModal,
+    showUpgradeModal,
+    templates,
+    todayPdfCount,
+    totalBilled,
+    upgradeFeature,
+    userTier,
+    windowedJobs,
+  };
+
+return (
     <>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
@@ -1316,949 +1432,32 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         <div className="content-wrapper" style={{ maxWidth: "90vw", margin: "0 auto", padding: "1rem 1.5rem" }}>
 
           {/* DASHBOARD */}
-          {tab === "dashboard" && (
-            <div style={{ marginBottom: "0.5rem" }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                <PBtn full small color="#FFB347" onClick={() => setTab("history")} style={{ color: "#0A0A0A" }}>JBS ({dashboardJobCount})</PBtn>
-                <PBtn full small color="#FFB347" onClick={() => setTab("templates")} style={{ color: "#0A0A0A" }}>TMP ({templates.length})</PBtn>
-                <PBtn full small color="#FFB347" onClick={() => setTab("clients")} style={{ color: "#0A0A0A" }}>CLI ({clients.length})</PBtn>
-                <PBtn full small color="#FFB347" onClick={() => {
-                  if (!canViewAnalytics(userTier)) {
-                    setUpgradeFeature('analytics');
-                    setShowUpgradeModal(true);
-                  } else setTab("analytics");
-                }} style={{ color: "#0A0A0A" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px", justifyContent: "center" }}>ANA {!canViewAnalytics(userTier) && <IconLock size={14} color="#0A0A0A" />}</span>
-                </PBtn>
-                <PBtn full small color="#FFB347" onClick={() => setTab("profile")} style={{ color: "#0A0A0A" }}>PRO</PBtn>
-                <PBtn full small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                  <IconArrowLeft size={18} color="#0A0A0A" /> CALC
-                </PBtn>
-              </div>
-              <PBtn full small color="#E91E63" style={{ border: "0.25rem solid #0A0A0A", color: "#fff", marginTop: "0.75rem" }} onClick={() => supabase.auth.signOut()}>⏻ SIGN OUT</PBtn>
-            </div>
-          )}
+          
 
           {/* MAIN CALCULATION CONTENT */}
-          {tab === "calc" && <>
-            <div style={{ marginBottom: "2.1875rem" }}>
-              {form.id && (
-                <div style={{
-                  background: "rgba(233,30,99,0.1)", border: "0.25rem solid #E91E63",
-                  padding: "0.625rem", marginBottom: "1rem", textAlign: "center",
-                  fontFamily: "'Press Start 2P'", fontSize: "0.6875rem", color: "#E91E63"
-                }}>
-                  EDITING MODE: {form.invoiceNumber}
-                </div>
-              )}
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem", gap: "0.5rem" }}>
-                <PLbl style={{ marginBottom: 0 }}>QUICK CLIENT SELECT</PLbl>
-                <div style={{ display: "flex", gap: "0.5rem" }}>
-                  <PBtn small color="#FFB347" onClick={handleToggleMute} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem", color: "#0A0A0A" }} title={muted ? "SFX OFF" : "SFX ON"}>
-                    {muted ? "SFX:OFF" : "SFX:ON"}
-                  </PBtn>
-                  <PBtn small color="#E91E63" onClick={() => setTab("tutorial")} style={{ padding: "0.625rem 0.9375rem", fontSize: "0.875rem" }}>TUTORIAL</PBtn>
-                </div>
-              </div>
-              <PSelect
-                value={selectedClientId}
-                onChange={id => {
-                  setSelectedClientId(id);
-                  const c = clients.find(cl => cl.id === id);
-                  if (c) {
-                    setForm(f => ({ ...f, complexity: c.preferredComplexity, usage: c.preferredUsageRights, clientType: c.preferredClientType }));
-                  }
-                  setPrice(null);
-                }}
-                options={[{ label: "None (Default Rates)", value: "" }, ...clients.map(c => ({ label: `${c.name} (${c.rateMultiplier}x)`, value: c.id }))]}
-                iconType="none"
-              />
-            </div>
+          {tab === "calc" && <CalcScreen ctx={ctx} />}
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-              <div style={{ gridColumn: "1 / -1", position: "relative" }} className={glowStep === 'role' ? 'dmge-glow' : ''} onClick={() => advanceGlow('role')}>
-                {glowStep === 'role' && (
-                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                    <PixelArrow direction="right" size={48} bounce />
-                  </span>
-                )}
-                <PCollapsible key={`discipline-${resetKey}`} title="ROLE" defaultOpen={false} collapsedInfo={`${category} / ${role.name} / ${model.type}`}>
-                  <PLbl>CATEGORY</PLbl>
-                  <PSelect
-                    value={category}
-                    onChange={v => { setCategory(v); setRoleIdx(0); setModelIdx(0); handleResetModel(ALL_DATA[v].roles[0].models[0]); }}
-                    options={Object.keys(ALL_DATA).map(c => ({ label: c, value: c }))}
-                    iconType="cat"
-                  />
+          {tab === "history" && <HistoryScreen ctx={ctx} />}
 
-                  <PLbl>ROLE</PLbl>
-                  <PSelect
-                    value={roleIdx}
-                    onChange={v => { setRoleIdx(v); setModelIdx(0); handleResetModel(catData.roles[v].models[0]); }}
-                    options={catData.roles.map((r, i) => ({ label: r.name, value: i }))}
-                    iconType="none"
-                  />
+          {tab === "templates" && <TemplatesScreen ctx={ctx} />}
 
-                  <PLbl>PRICING MODEL</PLbl>
-                  <PSelect
-                    value={modelIdx}
-                    onChange={v => { setModelIdx(v); handleResetModel(role.models[v]); }}
-                    options={role.models.map((m, i) => ({ label: `${m.type} (${m.unit})`, value: i }))}
-                    iconType="none"
-                  />
-                </PCollapsible>
-              </div>
+          {tab === "clients" && <ClientsScreen ctx={ctx} />}
 
-              <PCollapsible key={`quantity-${resetKey}`} title="QTY" defaultOpen={false} collapsedInfo={`${form.units} ${model.unit.replace("per hour", "per hr")}`}>
-                <div style={{ padding: "0.25rem 0" }}>
-                  <PLbl style={{ marginBottom: "0.75rem" }}>QUANTITY</PLbl>
-                  <PInput type="number" value={form.units} onChange={set("units")} placeholder="1" min={0.1} step={1} />
-                </div>
-              </PCollapsible>
+          {tab === "analytics" && <AnalyticsScreen ctx={ctx} />}
 
-              <PCollapsible key={`complexity-${resetKey}`} title="COMPLEX" defaultOpen={false} collapsedInfo={form.complexity} tooltip="Simple projects get lower rates; Masterpieces command premium pricing">
-                <OptionGrid options={complexityMods} value={form.complexity} onChange={set("complexity")} cols={4} />
-              </PCollapsible>
-
-              <div style={{ position: "relative" }} className={glowStep === 'clientType' ? 'dmge-glow' : ''} onClick={() => advanceGlow('clientType')}>
-                {glowStep === 'clientType' && (
-                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                    <PixelArrow direction="right" size={48} bounce />
-                  </span>
-                )}
-                <PCollapsible key={`clientType-${resetKey}`} title="CLIENT" defaultOpen={false} collapsedInfo={form.clientType} tooltip="Corporate clients typically pay 2-2.5x more">
-                  <OptionGrid options={clientMods} value={form.clientType} onChange={(v) => { set("clientType")(v); advanceGlow('clientType'); }} cols={4} />
-                </PCollapsible>
-              </div>
-
-              <div style={{ position: "relative" }} className={glowStep === 'usage' ? 'dmge-glow' : ''} onClick={() => advanceGlow('usage')}>
-                {glowStep === 'usage' && (
-                  <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                    <PixelArrow direction="right" size={48} bounce />
-                  </span>
-                )}
-                <PCollapsible key={`usage-${resetKey}`} title="USAGE" defaultOpen={false} collapsedInfo={form.usage} tooltip="Personal = one-time use; Commercial = broader rights">
-                  <OptionGrid options={usageRightsMods} value={form.usage} onChange={(v) => { set("usage")(v); advanceGlow('usage'); }} cols={2} />
-                </PCollapsible>
-              </div>
-
-              <PCollapsible key={`revisions-${resetKey}`} title="REVS" defaultOpen={false} collapsedInfo={`${form.revisions} revisions`} tooltip="0 revisions = discount; 3+ revisions = premium">
-                <div style={{ padding: "0.25rem 0" }}>
-                  <PLbl style={{ marginBottom: "0.75rem" }}>REVISIONS</PLbl>
-                  <PInput type="number" value={form.revisions} onChange={set("revisions")} placeholder="0" min={0} step={1} />
-                </div>
-              </PCollapsible>
-
-              <PCollapsible key={`travel-${resetKey}`} title="COMMUTE" defaultOpen={false} collapsedInfo={`$${(form.travelExpense || 0).toFixed(2)}`} tooltip="Add direct travel expenses to quote">
-                <div style={{ padding: "0.25rem 0" }}>
-                  <PLbl style={{ marginBottom: "0.75rem" }}>COMMUTE COST</PLbl>
-                  <PInput type="number" value={form.travelExpense || 0} onChange={v => { setForm(f => ({ ...f, travelExpense: v })); setPrice(null); }} placeholder="0.00" />
-                </div>
-              </PCollapsible>
-
-              <PCollapsible key={`rush-${resetKey}`} title="RUSH" defaultOpen={false} collapsedInfo={form.rush ? "Yes (+30%)" : "No"} tooltip="30% markup for expedited delivery">
-                <div style={{ padding: "0.25rem 0" }}>
-                  <PLbl style={{ marginBottom: "0.75rem" }}>RUSH ORDER</PLbl>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem" }}>
-                    <PBtn full small color={form.rush ? "#FFB347" : "#1A1A1A"} onClick={() => { setForm(f => ({ ...f, rush: true })); setPrice(null); }}>YES</PBtn>
-                    <PBtn full small color={!form.rush ? "#FFB347" : "#1A1A1A"} onClick={() => { setForm(f => ({ ...f, rush: false })); setPrice(null); }}>NO</PBtn>
-                  </div>
-                </div>
-              </PCollapsible>
-
-              <PCollapsible key={`platform-${resetKey}`} title="FEE" defaultOpen={false} collapsedInfo={form.platformFee ? `${form.platformFee}%` : "None"} tooltip="Add % to embed payment processing costs">
-                <div style={{ padding: "0.25rem 0" }}>
-                  <PLbl style={{ marginBottom: "0.75rem" }}>PLATFORM (%)</PLbl>
-                  <PInput type="number" value={form.platformFee || 0} onChange={v => { setForm(f => ({ ...f, platformFee: v })); setPrice(null); }} placeholder="0" />
-                </div>
-              </PCollapsible>
-
-              <div style={{ gridColumn: "1 / -1" }}>
-                <PCollapsible key={`materials-${resetKey}`} title="SUPPLIES" defaultOpen={false} collapsedInfo={materialSummary}>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 14rem), 1fr))", gap: "0.5rem" }}>
-                    {(() => {
-                      const allMats = [...mats, ...customMaterials]; return allMats.map((mat, idx) => {
-                        const displayMat = { ...mat, cost: matPriceOverrides[mat.name] ?? mat.cost };
-                        const isLastOdd = allMats.length % 2 === 1 && idx === allMats.length - 1;
-                        return (
-                          <div key={mat.name} style={isLastOdd ? { gridColumn: "1 / -1" } : undefined}>
-                            <MatChip
-                              mat={displayMat} qty={matQtys[mat.name] || 0}
-                              accent="#E91E63" bg="#FFB347"
-                              onAdd={() => setMatQtys(q => ({ ...q, [mat.name]: (q[mat.name] || 0) + 1 }))}
-                              onRemove={() => setMatQtys(q => ({ ...q, [mat.name]: Math.max(0, (q[mat.name] || 0) - 1) }))}
-                              onCostChange={(name, cost) => setMatPriceOverrides(o => ({ ...o, [name]: cost }))}
-                            />
-                          </div>
-                        );
-                      });
-                    })()}
-                    <div style={{ gridColumn: "1 / -1" }}>
-                      <PBtn full color="#FFB347" small onClick={handleAddCustomMaterial} style={{ marginTop: "0.5rem" }}>+ ADD CUSTOM ITEM</PBtn>
-                    </div>
-                  </div>
-                  {materialsCost > 0 && (
-                    <div style={{ fontFamily: "'Press Start 2P'", fontSize: "1.4375rem", color: "#FFB347", textAlign: "right", marginTop: "1.5625rem" }}>
-                      MT SUB: ${materialsCost.toFixed(2)}
-                    </div>
-                  )}
-                </PCollapsible>
-              </div>
-
-              <div style={{ gridColumn: "1 / -1" }}>
-                <PCollapsible key={`notes-${resetKey}`} title="INVOICE NOTES" defaultOpen={false} collapsedInfo={form.notes ? "Has Notes" : "None"} tooltip="Specific details for this job/invoice">
-                  <PLbl>JOB NOTES</PLbl>
-                  <textarea
-                    value={form.notes}
-                    onChange={e => { setForm(f => ({ ...f, notes: e.target.value })); setPrice(null); }}
-                    placeholder="Specific job details..."
-                    style={{ width: "100%", fontFamily: "'Press Start 2P'", fontSize: "0.75rem", padding: "1.25rem", border: "0.5rem solid #FFB347", minHeight: 100, background: "#0A0A0A", color: "#FFB347" }}
-                  />
-                </PCollapsible>
-              </div>
-            </div>
-
-            <div className="action-buttons" style={{ display: "flex", gap: "1.25rem", marginBottom: "2.5rem", position: "relative" }}>
-              {glowStep === 'calculate' && (
-                <span style={{ position: "absolute", left: "-3.5rem", top: "50%", transform: "translateY(-50%)", zIndex: 5, pointerEvents: "none" }}>
-                  <PixelArrow direction="right" size={56} bounce />
-                </span>
-              )}
-              <PBtn color="#E91E63" onClick={handleCalc} glow={glowStep === 'calculate'} style={{ flex: 1, display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#0A0A0A" /> CALCULATE <IconStar size={24} color="#0A0A0A" /></PBtn>
-              <PBtn color="#FFB347" onClick={handleReset} style={{ flex: 1 }}>↺ RESET</PBtn>
-            </div>
-
-            {price && (
-              <div className="res-in" style={{ marginTop: "2.5rem" }}>
-                <PBox bg="#1A1A1A" shadowColor="#E91E63" style={{ boxShadow: `0.9375rem 0.9375rem 0 #E91E63` }}>
-                  <div style={{ textAlign: "center", marginBottom: "2.1875rem" }}>
-                    <div style={{ fontSize: "1.125rem", color: "#FFB347", marginBottom: "1.5625rem", display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconStar size={24} color="#FFB347" /> ESTIMATED TOTAL <IconStar size={24} color="#FFB347" /></div>
-                    <div style={{ fontSize: "5rem", color: "#FFB347" }}>${Math.round(price[selectedTier])}</div>
-                    <div style={{ fontSize: "0.75rem", color: "#FFB34788", marginTop: "0.5rem" }}>TAP A TIER BELOW TO CHANGE</div>
-                  </div>
-                  <div className="price-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1.25rem", marginBottom: "2.1875rem" }}>
-                    {[["BUDGET", "low", price.low, "#121212"], [<span key="fairlbl" style={{ display: "flex", gap: "4px", justifyContent: "center", alignItems: "center" }}>FAIR <IconStar size={20} color="#0A0A0A" /></span>, "fair", price.fair, "#FFB347"], ["PREMIUM", "premium", price.premium, "#1A1A1A"]].map(([lbl, tierKey, val, bg]) => {
-                      const isSelected = selectedTier === tierKey;
-                      return (
-                        <PBox key={tierKey} bg={bg} shadowColor="#E91E63" onClick={() => setSelectedTier(tierKey)} style={{ textAlign: "center", padding: "1.5625rem 0.625rem", cursor: "pointer", border: isSelected ? "0.375rem solid #E91E63" : undefined, transform: isSelected ? "translate(-0.125rem, -0.125rem)" : "none", boxShadow: isSelected ? "0.625rem 0.625rem 0 #E91E63" : undefined, transition: "transform 0.05s, box-shadow 0.05s" }}>
-                          <div style={{ fontSize: "2.0625rem", color: bg === "#FFB347" ? "#0A0A0A" : "#FFB347", marginBottom: "0.625rem" }}>${Math.round(val)}</div>
-                          <div style={{ fontSize: "0.9375rem", color: bg === "#FFB347" ? "#0A0A0A88" : "#888" }}>{lbl}</div>
-                        </PBox>
-                      );
-                    })}
-                  </div>
-                  <div className="btn-row" style={{ display: "flex", gap: "0.9375rem" }}>
-                    <PBtn full color={saved ? "#FFB347" : "#E91E63"} onClick={handleSave} style={{ flex: 1.5 }}>
-                      {saved ? <span style={{ display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}><IconCheck size={24} /> SAVED</span> : "SAVE TO LOG"}
-                    </PBtn>
-                    <PBtn full color="#FFB347" onClick={() => { setNewTemplateForm({ name: "", notes: "" }); setShowSaveTemplateModal(true); }} style={{ flex: 1, display: "flex", gap: "0.5rem", justifyContent: "center", alignItems: "center" }}>
-                      <IconStar size={24} /> SAVE AS TEMPLATE
-                    </PBtn>
-                  </div>
-                </PBox>
-              </div>
-            )}
-          </>}
-
-          {tab === "history" && <>
-            <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-              <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", flexWrap: "wrap", paddingBottom: "0.5rem" }}>
-                <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                  <IconArrowLeft size={18} color="#0A0A0A" /> CALC
-                </PBtn>
-                <PBtn small color="#FFB347" onClick={handleGatedCSV} style={{ color: "#0A0A0A" }}>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px", justifyContent: "center" }}>CSV {!canExportCSV(userTier) && <IconLock size={14} color="#0A0A0A" />}</span>
-                </PBtn>
-                <div style={{ marginBottom: 0, minWidth: "14.5rem" }}>
-                  <PSelect
-                    value={jobStatusFilter}
-                    onChange={setJobStatusFilter}
-                    options={[
-                      { label: "All Jobs", value: "all" },
-                      { label: "Pending", value: "pending" },
-                      { label: "Current", value: "in_progress" },
-                      { label: "Completed", value: "completed" },
-                    ]}
-                    iconType="none"
-                    smallBtnStyle={true}
-                    style={{ marginBottom: 0 }}
-                  />
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "nowrap", whiteSpace: "nowrap", marginTop: "0.5rem" }}>
-                <PLbl style={{ marginBottom: 0, flexShrink: 0 }}>STATUS:</PLbl>
-                <span style={{ fontSize: "0.85rem", color: "#9E9E9E", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                  <IconPending size={18} color="#9E9E9E" /> {historyJobs.filter(j => j.status === "pending").length} Pend
-                </span>
-                <span style={{ fontSize: "0.85rem", color: "#FF9800", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                  <IconInProgress size={18} color="#FF9800" /> {historyJobs.filter(j => j.status === "in_progress").length} IP
-                </span>
-                <span style={{ fontSize: "0.85rem", color: "#4CAF50", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                  <IconCheck size={18} color="#4CAF50" /> {historyJobs.filter(j => j.status === "completed").length} Done
-                </span>
-              </div>
-            </div>
-            <PBox bg="#1A1A1A" shadowColor="#E91E63" style={{ marginBottom: "2.1875rem" }}>
-              <div style={{ fontSize: "clamp(0.7rem, 2.5vw, 0.9375rem)", color: "#FFB34788", marginBottom: "0.9375rem" }}>TOTAL REVENUE</div>
-              <div style={{ fontSize: "clamp(2rem, 8vw, 3.125rem)", color: "#FFB347" }}>${Math.round(totalBilled)}</div>
-            </PBox>
-            {filteredJobs.map((j, i) => (
-              <PBox key={i} bg="#1A1A1A" shadowColor="#E91E63" style={{ marginBottom: "1.5625rem" }}>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", justifyContent: "space-between", alignItems: "flex-start" }}>
-                  <div style={{ flex: "1 1 250px" }}>
-                    <div style={{ fontSize: "clamp(1.5rem, 5vw, 2.0625rem)", color: "#FFB347" }}>${Math.round(j.price)}</div>
-                    <div style={{ fontSize: "0.9375rem", color: "#FFB34788", marginTop: "0.9375rem" }}>
-                      {j.role} · {j.model}
-                    </div>
-                    <div style={{ fontSize: "0.875rem", color: "#FFB34788", marginTop: "0.3125rem" }}>
-                      Travel: ${(j.travelExpense || 0).toFixed(2)}
-                    </div>
-                    <div style={{ fontSize: "0.875rem", color: "#FFB34788", marginTop: "0.3125rem" }}>
-                      Status: <span style={{
-                        color: j.status === "completed" ? "#4CAF50" : j.status === "in_progress" ? "#FF9800" : "#9E9E9E",
-                        display: "inline-flex", gap: "4px", alignItems: "center"
-                      }}>{j.status === "completed" ? <><IconCheck size={18} color="#4CAF50" /> COMPLETED</> : j.status === "in_progress" ? <><IconInProgress size={18} color="#FF9800" /> IN PROGRESS</> : <><IconPending size={18} color="#9E9E9E" /> PENDING</>}</span>
-                    </div>
-                  </div>
-                  <div style={{ flex: "1 1 300px" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start", gap: "0.625rem", marginBottom: "0.625rem", alignItems: "center" }}>
-                      <PBtn small color="#1A1A1A" onClick={(e) => { e.stopPropagation(); handleEditJob(j); }} style={{ color: "#FFB347", padding: "0.5rem 0.75rem" }} title="Edit Job">
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><IconEdit color="#FFB347" size={18} /> EDIT</span>
-                      </PBtn>
-                      <PBtn small color="#1A1A1A" onClick={(e) => { e.stopPropagation(); handleDeleteJob(j.id); }} style={{ color: "#E91E63", padding: "0.5rem 0.75rem" }} title="Delete Job">
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><IconCross color="#E91E63" size={18} /> DEL</span>
-                      </PBtn>
-                      <div style={{ marginLeft: "auto", fontSize: "0.9375rem", color: "#FFB34788" }}>{fmtDate(j.date)}</div>
-                    </div>
-
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem", marginBottom: "0.625rem" }}>
-                      <PBtn small color="#1A1A1A" onClick={() => handleGatedPDF(j)} style={{ flexGrow: 1, color: "#FFB347" }}>PDF</PBtn>
-                      <PBtn small color="#1A1A1A" onClick={() => handleSendQuote(j)} style={{ flexGrow: 1, color: "#FFB347" }}>EMAIL</PBtn>
-                      <PBtn small color="#FFB347" onClick={() => {
-                        const template = {
-                          id: "tpl-" + Date.now(),
-                          name: `${j.role} - ${j.model}`,
-                          category: j.category || category,
-                          role: j.role,
-                          model: j.model,
-                          baseRate: j.baseRate || 25,
-                          form: { units: j.units, complexity: j.complexity, usage: j.usage, rush: j.rush, revisions: j.revisions, platformFee: j.platformFee, clientType: j.clientType, travelExpense: j.travelExpense },
-                          materials: [],
-                          notes: "Imported from job history",
-                          createdAt: new Date().toISOString(),
-                          usageCount: 0
-                        };
-                        saveTemplateToStorage(template, userTier, currentUser).then(() => loadTemplatesFromStorage(userTier, currentUser).then(t => { setTemplates(t); setTab("templates"); }));
-                      }} style={{ flexGrow: 1, color: "#0A0A0A" }}>+ TPL</PBtn>
-                      {!j.clientId && (
-                        <PBtn small color="#E91E63" onClick={async () => {
-                          if (!canAddClient(userTier, clients.length)) {
-                            setUpgradeFeature('clients');
-                            setShowUpgradeModal(true);
-                            return;
-                          }
-                          const newClientId = "cli-" + Date.now() + Math.random().toString(36).substr(2, 5);
-                          const newClient = {
-                            id: newClientId,
-                            name: `Client - ${j.role}`,
-                            email: "",
-                            phone: "",
-                            preferredComplexity: j.complexity || "Standard",
-                            preferredUsageRights: j.usage || "Personal",
-                            preferredClientType: j.clientType || "Individual",
-                            rateMultiplier: 1.0,
-                            notes: "Created from quote on " + fmtDate(j.date)
-                          };
-
-                          // Save client
-                          await saveClientToStorage(newClient, userTier, currentUser);
-                          setClients(await loadClientsFromStorage(userTier, currentUser));
-
-                          // Link job
-                          const allJobs = await loadJobs(userTier, currentUser);
-                          const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                          if (jobIdx >= 0) {
-                            allJobs[jobIdx].clientId = newClientId;
-                            await saveJob(allJobs[jobIdx], userTier, currentUser);
-                            setJobs(await loadJobs(userTier, currentUser));
-                          }
-
-                          setSelectedClientId(newClientId);
-                          setTab("clients");
-                        }} style={{ flexGrow: 1, color: "#fff" }}>+ CLI</PBtn>
-                      )}
-                    </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3125rem", marginTop: "0.625rem" }}>
-                      <PBtn small color="#1A1A1A" onClick={async () => {
-                        const allJobs = await loadJobs(userTier, currentUser);
-                        const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                        if (jobIdx >= 0) { allJobs[jobIdx].status = "pending"; allJobs[jobIdx].invoiceStatus = "pending"; allJobs[jobIdx].sentAt = null; allJobs[jobIdx].paidAt = null; await saveJob(allJobs[jobIdx], userTier, currentUser); setJobs(await loadJobs(userTier, currentUser)); }
-                      }} style={{ flexGrow: 1, color: "#FFB347" }}>PENDING</PBtn>
-                      <PBtn small color="#FFB347" onClick={async () => {
-                        const allJobs = await loadJobs(userTier, currentUser);
-                        const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                        if (jobIdx >= 0) {
-                          allJobs[jobIdx].status = "in_progress";
-                          allJobs[jobIdx].invoiceStatus = "sent";
-                          allJobs[jobIdx].sentAt = new Date().toISOString();
-                          await saveJob(allJobs[jobIdx], userTier, currentUser);
-                          setJobs(await loadJobs(userTier, currentUser));
-                        }
-                      }} style={{ flexGrow: 1, color: "#0A0A0A" }}>SENT/IP</PBtn>
-                      <PBtn small color="#E91E63" onClick={async () => {
-                        const allJobs = await loadJobs(userTier, currentUser);
-                        const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                        if (jobIdx >= 0) {
-                          allJobs[jobIdx].status = "completed";
-                          allJobs[jobIdx].invoiceStatus = "paid";
-                          allJobs[jobIdx].paidAt = new Date().toISOString();
-                          if (!allJobs[jobIdx].sentAt) allJobs[jobIdx].sentAt = new Date().toISOString();
-                          await saveJob(allJobs[jobIdx], userTier, currentUser);
-                          setJobs(await loadJobs(userTier, currentUser));
-                        }
-                      }} style={{ flexGrow: 1, color: "#fff" }}>PAID</PBtn>
-                    </div>
-                  </div>
-                </div>
-                {j.invoiceNumber && (
-                  <div style={{ marginTop: "0.9375rem", padding: "0.9375rem", background: "#0A0A0A", border: "0.25rem solid #FFB347", display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ fontSize: "0.8125rem", color: "#FFB34788" }}>
-                      INVOICE: <span style={{ color: "#FFB347", fontWeight: "bold" }}>{j.invoiceNumber}</span>
-                    </div>
-                    <div style={{ fontSize: "0.75rem", color: "#FFB34788", textAlign: "right" }}>
-                      {j.paidAt ? `PAID: ${fmtDate(j.paidAt)}` : j.sentAt ? `SENT: ${fmtDate(j.sentAt)}` : `DUE: ${fmtDate(j.dueDate)}`}
-                    </div>
-                    <div style={{ fontSize: "0.8125rem", color: "#FFB34788", width: "100%", textAlign: "right", marginTop: "4px" }}>
-                      <span style={{ color: j.invoiceStatus === 'paid' ? '#4CAF50' : new Date(j.dueDate) < new Date() ? '#E91E63' : '#FFB347' }}>
-                        {j.invoiceStatus === 'paid' ? 'PAID' : new Date(j.dueDate) < new Date() ? `OVERDUE (WAS DUE ${fmtDate(j.dueDate)})` : `DUE ${fmtDate(j.dueDate)}`}
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </PBox>
-            ))}
-          </>}
-
-          {tab === "templates" && (
-            <TemplateManager
-              templates={templates}
-              onUseTemplate={handleUseTemplate}
-              onDeleteTemplate={async (id) => {
-                const tpl = templates.find(t => String(t.id) === String(id));
-                setDeleteTarget({ type: "template", id, label: tpl ? `Template: ${tpl.name}` : "this template" });
-                setShowDeleteModal(true);
-              }}
-              onSaveTemplate={async (tpl) => {
-                const updated = await saveTemplateToStorage(tpl, userTier, currentUser);
-                setTemplates(updated);
-              }}
-              onBack={() => setTab("calc")}
-            />
-          )}
-
-          {tab === "clients" && (
-            <ClientManager
-              clients={clients}
-              jobs={jobs}
-              tier={userTier}
-              onClientLimitReached={() => {
-                setUpgradeFeature('clients');
-                setShowUpgradeModal(true);
-              }}
-              onUseClient={(c) => {
-                setSelectedClientId(c.id);
-                setForm(f => ({ ...f, complexity: c.preferredComplexity, usage: c.preferredUsageRights, clientType: c.preferredClientType }));
-                setTab("calc");
-              }}
-              onSaveClient={async (c) => {
-                const updatedClients = await saveClientToStorage(c, userTier, currentUser);
-                setClients(updatedClients);
-              }}
-              onDeleteClient={async (id) => {
-                const cli = clients.find(c => String(c.id) === String(id));
-                setDeleteTarget({ type: "client", id, label: cli ? `Client: ${cli.name}` : "this client" });
-                setShowDeleteModal(true);
-              }}
-              onImportClients={async (parsed) => {
-                const base = Date.now();
-                let lastList = clients;
-                for (let i = 0; i < parsed.length; i++) {
-                  const row = parsed[i];
-                  const c = {
-                    ...row,
-                    id: row.id || `cli-${base}-${i}-${Math.random().toString(36).substr(2, 5)}`,
-                  };
-                  lastList = await saveClientToStorage(c, userTier, currentUser);
-                }
-                setClients(lastList);
-              }}
-              onBack={() => setTab("calc")}
-            />
-          )}
-
-          {tab === "analytics" && <>
-            <div style={{ marginBottom: "1rem" }}>
-              <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                <IconArrowLeft size={18} color="#0A0A0A" /> CALC
-              </PBtn>
-              <PLbl accent={catData.accent} style={{ marginBottom: 0, fontSize: "clamp(1.25rem, 3.5vw, 2rem)", textAlign: "center", marginTop: "0.75rem" }}>ANALYTICS</PLbl>
-            </div>
-            <AnalyticsDashboard jobs={windowedJobs} catData={catData} />
-          </>}
-
-          {tab === "tutorial" && (
-            <TutorialPage onBack={() => setTab("calc")} />
-          )}
+          {tab === "tutorial" && <TutorialScreen ctx={ctx} />}
 
           {/* INVOICE EDITOR TAB */}
-          {tab === "invoice_editor" && (
-            <div style={{ maxWidth: "1000px", margin: "0 auto", paddingBottom: "2rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.75rem" }}>
-                <PBtn small color="#FFB347" onClick={() => { setTab("history"); setEmailStatus({ type: null, message: "" }); }} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                  <IconArrowLeft size={18} color="#0A0A0A" /> BACK
-                </PBtn>
-                <div style={{ color: "#FFB347", fontFamily: "'Press Start 2P'", fontSize: "clamp(0.75rem, 2.5vw, 1.25rem)" }}>INVOICE EDITOR</div>
-              </div>
-
-              <PBox bg="#0A0A0A" style={{ padding: "clamp(0.75rem, 3vw, 1.5rem)", marginBottom: "1.5rem" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "1rem", marginBottom: "1rem" }}>
-                  <div>
-                    <PLbl style={{ marginBottom: "0.25rem" }}>RECIPIENT EMAIL</PLbl>
-                    <PInput
-                      type="email"
-                      value={emailForm.to}
-                      onChange={v => setEmailForm(f => ({ ...f, to: v }))}
-                      placeholder="client@example.com"
-                    />
-                  </div>
-                  <div>
-                    <PLbl style={{ marginBottom: "0.25rem" }}>SUBJECT</PLbl>
-                    <PInput
-                      value={emailForm.subject}
-                      onChange={v => setEmailForm(f => ({ ...f, subject: v }))}
-                      placeholder="Quote for your project"
-                    />
-                  </div>
-                </div>
-
-                {emailStatus.type && (
-                  <div style={{
-                    padding: "0.75rem 1rem",
-                    marginBottom: "1rem",
-                    fontFamily: "'Press Start 2P'",
-                    fontSize: "clamp(0.55rem, 1.5vw, 0.75rem)",
-                    lineHeight: 1.8,
-                    border: `0.25rem solid ${emailStatus.type === "error" ? "#E91E63" : emailStatus.type === "success" ? "#4CAF50" : "#FFB347"}`,
-                    background: emailStatus.type === "error" ? "rgba(233,30,99,0.15)" : emailStatus.type === "success" ? "rgba(76,175,80,0.15)" : "rgba(255,179,71,0.15)",
-                    color: emailStatus.type === "error" ? "#E91E63" : emailStatus.type === "success" ? "#4CAF50" : "#FFB347",
-                    wordBreak: "break-word"
-                  }}>
-                    {emailStatus.type === "error" && "⚠ "}{emailStatus.type === "success" && "✓ "}{emailStatus.type === "info" && "⟳ "}{emailStatus.message}
-                  </div>
-                )}
-
-                <div className="btn-row" style={{ display: "flex", justifyContent: "flex-end" }}>
-                  <PBtn color="#d6f5e3" onClick={sendEmail} disabled={!emailForm.to || !emailForm.subject || isSendingEmail}>
-                    <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>{isSendingEmail ? "SENDING..." : "SEND EMAIL"} <IconArrowRight size={18} color="#000" /></span>
-                  </PBtn>
-                </div>
-              </PBox>
-
-              <div style={{
-                border: "clamp(0.1875rem, 1vw, 0.375rem) solid #FFB347",
-                boxShadow: "clamp(0.1875rem, 1vw, 0.375rem) clamp(0.1875rem, 1vw, 0.375rem) 0 #E91E63",
-                background: "#050505",
-                overflow: "hidden",
-              }}>
-                {selectedJobForEmail && (
-                  <DMGEInvoiceEditor
-                    job={selectedJobForEmail}
-                    profile={profile}
-                    clients={clients}
-                    onUpdate={setInvoiceEditorData}
-                  />
-                )}
-              </div>
-            </div>
-          )}
+          {tab === "invoice_editor" && <InvoiceEditorScreen ctx={ctx} />}
 
 
-          {tab === "pricing" && (
-            <PricingPage
-              currentTier={userTier}
-              onSelectPlan={handlePlanSelect}
-              onBack={() => setTab('calc')}
-            />
-          )}
+          {tab === "pricing" && <PricingScreen ctx={ctx} />}
 
-          {tab === "profile" && <>
-            <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-              <IconArrowLeft size={18} color="#0A0A0A" /> CALC
-            </PBtn>
-
-            <PCollapsible title="PLAYER INFO" accent="#000000" defaultOpen={false}>
-              <PBox style={{ marginBottom: "2.1875rem" }}>
-                <PLbl accent="#000000">PLAYER NAME</PLbl>
-                <input
-                  type="text" value={profile.name} onChange={e => { const p = { ...profile, name: e.target.value }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                  style={{ width: "100%", fontFamily: "'Press Start 2P'", fontSize: "1.4375rem", padding: "clamp(0.75rem, 3.3vw, 1.5625rem)", border: "0.5rem solid #2a2a2a", boxSizing: "border-box", color: "#000000" }}
-                />
-              </PBox>
-              <PBox style={{ marginBottom: "2.1875rem" }}>
-                <PLbl accent="#000000">DEFAULT HOURLY</PLbl>
-                <PStepper value={profile.defaultBaseRate} onChange={v => { const p = { ...profile, defaultBaseRate: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-              </PBox>
-            </PCollapsible>
-
-            <PCollapsible title="SUBSCRIPTION" accent="#000000" defaultOpen={false}>
-              <PBox bg="#1A1A1A" style={{ marginBottom: "1.5625rem" }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: "1.25rem" }}>
-                  <PLbl accent="#FFB347">CURRENT PLAN</PLbl>
-                  <span style={{
-                    padding: '0.5rem 1rem',
-                    background: (TIERS[userTier]?.color || '#9E9E9E') + '33',
-                    border: `0.25rem solid ${TIERS[userTier]?.color || '#9E9E9E'}`,
-                    color: TIERS[userTier]?.color || '#9E9E9E',
-                    fontSize: "0.875rem",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem"
-                  }}>
-                    {userTier === 'free' && <IconTierFree size={24} color={TIERS[userTier]?.color || '#9E9E9E'} />}
-                    {userTier === 'pro' && <IconTierPro size={24} color={TIERS[userTier]?.color || '#FFD700'} />}
-                    {userTier === 'agency' && <IconTierAgency size={24} color={TIERS[userTier]?.color || '#E040FB'} />}
-                    {TIERS[userTier]?.badge || 'FREE'}
-                  </span>
-                </div>
-
-                {(() => {
-                  const stats = getUsageStats(userTier, clients.length, templates.length, todayPdfCount);
-                  return (
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: "0.9375rem", marginBottom: "1.25rem" }}>
-                      <div style={{ padding: "0.9375rem", border: '0.25rem solid #2a2a2a', background: '#1A1A1A' }}>
-                        <div style={{ fontSize: "0.625rem", color: '#FFB34788', marginBottom: "0.5rem" }}>CLIENTS</div>
-                        <div style={{ fontSize: "1rem", color: stats.clients.atLimit ? '#E91E63' : '#4CAF50' }}>
-                          {stats.clients.used}/{stats.clients.max}
-                        </div>
-                      </div>
-                      <div style={{ padding: "0.9375rem", border: '0.25rem solid #2a2a2a', background: '#1A1A1A' }}>
-                        <div style={{ fontSize: "0.625rem", color: '#FFB34788', marginBottom: "0.5rem" }}>TEMPLATES</div>
-                        <div style={{ fontSize: "1rem", color: stats.templates.atLimit ? '#E91E63' : '#4CAF50' }}>
-                          {stats.templates.used}/{stats.templates.max}
-                        </div>
-                      </div>
-                      <div style={{ padding: "0.9375rem", border: '0.25rem solid #2a2a2a', background: '#1A1A1A' }}>
-                        <div style={{ fontSize: "0.625rem", color: '#FFB34788', marginBottom: "0.5rem" }}>PDFS TODAY</div>
-                        <div style={{ fontSize: "1rem", color: stats.pdfsToday.atLimit ? '#E91E63' : '#4CAF50' }}>
-                          {stats.pdfsToday.used}/{stats.pdfsToday.max}
-                        </div>
-                      </div>
-                      <div style={{ padding: "0.9375rem", border: '0.25rem solid #2a2a2a', background: '#1A1A1A' }}>
-                        <div style={{ fontSize: "0.625rem", color: '#FFB34788', marginBottom: "0.5rem" }}>HISTORY</div>
-                        <div style={{ fontSize: "1rem", color: '#4CAF50' }}>
-                          {stats.historyDays} DAYS
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {userTier !== 'free' ? (
-                  <PBox bg="#1A1A1A" style={{ textAlign: "center", padding: "1.25rem", border: "0.25rem dashed #E91E63" }}>
-                    <div style={{ fontSize: "0.5625rem", color: "#FFB34788", marginBottom: "0.625rem" }}>STRIPE ACCOUNT</div>
-                    <PBtn full color="#E91E63" onClick={() => handlePlanSelect('portal')} style={{ color: "white" }}>
-                      MANAGE / CANCEL
-                    </PBtn>
-                    <div style={{ fontSize: "0.4375rem", color: "#666", marginTop: "0.625rem" }}>
-                      OPEN STRIPE PORTAL TO CHANGE PLAN OR CANCEL
-                    </div>
-                  </PBox>
-                ) : (
-                  <PBtn full color="#FFB347" onClick={() => setTab('pricing')} style={{ fontSize: "0.875rem", color: "#0A0A0A", display: "flex", gap: "0.5rem", alignItems: "center", justifyContent: "center" }}>
-                    <IconStar size={24} color="#0A0A0A" /> UPGRADE YOUR PLAN
-                  </PBtn>
-                )}
-              </PBox>
-            </PCollapsible>
-
-            <PCollapsible title="INVOICE SETTINGS" accent="#000000" defaultOpen={false}>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr))", gap: "1.25rem" }}>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">PREFIX</PLbl>
-                  <PInput value={profile.invoicePrefix} onChange={v => { const p = { ...profile, invoicePrefix: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="INV-" />
-                </PBox>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">START #</PLbl>
-                  <PInput type="number" value={profile.invoiceStartNumber} onChange={v => { const p = { ...profile, invoiceStartNumber: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-                </PBox>
-              </div>
-              <PBox bg="#1A1A1A" style={{ marginTop: "1.5625rem" }}>
-                <PLbl accent="#FFB347">NEXT INVOICE</PLbl>
-                <div style={{ fontSize: "1.4375rem", color: "#4CAF50" }}>{profile.invoicePrefix}{(profile.lastInvoiceNumber || (profile.invoiceStartNumber - 1)) + 1}</div>
-              </PBox>
-            </PCollapsible>
-
-            <PCollapsible title="COMPANY BRANDING" accent="#000000" defaultOpen={false}>
-              <PBox bg="#1A1A1A" style={{ marginBottom: "1.5625rem" }}>
-                <PLbl accent="#FFB347">COMPANY NAME</PLbl>
-                <PInput value={profile.companyName} onChange={v => { const p = { ...profile, companyName: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="Acme Corp" />
-              </PBox>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr))", gap: "1.25rem", marginBottom: "1.5625rem" }}>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">EMAIL</PLbl>
-                  <PInput value={profile.companyEmail} onChange={v => { const p = { ...profile, companyEmail: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="hi@acme.com" />
-                </PBox>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">PHONE</PLbl>
-                  <PInput value={profile.companyPhone} onChange={v => { const p = { ...profile, companyPhone: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="555-0123" />
-                </PBox>
-              </div>
-              <PBox bg="#1A1A1A" style={{ marginBottom: "1.5625rem" }}>
-                <PLbl accent="#FFB347">ADDRESS</PLbl>
-                <textarea
-                  value={profile.companyAddress}
-                  onChange={e => { const p = { ...profile, companyAddress: e.target.value }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                  placeholder="123 Pixel St"
-                  style={{ width: "100%", fontFamily: "'Press Start 2P'", fontSize: "0.75rem", padding: "1.5625rem", border: "0.5rem solid #2a2a2a", minHeight: 100, background: "#0A0A0A", color: "#FFB347" }}
-                />
-              </PBox>
-              <PBox bg="#1A1A1A" style={{ marginBottom: "1.5625rem" }}>
-                <PLbl accent="#FFB347">LOGO URL (PNG/SVG)</PLbl>
-                <PInput value={profile.logoUrl} onChange={v => { const p = { ...profile, logoUrl: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="https://..." />
-              </PBox>
-              <PBox bg="#1A1A1A" style={{ marginBottom: "1.5625rem" }}>
-                <PLbl accent="#FFB347">PAYMENT INSTRUCTIONS</PLbl>
-                <textarea
-                  value={profile.paymentInstructions}
-                  onChange={e => { const p = { ...profile, paymentInstructions: e.target.value }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                  placeholder="Zelle: hi@acme.com / PayPal: @acme"
-                  style={{ width: "100%", fontFamily: "'Press Start 2P'", fontSize: "0.75rem", padding: "1.5625rem", border: "0.5rem solid #2a2a2a", minHeight: 120, background: "#0A0A0A", color: "#FFB347" }}
-                />
-              </PBox>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr))", gap: "1.25rem" }}>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">TERMS</PLbl>
-                  <PInput value={profile.invoiceTerms} onChange={v => { const p = { ...profile, invoiceTerms: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="Net 14" />
-                </PBox>
-                <PBox bg="#1A1A1A">
-                  <PLbl accent="#FFB347">TAX ID</PLbl>
-                  <PInput value={profile.taxId} onChange={v => { const p = { ...profile, taxId: v }; setProfile(p); saveProfile(p, userTier, currentUser); }} placeholder="Optional" />
-                </PBox>
-              </div>
-            </PCollapsible>
-
-            <PCollapsible
-              title={<span style={{ display: "flex", alignItems: "center", gap: "8px" }}>AGENCY: WHITE-LABEL BRANDING {!canWhiteLabel(userTier) && <IconLock size={16} />}</span>}
-              accent="#000000"
-              defaultOpen={false}
-            >
-              {!canWhiteLabel(userTier) ? (
-                <PBox bg="#2a2a2a" style={{ textAlign: "center", padding: "2rem" }}>
-                  <div style={{ color: "#E040FB", fontSize: "0.75rem", marginBottom: "1rem" }}>AGENCY TIER REQUIRED</div>
-                  <PBtn color="#E91E63" onClick={() => setTab('pricing')}>UPGRADE TO UNLOCK</PBtn>
-                </PBox>
-              ) : (
-                <>
-                  <PBox style={{ marginBottom: "1.5625rem" }}>
-                    <PLbl>WHITE-LABEL COMPANY NAME</PLbl>
-                    <PInput
-                      value={profile.branding?.companyName || ""}
-                      onChange={v => { const p = { ...profile, branding: { ...profile.branding, companyName: v } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                      placeholder="Overrides 'RATE' in Header"
-                    />
-                  </PBox>
-
-                  <PBox style={{ marginBottom: "1.5625rem" }}>
-                    <PLbl>CUSTOM LOGO (MAX 2MB)</PLbl>
-                    <div style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>
-                      {profile.branding?.logoBase64 && (
-                        <div style={{ position: "relative", width: "clamp(48px, 14vw, 60px)", height: "clamp(48px, 14vw, 60px)", border: "4px solid var(--pixel-text, #2a2a2a)", background: "var(--pixel-surface, #fff)", display: "flex", alignItems: "center", justifyContent: "center", overflow: "visible", flexShrink: 0 }}>
-                          <img src={profile.branding.logoBase64} style={{ maxWidth: "100%", maxHeight: "100%", imageRendering: "pixelated" }} alt="Logo" />
-                          <button
-                            onClick={() => { const p = { ...profile, branding: { ...profile.branding, logoBase64: "" } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                            style={{ position: "absolute", top: "-10px", right: "-10px", background: "#f44336", color: "#fff", width: "clamp(20px, 6vw, 24px)", height: "clamp(20px, 6vw, 24px)", display: "flex", alignItems: "center", justifyContent: "center", border: "4px solid var(--pixel-text, #2a2a2a)", cursor: "pointer", fontFamily: "'Press Start 2P'", fontSize: "10px", padding: 0 }}
-                          >X</button>
-                        </div>
-                      )}
-                      <label style={{ display: "inline-flex", cursor: "pointer", background: "#1A1A1A", border: "0.25rem solid #FFB347", boxShadow: "0.25rem 0.25rem 0 #FFB347", padding: "0.9375rem" }}>
-                        <IconUpload size={24} color="#FFB347" />
-                        <input type="file" accept="image/*" onChange={handleLogoUpload} style={{ display: "none" }} />
-                      </label>
-                    </div>
-                  </PBox>
-
-                  <PBox style={{ marginBottom: "1.5625rem", display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "center", gap: "1.25rem" }}>
-                    <label style={{ display: "flex", alignItems: "center", gap: "0.9375rem", cursor: "pointer", fontFamily: "'Press Start 2P'", fontSize: "0.875rem", color: "var(--pixel-text, #2a2a2a)" }}>
-                      <input
-                        type="checkbox"
-                        checked={profile.branding?.overrideThemes !== false}
-                        onChange={e => { const p = { ...profile, branding: { ...profile.branding, overrideThemes: e.target.checked } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                        style={{ transform: "scale(1.5)" }}
-                      />
-                      OVERRIDE DISCIPLINE COLORS
-                    </label>
-                    <PBtn small color="#1A1A1A" onClick={() => {
-                      const confirmReset = window.confirm("Reset agency colors to base scheme?");
-                      if (confirmReset) {
-                        const p = { ...profile, branding: { ...profile.branding, bgColor: "", surfaceColor: "", textColor: "", accentColor: "", overrideThemes: true } };
-                        setProfile(p); saveProfile(p, userTier);
-                      }
-                    }} style={{ color: "#FFB347" }}>RESET THEME</PBtn>
-                  </PBox>
-
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr))", gap: "1.25rem", marginBottom: "1.5625rem" }}>
-                    <PCollapsible title="BG COLOR" bg="var(--pixel-surface)">
-                      <input
-                        type="color"
-                        value={profile.branding?.bgColor || "#d5d5d5"}
-                        onChange={e => { const p = { ...profile, branding: { ...profile.branding, bgColor: e.target.value } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                        style={{ width: "100%", height: 40, border: "4px solid #2a2a2a", cursor: "pointer" }}
-                      />
-                      <ColorSwatches value={profile.branding?.bgColor || "#d5d5d5"} onChange={v => { const p = { ...profile, branding: { ...profile.branding, bgColor: v } }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-                    </PCollapsible>
-                    <PCollapsible title="SURFACE COLOR" bg="var(--pixel-surface)">
-                      <input
-                        type="color"
-                        value={profile.branding?.surfaceColor || "#e0e0e0"}
-                        onChange={e => { const p = { ...profile, branding: { ...profile.branding, surfaceColor: e.target.value } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                        style={{ width: "100%", height: 40, border: "4px solid #2a2a2a", cursor: "pointer" }}
-                      />
-                      <ColorSwatches value={profile.branding?.surfaceColor || "#e0e0e0"} onChange={v => { const p = { ...profile, branding: { ...profile.branding, surfaceColor: v } }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-                    </PCollapsible>
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 15.625rem), 1fr))", gap: "1.25rem", marginBottom: "1.5625rem" }}>
-                    <PCollapsible title="LOGO PRIMARY COLOR" bg="var(--pixel-surface)">
-                      <input
-                        type="color"
-                        value={profile.branding?.textColor || "#FFB347"}
-                        onChange={e => { const p = { ...profile, branding: { ...profile.branding, textColor: e.target.value } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                        style={{ width: "100%", height: 40, border: "4px solid #2a2a2a", cursor: "pointer" }}
-                      />
-                      <ColorSwatches value={profile.branding?.textColor || "#FFB347"} onChange={v => { const p = { ...profile, branding: { ...profile.branding, textColor: v } }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-                    </PCollapsible>
-                    <PCollapsible title="LOGO SECONDARY COLOR" bg="var(--pixel-surface)">
-                      <input
-                        type="color"
-                        value={profile.branding?.accentColor || "#E91E63"}
-                        onChange={e => { const p = { ...profile, branding: { ...profile.branding, accentColor: e.target.value } }; setProfile(p); saveProfile(p, userTier, currentUser); }}
-                        style={{ width: "100%", height: 40, border: "4px solid #2a2a2a", cursor: "pointer" }}
-                      />
-                      <ColorSwatches value={profile.branding?.accentColor || "#E91E63"} onChange={v => { const p = { ...profile, branding: { ...profile.branding, accentColor: v } }; setProfile(p); saveProfile(p, userTier, currentUser); }} />
-                    </PCollapsible>
-                  </div>
-
-                  <PBtn
-                    full
-                    color="#1A1A1A"
-                    onClick={() => {
-                      const config = JSON.stringify(profile.branding, null, 2);
-                      const blob = new Blob([config], { type: "application/json" });
-                      const url = URL.createObjectURL(blob);
-                      const a = document.createElement("a");
-                      a.href = url;
-                      a.download = `brand-config-${profile.companyName || "agency"}.json`;
-                      a.click();
-                    }}
-                    style={{ color: "#fff", fontSize: "0.625rem" }}
-                  >
-                    DOWNLOAD BRAND CONFIG (JSON)
-                  </PBtn>
-                </>
-              )}
-            </PCollapsible>
-
-            <PCollapsible title="DANGER ZONE" accent="#f44336" defaultOpen={false}>
-              <PBox bg="#2a2a2a" style={{ textAlign: "center", padding: "1.5625rem", border: "4px solid #f44336" }}>
-                <div style={{ color: "#f44336", fontSize: "0.625rem", marginBottom: "1.25rem" }}>PERMANENTLY DELETE ALL LOCAL DATA</div>
-                <PBtn full color="#f44336" onClick={resetAppData} style={{ color: "white" }}>RESET ALL APP DATA</PBtn>
-                <div style={{ color: "#666", fontSize: "0.4375rem", marginTop: "0.9375rem" }}>This will clear jobs, clients, templates, and profile settings.</div>
-              </PBox>
-            </PCollapsible>
-
-            <PBtn full color="#1A1A1A" style={{ border: "0.5rem solid #E91E63", color: "#E91E63", marginTop: "2.1875rem" }} onClick={() => supabase.auth.signOut()}>LOGOUT</PBtn>
-          </>}
+          {tab === "profile" && <ProfileScreen ctx={ctx} />}
         </div>
       </div>
 
-      {/* CUSTOM MATERIAL MODAL */}
-      <PModal isOpen={showMatModal} onClose={() => setShowMatModal(false)} title="ADD CUSTOM ITEM">
-        <div style={{ padding: "1.25rem" }}>
-          <PLbl>ITEM NAME</PLbl>
-          <PInput value={newMatForm.name} onChange={v => setNewMatForm(f => ({ ...f, name: v }))} placeholder="e.g. Travel Offset" style={{ marginBottom: "2.1875rem" }} />
-
-          <PLbl>COST PER UNIT ($)</PLbl>
-          <PInput type="number" value={newMatForm.cost} onChange={v => setNewMatForm(f => ({ ...f, cost: v }))} placeholder="0.00" style={{ marginBottom: "2.1875rem" }} />
-
-          <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginTop: "1.25rem" }}>
-            <PBtn full color="#d6f5e3" onClick={confirmAddMaterial} disabled={!newMatForm.name}>ADD TO LIST</PBtn>
-            <PBtn full color="#ffd6e8" onClick={() => setShowMatModal(false)}>CANCEL</PBtn>
-          </div>
-        </div>
-      </PModal>
-
-      {/* SAVE TEMPLATE MODAL */}
-      <PModal isOpen={showSaveTemplateModal} onClose={() => setShowSaveTemplateModal(false)} title="SAVE TEMPLATE">
-        <div style={{ padding: "1.25rem" }}>
-          <PLbl>TEMPLATE NAME</PLbl>
-          <PInput
-            value={newTemplateForm.name}
-            onChange={v => setNewTemplateForm(f => ({ ...f, name: v }))}
-            placeholder="e.g. Photography Headshot Session"
-            style={{ marginBottom: "2.1875rem" }}
-          />
-
-          <PLbl>NOTES (OPTIONAL)</PLbl>
-          <textarea
-            value={newTemplateForm.notes}
-            onChange={e => setNewTemplateForm(f => ({ ...f, notes: e.target.value }))}
-            placeholder="e.g. Standard headshot session with 2 edits"
-            style={{
-              width: "100%",
-              fontFamily: "'Press Start 2P'",
-              fontSize: "0.75rem",
-              lineHeight: 1.6,
-              padding: "1.5625rem 2.1875rem",
-              background: "var(--pixel-surface, #e8f4f8)",
-              border: "0.5rem solid #2a2a2a",
-              boxShadow: "0.625rem 0.625rem 0 #2a2a2a",
-              outline: "none",
-              color: "var(--pixel-text, #2a2a2a)",
-              minHeight: 120,
-              resize: "vertical",
-              marginBottom: "2.1875rem"
-            }}
-          />
-
-          <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginTop: "1.25rem" }}>
-            <PBtn full color="#d6f5e3" onClick={handleSaveTemplate} disabled={!newTemplateForm.name}>SAVE TEMPLATE</PBtn>
-            <PBtn full color="#ffd6e8" onClick={() => setShowSaveTemplateModal(false)}>CANCEL</PBtn>
-          </div>
-        </div>
-      </PModal>
-
-      {/* DELETE CONFIRMATION MODAL */}
-      <PModal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="CONFIRM DELETE">
-        <div style={{ padding: "1.25rem", textAlign: "center", fontFamily: "'Press Start 2P'" }}>
-          <div style={{ fontSize: "clamp(0.75rem, 1.5vw, 0.9375rem)", color: "#FFB347", marginBottom: "2.1875rem", lineHeight: 2.2 }}>
-            ARE YOU SURE YOU WANT TO DELETE:<br />
-            <span style={{ color: "#E91E63", fontSize: "clamp(1rem, 2vw, 1.25rem)" }}>{deleteTarget.label}</span>?
-            <br /><br />
-            THIS ACTION CANNOT BE UNDONE.
-          </div>
-          <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginTop: "1.25rem" }}>
-            <PBtn full color="#E91E63" onClick={confirmDelete} style={{ color: "#fff", fontSize: "clamp(0.75rem, 1.2vw, 0.8125rem)" }}>YES, DELETE</PBtn>
-            <PBtn full color="#1A1A1A" onClick={() => setShowDeleteModal(false)} style={{ color: "#FFB347", fontSize: "clamp(0.75rem, 1.2vw, 0.8125rem)" }}>CANCEL</PBtn>
-          </div>
-        </div>
-      </PModal>
-
-      <UpgradeModal
-        isOpen={showUpgradeModal}
-        onClose={() => setShowUpgradeModal(false)}
-        feature={upgradeFeature}
-        currentTier={userTier}
-        onUpgrade={handleUpgrade}
-      />
+      <AppModals ctx={ctx} />
     </>
   );
 }
