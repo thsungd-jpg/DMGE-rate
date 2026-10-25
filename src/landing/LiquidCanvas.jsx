@@ -151,6 +151,7 @@ export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reduced
     if (import.meta.env.DEV) { window.__llCur = cur; window.__llFlight = fl; window.__llScale = () => scale; } // dev-only: inspect live state
     let raf = 0, last = performance.now(), time = 0, night = getTheme() === "dark" ? 1 : 0, stopped = false;
 
+    let live = false;
     const frame = (now) => {
       if (stopped) return;
       raf = requestAnimationFrame(frame);
@@ -303,6 +304,8 @@ export default function LiquidCanvas({ onUnsupported: onUnsupportedProp, reduced
       const cc = centroid(cur.shapes, sy);
       if (cc) gl.uniform2f(U.uCenter, cc.x * dpr, (H - cc.y) * dpr);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+      // the context is opaque, so the canvas stays hidden until a real frame exists (no black flash on slow GPUs)
+      if (!live) { live = true; canvas.classList.add("ll-live"); }
     };
     raf = requestAnimationFrame(frame);
 

@@ -30,5 +30,3 @@
   .app-tier { padding: 0 11px; }
 }
 
-/* legacy (not-yet-restyled) screens keep their old container so they stay usable under the fixed chrome */
-.legacy-page { max-width: 90vw; margin: 0 auto; padding: 84px 1.5rem 110px; position: relative; z-index: 1; }

@@ -62,7 +62,7 @@ export function PModal({ isOpen, onClose, title, children }) {
         role="dialog"
         aria-modal="true"
         aria-label={typeof title === "string" ? title : undefined}
-        style={{ maxWidth: "min(50rem, calc(100vw - 1rem))", width: "100%", maxHeight: "95vh", overflowY: "auto", boxShadow: "var(--sh-3)" }}
+        style={{ maxWidth: "min(700px, calc(100vw - 16px))", width: "100%", maxHeight: "95vh", overflowY: "auto", boxShadow: "var(--sh-3)" }}
         bg="#1A1A1A"
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 24 }}>
@@ -219,7 +219,7 @@ export function PCollapsible({ title, accent = "#000", children, defaultOpen = f
         </div>
       )}
       {isOpen && (
-        <div className="res-in lq-collapse-body">
+        <div className="lq-collapse-body">
           <PBox shadowColor={modelShadow} bg={modelColor || "#1A1A1A"} style={{ padding: "16px 24px 24px 16px" }}>
             {children}
           </PBox>

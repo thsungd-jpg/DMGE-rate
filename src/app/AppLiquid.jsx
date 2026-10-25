@@ -23,9 +23,11 @@ function buildScene(tab, { W, H }) {
   const small = W < 700;
   const m = Math.min(W, H) * 0.5;
   const size = small ? 0.5 : 0.62;
+  // On phones the intro copy spans the full width, so scenes anchored beside the title drop behind the cards instead.
+  const ay = small && cfg.ay < 0.45 ? 0.5 : cfg.ay;
   const S = {
     cx: cfg.ax * W + (pointer.x - 0.5) * m * 0.12,
-    cy: cfg.ay * H + (pointer.y - 0.5) * m * 0.1,
+    cy: ay * H + (pointer.y - 0.5) * m * 0.1,
     w: m * 2 * size, h: m * 2 * size,
   };
   const pal = PALS[cfg.i % PALS.length];

@@ -63,32 +63,6 @@ const ALL_DATA = Object.keys(rawData).reduce((acc, catName) => {
   return acc;
 }, {});
 
-const PRESET_COLORS = [
-  "#ffffff", "#f5f0d6", "#f5ebd6", "#f5ead6", "#f5d6f0", "#f5d6d6", "#ead6f5", "#ffd6e8", "#e8e8e8", "#e0e0e0",
-  "#d6e8f5", "#d6f5f5", "#d6f5e3", "#dedede", "#d5d5d5", "#d6e0f5", "#d9b74a", "#d94aab", "#d94a8a", "#d94a4a",
-  "#c0c0c0", "#aaaaaa", "#8c8c8c", "#8c6a47", "#8a4ad9", "#c4622d", "#E040FB", "#FFD700", "#FF9800", "#f44336",
-  "#4CAF50", "#2eb351", "#2a99d9", "#2a70d9", "#475f94",
-  "#666666", "#2a2a2a", "#000000"
-];
-
-const ColorSwatches = ({ value, onChange }) => (
-  <div style={{ display: "flex", flexWrap: "wrap", gap: "0.75rem", marginTop: "0.75rem" }}>
-    {PRESET_COLORS.map(c => (
-      <div
-        key={c}
-        onClick={() => onChange(c)}
-        style={{
-          width: "clamp(1.75rem, 7vw, 2.5rem)", height: "clamp(1.75rem, 7vw, 2.5rem)", background: c, cursor: "pointer",
-          border: (value || "").toLowerCase() === c.toLowerCase() ? "3px solid #fff" : "3px solid #2a2a2a",
-          boxShadow: (value || "").toLowerCase() === c.toLowerCase() ? "0 0 0 3px #2a2a2a" : "none",
-          boxSizing: "border-box"
-        }}
-        title={c}
-      />
-    ))}
-  </div>
-);
-
 const travelOptions = {
   "None": 0,
   "Local (up to 10 mi)": 25,
@@ -594,17 +568,17 @@ export default function App() {
     !String(import.meta.env.VITE_SUPABASE_ANON_KEY || "").trim();
   if (configMissing) {
     return (
-      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "1.25rem", padding: "2rem", fontFamily: "'Press Start 2P', monospace", background: "#d5d5d5", color: "#2a2a2a", textAlign: "center", lineHeight: 1.8, fontSize: "0.65rem", maxWidth: "36rem", margin: "0 auto" }}>
-        <p style={{ fontSize: "0.85rem" }}>APP CONFIG MISSING</p>
+      <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, padding: 32, fontFamily: "var(--font-body, system-ui, sans-serif)", background: "var(--cream, #FFF6E8)", color: "var(--ink, #1c1a26)", textAlign: "center", lineHeight: 1.6, fontSize: 16, maxWidth: 560, margin: "0 auto" }}>
+        <p style={{ fontFamily: "var(--font-display, serif)", fontSize: 32, lineHeight: 1.1 }}>App config missing</p>
         <p>
-          Add <code style={{ background: "#fff", padding: "0.2rem 0.4rem" }}>.env.local</code> next to <code style={{ background: "#fff", padding: "0.2rem 0.4rem" }}>package.json</code> with your Supabase + Stripe keys, then restart the dev server.
+          Add <code style={{ background: "var(--paper, #fff)", padding: "2px 6px", borderRadius: 6 }}>.env.local</code> next to <code style={{ background: "var(--paper, #fff)", padding: "2px 6px", borderRadius: 6 }}>package.json</code> with your Supabase + Stripe keys, then restart the dev server.
         </p>
-        <pre style={{ textAlign: "left", background: "#2a2a2a", color: "#d6f5e3", padding: "1rem", overflow: "auto", fontSize: "0.5rem", width: "100%", boxSizing: "border-box" }}>
+        <pre style={{ textAlign: "left", background: "var(--ink, #1c1a26)", color: "var(--cream, #FFF6E8)", padding: 16, borderRadius: 12, overflow: "auto", fontFamily: "var(--font-mono, monospace)", fontSize: 13, width: "100%", boxSizing: "border-box" }}>
           {`VITE_SUPABASE_URL=https://YOUR_PROJECT.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJ...
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         </pre>
-        <p>Terminal: <code style={{ background: "#fff", padding: "0.2rem 0.4rem" }}>npm run dev</code> — use the Network URL if localhost does not load in the editor browser.</p>
+        <p>Terminal: <code style={{ background: "var(--paper, #fff)", padding: "2px 6px", borderRadius: 6 }}>npm run dev</code> — use the Network URL if localhost does not load in the editor browser.</p>
       </div>
     );
   }
@@ -1074,7 +1048,6 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   // Everything the extracted screens need, in one bag (see src/screens/*).
   const ctx = {
     ALL_DATA,
-    ColorSwatches,
     advanceGlow,
     catData,
     category,
@@ -1180,118 +1153,23 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 return (
     <>
       <style>{`
-        :root {
-          font-size: clamp(8px, 1.1vh + 0.4vw, 14px);
-        }
+        /* App-mode globals (only while the signed-in app is mounted; the landing page scrolls normally). */
         *{box-sizing:border-box;margin:0;padding:0;}
-
-        /* DMGE guided-UX animations */
-        /* .dmge-glow now lives in src/styles/base.css (Sorbet Ink pastel halo) */
-
-        @keyframes dmgeSplashPulse {
-          0%, 100% { transform: scale(1); filter: brightness(1); }
-          50% { transform: scale(1.06); filter: brightness(1.25); }
-        }
-        .dmge-splash-pulse { animation: dmgeSplashPulse 1s ease-in-out infinite; }
-
-        @keyframes dmgeArrowBounce {
-          0%, 100% { transform: translateX(0); }
-          50% { transform: translateX(6px); }
-        }
-        .dmge-arrow-bounce { animation: dmgeArrowBounce 0.7s ease-in-out infinite; display: inline-block; }
-
         html, body { overflow: hidden; height: 100%; }
-        body{background:var(--cream, #FFF6E8); font-size: 1rem;}
+        body { background: var(--cream, #FFF6E8); }
         .app-wrapper{scrollbar-width:thin;}
+        input{outline:none;}
         input[type=range]{-webkit-appearance:none;appearance:none;height:10px;background:var(--line-strong);border:none;border-radius:999px;outline:none;cursor:pointer;}
         input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:30px;height:30px;border-radius:50%;border:2px solid var(--paper);background:radial-gradient(circle at 35% 30%,#fff,var(--pink) 55%,var(--blue));box-shadow:var(--sh-2);cursor:pointer;}
         input[type=range]::-moz-range-thumb{width:30px;height:30px;border-radius:50%;border:2px solid var(--paper);background:radial-gradient(circle at 35% 30%,#fff,var(--pink) 55%,var(--blue));box-shadow:var(--sh-2);cursor:pointer;}
         ::-webkit-scrollbar{width:10px;}
         ::-webkit-scrollbar-track{background:transparent;}
         ::-webkit-scrollbar-thumb{background:var(--line-strong);border-radius:999px;}
-        @keyframes slideUp{from{opacity:0;transform:translateY(1.5625rem)}to{opacity:1;transform:translateY(0)}}
-        .res-in{animation:slideUp(0.18s steps(3,end));}
-        input{outline:none;}
-        
-        /* TUTORIAL ANIMATIONS */
-        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-0.625rem); } }
-        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-        @keyframes cycleColors { 
-          0% { color: #ff6b6b; } 
-          20% { color: #4ecdc4; } 
-          40% { color: #ffe66d; } 
-          60% { color: #ff9ff3; } 
-          80% { color: #a29bfe; } 
-          100% { color: #ff6b6b; } 
-        }
-        @keyframes slideInRight { from { transform: translateX(3.125rem); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes flyOut { 0% { transform: translate(0,0) scale(1); opacity: 1; } 100% { transform: translate(6.25rem,-6.25rem) scale(0.5); opacity: 0; } }
-        .anim-float { animation: float 2s ease-in-out infinite; }
-        .anim-pulse { animation: pulse 1.5s ease-in-out infinite; }
-        .anim-cycle { animation: cycleColors 5s linear infinite; }
-        .anim-slide { animation: slideInRight 0.3s ease-out; }
-        .anim-fly { animation: flyOut 1s ease-in forwards; }
         input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        input[type=number] {
-          -moz-appearance: textfield;
-        }
-
-        /* ──── GLOBAL OVERFLOW SAFETY ──── */
-        .header-grid, .content-wrapper, .app-wrapper {
-          overflow-wrap: break-word;
-          word-break: normal;
-        }
-
-        /* ──── TABLET (≤768px) ──── */
-        @media (max-width: 768px) {
-          .res-in { animation: none; }
-          .app-wrapper { overflow-x: hidden !important; padding-bottom: 4rem !important; }
-          .content-wrapper { max-width: 100% !important; padding: 1.25rem 0.75rem !important; overflow-x: hidden !important; }
-          .header-main { padding: 1.25rem 1rem !important; }
-
-          .role-title { font-size: 0.875rem !important; }
-          .dmge-title { font-size: 2.25rem !important; }
-          .base-rate-text { font-size: 1.25rem !important; }
-
-          /* Nav: stack vertically, full-width uniform buttons */
-          .nav-tabs { flex-direction: column !important; gap: 0.5rem !important; }
-          .nav-btn { width: 100% !important; text-align: center !important; padding: 0.75rem 1rem !important; }
-
-          /* Stack all side-by-side button rows */
-          .action-buttons,
-          .btn-row { flex-direction: column !important; gap: 0.5rem !important; }
-          .btn-row > * { width: 100% !important; flex: none !important; }
-
-          /* Reduce PBox shadow to prevent overflow */
-          .app-wrapper div { max-width: 100% !important; }
-
-          /* Price grid stacks on narrow screens */
-          .price-grid { grid-template-columns: 1fr !important; }
-
-          /* Modal: keep within viewport on tablets and landscape phones */
-          .modal-overlay { padding: 0.75rem !important; }
-          .modal-overlay > div { max-width: calc(100vw - 1.5rem) !important; }
-        }
-
-        /* ──── PHONE (≤480px) ──── */
-        @media (max-width: 480px) {
-          .header-main { padding: 1rem 0.625rem !important; }
-
-          .dmge-title { font-size: 1.75rem !important; }
-          .role-title { font-size: 0.75rem !important; }
-          .base-rate-text { font-size: 1rem !important; }
-          .nav-btn { padding: 0.625rem 0.75rem !important; font-size: 0.75rem !important; }
-
-          /* Even smaller slider thumb on phone */
-
-          /* Tighten modal */
-          .modal-overlay { padding: 0.5rem !important; }
-          .modal-overlay > div { max-width: 100% !important; }
-        }
+        input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+        input[type=number] { -moz-appearance: textfield; }
+        .app-wrapper { overflow-wrap: break-word; word-break: normal; }
+        @media (max-width: 768px) { .app-wrapper { overflow-x: hidden !important; } }
 
         :root {
           --pixel-bg: ${brandColor("bgColor") || "var(--cream)"};
