@@ -1,0 +1,139 @@
+/* Invoice editor: screen layout + send panel (src/screens/InvoiceEditorScreen.jsx)
+   and the editable invoice sheet (src/components/DMGEInvoiceEditor.jsx). px/clamp only; colors from tokens. */
+
+/* ── layout ─────────────────────────────────────────────────── */
+.iv-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (min-width: 1040px) {
+  .iv-layout { grid-template-columns: minmax(0, 1fr) 340px; gap: 28px; }
+  .iv-sheet-wrap { grid-column: 1; grid-row: 1; min-width: 0; }
+  .iv-send { grid-column: 2; grid-row: 1; position: sticky; top: 88px; }
+}
+
+/* ── send panel ─────────────────────────────────────────────── */
+.iv-send { display: grid; gap: 14px; }
+.iv-send[aria-busy="true"] { opacity: 0.92; }
+.iv-send-title { margin: 0; font: 400 clamp(28px, 3vw, 34px)/1.05 var(--font-display); letter-spacing: -0.02em; }
+.iv-send-title em { font-style: italic; }
+.iv-send-sub { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+.iv-quickfill { justify-self: start; display: inline-flex; align-items: center; min-height: 36px; max-width: 100%; padding: 0 14px; border: 1px solid var(--line-strong); border-radius: 999px; background: var(--glass); color: var(--ink); font: 600 13px/1.2 var(--font-body); cursor: pointer; overflow-wrap: anywhere; text-align: left; }
+.iv-quickfill:hover { background: var(--butter-soft); }
+.iv-summary { margin: 0; display: grid; gap: 8px; padding: 12px 14px; border-radius: 14px; background: var(--glass); border: 1px solid var(--line); font-size: 13px; }
+.iv-summary div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; }
+.iv-summary dt { color: var(--ink-2); flex: none; }
+.iv-summary dd { margin: 0; min-width: 0; text-align: right; font: 500 12px/1.4 var(--font-mono); overflow-wrap: anywhere; }
+.iv-summary dd.iv-summary-file { flex: 1 1 100%; text-align: left; }
+.iv-summary dd.iv-summary-total { font: 400 22px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+.iv-banner { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: 14px; border: 1px solid var(--line); font-size: 14px; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; color: var(--ink); }
+.iv-banner svg { margin-top: 1px; }
+.iv-banner--error { background: var(--danger-soft); color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, transparent); }
+.iv-banner--success { background: var(--mint-soft); border-color: color-mix(in srgb, var(--mint-deep) 40%, transparent); }
+.iv-banner--success svg { color: var(--mint-deep); }
+.iv-banner--info { background: var(--blue-soft); border-color: color-mix(in srgb, var(--blue-deep) 40%, transparent); }
+.iv-banner--info svg { color: var(--blue-deep); }
+.iv-send-btn { width: 100%; min-height: 48px; }
+.iv-spinner { flex: none; width: 16px; height: 16px; border-radius: 50%; border: 2px solid currentColor; border-right-color: transparent; animation: ivSpin 0.7s linear infinite; }
+@keyframes ivSpin { to { transform: rotate(360deg); } }
+.iv-nojob { margin-top: 8px; }
+
+/* ── sheet ──────────────────────────────────────────────────── */
+.iv-sheet { --iv-pad: clamp(16px, 4vw, 48px); position: relative; overflow: hidden; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--sh-2); font-family: var(--font-body); }
+.iv-sheet *, .iv-sheet *::before, .iv-sheet *::after { box-sizing: border-box; }
+.iv-sheet-bar { height: 6px; background: linear-gradient(90deg, var(--pink), var(--butter), var(--mint), var(--blue)); }
+.iv-sheet section, .iv-sheet .iv-top { padding-left: var(--iv-pad); padding-right: var(--iv-pad); }
+
+.iv-label { display: block; margin: 0 0 8px; font: 700 11px/1.2 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.iv-label--section { margin-bottom: 14px; }
+
+/* header */
+.iv-top { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 16px 24px; padding-top: clamp(22px, 3.4vw, 40px); padding-bottom: clamp(18px, 3vw, 28px); }
+.iv-brand { display: inline-flex; align-items: center; gap: 12px; min-width: 0; }
+.iv-logo { display: block; max-height: 44px; max-width: 160px; object-fit: contain; }
+.iv-brand-name { font: 400 clamp(20px, 2.4vw, 26px)/1.1 var(--font-display); letter-spacing: -0.01em; overflow-wrap: anywhere; }
+.iv-docname { text-align: right; }
+.iv-title { margin: 0; font: 400 clamp(44px, 6vw, 72px)/0.9 var(--font-display); letter-spacing: -0.03em; }
+.iv-hint { display: inline-flex; align-items: center; gap: 6px; margin-top: 10px; font-size: 13px; color: var(--ink-2); }
+
+/* meta */
+.iv-meta { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px 16px; padding-top: clamp(16px, 2.4vw, 22px); padding-bottom: clamp(16px, 2.4vw, 22px); border-top: 1px solid var(--line); }
+.iv-meta-item { display: block; min-width: 0; }
+
+/* parties */
+.iv-parties { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px clamp(20px, 4vw, 48px); padding-top: clamp(16px, 2.4vw, 22px); padding-bottom: clamp(18px, 3vw, 28px); border-top: 1px solid var(--line); }
+.iv-party { min-width: 0; display: grid; gap: 4px; align-content: start; }
+.iv-party > .iv-label { margin-bottom: 4px; }
+
+/* editable fields: dashed underline at rest, tint on hover, solid ring on focus */
+.iv-sheet .iv-input { display: block; width: 100%; min-height: 0; margin: 0; padding: 8px 10px; border: 1px solid transparent; border-bottom: 1px dashed var(--line-strong); border-radius: 8px 8px 0 0; background: transparent; color: var(--ink); font: 400 15px/1.5 var(--font-body); resize: none; overflow: hidden; outline: none; -webkit-appearance: none; appearance: none; transition: background 0.2s, border-color 0.2s, box-shadow 0.2s; }
+.iv-sheet .iv-input::placeholder { color: var(--ink-3); }
+.iv-sheet .iv-input:hover:not(:focus) { background: color-mix(in srgb, var(--blue) 16%, transparent); border-bottom-color: var(--ink-2); }
+.iv-sheet .iv-input:focus, .iv-sheet .iv-input:focus-visible { outline: none; border: 1px solid var(--blue-deep); border-radius: 10px; background: color-mix(in srgb, var(--blue) 14%, var(--paper)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--blue) 40%, transparent); }
+.iv-sheet .iv-input--mono { font: 500 14px/1.5 var(--font-mono); }
+.iv-sheet .iv-input--status { font: 700 13px/1.5 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; }
+.iv-sheet .iv-meta-item[data-tone="butter"] .iv-input--status:not(:focus) { background: var(--butter-soft); }
+.iv-sheet .iv-meta-item[data-tone="mint"] .iv-input--status:not(:focus) { background: var(--mint-soft); }
+.iv-sheet .iv-meta-item[data-tone="pink"] .iv-input--status:not(:focus) { background: var(--pink-soft); }
+.iv-sheet .iv-meta-item[data-tone="blue"] .iv-input--status:not(:focus) { background: var(--blue-soft); }
+.iv-sheet .iv-input--name { font: 400 clamp(22px, 2.6vw, 28px)/1.15 var(--font-display); letter-spacing: -0.01em; }
+.iv-sheet .iv-input--block { font-size: 14px; line-height: 1.7; color: var(--ink-2); white-space: pre-wrap; }
+.iv-sheet .iv-input--block:focus { color: var(--ink); }
+.iv-sheet .iv-input--notes { min-height: 96px; }
+.iv-sheet .iv-input--desc { font-size: 16px; font-weight: 600; line-height: 1.35; }
+.iv-sheet .iv-input--note { font-size: 13px; line-height: 1.5; color: var(--ink-2); }
+.iv-sheet .iv-input--note:focus { color: var(--ink); }
+.iv-sheet .iv-input--num { text-align: right; font: 500 15px/1.5 var(--font-mono); font-variant-numeric: tabular-nums; }
+.iv-sheet .iv-input--paykey { font: 700 12px/1.5 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+.iv-sheet .iv-input--payval { font: 500 14px/1.5 var(--font-mono); }
+
+/* line items */
+.iv-items { padding-top: clamp(18px, 3vw, 28px); padding-bottom: clamp(16px, 2.4vw, 22px); border-top: 1px solid var(--line); }
+.iv-items-head, .iv-item { display: grid; grid-template-columns: minmax(0, 1fr) 84px 120px 128px 44px; gap: 8px 12px; align-items: start; }
+.iv-items-head { padding: 0 0 10px; border-bottom: 1px solid var(--line-strong); font: 700 11px/1.2 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.iv-items-head .iv-r { text-align: right; padding-right: 10px; }
+.iv-item-list { list-style: none; margin: 0; padding: 0; }
+.iv-item { padding: 14px 0; border-bottom: 1px solid var(--line); }
+.iv-cell { min-width: 0; }
+.iv-cell--desc { display: grid; gap: 2px; }
+.iv-cell-label { display: none; margin-bottom: 4px; padding-left: 10px; font: 700 10px/1.2 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.iv-affix { flex: none; font: 500 15px/1 var(--font-mono); color: var(--ink-2); }
+.iv-amt { display: block; padding: 8px 10px; text-align: right; font: 500 15px/1.5 var(--font-mono); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.iv-del { display: grid; place-items: center; width: 44px; height: 44px; border: none; border-radius: 50%; background: none; color: var(--ink-2); cursor: pointer; transition: background 0.2s, color 0.2s; }
+.iv-del:hover:not(:disabled) { background: var(--danger-soft); color: var(--danger); }
+.iv-del:disabled { opacity: 0.35; cursor: default; }
+.iv-add { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; margin-top: 14px; border: 1.5px dashed var(--line-strong); border-radius: 16px; background: none; color: var(--ink); font: 700 14px/1 var(--font-body); cursor: pointer; transition: background 0.2s, border-color 0.2s; }
+.iv-add:hover { background: var(--butter-soft); border-color: var(--ink-2); }
+
+/* totals */
+.iv-totals { display: grid; justify-items: end; padding-top: 6px; padding-bottom: clamp(20px, 3vw, 32px); }
+.iv-totals > * { width: min(100%, 400px); }
+.iv-trow { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; border-bottom: 1px solid var(--line); font-size: 15px; }
+.iv-trow-key { color: var(--ink-2); font-weight: 500; display: inline-flex; align-items: center; gap: 4px; }
+.iv-trow-val { font: 500 15px/1.5 var(--font-mono); font-variant-numeric: tabular-nums; }
+.iv-trow-val--edit { display: inline-flex; align-items: center; gap: 2px; }
+.iv-sheet .iv-trow .iv-input { width: 92px; padding-right: 2px; }
+.iv-sheet .iv-trow-key .iv-input { width: 60px; padding-right: 4px; }
+.iv-due { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 14px; padding: 16px 20px; border: 1px solid var(--line); border-radius: 20px; background: var(--butter-soft); border-color: color-mix(in srgb, var(--butter) 55%, var(--line)); }
+.iv-due-label { font: 700 11px/1.2 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
+.iv-due-amount { font: 400 clamp(38px, 5vw, 54px)/1 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: lining-nums tabular-nums; text-align: right; overflow-wrap: anywhere; }
+
+/* notes + payment */
+.iv-foot { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px clamp(20px, 4vw, 48px); padding-top: clamp(18px, 3vw, 28px); padding-bottom: clamp(20px, 3vw, 32px); border-top: 1px solid var(--line); }
+.iv-foot > div { min-width: 0; }
+.iv-pay { display: grid; grid-template-columns: minmax(70px, 120px) minmax(0, 1fr); gap: 6px; margin-bottom: 4px; align-items: start; }
+.iv-sheet .iv-page-foot { display: flex; justify-content: center; padding: 14px var(--iv-pad); border-top: 1px solid var(--line); background: var(--glass); font: 600 12px/1.2 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+
+/* phones */
+@media (max-width: 640px) {
+  .iv-sheet { border-radius: 22px; }
+  .iv-docname { text-align: left; }
+  .iv-meta { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .iv-parties, .iv-foot { grid-template-columns: minmax(0, 1fr); }
+  .iv-items-head { display: none; }
+  .iv-item { grid-template-columns: repeat(3, minmax(0, 1fr)) 44px; grid-template-areas: "desc desc desc del" "qty rate amt amt"; row-gap: 10px; }
+  .iv-cell--desc { grid-area: desc; }
+  .iv-cell--qty { grid-area: qty; }
+  .iv-cell--rate { grid-area: rate; }
+  .iv-cell--amt { grid-area: amt; }
+  .iv-item .iv-del { grid-area: del; }
+  .iv-cell-label { display: block; }
+  .iv-trow { flex-wrap: wrap; }
+}

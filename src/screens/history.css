@@ -1,0 +1,101 @@
+/* Jobs tab (src/screens/HistoryScreen.jsx). px/clamp sizing only; colors come from tokens. */
+
+.jb-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* summary */
+.jb-stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 20px; }
+.jb-stats .kit-stat:first-child { grid-column: 1 / -1; }
+.jb-stats .kit-stat-value { overflow-wrap: anywhere; }
+@media (min-width: 720px) {
+  .jb-stats { grid-template-columns: 1.4fr 1fr 1fr; gap: 0; }
+  .jb-stats .kit-stat:first-child { grid-column: auto; }
+  .jb-stats .kit-stat { padding: 0 clamp(20px, 3vw, 36px); border-left: 1px solid var(--line); }
+  .jb-stats .kit-stat:first-child { padding-left: 0; border-left: none; }
+}
+
+/* filter bar */
+.jb-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; margin: clamp(20px, 3vw, 28px) 0 clamp(14px, 2vw, 20px); }
+.jb-quota { margin: 0; font: 500 13px/1.4 var(--font-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.jb-quota b { color: var(--ink); font-weight: 500; }
+@media (max-width: 560px) {
+  .jb-bar .kit-seg { width: 100%; flex-wrap: nowrap; }
+  .jb-bar .kit-seg-btn { flex: 1 1 0; justify-content: center; gap: 6px; padding: 0 6px; min-height: 44px; }
+}
+
+/* list */
+.jb-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; }
+.jb-list > li { min-width: 0; animation: jbIn 0.5s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 45ms); }
+@keyframes jbIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+/* job card */
+.jb-card { display: grid; gap: 16px; transition: opacity 0.2s; }
+.jb-card[aria-busy="true"] { opacity: 0.75; }
+.jb-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 12px; }
+.jb-ref { margin: 0; display: flex; align-items: center; gap: 8px; font: 500 13px/1.3 var(--font-mono); letter-spacing: 0.02em; color: var(--ink-2); }
+.jb-num { color: var(--ink); }
+.jb-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+/* status pill: ink text on a soft tint (AA in both themes), with a colored dot. The label carries the meaning. */
+.jb-pill { display: inline-flex; align-items: center; gap: 7px; padding: 5px 11px; border-radius: 999px; font: 700 12px/1.2 var(--font-body); letter-spacing: 0.04em; white-space: nowrap; color: var(--ink); background: var(--butter-soft); }
+.jb-pill i { width: 8px; height: 8px; border-radius: 50%; background: var(--butter-deep); }
+.jb-pill[data-tone="blue"] { background: var(--blue-soft); }
+.jb-pill[data-tone="blue"] i { background: var(--blue-deep); }
+.jb-pill[data-tone="mint"] { background: var(--mint-soft); }
+.jb-pill[data-tone="mint"] i { background: var(--mint-deep); }
+.jb-pill[data-tone="danger"] { background: var(--danger-soft); }
+.jb-pill[data-tone="danger"] i { background: var(--danger); }
+
+.jb-body { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px 24px; }
+.jb-info { flex: 1 1 0; min-width: 0; }
+.jb-client { margin: 0; font: 400 clamp(26px, 3vw, 34px)/1.05 var(--font-display); letter-spacing: -0.02em; overflow-wrap: anywhere; }
+.jb-role { margin: 8px 0 0; font-size: 15px; color: var(--ink-2); overflow-wrap: anywhere; }
+.jb-notes { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); font-style: italic; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.jb-amount { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; text-align: right; }
+.jb-money { font: 400 clamp(34px, 4.4vw, 52px)/0.95 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: lining-nums tabular-nums; }
+.jb-travel { font: 500 12px/1.2 var(--font-mono); color: var(--ink-2); font-variant-numeric: tabular-nums; }
+
+.jb-due { margin: 0; padding-top: 14px; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink-2); }
+.jb-due--late { color: var(--danger); font-weight: 600; }
+
+/* actions */
+.jb-actions { display: flex; flex-direction: column; gap: 6px; }
+.jb-primary { display: flex; flex-wrap: wrap; gap: 10px; }
+.jb-primary .lq-btn { min-height: 44px; padding: 0 20px; font-size: 14px; }
+.jb-quiet { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px; }
+/* App.jsx caps every div at 100% width on phones, so the optical inset is applied to the buttons, not the row. */
+.jb-quiet > .jb-link:first-child { margin-left: -12px; }
+.jb-link { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 0 12px; border: none; border-radius: 999px; background: none; color: var(--ink-2); font: 600 14px/1 var(--font-body); cursor: pointer; transition: background 0.2s, color 0.2s; }
+.jb-link:hover:not(:disabled) { background: var(--line); color: var(--ink); }
+.jb-link:disabled { opacity: 0.5; cursor: default; }
+.jb-link--danger { color: var(--danger); margin-left: auto; margin-right: -12px; }
+.jb-link--danger:hover:not(:disabled) { background: var(--danger-soft); color: var(--danger); }
+@media (min-width: 900px) {
+  .jb-actions { flex-direction: row; align-items: center; justify-content: space-between; gap: 12px 20px; flex-wrap: wrap; }
+  .jb-quiet { justify-content: flex-end; }
+  .jb-quiet > .jb-link:first-child { margin-left: 0; }
+}
+
+@media (max-width: 560px) {
+  .jb-link--danger { width: 44px; padding: 0; justify-content: center; margin-right: -14px; }
+  .jb-link--danger .jb-link-text { display: none; }
+}
+
+/* status control */
+.jb-status { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 14px; padding-top: 14px; border-top: 1px solid var(--line); }
+.jb-status-label { font: 700 11px/1 var(--font-body); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-2); }
+.jb-status-btns { display: inline-flex; gap: 4px; padding: 4px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); }
+.jb-status-btn { min-height: 38px; padding: 0 18px; border: none; border-radius: 999px; background: none; color: var(--ink-2); font: 700 14px/1 var(--font-body); cursor: pointer; transition: background 0.2s, color 0.2s; }
+.jb-status-btn:hover:not(:disabled):not([aria-pressed="true"]) { color: var(--ink); background: var(--line); }
+.jb-status-btn:disabled { cursor: default; }
+.jb-status-btn[aria-pressed="true"] { color: var(--on-fill); box-shadow: var(--sh-1); background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 60%), var(--butter); }
+.jb-status-btn[aria-pressed="true"][data-tone="blue"] { background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 60%), var(--blue); }
+.jb-status-btn[aria-pressed="true"][data-tone="mint"] { background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 60%), var(--mint); }
+.jb-saving { font: 500 13px/1 var(--font-mono); color: var(--ink-2); }
+@media (max-width: 560px) {
+  .jb-status { flex-direction: column; align-items: stretch; gap: 10px; }
+  .jb-status-btns { display: flex; }
+  .jb-status-btn { flex: 1 1 0; min-height: 44px; padding: 0 8px; }
+  .jb-body { flex-wrap: wrap; }
+  .jb-amount { align-items: flex-start; text-align: left; flex-direction: row; align-items: baseline; gap: 12px; }
+}
+
+.jb-note { margin: clamp(20px, 3vw, 28px) 0 0; font-size: 14px; color: var(--ink-2); }

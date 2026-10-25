@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { PBox, PBtn, PLbl, PInput, PSelect } from './ui';
-import { IconArrowLeft, IconEdit, IconCross, IconCopy, IconStar } from '../icons';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Card, EmptyState, Grid, Screen } from './kit';
+import { PBtn, PInput, PSelect } from './ui';
+import { IconArrowLeft, IconCalc, IconCheck, IconCross, IconSearch, IconTemplates } from '../icons';
+import TemplateCard from '../screens/templates/TemplateCard';
+import TemplateEditor from '../screens/templates/TemplateEditor';
+import { scrollToTop } from '../screens/templates/format';
+import '../screens/templates/templates.css';
 
 export default function TemplateManager({ templates, onUseTemplate, onDeleteTemplate, onBack, onSaveTemplate }) {
   const [search, setSearch] = useState("");
   const [filterCat, setFilterCat] = useState("all");
+  const [editing, setEditing] = useState(null);
+  const [notice, setNotice] = useState(null);
 
-  const categories = ["all", ...new Set(templates.map(t => t.category))];
+  const categories = useMemo(() => ["all", ...new Set(templates.map(t => t.category))], [templates]);
+  // A filter can outlive its category (e.g. after deleting the last template in it): fall back to "all".
+  const activeCat = categories.includes(filterCat) ? filterCat : "all";
 
-  const filtered = templates.filter(t => {
-    if (filterCat !== "all" && t.category !== filterCat) return false;
-    if (search && !t.name.toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
+  const filtered = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return templates
+      .filter(t => {
+        if (activeCat !== "all" && t.category !== activeCat) return false;
+        if (q && !(t.name || "").toLowerCase().includes(q)) return false;
+        return true;
+      })
+      .sort((a, b) => (new Date(b.createdAt).getTime() || 0) - (new Date(a.createdAt).getTime() || 0));
+  }, [templates, search, activeCat]);
 
-  const fmtDate = (iso) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  useEffect(() => {
+    if (!notice) return undefined;
+    const id = setTimeout(() => setNotice(null), 5000);
+    return () => clearTimeout(id);
+  }, [notice]);
 
-  const handleDuplicate = (t) => {
+  useEffect(() => { scrollToTop(); }, [editing]);
+
+  const handleDuplicate = async (t) => {
     const newTpl = {
       ...t,
       id: "tpl-" + Date.now(),
@@ -24,89 +44,118 @@ export default function TemplateManager({ templates, onUseTemplate, onDeleteTemp
       createdAt: new Date().toISOString(),
       usageCount: 0
     };
-    onSaveTemplate && onSaveTemplate(newTpl);
+    await (onSaveTemplate && onSaveTemplate(newTpl));
+    setNotice(`Duplicated “${t.name}”.`);
   };
 
+  const handleSaveEdit = async (updated) => {
+    await (onSaveTemplate && onSaveTemplate(updated));
+    setEditing(null);
+    setNotice(`Saved “${updated.name}”.`);
+  };
+
+  const clearFilters = () => { setSearch(""); setFilterCat("all"); };
+
+  if (editing) {
+    return (
+      <Screen
+        key="edit"
+        className="tpl-view"
+        eyebrow="Template"
+        title={<>Edit <em>template</em></>}
+        subtitle={`${editing.role} · ${editing.model}`}
+        actions={
+          <PBtn color="var(--paper)" className="lq-btn--neutral" onClick={() => setEditing(null)}>
+            <IconArrowLeft size={18} /> All templates
+          </PBtn>
+        }
+      >
+        <TemplateEditor template={editing} onSave={handleSaveEdit} onCancel={() => setEditing(null)} />
+      </Screen>
+    );
+  }
+
   return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "2.1875rem", flexWrap: "wrap", gap: "1.25rem" }}>
-        <PBtn small color="#FFB347" onClick={onBack} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#000" }}>
-          <IconArrowLeft size={18} color="#000" /> CALC
+    <Screen
+      key="list"
+      className="tpl-view"
+      eyebrow="Saved setups"
+      title={<>Your <em>templates</em></>}
+      subtitle="Reusable quote setups. Load one into the calculator and adjust from there."
+      actions={templates.length > 0 ? (
+        <PBtn color="var(--butter)" onClick={onBack}>
+          <IconCalc size={18} /> Create in calculator
         </PBtn>
-      </div>
-
-      <div style={{ display: "flex", gap: "1.25rem", marginBottom: "2.1875rem", flexWrap: "wrap" }}>
-        <div style={{ flex: 1, minWidth: "15.625rem" }}>
-          <PLbl>SEARCH TEMPLATES</PLbl>
-          <PInput value={search} onChange={setSearch} placeholder="Template name..." />
-        </div>
-        <div style={{ flex: 1, minWidth: "15.625rem" }}>
-          <PLbl>CATEGORY</PLbl>
-          <PSelect
-            value={filterCat}
-            onChange={setFilterCat}
-            options={categories.map(c => ({ label: c === "all" ? "All Categories" : c, value: c }))}
-            iconType="none"
-          />
-        </div>
-      </div>
-
-      {filtered.length === 0 ? (
-        <PBox bg="var(--pixel-surface)" style={{ textAlign: "center", padding: "2.5rem 1.25rem" }}>
-          <div style={{ fontSize: "1.125rem", color: "#999" }}>NO TEMPLATES FOUND</div>
-        </PBox>
-      ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(20rem, 1fr))", gap: "1.25rem" }}>
-          {filtered.map(t => (
-            <div 
-              key={t.id} 
-              style={{ 
-                background: "var(--pixel-surface)", border: "0.4rem solid #2a2a2a", boxShadow: "0.4rem 0.4rem 0 #2a2a2a", 
-                padding: "1.5625rem", position: "relative", display: "flex", flexDirection: "column", justifyContent: "space-between"
-              }}
-            >
-              <div 
-                onClick={(e) => { 
-                  e.stopPropagation(); 
-                  onDeleteTemplate(t.id); 
-                }}
-                style={{ 
-                  position: "absolute", top: "0.5rem", right: "0.5rem", 
-                  cursor: "pointer", padding: "0.75rem", background: "rgba(233, 30, 99, 0.1)",
-                  border: "2px solid #E91E63",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  zIndex: 2
-                }} 
-                title="Delete Template"
-              >
-                <IconCross color="#E91E63" size={24} />
-              </div>
-              
-              <div>
-                <div style={{ fontSize: "1.25rem", color: "#FFB347", marginBottom: "0.625rem", paddingRight: "2rem" }}>{t.name}</div>
-                <div style={{ fontSize: "0.75rem", color: "#FFB34788", marginBottom: "0.9375rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                   <IconStar size={16} color="#FFB34788" /> {t.category}
-                </div>
-                <div style={{ fontSize: "0.6875rem", color: "#FFB347", marginBottom: "0.9375rem", background: "rgba(255,179,71,0.05)", padding: "0.625rem", borderLeft: "0.25rem solid #FFB347" }}>
-                  {t.role} / {t.model}
-                  {t.notes && <div style={{ marginTop: "0.5rem", fontStyle: "italic", opacity: 0.8 }}>"{t.notes}"</div>}
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.6875rem", color: "#aaa", marginBottom: "1.25rem" }}>
-                   <span>Used {t.usageCount}x</span>
-                   <span>{fmtDate(t.createdAt)}</span>
-                </div>
-              </div>
-
-              <div style={{ display: "flex", gap: "0.625rem" }}>
-                <PBtn small color="#FFB347" onClick={() => onUseTemplate(t)} style={{ flex: 2, color: "#000" }}>LOAD</PBtn>
-                <PBtn small color="#9C27B0" onClick={() => handleDuplicate(t)} style={{ flex: 1, padding: 0, display: "flex", justifyContent: "center", alignItems: "center", color: "#fff" }}>
-                  <IconCopy size={18} color="#fff" />
-                </PBtn>
-              </div>
-            </div>
-          ))}
-        </div>
+      ) : undefined}
+    >
+      {notice && (
+        <Card tone="mint" pad="sm" className="tpl-notice" role="status">
+          <IconCheck size={18} />
+          <span>{notice}</span>
+          <button type="button" className="tpl-notice-x" aria-label="Dismiss message" onClick={() => setNotice(null)}><IconCross size={16} /></button>
+        </Card>
       )}
-    </div>
+
+      {templates.length === 0 ? (
+        <Card tone="glass">
+          <EmptyState
+            icon={<IconTemplates size={28} />}
+            title="No templates yet"
+            body="Set up a quote in the calculator, then choose Save as template. It will live here, ready to reuse in one tap."
+            action={<PBtn color="var(--butter)" onClick={onBack}><IconCalc size={18} /> Open the calculator</PBtn>}
+          />
+        </Card>
+      ) : (
+        <>
+          <div className="tpl-toolbar">
+            <div className="tpl-search">
+              <span className="tpl-search-icon" aria-hidden="true"><IconSearch size={18} /></span>
+              <PInput type="search" value={search} onChange={setSearch} placeholder="Search templates by name" aria-label="Search templates" autoComplete="off" />
+            </div>
+            {categories.length > 2 && (
+              <div className="tpl-filter" role="group" aria-label="Filter by category">
+                <PSelect
+                  value={activeCat}
+                  onChange={setFilterCat}
+                  options={categories.map(c => ({ label: c === "all" ? "All categories" : c, value: c }))}
+                  iconType="none"
+                  style={{ marginBottom: 0 }}
+                />
+              </div>
+            )}
+          </div>
+          <p className="tpl-count" aria-live="polite">
+            {filtered.length === templates.length
+              ? `${templates.length} ${templates.length === 1 ? "template" : "templates"}`
+              : `Showing ${filtered.length} of ${templates.length}`}
+          </p>
+
+          {filtered.length === 0 ? (
+            <Card tone="glass">
+              <EmptyState
+                icon={<IconSearch size={28} />}
+                title="No templates match"
+                body="Try a different name or category."
+                action={<PBtn color="var(--paper)" className="lq-btn--neutral" onClick={clearFilters}>Clear filters</PBtn>}
+              />
+            </Card>
+          ) : (
+            <Grid min={300} gap={16}>
+              {filtered.map((t, i) => (
+                <TemplateCard
+                  key={t.id}
+                  t={t}
+                  index={i}
+                  onUse={onUseTemplate}
+                  onDuplicate={handleDuplicate}
+                  onEdit={setEditing}
+                  onDelete={onDeleteTemplate}
+                />
+              ))}
+            </Grid>
+          )}
+        </>
+      )}
+    </Screen>
   );
 }

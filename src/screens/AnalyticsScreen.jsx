@@ -1,28 +1,63 @@
 import React from "react";
-import { PBtn, PLbl } from "../components/ui";
-import { IconArrowLeft } from "../icons";
+import { PBtn } from "../components/ui";
+import { Screen, Card, EmptyState } from "../components/kit";
+import { IconCheck, IconLock, IconPlus } from "../icons";
+import { TIERS, canViewAnalytics } from "../utils/subscription";
 import AnalyticsDashboard from "../components/AnalyticsDashboard";
+import "./insights.css";
 
-// Screen for tab "analytics".
-// Extracted verbatim from App.jsx: everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
+// Screen for tab "analytics" (shown to users as "Insights").
+// Everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
 export default function AnalyticsScreen({ ctx }) {
   const {
-    catData,
+    setShowUpgradeModal,
     setTab,
+    setUpgradeFeature,
+    userTier,
     windowedJobs,
   } = ctx;
 
-  return (
-    <div className="legacy-page">
-    <>
-                <div style={{ marginBottom: "1rem" }}>
-                  <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                    <IconArrowLeft size={18} color="#0A0A0A" /> CALC
+  const title = <>Your <em>insights</em></>;
+  const unlocked = canViewAnalytics(userTier);
+  const windowDays = TIERS[userTier]?.limits.historyDays;
+
+  if (!unlocked) {
+    return (
+      <Screen eyebrow="Analytics" title={title} subtitle="Totals, trends and payment status for the work you quote.">
+        <Card pad="sm" className="ins-lock">
+          <EmptyState
+            icon={<IconLock size={28} />}
+            title="Insights is part of Agency"
+            body="Upgrade to see how much you have billed, what is still unpaid, and which kinds of work earn the most."
+            action={
+              <>
+                <ul className="ins-lock-perks">
+                  {["Total billed and average job", "Paid vs outstanding", "Revenue and category charts"].map((perk) => (
+                    <li key={perk}><span aria-hidden="true"><IconCheck size={16} /></span>{perk}</li>
+                  ))}
+                </ul>
+                <div className="ins-lock-actions">
+                  <PBtn color="var(--butter)" onClick={() => { setUpgradeFeature("analytics"); setShowUpgradeModal(true); }}>
+                    <IconLock size={18} /> Unlock Insights
                   </PBtn>
-                  <PLbl accent={catData.accent} style={{ marginBottom: 0, fontSize: "clamp(1.25rem, 3.5vw, 2rem)", textAlign: "center", marginTop: "0.75rem" }}>ANALYTICS</PLbl>
+                  <PBtn color="var(--paper)" className="lq-btn--neutral" onClick={() => setTab("pricing")}>Compare plans</PBtn>
                 </div>
-                <AnalyticsDashboard jobs={windowedJobs} catData={catData} />
               </>
-    </div>
+            }
+          />
+        </Card>
+      </Screen>
+    );
+  }
+
+  return (
+    <Screen
+      eyebrow="Analytics"
+      title={title}
+      subtitle="Totals, trends and payment status for the work you quote."
+      actions={windowedJobs.length > 0 && <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={() => setTab("calc")}><IconPlus size={16} /> New quote</PBtn>}
+    >
+      <AnalyticsDashboard jobs={windowedJobs} windowDays={windowDays} onNewQuote={() => setTab("calc")} />
+    </Screen>
   );
 }

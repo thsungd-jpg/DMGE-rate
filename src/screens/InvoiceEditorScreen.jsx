@@ -1,10 +1,15 @@
-import React from "react";
-import { PBox, PBtn, PInput, PLbl } from "../components/ui";
-import { IconArrowLeft, IconArrowRight } from "../icons";
+import React, { useCallback, useState } from "react";
+import { Card, EmptyState, Field, Screen } from "../components/kit";
+import { PBtn, PInput } from "../components/ui";
+import { IconArrowLeft, IconCheck, IconCross, IconJobs, IconPending, IconSend } from "../icons";
 import DMGEInvoiceEditor from "../components/DMGEInvoiceEditor";
+import { fmtMoney2 } from "./history/statusModel";
+import "./invoice-editor.css";
 
-// Screen for tab "invoice_editor".
-// Extracted verbatim from App.jsx: everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
+const looksLikeEmail = (s) => /^\S+@\S+\.\S+$/.test(String(s || "").trim());
+
+// Screen for tab "invoice_editor": the editable invoice sheet plus the "email it" panel.
+// Everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
 export default function InvoiceEditorScreen({ ctx }) {
   const {
     clients,
@@ -20,76 +25,123 @@ export default function InvoiceEditorScreen({ ctx }) {
     setTab,
   } = ctx;
 
+  const [liveTotal, setLiveTotal] = useState(null);
+  const [toTouched, setToTouched] = useState(false);
+
+  // Stable identity: the sheet re-reports on every change and re-runs its effect if this changes.
+  const handleUpdate = useCallback((data) => {
+    setInvoiceEditorData(data);
+    setLiveTotal(data.totalDue);
+  }, [setInvoiceEditorData]);
+
+  const goBack = () => { setTab("history"); setEmailStatus({ type: null, message: "" }); };
+
+  const job = selectedJobForEmail;
+  const client = job ? (clients || []).find((c) => c.id === job.clientId) : null;
+  const to = emailForm.to || "";
+  const canSend = !!emailForm.to && !!emailForm.subject && !isSendingEmail;
+  const toInvalid = toTouched && !!to.trim() && !looksLikeEmail(to);
+  const attachmentName = job ? `${job.invoiceNumber || "INV"}_${String(job.role || "").replace(/\s+/g, "_")}.pdf` : "";
+
+  const backBtn = (
+    <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={goBack}>
+      <IconArrowLeft size={16} /> Back to jobs
+    </PBtn>
+  );
+
+  if (!job) {
+    return (
+      <Screen
+        className="iv-screen"
+        eyebrow="Invoice"
+        title={<>Invoice <em>editor</em></>}
+        actions={backBtn}
+      >
+        <Card pad="lg" className="iv-nojob">
+          <EmptyState
+            icon={<IconJobs size={28} />}
+            title="No invoice open"
+            body="Pick a job on the Jobs tab and choose Invoice & email to edit its invoice here."
+            action={<PBtn color="var(--butter)" onClick={goBack}>Go to jobs</PBtn>}
+          />
+        </Card>
+      </Screen>
+    );
+  }
+
   return (
-    <div className="legacy-page">
-    <div style={{ maxWidth: "1000px", margin: "0 auto", paddingBottom: "2rem" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem", flexWrap: "wrap", gap: "0.75rem" }}>
-                    <PBtn small color="#FFB347" onClick={() => { setTab("history"); setEmailStatus({ type: null, message: "" }); }} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                      <IconArrowLeft size={18} color="#0A0A0A" /> BACK
-                    </PBtn>
-                    <div style={{ color: "#FFB347", fontFamily: "'Press Start 2P'", fontSize: "clamp(0.75rem, 2.5vw, 1.25rem)" }}>INVOICE EDITOR</div>
-                  </div>
-    
-                  <PBox bg="#0A0A0A" style={{ padding: "clamp(0.75rem, 3vw, 1.5rem)", marginBottom: "1.5rem" }}>
-                    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 250px), 1fr))", gap: "1rem", marginBottom: "1rem" }}>
-                      <div>
-                        <PLbl style={{ marginBottom: "0.25rem" }}>RECIPIENT EMAIL</PLbl>
-                        <PInput
-                          type="email"
-                          value={emailForm.to}
-                          onChange={v => setEmailForm(f => ({ ...f, to: v }))}
-                          placeholder="client@example.com"
-                        />
-                      </div>
-                      <div>
-                        <PLbl style={{ marginBottom: "0.25rem" }}>SUBJECT</PLbl>
-                        <PInput
-                          value={emailForm.subject}
-                          onChange={v => setEmailForm(f => ({ ...f, subject: v }))}
-                          placeholder="Quote for your project"
-                        />
-                      </div>
-                    </div>
-    
-                    {emailStatus.type && (
-                      <div style={{
-                        padding: "0.75rem 1rem",
-                        marginBottom: "1rem",
-                        fontFamily: "'Press Start 2P'",
-                        fontSize: "clamp(0.55rem, 1.5vw, 0.75rem)",
-                        lineHeight: 1.8,
-                        border: `0.25rem solid ${emailStatus.type === "error" ? "#E91E63" : emailStatus.type === "success" ? "#4CAF50" : "#FFB347"}`,
-                        background: emailStatus.type === "error" ? "rgba(233,30,99,0.15)" : emailStatus.type === "success" ? "rgba(76,175,80,0.15)" : "rgba(255,179,71,0.15)",
-                        color: emailStatus.type === "error" ? "#E91E63" : emailStatus.type === "success" ? "#4CAF50" : "#FFB347",
-                        wordBreak: "break-word"
-                      }}>
-                        {emailStatus.type === "error" && "⚠ "}{emailStatus.type === "success" && "✓ "}{emailStatus.type === "info" && "⟳ "}{emailStatus.message}
-                      </div>
-                    )}
-    
-                    <div className="btn-row" style={{ display: "flex", justifyContent: "flex-end" }}>
-                      <PBtn color="#d6f5e3" onClick={sendEmail} disabled={!emailForm.to || !emailForm.subject || isSendingEmail}>
-                        <span style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>{isSendingEmail ? "SENDING..." : "SEND EMAIL"} <IconArrowRight size={18} color="#000" /></span>
-                      </PBtn>
-                    </div>
-                  </PBox>
-    
-                  <div style={{
-                    border: "clamp(0.1875rem, 1vw, 0.375rem) solid #FFB347",
-                    boxShadow: "clamp(0.1875rem, 1vw, 0.375rem) clamp(0.1875rem, 1vw, 0.375rem) 0 #E91E63",
-                    background: "#050505",
-                    overflow: "hidden",
-                  }}>
-                    {selectedJobForEmail && (
-                      <DMGEInvoiceEditor
-                        job={selectedJobForEmail}
-                        profile={profile}
-                        clients={clients}
-                        onUpdate={setInvoiceEditorData}
-                      />
-                    )}
-                  </div>
-                </div>
-    </div>
+    <Screen
+      wide
+      className="iv-screen"
+      eyebrow="Invoice"
+      title={<>Invoice <em>editor</em></>}
+      subtitle="Change anything on the sheet, then email it as a PDF. What you see here is what your client gets."
+      actions={backBtn}
+    >
+      <div className="iv-layout">
+        <Card as="section" className="iv-send" pad="md" aria-labelledby="iv-send-title" aria-busy={isSendingEmail || undefined}>
+          <div>
+            <h2 className="iv-send-title" id="iv-send-title">Email <em>invoice</em></h2>
+            <p className="iv-send-sub">Sent as a PDF attachment{client?.name ? ` to ${client.name}` : ""}.</p>
+          </div>
+
+          <Field label="Recipient email" htmlFor="iv-to" error={toInvalid ? "That does not look like a full email address." : undefined}>
+            <PInput
+              id="iv-to"
+              type="email"
+              autoComplete="email"
+              value={emailForm.to}
+              onChange={(v) => setEmailForm((f) => ({ ...f, to: v }))}
+              onBlur={() => setToTouched(true)}
+              placeholder="client@example.com"
+              disabled={isSendingEmail}
+              aria-invalid={toInvalid || undefined}
+            />
+          </Field>
+          {client?.email && !emailForm.to && (
+            <button type="button" className="iv-quickfill" onClick={() => setEmailForm((f) => ({ ...f, to: client.email }))} disabled={isSendingEmail}>
+              Use {client.email}
+            </button>
+          )}
+
+          <Field label="Subject" htmlFor="iv-subject">
+            <PInput
+              id="iv-subject"
+              value={emailForm.subject}
+              onChange={(v) => setEmailForm((f) => ({ ...f, subject: v }))}
+              placeholder="Invoice for your project"
+              disabled={isSendingEmail}
+            />
+          </Field>
+
+          <dl className="iv-summary">
+            <div><dt>Attachment</dt><dd className="iv-summary-file">{attachmentName}</dd></div>
+            {liveTotal != null && <div><dt>Total due</dt><dd className="iv-summary-total">{fmtMoney2(liveTotal)}</dd></div>}
+          </dl>
+
+          {isSendingEmail ? (
+            <div className="iv-banner iv-banner--info" role="status">
+              <span className="iv-spinner" aria-hidden="true" />
+              <span>Building the PDF and sending it. This can take a few seconds.</span>
+            </div>
+          ) : emailStatus.type ? (
+            <div className={`iv-banner iv-banner--${emailStatus.type}`} role={emailStatus.type === "error" ? "alert" : "status"}>
+              {emailStatus.type === "error" ? <IconCross size={18} /> : emailStatus.type === "success" ? <IconCheck size={18} /> : <IconPending size={18} />}
+              <span>{emailStatus.message}</span>
+            </div>
+          ) : null}
+
+          <PBtn color="var(--butter)" className="iv-send-btn" onClick={sendEmail} disabled={!canSend}>
+            {isSendingEmail
+              ? <><span className="iv-spinner" aria-hidden="true" /> Sending…</>
+              : <><IconSend size={18} /> Send invoice</>}
+          </PBtn>
+        </Card>
+
+        <div className="iv-sheet-wrap">
+          <DMGEInvoiceEditor job={job} profile={profile} clients={clients} onUpdate={handleUpdate} />
+        </div>
+      </div>
+    </Screen>
   );
 }

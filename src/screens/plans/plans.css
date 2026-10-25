@@ -1,0 +1,102 @@
+/* Plans (pricing) screen + upgrade modal perk cards. px/clamp only; tokens only. */
+
+/* visually hidden, still read by screen readers */
+.plan-sr { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ── toolbar: billing toggle + manage strip ───────────────── */
+.plans-toolbar { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 12px 16px; margin: 0 0 clamp(20px, 3vw, 32px); }
+.plans-manage { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px 20px; margin: 0 0 clamp(20px, 3vw, 28px); }
+.plans-manage-text { min-width: 0; flex: 1 1 260px; }
+.plans-manage-text h2 { margin: 0; font: 400 clamp(24px, 3vw, 30px)/1.1 var(--font-display); letter-spacing: -0.02em; }
+.plans-manage-text h2 em { font-style: italic; }
+.plans-manage-text p { margin: 6px 0 0; font-size: 14px; color: var(--ink-2); }
+
+/* ── plan cards ───────────────────────────────────────────── */
+.plans-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; }
+@media (min-width: 960px) { .plans-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; } }
+
+.plan {
+  --plan-fill: var(--blue); --plan-deep: var(--blue-deep);
+  display: flex; flex-direction: column; min-width: 0;
+  animation: planIn 0.6s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 80ms);
+  transition: box-shadow var(--dur-2) var(--ease-out), transform var(--dur-2) var(--ease-out);
+}
+.plan--pro { --plan-fill: var(--butter); --plan-deep: var(--butter-deep); }
+.plan--agency { --plan-fill: var(--lilac); --plan-deep: var(--lilac-deep); }
+.plan:hover { box-shadow: var(--sh-2); }
+.plan.is-popular { box-shadow: var(--sh-2); border-color: color-mix(in srgb, var(--plan-fill) 70%, var(--ink)); }
+.plan.is-current { box-shadow: 0 0 0 2px var(--plan-deep), var(--sh-2); }
+@keyframes planIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+.plan-top { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 12px; }
+.plan-icon { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: var(--on-fill); background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 60%), var(--plan-fill); border: 1px solid color-mix(in srgb, var(--plan-fill) 55%, var(--ink)); }
+.plan-name { margin: 0; flex: 1 1 auto; min-width: 0; font: 400 clamp(32px, 3.4vw, 40px)/1 var(--font-display); letter-spacing: -0.02em; }
+.plan-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; min-height: 26px; margin-top: 12px; }
+.plan-blurb { margin: 10px 0 0; min-height: 3em; font-size: 14px; line-height: 1.5; color: var(--ink-2); }
+
+.plan-price { margin: 18px 0 20px; padding: 18px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.plan-promo { min-height: 26px; margin-bottom: 8px; }
+.plan-was { margin: 0; min-height: 21px; font-size: 14px; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.plan-was s { text-decoration-thickness: 1.5px; }
+.plan-now { margin: 8px 0 0; line-height: 1; }
+.plan-amount { font: 400 clamp(56px, 6vw, 72px)/0.95 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: lining-nums tabular-nums; }
+
+.plan-then { margin: 8px 0 0; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
+
+.plan-list { list-style: none; margin: 0 0 24px; padding: 0; display: grid; gap: 10px; flex: 1 1 auto; align-content: start; }
+.plan-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 15px; line-height: 1.4; }
+.plan-list li svg { margin-top: 1px; color: var(--plan-deep); }
+.plan-cta { margin-top: auto; }
+.plan-cta .lq-btn:disabled { opacity: 0.72; }
+
+/* ── comparison table ─────────────────────────────────────── */
+.cmp-card { overflow: hidden; }
+.cmp { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: 15px; }
+.cmp th, .cmp td { padding: 14px 6px; text-align: center; vertical-align: middle; border-bottom: 1px solid var(--line); }
+.cmp tbody tr:last-child th, .cmp tbody tr:last-child td { border-bottom: 0; }
+.cmp thead th { padding-top: 12px; padding-bottom: 14px; border-bottom: 1px solid var(--line-strong); font-weight: 700; }
+.cmp thead .cmp-corner, .cmp tbody th { width: 38%; text-align: left; padding-left: clamp(14px, 2.4vw, 24px); font-weight: 600; color: var(--ink); line-height: 1.3; }
+.cmp-head { display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; font: 400 clamp(18px, 2.4vw, 24px)/1 var(--font-display); letter-spacing: -0.01em; }
+.cmp-head svg { color: var(--ink-2); }
+@media (max-width: 719px) { .cmp-head { flex-direction: column; gap: 4px; } .cmp-you { margin-top: 6px; } }
+.cmp-you { display: block; margin-top: 4px; font: 700 11px/1 var(--font-body); letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-2); }
+.cmp [data-current] { background: color-mix(in srgb, var(--plan-fill, var(--blue)) 18%, transparent); }
+.cmp [data-plan="free"] { --plan-fill: var(--blue); }
+.cmp [data-plan="pro"] { --plan-fill: var(--butter); }
+.cmp [data-plan="agency"] { --plan-fill: var(--lilac); }
+.cmp-val { font: 400 clamp(20px, 2.4vw, 26px)/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+.cmp-yes, .cmp-no { display: inline-flex; align-items: center; justify-content: center; gap: 6px; font-size: 13px; font-weight: 600; }
+.cmp-yes { color: var(--mint-deep); }
+.cmp-no { color: var(--ink-2); }
+/* the words appear next to the icon when the columns are wide enough; screen readers always get them */
+.cmp-txt { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+@media (min-width: 720px) {
+  .cmp-txt { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; }
+  .cmp th, .cmp td { padding: 16px 10px; }
+}
+.plans-fine { margin: 18px 4px 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); text-align: center; }
+
+/* ── upgrade modal ────────────────────────────────────────── */
+.upg { display: grid; gap: 20px; }
+.upg-lede { display: flex; align-items: flex-start; gap: 14px; }
+.upg-lock { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; color: var(--on-fill); background: linear-gradient(135deg, var(--pink-soft), var(--blue-soft)); border: 1px solid var(--line); }
+.upg-lock svg { color: var(--ink); }
+.upg-desc { margin: 0; flex: 1 1 auto; min-width: 0; font-size: 16px; line-height: 1.5; color: var(--ink); }
+.upg-meta { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 12px; font-size: 14px; color: var(--ink-2); }
+.upg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 14px; }
+.upg-card { --plan-fill: var(--butter); --plan-deep: var(--butter-deep); display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.upg-card--agency { --plan-fill: var(--lilac); --plan-deep: var(--lilac-deep); }
+.upg-card.is-hit { box-shadow: 0 0 0 2px var(--plan-deep), var(--sh-1); }
+.upg-card-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 10px; }
+.upg-name { display: inline-flex; align-items: center; gap: 10px; margin: 0; font: 400 28px/1 var(--font-display); letter-spacing: -0.02em; }
+.upg-name svg { color: var(--plan-deep); }
+.upg-price { margin: 0; font-size: 14px; color: var(--ink-2); font-variant-numeric: lining-nums tabular-nums; }
+.upg-price b { font: 400 34px/1 var(--font-display); color: var(--ink); letter-spacing: -0.02em; margin-right: 4px; }
+.upg-card .plan-list { margin: 0; gap: 8px; }
+.upg-card .plan-list li { font-size: 14px; }
+.upg-card .plan-list li.is-hit { font-weight: 700; }
+.upg-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.upg-link { background: none; border: none; padding: 8px 4px; min-height: 44px; font: 700 14px var(--font-body); color: var(--blue-deep); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.upg-link:hover { color: var(--ink); }
+
+@media (prefers-reduced-motion: reduce) { .plan { animation: none; } }

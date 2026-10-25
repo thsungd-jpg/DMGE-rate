@@ -1,222 +1,171 @@
-import React from "react";
-import { PBox, PBtn, PLbl, PSelect } from "../components/ui";
-import { IconArrowLeft, IconCheck, IconCross, IconEdit, IconInProgress, IconLock, IconPending } from "../icons";
-import { canAddClient, canExportCSV } from "../utils/subscription";
+import React, { useMemo } from "react";
+import { Card, EmptyState, Screen, Segmented, Stat } from "../components/kit";
+import { PBtn } from "../components/ui";
+import { IconDownload, IconJobs, IconLock, IconPlus } from "../icons";
+import { canExportCSV, canExportPDF, TIERS } from "../utils/subscription";
+import JobCard from "./history/JobCard";
+import useJobActions from "./history/useJobActions";
+import { fmtMoney, normalizeStatus, STATUS_META } from "./history/statusModel";
+import "./history.css";
 
-// Screen for tab "history".
-// Extracted verbatim from App.jsx: everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
+// Screen for tab "history" (Jobs): summary, status filter and the list of saved quotes / invoices.
+// Everything it needs from the app (state, handlers, helpers) arrives in `ctx`.
 export default function HistoryScreen({ ctx }) {
   const {
-    category,
     clients,
-    currentUser,
-    filteredJobs,
-    fmtDate,
-    handleDeleteJob,
-    handleEditJob,
     handleGatedCSV,
-    handleGatedPDF,
-    handleSendQuote,
     historyJobs,
     jobStatusFilter,
-    loadClientsFromStorage,
-    loadJobs,
-    loadTemplatesFromStorage,
-    saveClientToStorage,
-    saveJob,
-    saveTemplateToStorage,
-    setClients,
+    jobs,
     setJobStatusFilter,
-    setJobs,
-    setSelectedClientId,
     setShowUpgradeModal,
     setTab,
-    setTemplates,
     setUpgradeFeature,
+    todayPdfCount,
     totalBilled,
     userTier,
   } = ctx;
 
-  return (
-    <div className="legacy-page">
+  const actions = useJobActions(ctx);
+
+  const clientById = useMemo(() => {
+    const m = new Map();
+    (clients || []).forEach((c) => m.set(String(c.id), c));
+    return m;
+  }, [clients]);
+
+  // Newest first, with the status normalised once so counts, filter and cards agree.
+  const rows = useMemo(
+    () => [...historyJobs]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .map((j) => ({ j, status: normalizeStatus(j) })),
+    [historyJobs]
+  );
+
+  const counts = useMemo(() => {
+    const c = { all: rows.length, pending: 0, in_progress: 0, completed: 0 };
+    rows.forEach((r) => { c[r.status] += 1; });
+    return c;
+  }, [rows]);
+
+  const filter = ["all", "pending", "in_progress", "completed"].includes(jobStatusFilter) ? jobStatusFilter : "all";
+  const visible = filter === "all" ? rows : rows.filter((r) => r.status === filter);
+
+  const paid = rows.reduce((s, r) => (r.status === "completed" ? s + (Number(r.j.price) || 0) : s), 0);
+  const avg = rows.length ? Math.round(totalBilled / rows.length) : 0;
+
+  const windowDays = TIERS[userTier]?.limits.historyDays;
+  const windowLabel = Number.isFinite(windowDays) ? `Last ${windowDays} days` : "All time";
+  const hiddenCount = Math.max(0, (jobs?.length || 0) - historyJobs.length);
+
+  const csvLocked = !canExportCSV(userTier);
+  const pdfLimit = TIERS[userTier]?.limits.pdfsPerDay;
+  const pdfLocked = !canExportPDF(userTier, todayPdfCount || 0);
+
+  const openUpgrade = (feature) => { setUpgradeFeature(feature); setShowUpgradeModal(true); };
+
+  const filterOptions = [
+    { value: "all", label: "All", count: counts.all },
+    { value: "pending", label: STATUS_META.pending.label, count: counts.pending },
+    { value: "in_progress", label: STATUS_META.in_progress.label, count: counts.in_progress },
+    { value: "completed", label: STATUS_META.completed.label, count: counts.completed },
+  ];
+
+  const hasJobs = (jobs?.length || 0) > 0;
+
+  const headerActions = hasJobs ? (
     <>
-                <div className="btn-row" style={{ display: "flex", gap: "1.25rem", marginBottom: "1.5rem", alignItems: "center", flexWrap: "wrap", justifyContent: "space-between" }}>
-                  <div style={{ display: "flex", gap: "1.25rem", alignItems: "center", flexWrap: "wrap", paddingBottom: "0.5rem" }}>
-                    <PBtn small color="#FFB347" onClick={() => setTab("calc")} style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#0A0A0A" }}>
-                      <IconArrowLeft size={18} color="#0A0A0A" /> CALC
-                    </PBtn>
-                    <PBtn small color="#FFB347" onClick={handleGatedCSV} style={{ color: "#0A0A0A" }}>
-                      <span style={{ display: "flex", alignItems: "center", gap: "4px", justifyContent: "center" }}>CSV {!canExportCSV(userTier) && <IconLock size={14} color="#0A0A0A" />}</span>
-                    </PBtn>
-                    <div style={{ marginBottom: 0, minWidth: "14.5rem" }}>
-                      <PSelect
-                        value={jobStatusFilter}
-                        onChange={setJobStatusFilter}
-                        options={[
-                          { label: "All Jobs", value: "all" },
-                          { label: "Pending", value: "pending" },
-                          { label: "Current", value: "in_progress" },
-                          { label: "Completed", value: "completed" },
-                        ]}
-                        iconType="none"
-                        smallBtnStyle={true}
-                        style={{ marginBottom: 0 }}
-                      />
-                    </div>
-                  </div>
-                  <div style={{ display: "flex", gap: "0.75rem", alignItems: "center", flexWrap: "nowrap", whiteSpace: "nowrap", marginTop: "0.5rem" }}>
-                    <PLbl style={{ marginBottom: 0, flexShrink: 0 }}>STATUS:</PLbl>
-                    <span style={{ fontSize: "0.85rem", color: "#9E9E9E", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                      <IconPending size={18} color="#9E9E9E" /> {historyJobs.filter(j => j.status === "pending").length} Pend
-                    </span>
-                    <span style={{ fontSize: "0.85rem", color: "#FF9800", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                      <IconInProgress size={18} color="#FF9800" /> {historyJobs.filter(j => j.status === "in_progress").length} IP
-                    </span>
-                    <span style={{ fontSize: "0.85rem", color: "#4CAF50", fontFamily: "'Press Start 2P'", display: "inline-flex", gap: "3px", alignItems: "center", flexShrink: 0 }}>
-                      <IconCheck size={18} color="#4CAF50" /> {historyJobs.filter(j => j.status === "completed").length} Done
-                    </span>
-                  </div>
-                </div>
-                <PBox bg="#1A1A1A" shadowColor="#E91E63" style={{ marginBottom: "2.1875rem" }}>
-                  <div style={{ fontSize: "clamp(0.7rem, 2.5vw, 0.9375rem)", color: "#FFB34788", marginBottom: "0.9375rem" }}>TOTAL REVENUE</div>
-                  <div style={{ fontSize: "clamp(2rem, 8vw, 3.125rem)", color: "#FFB347" }}>${Math.round(totalBilled)}</div>
-                </PBox>
-                {filteredJobs.map((j, i) => (
-                  <PBox key={i} bg="#1A1A1A" shadowColor="#E91E63" style={{ marginBottom: "1.5625rem" }}>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: "1.25rem", justifyContent: "space-between", alignItems: "flex-start" }}>
-                      <div style={{ flex: "1 1 250px" }}>
-                        <div style={{ fontSize: "clamp(1.5rem, 5vw, 2.0625rem)", color: "#FFB347" }}>${Math.round(j.price)}</div>
-                        <div style={{ fontSize: "0.9375rem", color: "#FFB34788", marginTop: "0.9375rem" }}>
-                          {j.role} · {j.model}
-                        </div>
-                        <div style={{ fontSize: "0.875rem", color: "#FFB34788", marginTop: "0.3125rem" }}>
-                          Travel: ${(j.travelExpense || 0).toFixed(2)}
-                        </div>
-                        <div style={{ fontSize: "0.875rem", color: "#FFB34788", marginTop: "0.3125rem" }}>
-                          Status: <span style={{
-                            color: j.status === "completed" ? "#4CAF50" : j.status === "in_progress" ? "#FF9800" : "#9E9E9E",
-                            display: "inline-flex", gap: "4px", alignItems: "center"
-                          }}>{j.status === "completed" ? <><IconCheck size={18} color="#4CAF50" /> COMPLETED</> : j.status === "in_progress" ? <><IconInProgress size={18} color="#FF9800" /> IN PROGRESS</> : <><IconPending size={18} color="#9E9E9E" /> PENDING</>}</span>
-                        </div>
-                      </div>
-                      <div style={{ flex: "1 1 300px" }}>
-                        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "flex-start", gap: "0.625rem", marginBottom: "0.625rem", alignItems: "center" }}>
-                          <PBtn small color="#1A1A1A" onClick={(e) => { e.stopPropagation(); handleEditJob(j); }} style={{ color: "#FFB347", padding: "0.5rem 0.75rem" }} title="Edit Job">
-                            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><IconEdit color="#FFB347" size={18} /> EDIT</span>
-                          </PBtn>
-                          <PBtn small color="#1A1A1A" onClick={(e) => { e.stopPropagation(); handleDeleteJob(j.id); }} style={{ color: "#E91E63", padding: "0.5rem 0.75rem" }} title="Delete Job">
-                            <span style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}><IconCross color="#E91E63" size={18} /> DEL</span>
-                          </PBtn>
-                          <div style={{ marginLeft: "auto", fontSize: "0.9375rem", color: "#FFB34788" }}>{fmtDate(j.date)}</div>
-                        </div>
-    
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.625rem", marginBottom: "0.625rem" }}>
-                          <PBtn small color="#1A1A1A" onClick={() => handleGatedPDF(j)} style={{ flexGrow: 1, color: "#FFB347" }}>PDF</PBtn>
-                          <PBtn small color="#1A1A1A" onClick={() => handleSendQuote(j)} style={{ flexGrow: 1, color: "#FFB347" }}>EMAIL</PBtn>
-                          <PBtn small color="#FFB347" onClick={() => {
-                            const template = {
-                              id: "tpl-" + Date.now(),
-                              name: `${j.role} - ${j.model}`,
-                              category: j.category || category,
-                              role: j.role,
-                              model: j.model,
-                              baseRate: j.baseRate || 25,
-                              form: { units: j.units, complexity: j.complexity, usage: j.usage, rush: j.rush, revisions: j.revisions, platformFee: j.platformFee, clientType: j.clientType, travelExpense: j.travelExpense },
-                              materials: [],
-                              notes: "Imported from job history",
-                              createdAt: new Date().toISOString(),
-                              usageCount: 0
-                            };
-                            saveTemplateToStorage(template, userTier, currentUser).then(() => loadTemplatesFromStorage(userTier, currentUser).then(t => { setTemplates(t); setTab("templates"); }));
-                          }} style={{ flexGrow: 1, color: "#0A0A0A" }}>+ TPL</PBtn>
-                          {!j.clientId && (
-                            <PBtn small color="#E91E63" onClick={async () => {
-                              if (!canAddClient(userTier, clients.length)) {
-                                setUpgradeFeature('clients');
-                                setShowUpgradeModal(true);
-                                return;
-                              }
-                              const newClientId = "cli-" + Date.now() + Math.random().toString(36).substr(2, 5);
-                              const newClient = {
-                                id: newClientId,
-                                name: `Client - ${j.role}`,
-                                email: "",
-                                phone: "",
-                                preferredComplexity: j.complexity || "Standard",
-                                preferredUsageRights: j.usage || "Personal",
-                                preferredClientType: j.clientType || "Individual",
-                                rateMultiplier: 1.0,
-                                notes: "Created from quote on " + fmtDate(j.date)
-                              };
-    
-                              // Save client
-                              await saveClientToStorage(newClient, userTier, currentUser);
-                              setClients(await loadClientsFromStorage(userTier, currentUser));
-    
-                              // Link job
-                              const allJobs = await loadJobs(userTier, currentUser);
-                              const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                              if (jobIdx >= 0) {
-                                allJobs[jobIdx].clientId = newClientId;
-                                await saveJob(allJobs[jobIdx], userTier, currentUser);
-                                setJobs(await loadJobs(userTier, currentUser));
-                              }
-    
-                              setSelectedClientId(newClientId);
-                              setTab("clients");
-                            }} style={{ flexGrow: 1, color: "#fff" }}>+ CLI</PBtn>
-                          )}
-                        </div>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.3125rem", marginTop: "0.625rem" }}>
-                          <PBtn small color="#1A1A1A" onClick={async () => {
-                            const allJobs = await loadJobs(userTier, currentUser);
-                            const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                            if (jobIdx >= 0) { allJobs[jobIdx].status = "pending"; allJobs[jobIdx].invoiceStatus = "pending"; allJobs[jobIdx].sentAt = null; allJobs[jobIdx].paidAt = null; await saveJob(allJobs[jobIdx], userTier, currentUser); setJobs(await loadJobs(userTier, currentUser)); }
-                          }} style={{ flexGrow: 1, color: "#FFB347" }}>PENDING</PBtn>
-                          <PBtn small color="#FFB347" onClick={async () => {
-                            const allJobs = await loadJobs(userTier, currentUser);
-                            const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                            if (jobIdx >= 0) {
-                              allJobs[jobIdx].status = "in_progress";
-                              allJobs[jobIdx].invoiceStatus = "sent";
-                              allJobs[jobIdx].sentAt = new Date().toISOString();
-                              await saveJob(allJobs[jobIdx], userTier, currentUser);
-                              setJobs(await loadJobs(userTier, currentUser));
-                            }
-                          }} style={{ flexGrow: 1, color: "#0A0A0A" }}>SENT/IP</PBtn>
-                          <PBtn small color="#E91E63" onClick={async () => {
-                            const allJobs = await loadJobs(userTier, currentUser);
-                            const jobIdx = allJobs.findIndex(x => x.id === j.id);
-                            if (jobIdx >= 0) {
-                              allJobs[jobIdx].status = "completed";
-                              allJobs[jobIdx].invoiceStatus = "paid";
-                              allJobs[jobIdx].paidAt = new Date().toISOString();
-                              if (!allJobs[jobIdx].sentAt) allJobs[jobIdx].sentAt = new Date().toISOString();
-                              await saveJob(allJobs[jobIdx], userTier, currentUser);
-                              setJobs(await loadJobs(userTier, currentUser));
-                            }
-                          }} style={{ flexGrow: 1, color: "#fff" }}>PAID</PBtn>
-                        </div>
-                      </div>
-                    </div>
-                    {j.invoiceNumber && (
-                      <div style={{ marginTop: "0.9375rem", padding: "0.9375rem", background: "#0A0A0A", border: "0.25rem solid #FFB347", display: "flex", flexWrap: "wrap", gap: "0.5rem", justifyContent: "space-between", alignItems: "center" }}>
-                        <div style={{ fontSize: "0.8125rem", color: "#FFB34788" }}>
-                          INVOICE: <span style={{ color: "#FFB347", fontWeight: "bold" }}>{j.invoiceNumber}</span>
-                        </div>
-                        <div style={{ fontSize: "0.75rem", color: "#FFB34788", textAlign: "right" }}>
-                          {j.paidAt ? `PAID: ${fmtDate(j.paidAt)}` : j.sentAt ? `SENT: ${fmtDate(j.sentAt)}` : `DUE: ${fmtDate(j.dueDate)}`}
-                        </div>
-                        <div style={{ fontSize: "0.8125rem", color: "#FFB34788", width: "100%", textAlign: "right", marginTop: "4px" }}>
-                          <span style={{ color: j.invoiceStatus === 'paid' ? '#4CAF50' : new Date(j.dueDate) < new Date() ? '#E91E63' : '#FFB347' }}>
-                            {j.invoiceStatus === 'paid' ? 'PAID' : new Date(j.dueDate) < new Date() ? `OVERDUE (WAS DUE ${fmtDate(j.dueDate)})` : `DUE ${fmtDate(j.dueDate)}`}
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </PBox>
-                ))}
-              </>
-    </div>
+      <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={handleGatedCSV} aria-label={csvLocked ? "Export CSV (upgrade to unlock)" : "Export CSV"}>
+        <IconDownload size={16} /> Export CSV {csvLocked && <IconLock size={14} />}
+      </PBtn>
+      <PBtn small color="var(--butter)" onClick={() => setTab("calc")}>
+        <IconPlus size={16} /> New quote
+      </PBtn>
+    </>
+  ) : null;
+
+  return (
+    <Screen
+      className="jb-screen"
+      eyebrow="Quotes & invoices"
+      title={<>Your <em>jobs</em></>}
+      subtitle="Every quote you have saved, with its invoice and payment status. Open one to edit the invoice and email it."
+      actions={headerActions}
+    >
+      {!hasJobs && (
+        <Card pad="lg">
+          <EmptyState
+            icon={<IconJobs size={28} />}
+            title="No jobs yet"
+            body="Price a job in the calculator and save it. It will show up here with its invoice, PDF and payment status."
+            action={<PBtn color="var(--butter)" onClick={() => setTab("calc")}><IconPlus size={16} /> Price your first job</PBtn>}
+          />
+        </Card>
+      )}
+
+      {hasJobs && historyJobs.length === 0 && (
+        <Card pad="lg">
+          <EmptyState
+            icon={<IconJobs size={28} />}
+            title={`Nothing in the ${windowLabel.toLowerCase()}`}
+            body="Your older jobs are safe, but your plan only shows recent ones."
+            action={userTier !== "agency" ? <PBtn color="var(--butter)" onClick={() => openUpgrade("history")}>See plans</PBtn> : null}
+          />
+        </Card>
+      )}
+
+      {historyJobs.length > 0 && (
+        <>
+          <Card className="jb-stats" pad="lg">
+            <Stat label="Total billed" value={fmtMoney(totalBilled)} hint={paid > 0 ? `${fmtMoney(paid)} paid · ${fmtMoney(Math.max(0, totalBilled - paid))} to collect` : `${fmtMoney(totalBilled)} to collect`} />
+            <Stat label="Average job" value={fmtMoney(avg)} hint="Per quote" />
+            <Stat label="Jobs" value={String(rows.length)} hint={windowLabel} />
+          </Card>
+
+          <div className="jb-bar">
+            <Segmented ariaLabel="Filter jobs by status" options={filterOptions} value={filter} onChange={setJobStatusFilter} />
+            {Number.isFinite(pdfLimit) && (
+              <p className="jb-quota">PDFs today <b>{Math.min(todayPdfCount || 0, pdfLimit)}</b> of {pdfLimit}</p>
+            )}
+          </div>
+
+          <p className="jb-sr" role="status">{visible.length} {visible.length === 1 ? "job" : "jobs"} shown</p>
+
+          {visible.length > 0 ? (
+            <ul className="jb-list">
+              {visible.map(({ j }, i) => (
+                <li key={j.id} style={{ "--i": Math.min(i, 8) }}>
+                  <JobCard
+                    job={j}
+                    client={j.clientId ? clientById.get(String(j.clientId)) : null}
+                    ctx={ctx}
+                    actions={actions}
+                    pdfLocked={pdfLocked}
+                  />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <Card pad="lg">
+              <EmptyState
+                icon={<IconJobs size={28} />}
+                title={`No ${STATUS_META[filter]?.label.toLowerCase() || ""} jobs`}
+                body="Nothing matches this filter right now."
+                action={<PBtn color="var(--paper)" className="lq-btn--neutral" onClick={() => setJobStatusFilter("all")}>Show all jobs</PBtn>}
+              />
+            </Card>
+          )}
+        </>
+      )}
+
+      {hasJobs && hiddenCount > 0 && (
+        <p className="jb-note">
+          {hiddenCount} older {hiddenCount === 1 ? "job is" : "jobs are"} not shown. Your plan keeps the {windowLabel.toLowerCase()} in view.
+          {userTier !== "agency" && (
+            <> <button type="button" className="auth-link" onClick={() => openUpgrade("history")}>See plans</button></>
+          )}
+        </p>
+      )}
+    </Screen>
   );
 }

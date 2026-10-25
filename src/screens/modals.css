@@ -1,0 +1,32 @@
+/* Shared modals (custom item, save template, delete confirm). px only; tokens only. */
+
+.mdl-form { display: grid; gap: 20px; }
+.mdl-lede { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink-2); }
+.mdl-summary { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.mdl-textarea {
+  display: block; width: 100%; min-height: 112px; padding: 12px 16px; resize: vertical; outline: none;
+  font: 500 16px/1.5 var(--font-body); color: var(--ink); background: var(--paper);
+  border: 1px solid var(--line-strong); border-radius: var(--r-md);
+  transition: border-color var(--dur-1), box-shadow var(--dur-1);
+}
+.mdl-textarea::placeholder { color: var(--ink-3); }
+.mdl-textarea:focus { border-color: var(--blue-deep); box-shadow: 0 0 0 4px color-mix(in srgb, var(--blue) 45%, transparent); }
+
+.mdl-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.mdl-actions .lq-btn { min-width: 132px; }
+@media (max-width: 559px) {
+  .mdl-actions { flex-direction: column-reverse; }
+  .mdl-actions .lq-btn { width: 100%; }
+}
+
+/* delete confirmation */
+.mdl-confirm { display: grid; justify-items: center; gap: 14px; text-align: center; padding-top: 4px; }
+.mdl-confirm-icon { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; color: var(--danger); background: var(--danger-soft); border: 1px solid color-mix(in srgb, var(--danger) 35%, transparent); }
+.mdl-confirm-text { margin: 0; font-size: 16px; line-height: 1.5; color: var(--ink-2); }
+.mdl-name { display: block; margin: 6px 0; font: italic 400 clamp(30px, 5vw, 40px)/1.1 var(--font-display); letter-spacing: -0.01em; color: var(--ink); overflow-wrap: anywhere; }
+.mdl-warn { margin: 0; font-size: 14px; font-weight: 700; color: var(--danger); }
+.mdl-confirm .mdl-actions { width: 100%; justify-content: center; margin-top: 10px; }
+
+/* destructive primary: solid danger fill, readable text in both themes (paper flips with the theme) */
+.lq-btn.mdl-danger { --lq-fill: var(--danger); color: var(--paper); border-color: var(--danger); background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 58%), var(--danger); box-shadow: 0 10px 20px -12px var(--danger); }
