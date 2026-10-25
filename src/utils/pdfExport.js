@@ -229,7 +229,7 @@ function brandLockup(brand, t, size = 'lg') {
 
 // Big, centered logo at the top of page 1 (no banner behind it).
 function heroLogo(brand, t) {
-  const MAX_W = 300, MAX_H = 130;
+  const MAX_W = 360, MAX_H = 180;
   if (brand.logo) {
     const k = Math.min(MAX_W / brand.logo.w, MAX_H / brand.logo.h);
     const w = Math.round(brand.logo.w * k), h = Math.round(brand.logo.h * k);
@@ -239,7 +239,7 @@ function heroLogo(brand, t) {
   if (brand.name) {
     return `<div style="font-family:${F.display};font-weight:400;font-size:52px;line-height:1.05;letter-spacing:-0.01em;text-align:center;color:${t.ink};">${esc(brand.name)}</div>`;
   }
-  const mark = brand.mark ? `<img src="${esc(brand.mark.src)}" alt="" style="display:block;width:120px;height:120px;object-fit:contain;margin:0 auto;" />` : '';
+  const mark = brand.mark ? `<img src="${esc(brand.mark.src)}" alt="" style="display:block;width:160px;height:160px;object-fit:contain;margin:0 auto;" />` : '';
   return `<div style="text-align:center;">${mark}<div style="margin-top:${mark ? 8 : 0}px;font-family:${F.display};font-weight:400;font-size:34px;line-height:1;letter-spacing:0.04em;color:${t.ink};">DMGE</div></div>`;
 }
 
