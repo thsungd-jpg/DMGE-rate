@@ -115,6 +115,7 @@ export default function TemplateManager({ templates, onUseTemplate, onDeleteTemp
             {categories.length > 2 && (
               <div className="tpl-filter" role="group" aria-label="Filter by category">
                 <PSelect
+                  label="Filter by category"
                   value={activeCat}
                   onChange={setFilterCat}
                   options={categories.map(c => ({ label: c === "all" ? "All categories" : c, value: c }))}

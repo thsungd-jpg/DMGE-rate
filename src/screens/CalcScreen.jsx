@@ -81,6 +81,7 @@ export default function CalcScreen({ ctx }) {
           <Card>
             <Field label="Quote for">
               <PSelect
+                label="Quote for"
                 value={selectedClientId}
                 onChange={(id) => {
                   setSelectedClientId(id);
@@ -101,6 +102,7 @@ export default function CalcScreen({ ctx }) {
               <div className="calc-grid2">
                 <Field label="Category">
                   <PSelect
+                    label="Category"
                     value={category}
                     onChange={(v) => { setCategory(v); setRoleIdx(0); setModelIdx(0); handleResetModel(ALL_DATA[v].roles[0].models[0]); }}
                     options={Object.keys(ALL_DATA).map((c) => ({ label: c, value: c }))}
@@ -110,6 +112,7 @@ export default function CalcScreen({ ctx }) {
                 </Field>
                 <Field label="Role">
                   <PSelect
+                    label="Role"
                     value={roleIdx}
                     onChange={(v) => { setRoleIdx(v); setModelIdx(0); handleResetModel(catData.roles[v].models[0]); }}
                     options={catData.roles.map((r, i) => ({ label: r.name, value: i }))}
@@ -120,6 +123,7 @@ export default function CalcScreen({ ctx }) {
               </div>
               <Field label="Pricing model">
                 <PSelect
+                  label="Pricing model"
                   value={modelIdx}
                   onChange={(v) => { setModelIdx(v); handleResetModel(role.models[v]); }}
                   options={role.models.map((m, i) => ({ label: `${m.type} (${m.unit})`, value: i }))}

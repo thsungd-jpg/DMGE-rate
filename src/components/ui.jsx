@@ -47,27 +47,69 @@ export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small
   );
 }
 
+const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+// A child with autoFocus steals focus before PModal's effect runs, so remember the last element focused outside any
+// dialog and return to it on close.
+let lastOutsideFocus = null;
+if (typeof document !== "undefined") {
+  document.addEventListener("focusin", (e) => {
+    if (e.target instanceof HTMLElement && !e.target.closest(".lq-overlay")) lastOutsideFocus = e.target;
+  });
+}
+
 export function PModal({ isOpen, onClose, title, children }) {
+  const overlayRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose; // parents pass a fresh onClose each render; the effect must not restart (it would lose the opener)
+  const titleId = useRef(`lq-modal-${Math.random().toString(36).slice(2, 8)}`).current;
+
   useEffect(() => {
     if (!isOpen) return undefined;
-    const onKey = (e) => { if (e.key === "Escape") onClose?.(); };
+    const opener = lastOutsideFocus || document.activeElement;
+    const overlay = overlayRef.current;
+    const items = () => [...(overlay?.querySelectorAll(FOCUSABLE) || [])].filter((el) => el.offsetParent !== null || el === document.activeElement);
+
+    // move focus into the dialog unless a child (autoFocus) already claimed it
+    if (overlay && !overlay.contains(document.activeElement)) {
+      const list = items();
+      // skip the close button so the first real control (or the dialog itself) gets focus
+      (list.find((el) => !el.hasAttribute("data-modal-close")) || list[0] || overlay.querySelector('[role="dialog"]'))?.focus();
+    }
+
+    const onKey = (e) => {
+      if (e.key === "Escape") { e.stopPropagation(); onCloseRef.current?.(); return; }
+      if (e.key !== "Tab") return;
+      const list = items();
+      if (!list.length) { e.preventDefault(); return; }
+      const first = list[0];
+      const last = list[list.length - 1];
+      if (e.shiftKey && (document.activeElement === first || !overlay.contains(document.activeElement))) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && (document.activeElement === last || !overlay.contains(document.activeElement))) { e.preventDefault(); first.focus(); }
+    };
     document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [isOpen, onClose]);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      // after the dialog is gone: put focus back where the user was
+      if (opener && typeof opener.focus === "function") setTimeout(() => { if (document.contains(opener)) opener.focus(); }, 0);
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
   return (
-    <div className="modal-overlay lq-overlay">
+    <div className="modal-overlay lq-overlay" ref={overlayRef}>
       <PBox
         role="dialog"
         aria-modal="true"
+        aria-labelledby={typeof title === "string" ? undefined : titleId}
         aria-label={typeof title === "string" ? title : undefined}
+        tabIndex={-1}
         style={{ maxWidth: "min(700px, calc(100vw - 16px))", width: "100%", maxHeight: "95vh", overflowY: "auto", boxShadow: "var(--sh-3)" }}
         bg="#1A1A1A"
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 24 }}>
-          <div className="lq-modal-title">{title}</div>
-          <PBtn small color="#E91E63" onClick={onClose} aria-label="Close" style={{ minWidth: 36, padding: "7px 12px" }}>✕</PBtn>
+          <div className="lq-modal-title" id={titleId}>{title}</div>
+          <PBtn small color="#E91E63" onClick={onClose} aria-label="Close" data-modal-close="" style={{ minWidth: 44, minHeight: 44, padding: "7px 12px" }}>✕</PBtn>
         </div>
         {children}
       </PBox>
@@ -141,47 +183,80 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
   );
 }
 
-export function PSelect({ label, value, options, onChange, iconType = "cat", style = {}, smallBtnStyle = false }) {
+export function PSelect({ label, value, options, onChange, iconType = "cat", style = {}, smallBtnStyle = false, ...rest }) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef(null);
+  const triggerRef = useRef(null);
+  const menuRef = useRef(null);
+  const listId = useRef(`lq-list-${Math.random().toString(36).slice(2, 8)}`).current;
 
   useEffect(() => {
     const handleClickOutside = (e) => { if (ref.current && !ref.current.contains(e.target)) setIsOpen(false); };
-    const handleEsc = (e) => { if (e.key === "Escape") setIsOpen(false); };
     document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEsc);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEsc);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const currentValue = options.find(o => o.value === value) || options[0];
+  const optionEls = () => [...(menuRef.current?.querySelectorAll('[role="option"]') || [])];
+
+  // when the menu opens, focus the selected option (or the first) so arrow keys work immediately
+  useEffect(() => {
+    if (!isOpen) return;
+    const els = optionEls();
+    (els.find((el) => el.getAttribute("aria-selected") === "true") || els[0])?.focus();
+  }, [isOpen]);
+
+  const close = (refocus = true) => { setIsOpen(false); if (refocus) triggerRef.current?.focus(); };
+  const choose = (opt) => { onChange(opt.value); close(); };
+
+  const onTriggerKey = (e) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") { e.preventDefault(); setIsOpen(true); }
+  };
+  const onMenuKey = (e) => {
+    const els = optionEls();
+    const i = els.indexOf(document.activeElement);
+    if (e.key === "ArrowDown") { e.preventDefault(); els[Math.min(els.length - 1, i + 1)]?.focus(); }
+    else if (e.key === "ArrowUp") { e.preventDefault(); els[Math.max(0, i - 1)]?.focus(); }
+    else if (e.key === "Home") { e.preventDefault(); els[0]?.focus(); }
+    else if (e.key === "End") { e.preventDefault(); els[els.length - 1]?.focus(); }
+    else if (e.key === "Escape") { e.preventDefault(); e.stopPropagation(); close(); }
+    else if (e.key === "Tab") { setIsOpen(false); }
+    else if (e.key.length === 1 && /\S/.test(e.key)) {
+      // typeahead: jump to the next option starting with the typed letter
+      const k = e.key.toLowerCase();
+      const ordered = [...els.slice(i + 1), ...els.slice(0, i + 1)];
+      ordered.find((el) => el.textContent.trim().toLowerCase().startsWith(k))?.focus();
+    }
+  };
 
   return (
     <div ref={ref} className="lq-select" data-open={isOpen ? "" : undefined} style={style}>
       <button
+        ref={triggerRef}
         type="button"
         className={"lq-select-trigger" + (smallBtnStyle ? " lq-select-trigger--lg" : "")}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
+        aria-controls={isOpen ? listId : undefined}
+        aria-label={label ? `${label}: ${currentValue.label}` : rest["aria-label"]}
         onClick={() => setIsOpen(!isOpen)}
+        onKeyDown={onTriggerKey}
       >
         <span style={{ minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{currentValue.label}</span>
         <Chevron className="lq-select-chevron" />
       </button>
 
       {isOpen && (
-        <div className="lq-select-menu" role="listbox">
+        <div className="lq-select-menu" role="listbox" id={listId} ref={menuRef} aria-label={label || rest["aria-label"]} onKeyDown={onMenuKey}>
           {options.map((opt, i) => (
             <div
               key={i}
               role="option"
-              tabIndex={0}
+              tabIndex={-1}
               aria-selected={value === opt.value}
               className="lq-option"
-              onClick={() => { onChange(opt.value); setIsOpen(false); }}
-              onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onChange(opt.value); setIsOpen(false); } }}
+              onClick={() => choose(opt)}
+              onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); choose(opt); } }}
             >
               {opt.label}
             </div>
@@ -249,22 +324,23 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
     >
       <div style={{ flex: 1, minWidth: 0 }}>
         <div className="lq-chip-name">{mat.name}</div>
-        <div className="lq-chip-cost" onClick={() => setEditingCost(true)}>
-          {editingCost ? (
+        {editingCost ? (
+          <div className="lq-chip-cost">
             <input
               ref={costInputRef}
               type="number"
+              aria-label={`Cost of ${mat.name} each`}
               defaultValue={mat.cost}
               onBlur={(e) => handleCostChange(parseFloat(e.target.value) || 0)}
-              onKeyDown={(e) => e.key === "Enter" && handleCostChange(parseFloat(e.target.value) || 0)}
+              onKeyDown={(e) => { if (e.key === "Enter") handleCostChange(parseFloat(e.target.value) || 0); else if (e.key === "Escape") { e.stopPropagation(); setEditingCost(false); } }}
             />
-          ) : (
-            <>
-              ${mat.cost} ea.
-              <IconEdit size={14} color={P.ink3} />
-            </>
-          )}
-        </div>
+          </div>
+        ) : (
+          <button type="button" className="lq-chip-cost" aria-label={`Edit cost of ${mat.name}, $${mat.cost} each`} onClick={() => setEditingCost(true)}>
+            ${mat.cost} ea.
+            <IconEdit size={14} color={P.ink3} />
+          </button>
+        )}
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         {active && <>

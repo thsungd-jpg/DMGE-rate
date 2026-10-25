@@ -13,7 +13,7 @@ function Pick({ label, value, onChange, keys }) {
   return (
     <Field label={label}>
       <div role="group" aria-label={label}>
-        <PSelect value={value} onChange={onChange} options={selectOptions(keys, value)} iconType="none" style={{ marginBottom: 0 }} />
+        <PSelect label={label} value={value} onChange={onChange} options={selectOptions(keys, value)} iconType="none" style={{ marginBottom: 0 }} />
       </div>
     </Field>
   );
