@@ -22,6 +22,10 @@ Research summary (web research 2026-10-24; vendor pages and blogs, prices unveri
 - Supabase: any new profile fields (income goal, hours) go through the existing `saveProfile`; check RLS with the `supabase` skill.
 - Each feature on its own branch off `redesign/liquid-ledger` (or off `main` after the redesign merges); nothing pushed or deployed without explicit approval.
 
+## Status
+- Done: base-rate finder, licensing split (photo/video), margin and buffer line.
+- Designed, waiting on decisions: pay-online link, see `docs/pay-link-architecture.md`.
+
 ## Decisions (2026-10-24)
 - Licensing defaults start with photo/video crafts; music and design follow.
 - Stripe test mode only for the pay link until the user approves live keys.
