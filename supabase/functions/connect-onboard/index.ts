@@ -33,7 +33,7 @@ async function stripeV2(path: string, body: unknown) {
 
 // Card payments active on the connected account (v2 capability path, not the deprecated charges_enabled).
 export async function isReady(accountId: string): Promise<boolean> {
-  const res = await fetch(`https://api.stripe.com/v2/core/accounts/${accountId}?include[]=configuration.merchant`, {
+  const res = await fetch(`https://api.stripe.com/v2/core/accounts/${accountId}?include%5B0%5D=configuration.merchant`, {
     headers: { Authorization: `Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`, 'Stripe-Version': STRIPE_VERSION },
   })
   const data = await res.json()
@@ -90,7 +90,6 @@ serve(async (req: any) => {
       use_case: {
         type: 'account_onboarding',
         account_onboarding: {
-          configurations: ['merchant'],
           return_url: `${appUrl}/?connect=return`,
           refresh_url: `${appUrl}/?connect=refresh`,
         },
