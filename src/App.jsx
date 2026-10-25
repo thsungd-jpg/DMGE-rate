@@ -697,6 +697,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         materialsCost,
         materials: activeMaterials,
         travelExpense: form.travelExpense,
+        invoiceTotal: undefined, // a re-quote invalidates any earlier invoice total
         usageTerm: hasLicensing(category, role.name) ? form.usageTerm : undefined,
         exclusive: hasLicensing(category, role.name) && !!form.exclusive,
         price: price[selectedTier === "low" ? "low" : selectedTier === "premium" ? "premium" : "fair"],
@@ -983,7 +984,14 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       // Agency with Stripe connected: add a pay-online link. Optional, so any failure just sends the plain invoice.
       let payUrl = null;
       if (userTier === "agency" && selectedJobForEmail?.id && selectedJobForEmail.invoiceStatus !== "paid") {
-        try { payUrl = await createInvoicePayLink(selectedJobForEmail.id); } catch (e) { console.info("[invoice] no pay link:", e.message); }
+        try {
+          // The link must charge what the invoice shows, including any discount or tax edited on the sheet.
+          const total = Number(invoiceEditorData?.totalDue);
+          if (Number.isFinite(total) && total > 0) {
+            await saveJob({ ...selectedJobForEmail, invoiceTotal: Math.round(total * 100) / 100 }, userTier, currentUser);
+          }
+          payUrl = await createInvoicePayLink(selectedJobForEmail.id);
+        } catch (e) { console.info("[invoice] no pay link:", e.message); }
       }
       const pdfBase64 = await generateInvoicePDF(selectedJobForEmail, profile, clients, catD, true, invoiceEditorData, payUrl);
 
