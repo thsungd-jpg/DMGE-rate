@@ -5,11 +5,13 @@ import { IconDelete, IconJobs, IconLogout, IconProfile } from "../icons";
 import { supabase } from "../utils/supabaseClient";
 import SettingsCard, { Group } from "./profile/SettingsCard";
 import BrandingCard from "./profile/BrandingCard";
+import BaseRateFinder from "./profile/BaseRateFinder";
 import PlanCard from "./profile/PlanCard";
 import "./profile.css";
 
 const SECTIONS = [
   { id: "account", label: "Account" },
+  { id: "ratefinder", label: "Base rate" },
   { id: "invoice", label: "Invoices" },
   { id: "branding", label: "Branding" },
   { id: "plan", label: "Plan" },
@@ -73,6 +75,9 @@ export default function ProfileScreen({ ctx }) {
               </Group>
             </div>
           </SettingsCard>
+
+          {/* BASE-RATE FINDER (every plan) */}
+          <BaseRateFinder profile={profile} update={update} />
 
           {/* INVOICE SETTINGS */}
           <SettingsCard id="invoice" iconTone="butter" icon={<IconJobs size={22} />} title="Invoice settings" description="Numbering, your business details and payment terms. They fill in every invoice for you.">

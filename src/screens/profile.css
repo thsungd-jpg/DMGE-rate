@@ -126,3 +126,14 @@
 .prof-preview-mark { flex: none; width: 28px; height: 28px; border-radius: 50%; }
 .prof-preview-card > i { display: block; height: 8px; border-radius: 999px; opacity: .35; }
 .prof-preview-card > .prof-preview-accent { width: 30%; height: 10px; opacity: 1; margin-top: 4px; }
+
+/* base-rate finder */
+.rf-result { margin-top: 24px; padding: 20px; border-radius: 20px; background: var(--mint-soft); border: 1px solid var(--line); display: grid; gap: 16px; }
+.rf-rate { display: flex; flex-direction: column; gap: 4px; }
+.rf-rate span { font: 700 11px/1 var(--font-body); letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); }
+.rf-rate b { font: 400 clamp(48px, 7vw, 72px)/0.95 var(--font-display); letter-spacing: -0.03em; font-variant-numeric: lining-nums tabular-nums; color: var(--ink); }
+.rf-rate small { margin-left: 4px; font: 400 20px/1 var(--font-body); color: var(--ink-2); letter-spacing: 0; }
+.rf-break { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.rf-break li { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); }
+.rf-break b { font: 400 24px/1 var(--font-display); color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
+.rf-empty { margin: 0; color: var(--ink-2); }
