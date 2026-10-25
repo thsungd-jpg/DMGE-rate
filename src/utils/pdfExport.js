@@ -1,6 +1,16 @@
 // html2pdf is heavy (html2canvas + jsPDF): load it only when a PDF is actually made
 const loadHtml2pdf = () => import('html2pdf.js').then((m) => m.default || m);
 import { buildInvoiceFigures } from './pricing';
+import { buildInvoiceItems } from './invoiceItems';
+import markUrl from '../assets/brand/mark-256.png';
+
+// The DMGE mark as a data URI so the PDF renderer never depends on a network or cache fetch.
+async function markDataUrl() {
+  try {
+    const blob = await (await fetch(markUrl)).blob();
+    return await new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); });
+  } catch { return null; }
+}
 
 // ──────────────────────────────────────────────────────────────────────────
 // "Sorbet Ink" invoice — pastel candy-ink on warm cream.
@@ -209,7 +219,9 @@ function brandLockup(brand, t, size = 'lg') {
   if (brand.name) {
     return `<div style="font-family:${F.display};font-weight:400;font-size:${lg ? 36 : 21}px;line-height:1.05;letter-spacing:-0.01em;color:${t.ink};">${esc(brand.name)}</div>`;
   }
+  const markImg = brand.mark ? `<img src="${esc(brand.mark.src)}" alt="" style="display:block;width:${lg ? 46 : 28}px;height:${lg ? 46 : 28}px;object-fit:contain;" />` : '';
   return `<div style="display:flex;align-items:center;gap:${lg ? 12 : 8}px;">
+    ${markImg}
     <div style="font-family:${F.display};font-weight:400;font-size:${lg ? 40 : 23}px;line-height:1;letter-spacing:0.03em;color:${t.ink};">DMGE</div>
     <div style="font-family:${F.body};font-weight:700;font-size:${lg ? 9.5 : 8.5}px;letter-spacing:0.16em;text-transform:uppercase;color:${t.ink};background:${t.paper};border-radius:999px;padding:${lg ? '5px 10px' : '4px 8px'};">Rate System</div>
   </div>`;
@@ -320,7 +332,8 @@ function closingHTML(d, t) {
       <div style="font-family:${F.body};font-weight:400;font-size:13px;line-height:1.65;color:${t.ink2};">${nl2br(notes)}</div></div>` : '',
     payments.length ? `<div>${label('Payment details', t.labelText, 'margin-bottom:10px;')}${payRows}</div>` : '',
     d.payUrl ? `<div style="margin-top:${payments.length || notes ? 22 : 0}px;">${label('Pay online by card', t.labelText, 'margin-bottom:10px;')}
-      <div style="min-width:0;overflow-wrap:anywhere;font-family:${F.mono};font-weight:400;font-size:11.5px;line-height:1.45;color:${t.ink};">${esc(d.payUrl)}</div></div>` : '',
+      <a href="${esc(d.payUrl)}" style="display:inline-block;font-family:${F.body};font-weight:700;font-size:13px;line-height:1;color:${t.ink};background:${t.paper};border-radius:999px;padding:11px 20px;text-decoration:none;">Pay this invoice online &rarr;</a>
+      <div style="margin-top:8px;font-family:${F.body};font-size:11px;line-height:1.4;color:${t.ink2};">Tap the button (or the link in the email) to pay by card.</div></div>` : '',
   ].join('');
   return `<div style="padding:20px ${SIDE}px 0;display:flex;gap:36px;align-items:flex-start;">
     <div style="flex:1;min-width:0;overflow-wrap:anywhere;">${left}</div>
@@ -383,7 +396,10 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
 
   // ── Normalise both code paths into one data shape ───────────────────────
   const logo = await loadLogo(profile.branding?.logoBase64 || profile.logoUrl);
-  const brand = { logo, name: (profile.branding?.companyName || '').trim() };
+  const name = (profile.branding?.companyName || '').trim();
+  // No custom logo and no brand name: show the DMGE mark instead of bare text.
+  const mark = !logo && !name ? await loadLogo(await markDataUrl()) : null;
+  const brand = { logo, name, mark };
   let d;
   let items;
 
@@ -408,14 +424,7 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
     const clientMultiplier = client.rateMultiplier || 1.0;
     const fig = buildInvoiceFigures(job, clientMultiplier);
     const companyName = profile.branding?.companyName || profile.companyName || profile.name || 'Freelancer';
-    items = [{
-      desc: `${job.role} - ${job.category}`,
-      note: `${job.model} (${job.complexity}, ${job.usage}${job.usageTerm ? `, ${job.usageTerm} licence` : ''}${job.exclusive ? ', exclusive' : ''})`,
-      qty: job.units, rate: fig.baseRate, amount: fig.base,
-    }];
-    (job.materials || []).forEach((m) => {
-      items.push({ desc: `Material: ${m.name}`, note: '', qty: m.qty, rate: m.cost, amount: m.cost * m.qty });
-    });
+    items = buildInvoiceItems(job).map((i) => ({ desc: i.desc, note: i.note, qty: i.qty, rate: i.rate, amount: i.amount }));
     d = {
       brand,
       invoiceNumber: job.invoiceNumber || '1001',
@@ -496,6 +505,7 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
       margin: [0, 0, 0, 0],
       filename: `${job.invoiceNumber || 'INV'}_${String(job.role || 'invoice').replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`,
       image: { type: 'jpeg', quality: 0.98 },
+      enableLinks: true,
       html2canvas: {
         scale: SCALE,
         useCORS: true,

@@ -32,7 +32,7 @@ serve(async (req: any) => {
     if (!resendApiKey) throw new Error("RESEND_API_KEY is missing");
 
     const reqBody = await req.json();
-    const { to, subject, message, pdfBase64, pdfName, fromName, payUrl } = reqBody;
+    const { to, subject, message, pdfBase64, pdfName, fromName } = reqBody;
 
     if (!to || !subject || !pdfBase64) {
       throw new Error("Missing required fields: to, subject, pdfBase64");
@@ -52,7 +52,7 @@ serve(async (req: any) => {
         from: `${from_display} <${from_email}>`,
         to: [to],
         subject: subject,
-        text: (message || 'Please find your invoice attached.') + (typeof payUrl === 'string' && payUrl.startsWith('https://checkout.stripe.com/') ? `\n\nPay online by card: ${payUrl}` : ''),
+        text: message || 'Please find your invoice attached.',
         attachments: [
           {
             filename: pdfName || 'invoice.pdf',

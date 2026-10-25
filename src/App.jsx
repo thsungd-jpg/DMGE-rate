@@ -998,11 +998,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       const invoicePayload = {
         to: emailForm.to,
         subject: emailForm.subject,
-        message: emailForm.message,
+        // the existing function sends this text as the email body, so the pay link goes here (no function change needed)
+        message: [emailForm.message || "Please find your invoice attached.", payUrl ? `Pay online by card: ${payUrl}` : ""].filter(Boolean).join("\n\n"),
         pdfBase64: pdfBase64,
         pdfName: `${selectedJobForEmail.invoiceNumber || 'INV'}_${selectedJobForEmail.role.replace(/\s+/g, '_')}.pdf`,
-        fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing",
-        payUrl,
+        fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing"
       };
       const session = await getValidSession();
       if (!session?.access_token) throw new Error('You must be signed in to send invoices.');
