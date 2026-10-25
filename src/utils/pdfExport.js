@@ -319,6 +319,8 @@ function closingHTML(d, t) {
     notes ? `<div style="margin-bottom:${payments.length ? 22 : 0}px;">${label('Notes', t.labelText, 'margin-bottom:10px;')}
       <div style="font-family:${F.body};font-weight:400;font-size:13px;line-height:1.65;color:${t.ink2};">${nl2br(notes)}</div></div>` : '',
     payments.length ? `<div>${label('Payment details', t.labelText, 'margin-bottom:10px;')}${payRows}</div>` : '',
+    d.payUrl ? `<div style="margin-top:${payments.length || notes ? 22 : 0}px;">${label('Pay online by card', t.labelText, 'margin-bottom:10px;')}
+      <div style="min-width:0;overflow-wrap:anywhere;font-family:${F.mono};font-weight:400;font-size:11.5px;line-height:1.45;color:${t.ink};">${esc(d.payUrl)}</div></div>` : '',
   ].join('');
   return `<div style="padding:20px ${SIDE}px 0;display:flex;gap:36px;align-items:flex-start;">
     <div style="flex:1;min-width:0;overflow-wrap:anywhere;">${left}</div>
@@ -374,7 +376,7 @@ function paginate(units, rowUnits, closingH, limit) {
   return pages;
 }
 
-export async function generateInvoicePDF(job, profile, clients = [], catData = null, returnBase64 = false, editorData = null) {
+export async function generateInvoicePDF(job, profile, clients = [], catData = null, returnBase64 = false, editorData = null, payUrl = null) {
   profile = profile || {};
   const client = clients.find(c => c.id === job.clientId) || { name: 'Valued Client', email: '', phone: '' };
   const theme = buildTheme(profile.branding || {});
@@ -400,6 +402,7 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
       taxRate: editorData.taxRate, taxAmount: editorData.taxAmount,
       totalDue: editorData.totalDue,
       notes: editorData.notes, paymentDetails: editorData.paymentDetails,
+      payUrl,
     };
   } else {
     const clientMultiplier = client.rateMultiplier || 1.0;
@@ -424,6 +427,7 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
       breakdown: false,
       totalDue: job.price,
       notes: '', paymentDetails: [],
+      payUrl,
     };
   }
 

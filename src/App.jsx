@@ -9,6 +9,7 @@ import { devMock } from "./dev/mock";
 import { AppTopBar, AppDock } from "./app/AppChrome";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, canCloudSync } from "./utils/subscription";
+import { createInvoicePayLink } from "./utils/payments";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, hasLicensing } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
@@ -979,7 +980,12 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     try {
       const catD = ALL_DATA[selectedJobForEmail.category] || Object.values(ALL_DATA)[0];
       // Generate PDF using the enhanced template logic, passing the editor data
-      const pdfBase64 = await generateInvoicePDF(selectedJobForEmail, profile, clients, catD, true, invoiceEditorData);
+      // Agency with Stripe connected: add a pay-online link. Optional, so any failure just sends the plain invoice.
+      let payUrl = null;
+      if (userTier === "agency" && selectedJobForEmail?.id && selectedJobForEmail.invoiceStatus !== "paid") {
+        try { payUrl = await createInvoicePayLink(selectedJobForEmail.id); } catch (e) { console.info("[invoice] no pay link:", e.message); }
+      }
+      const pdfBase64 = await generateInvoicePDF(selectedJobForEmail, profile, clients, catD, true, invoiceEditorData, payUrl);
 
       const invoicePayload = {
         to: emailForm.to,
@@ -987,7 +993,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         message: emailForm.message,
         pdfBase64: pdfBase64,
         pdfName: `${selectedJobForEmail.invoiceNumber || 'INV'}_${selectedJobForEmail.role.replace(/\s+/g, '_')}.pdf`,
-        fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing"
+        fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing",
+        payUrl,
       };
       const session = await getValidSession();
       if (!session?.access_token) throw new Error('You must be signed in to send invoices.');
