@@ -15,13 +15,19 @@ body {
   border-radius: 6px;
 }
 
+/* Reduced motion: keep feedback, drop looping movement. Entrances shrink to a 160ms settle, decorative loops stop, the
+   guided highlight becomes a static ring and loading keeps a gentle pulse. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
-    animation-duration: 0.001ms !important;
+    animation-duration: 0.16s !important;
     animation-iteration-count: 1 !important;
-    transition-duration: 0.001ms !important;
+    transition-duration: 0.12s !important;
     scroll-behavior: auto !important;
   }
+  .calc-guide-pill, .calc-empty-bars i, .tut-bar-col, .tut-plane, .lq-btn.auth-primary { animation: none !important; }
+  .lq-glow, .dmge-glow { animation: none !important; box-shadow: 0 0 0 4px rgba(142, 197, 255, 0.7); }
+  .iv-spinner { animation: lqPulse 1.2s ease-in-out infinite !important; border-top-color: currentColor; }
+  @keyframes lqPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 }
 
 /* ── glow (guided-flow highlight) ───────────────────────────── */

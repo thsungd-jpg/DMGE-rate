@@ -1,4 +1,5 @@
-import html2pdf from 'html2pdf.js';
+// html2pdf is heavy (html2canvas + jsPDF): load it only when a PDF is actually made
+const loadHtml2pdf = () => import('html2pdf.js').then((m) => m.default || m);
 import { buildInvoiceFigures } from './pricing';
 
 // ──────────────────────────────────────────────────────────────────────────
@@ -506,9 +507,11 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
     };
 
     if (returnBase64) {
+      const html2pdf = await loadHtml2pdf();
       const pdf = await html2pdf().set(options).from(root).toPdf().get('pdf');
       return pdf.output('datauristring');
     }
+    const html2pdf = await loadHtml2pdf();
     await html2pdf().set(options).from(root).save();
   } finally {
     if (host.parentNode) host.parentNode.removeChild(host);

@@ -16,7 +16,7 @@ import CalcScreen from "./screens/CalcScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import TemplatesScreen from "./screens/TemplatesScreen";
 import ClientsScreen from "./screens/ClientsScreen";
-import AnalyticsScreen from "./screens/AnalyticsScreen";
+const AnalyticsScreen = React.lazy(() => import("./screens/AnalyticsScreen")); // pulls in Chart.js
 import TutorialScreen from "./screens/TutorialScreen";
 import InvoiceEditorScreen from "./screens/InvoiceEditorScreen";
 import PricingScreen from "./screens/PricingScreen";
@@ -1218,7 +1218,7 @@ return (
 
           {tab === "clients" && <ClientsScreen ctx={ctx} />}
 
-          {tab === "analytics" && <AnalyticsScreen ctx={ctx} />}
+          {tab === "analytics" && <React.Suspense fallback={null}><AnalyticsScreen ctx={ctx} /></React.Suspense>}
 
           {tab === "tutorial" && <TutorialScreen ctx={ctx} />}
 
