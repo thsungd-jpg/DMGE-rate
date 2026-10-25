@@ -81,10 +81,7 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
           >
             <IconDownload size={16} /> PDF {pdfLocked && <IconLock size={14} />}
           </PBtn>
-        </div>
-
-        {userTier === "agency" && status !== "completed" && (
-          <div className="jb-pay">
+          {userTier === "agency" && status !== "completed" && (
             <PBtn
               small color="var(--mint)" disabled={pay.busy}
               aria-label={`Create an online payment link for ${label}`}
@@ -99,9 +96,8 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
             >
               <IconSend size={16} /> {pay.busy ? "Creating link..." : "Pay link"}
             </PBtn>
-            {pay.msg && <p className={"jb-pay-msg" + (pay.error ? " is-error" : "")} role={pay.error ? "alert" : "status"}>{pay.msg}</p>}
-          </div>
-        )}
+          )}
+        </div>
 
         <div className="jb-quiet">
           <button type="button" className="jb-link" onClick={() => handleEditJob(j)} aria-label={`Edit job ${label} in the calculator`}>
@@ -120,6 +116,8 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
           </button>
         </div>
       </div>
+
+      {pay.msg && <p className={"jb-pay-msg" + (pay.error ? " is-error" : "")} role={pay.error ? "alert" : "status"}>{pay.msg}</p>}
 
       <div className="jb-status" role="group" aria-label={`Payment status for ${label}`}>
         <span className="jb-status-label">Mark as</span>
