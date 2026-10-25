@@ -324,7 +324,7 @@ function totalsHTML(d, t) {
   ].join('') : '';
   const amount = money(d.totalDue);
   return `${rows}
-    <div style="margin-top:${rows ? 14 : 0}px;border-radius:22px;padding:15px 22px 17px;background:${marble(t.card, 1)};">
+    <div style="margin-top:${rows ? 14 : 0}px;padding:16px 0 0;border-top:2px solid ${t.ink};">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         ${label('Total due', t.ink)}
         ${d.dueDate ? `<div style="font-family:${F.body};font-weight:500;font-size:12px;color:${t.ink};">Due ${esc(d.dueDate)}</div>` : ''}
