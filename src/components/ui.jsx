@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { IconEdit } from "../icons";
+import { IconEdit, IconCross } from "../icons";
 import { PALETTE as P } from "../styles/palette";
 import { fill, textOn, edge, halo } from "../styles/tone";
 
@@ -112,7 +112,7 @@ export function PModal({ isOpen, onClose, title, children }) {
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 24 }}>
           <div className="lq-modal-title" id={titleId}>{title}</div>
-          <PBtn small color="var(--pink)" onClick={onClose} aria-label="Close" data-modal-close="" style={{ minWidth: 44, minHeight: 44, padding: "7px 12px" }}>✕</PBtn>
+          <PBtn small color="var(--pink)" onClick={onClose} aria-label="Close" data-modal-close="" style={{ minWidth: 44, minHeight: 44, padding: "7px 12px" }}><IconCross size={16} /></PBtn>
         </div>
         {children}
       </PBox>

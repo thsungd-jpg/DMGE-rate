@@ -38,10 +38,6 @@
 .tpl-card .kit-stat { margin: 18px 0 14px; }
 .tpl-card .kit-stat-value { font-size: clamp(40px, 4vw, 48px); }
 
-/* kit pills: darken blue/pink/lilac text locally so small text clears AA on the soft fills (light theme) */
-.tpl-view .kit-pill--blue { color: color-mix(in srgb, var(--blue-deep) 72%, var(--ink)); }
-.tpl-view .kit-pill--pink { color: color-mix(in srgb, var(--pink-deep) 72%, var(--ink)); }
-.tpl-view .kit-pill--lilac { color: color-mix(in srgb, var(--lilac-deep) 72%, var(--ink)); }
 .tpl-pills { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
 .tpl-notes { margin: 14px 0 0; padding-left: 12px; border-left: 3px solid var(--line-strong); font: italic 400 18px/1.35 var(--font-display); color: var(--ink-2); overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 

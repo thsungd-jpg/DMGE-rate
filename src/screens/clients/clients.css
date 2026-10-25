@@ -36,10 +36,6 @@
 .cli-card-sub { font-size: 13px; color: var(--ink-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .cli-card-top .kit-pill { flex: none; }
 
-/* kit pills: darken blue/pink/lilac text locally so small text clears AA on the soft fills (light theme) */
-.cli-view .kit-pill--blue { color: color-mix(in srgb, var(--blue-deep) 72%, var(--ink)); }
-.cli-view .kit-pill--pink { color: color-mix(in srgb, var(--pink-deep) 72%, var(--ink)); }
-.cli-view .kit-pill--lilac { color: color-mix(in srgb, var(--lilac-deep) 72%, var(--ink)); }
 .cli-avatar { flex: none; display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; font: 400 22px/1 var(--font-display); letter-spacing: 0.02em; }
 .cli-avatar--pink { background: var(--pink-soft); color: color-mix(in srgb, var(--pink-deep) 72%, var(--ink)); }
 .cli-avatar--blue { background: var(--blue-soft); color: color-mix(in srgb, var(--blue-deep) 72%, var(--ink)); }

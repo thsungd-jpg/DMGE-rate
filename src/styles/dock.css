@@ -61,7 +61,7 @@
 }
 
 @media (max-width: 640px) {
-  .lq-dock-item { padding: 0 12px; min-height: 40px; }
+  .lq-dock-item { padding: 0 12px; min-height: 44px; }
   .lq-dock-has-short .lq-dock-label { display: none; }
   .lq-dock-has-short .lq-dock-short { display: inline; }
 }
