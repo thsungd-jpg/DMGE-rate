@@ -1,6 +1,6 @@
 // Starts (or resumes) Stripe Connect onboarding for the signed-in Agency user.
 // Accounts v2, SaaS pattern: the freelancer is the merchant of record and uses the full Stripe Dashboard.
-// Secrets: STRIPE_SECRET_KEY (use a restricted rk_ key), SUPABASE_SERVICE_ROLE_KEY, APP_URL (optional).
+// Secrets: STRIPE_CONNECT_SECRET_KEY (separate from the subscription STRIPE_SECRET_KEY; restricted rk_ key in production), SUPABASE_SERVICE_ROLE_KEY, APP_URL (optional).
 // @ts-ignore
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
 // @ts-ignore
@@ -20,7 +20,7 @@ async function stripeV2(path: string, body: unknown) {
   const res = await fetch(`https://api.stripe.com/v2${path}`, {
     method: 'POST',
     headers: {
-      Authorization: `Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`,
+      Authorization: `Bearer ${Deno.env.get('STRIPE_CONNECT_SECRET_KEY')}`,
       'Stripe-Version': STRIPE_VERSION,
       'Content-Type': 'application/json',
     },
@@ -34,7 +34,7 @@ async function stripeV2(path: string, body: unknown) {
 // Card payments active on the connected account (v2 capability path, not the deprecated charges_enabled).
 export async function isReady(accountId: string): Promise<boolean> {
   const res = await fetch(`https://api.stripe.com/v2/core/accounts/${accountId}?include%5B0%5D=configuration.merchant`, {
-    headers: { Authorization: `Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`, 'Stripe-Version': STRIPE_VERSION },
+    headers: { Authorization: `Bearer ${Deno.env.get('STRIPE_CONNECT_SECRET_KEY')}`, 'Stripe-Version': STRIPE_VERSION },
   })
   const data = await res.json()
   if (!res.ok) throw new Error(data?.error?.message || `Stripe ${res.status}`)

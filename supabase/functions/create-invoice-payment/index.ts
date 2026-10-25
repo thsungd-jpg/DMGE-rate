@@ -1,5 +1,5 @@
 // Creates a Stripe Checkout Session for one invoice as a DIRECT CHARGE on the freelancer's connected account.
-// Secrets: STRIPE_SECRET_KEY (restricted rk_ key), SUPABASE_SERVICE_ROLE_KEY, APP_URL (optional),
+// Secrets: STRIPE_CONNECT_SECRET_KEY (restricted rk_ key in production), SUPABASE_SERVICE_ROLE_KEY, APP_URL (optional),
 //          PLATFORM_FEE_PERCENT (optional, default 0).
 // @ts-ignore
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts'
@@ -70,7 +70,7 @@ serve(async (req: any) => {
     const res = await fetch('https://api.stripe.com/v1/checkout/sessions', {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`,
+        Authorization: `Bearer ${Deno.env.get('STRIPE_CONNECT_SECRET_KEY')}`,
         'Stripe-Version': STRIPE_VERSION,
         'Stripe-Account': acct.stripe_account_id, // direct charge: the freelancer is merchant of record
         'Content-Type': 'application/x-www-form-urlencoded',

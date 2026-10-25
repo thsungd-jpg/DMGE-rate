@@ -40,8 +40,8 @@ Webhook updates need the job in Supabase; Free/Pro jobs live only in the browser
 ## Setup runbook (you do the Stripe steps; keys never go in chat)
 1. Create a Stripe sandbox with Connect enabled (Dashboard > Sandboxes, or `npx @stripe/cli sandbox create`).
 2. Create a restricted key (`rk_test_...`) with Accounts v2, Checkout Sessions and Connect write access.
-3. `supabase secrets set STRIPE_SECRET_KEY=rk_test_... APP_URL=https://dmge.world PLATFORM_FEE_PERCENT=0`
-   (the existing subscription functions read the same STRIPE_SECRET_KEY; use a separate Supabase project or branch for the sandbox so it does not clash).
+3. `supabase secrets set STRIPE_CONNECT_SECRET_KEY=rk_test_... APP_URL=https://dmge.world PLATFORM_FEE_PERCENT=0`
+   (the new functions use their own STRIPE_CONNECT_SECRET_KEY, so the live subscription functions keep their own key).
 4. Add a Connect webhook endpoint ("Listen to events on Connected accounts") for `stripe-connect-webhook` with the three checkout events;
    `supabase secrets set STRIPE_CONNECT_WEBHOOK_SECRET=whsec_...`.
 5. `supabase db push`; `supabase functions deploy connect-onboard create-invoice-payment`; `supabase functions deploy stripe-connect-webhook --no-verify-jwt`.
