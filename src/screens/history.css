@@ -99,3 +99,7 @@
 }
 
 .jb-note { margin: clamp(20px, 3vw, 28px) 0 0; font-size: 14px; color: var(--ink-2); }
+
+.jb-pay { display: grid; gap: 8px; margin-top: 12px; justify-items: start; }
+.jb-pay-msg { margin: 0; font-size: 13px; color: var(--ink-2); word-break: break-all; }
+.jb-pay-msg.is-error { color: var(--danger); word-break: normal; }

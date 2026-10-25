@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card } from "../../components/kit";
 import { PBtn } from "../../components/ui";
+import { createInvoicePayLink } from "../../utils/payments";
 import { IconClients, IconDelete, IconDownload, IconEdit, IconLock, IconSend, IconTemplates } from "../../icons";
 import { fmtMoney, isValidDate, normalizeStatus, STATUS_META, STATUS_ORDER } from "./statusModel";
 
 // One job: reference + status, client / role, amount, due line, actions, and a status control.
 // All behavior comes from ctx handlers and from `actions` (useJobActions).
 export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
-  const { fmtDate, handleDeleteJob, handleEditJob, handleGatedPDF, handleSendQuote } = ctx;
+  const { fmtDate, handleDeleteJob, handleEditJob, handleGatedPDF, handleSendQuote, userTier } = ctx;
+  const [pay, setPay] = useState({ busy: false, msg: "", error: false });
 
   const status = normalizeStatus(j);
   const meta = STATUS_META[status];
@@ -80,6 +82,26 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
             <IconDownload size={16} /> PDF {pdfLocked && <IconLock size={14} />}
           </PBtn>
         </div>
+
+        {userTier === "agency" && status !== "completed" && (
+          <div className="jb-pay">
+            <PBtn
+              small color="var(--mint)" disabled={pay.busy}
+              aria-label={`Create an online payment link for ${label}`}
+              onClick={async () => {
+                setPay({ busy: true, msg: "", error: false });
+                try {
+                  const url = await createInvoicePayLink(j.id);
+                  try { await navigator.clipboard.writeText(url); setPay({ busy: false, msg: "Pay link copied. Paste it into your email or message.", error: false }); }
+                  catch { setPay({ busy: false, msg: url, error: false }); }
+                } catch (e) { setPay({ busy: false, msg: e.message, error: true }); }
+              }}
+            >
+              <IconSend size={16} /> {pay.busy ? "Creating link..." : "Pay link"}
+            </PBtn>
+            {pay.msg && <p className={"jb-pay-msg" + (pay.error ? " is-error" : "")} role={pay.error ? "alert" : "status"}>{pay.msg}</p>}
+          </div>
+        )}
 
         <div className="jb-quiet">
           <button type="button" className="jb-link" onClick={() => handleEditJob(j)} aria-label={`Edit job ${label} in the calculator`}>

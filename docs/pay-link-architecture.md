@@ -1,6 +1,7 @@
 # Pay-online link for invoices (Agency): architecture and open decisions
 
-Status: designed, not built. Blocked on the decisions at the bottom, because it moves other people's money.
+Status: BUILT on branch `feature/pay-link`, NOT deployed and NOT tested against Stripe (no Connect-enabled sandbox yet).
+Decisions taken 2026-10-24: Connect approved; platform fee defaults to 0% (set `PLATFORM_FEE_PERCENT` to charge one).
 
 ## Why this is not a "payment link on our Stripe account"
 Invoice payments belong to the freelancer, not to DMGE. Routing them through DMGE's own Stripe account would make DMGE a
@@ -29,7 +30,29 @@ business is **Connect, SaaS pattern**:
 ## Why Agency only
 Webhook updates need the job in Supabase; Free/Pro jobs live only in the browser. Agency already syncs to the cloud.
 
-## Decisions needed from the owner
+## What was built
+- `supabase/migrations/20261024120000_connect_accounts.sql`: `connect_accounts`, `processed_stripe_events` (RLS on).
+- `connect-onboard`: creates the v2 account (merchant, full dashboard) and an onboarding link; `{action:'status'}` returns readiness.
+- `create-invoice-payment`: Checkout Session as a direct charge (`Stripe-Account` header), amount read server-side from the job.
+- `stripe-connect-webhook`: signature-verified, idempotent, marks the job paid (`status: completed`, `invoiceStatus: paid`).
+- App: Profile > Get paid online (Agency), Jobs > Pay link button (copies the link).
+
+## Setup runbook (you do the Stripe steps; keys never go in chat)
+1. Create a Stripe sandbox with Connect enabled (Dashboard > Sandboxes, or `npx @stripe/cli sandbox create`).
+2. Create a restricted key (`rk_test_...`) with Accounts v2, Checkout Sessions and Connect write access.
+3. `supabase secrets set STRIPE_SECRET_KEY=rk_test_... APP_URL=https://dmge.world PLATFORM_FEE_PERCENT=0`
+   (the existing subscription functions read the same STRIPE_SECRET_KEY; use a separate Supabase project or branch for the sandbox so it does not clash).
+4. Add a Connect webhook endpoint ("Listen to events on Connected accounts") for `stripe-connect-webhook` with the three checkout events;
+   `supabase secrets set STRIPE_CONNECT_WEBHOOK_SECRET=whsec_...`.
+5. `supabase db push`; `supabase functions deploy connect-onboard create-invoice-payment`; `supabase functions deploy stripe-connect-webhook --no-verify-jwt`.
+6. Test: Profile > Connect Stripe (sandbox onboarding), Jobs > Pay link, pay with `4242 4242 4242 4242`, confirm the job turns Paid.
+
+## Known gaps
+- The pay link is copied, not yet embedded in the emailed invoice or PDF.
+- Invoice total uses the saved quote price (`job.price`), which can differ from the invoice sheet total (existing quirk).
+- Refunds and disputes are handled in the freelancer's Stripe Dashboard.
+
+## Decisions (resolved)
 1. **Go ahead with Connect?** It adds KYC onboarding for every freelancer and a Stripe platform profile for DMGE.
 2. **Platform fee:** none, or a percentage via `application_fee_amount`? (Stripe's own fee, about 2.9% + $0.30, is paid by
    the freelancer under this pattern.)

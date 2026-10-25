@@ -41,7 +41,7 @@ serve(async (req: any) => {
     const total = Number(job.invoiceTotal ?? job.price)
     const cents = Math.round(total * 100)
     if (!Number.isFinite(cents) || cents < 50) throw new Error('This invoice total is below the minimum online payment ($0.50).')
-    if (job.status === 'paid' || job.invoiceStatus === 'paid') throw new Error('This invoice is already marked paid.')
+    if (job.status === 'completed' || job.status === 'paid' || job.invoiceStatus === 'paid') throw new Error('This invoice is already marked paid.')
 
     const { data: acct } = await admin.from('connect_accounts').select('stripe_account_id').eq('user_id', user.id).maybeSingle()
     if (!acct) throw new Error('Connect your Stripe account first (Profile > Get paid online).')

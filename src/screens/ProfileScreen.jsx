@@ -6,6 +6,7 @@ import { supabase } from "../utils/supabaseClient";
 import SettingsCard, { Group } from "./profile/SettingsCard";
 import BrandingCard from "./profile/BrandingCard";
 import BaseRateFinder from "./profile/BaseRateFinder";
+import PaymentsCard from "./profile/PaymentsCard";
 import PlanCard from "./profile/PlanCard";
 import "./profile.css";
 
@@ -13,6 +14,7 @@ const SECTIONS = [
   { id: "account", label: "Account" },
   { id: "ratefinder", label: "Base rate" },
   { id: "invoice", label: "Invoices" },
+  { id: "payments", label: "Payments" },
   { id: "branding", label: "Branding" },
   { id: "plan", label: "Plan" },
   { id: "danger", label: "Danger zone" },
@@ -137,6 +139,9 @@ export default function ProfileScreen({ ctx }) {
               </div>
             </div>
           </SettingsCard>
+
+          {/* ONLINE PAYMENTS (AGENCY) */}
+          <PaymentsCard userTier={userTier} setTab={setTab} />
 
           {/* BRANDING (AGENCY) */}
           <BrandingCard

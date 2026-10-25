@@ -81,7 +81,7 @@ serve(async (req: any) => {
   if (!row) return new Response('job not found', { status: 200 })
 
   const paidAt = new Date().toISOString()
-  const next = { ...row.data, status: 'paid', invoiceStatus: 'paid', paidAt, paidOnline: true, stripeCheckoutSessionId: session.id }
+  const next = { ...row.data, status: 'completed', invoiceStatus: 'paid', paidAt, paidOnline: true, stripeCheckoutSessionId: session.id }
   const { error } = await admin.from('jobs').update({ data: next }).eq('id', jobId).eq('user_id', userId)
   if (error) {
     // Let Stripe retry: release the idempotency marker.

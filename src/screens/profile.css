@@ -137,3 +137,6 @@
 .rf-break li { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--ink-2); }
 .rf-break b { font: 400 24px/1 var(--font-display); color: var(--ink); font-variant-numeric: lining-nums tabular-nums; }
 .rf-empty { margin: 0; color: var(--ink-2); }
+
+.prof-ok { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--mint-deep); }
+.prof-msg { margin: 14px 0 0; font-size: 14px; color: var(--danger); }
