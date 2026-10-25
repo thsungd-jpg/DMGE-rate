@@ -72,3 +72,10 @@
 .calc-empty-bars i:nth-child(3) { height: 44px; background: var(--pink); animation-delay: .4s; }
 @keyframes calcRise { 0%,100% { transform: scaleY(1); } 50% { transform: scaleY(.82); } }
 @media (prefers-reduced-motion: reduce) { .calc-guide-pill, .calc-empty-bars i { animation: none; } }
+
+/* licence term + price split */
+.calc-license { display: grid; gap: 16px; margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--line); }
+.calc-split { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 0 0 20px; }
+.calc-split div { padding: 12px 14px; border-radius: 16px; background: var(--mint-soft); border: 1px solid var(--line); }
+.calc-split dt { font: 700 11px/1 var(--font-body); letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); }
+.calc-split dd { margin: 6px 0 0; font: 400 26px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; color: var(--ink); }

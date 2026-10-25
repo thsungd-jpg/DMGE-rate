@@ -10,7 +10,7 @@ import { AppTopBar, AppDock } from "./app/AppChrome";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, canCloudSync } from "./utils/subscription";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
-import { calcPrice } from "./utils/pricing";
+import { calcPrice, hasLicensing } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
 import CalcScreen from "./screens/CalcScreen";
 import HistoryScreen from "./screens/HistoryScreen";
@@ -635,7 +635,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
   function handleCalc() {
     const cMult = clients.find(c => c.id === selectedClientId)?.rateMultiplier || 1.0;
-    setPrice(calcPrice({ ...form, baseRate, materialsCost, clientMultiplier: cMult }));
+    const lic = hasLicensing(category, role.name);
+    setPrice(calcPrice({ ...form, usageTerm: lic ? form.usageTerm : undefined, exclusive: lic && !!form.exclusive, baseRate, materialsCost, clientMultiplier: cMult }));
     setSelectedTier("fair");
     setSaved(false);
     setGlowStep(null);
@@ -695,6 +696,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         materialsCost,
         materials: activeMaterials,
         travelExpense: form.travelExpense,
+        usageTerm: hasLicensing(category, role.name) ? form.usageTerm : undefined,
+        exclusive: hasLicensing(category, role.name) && !!form.exclusive,
         price: price[selectedTier === "low" ? "low" : selectedTier === "premium" ? "premium" : "fair"],
         date: invoiceDate,
         status: form.status || "pending",

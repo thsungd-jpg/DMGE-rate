@@ -406,7 +406,7 @@ export async function generateInvoicePDF(job, profile, clients = [], catData = n
     const companyName = profile.branding?.companyName || profile.companyName || profile.name || 'Freelancer';
     items = [{
       desc: `${job.role} - ${job.category}`,
-      note: `${job.model} (${job.complexity}, ${job.usage})`,
+      note: `${job.model} (${job.complexity}, ${job.usage}${job.usageTerm ? `, ${job.usageTerm} licence` : ''}${job.exclusive ? ', exclusive' : ''})`,
       qty: job.units, rate: fig.baseRate, amount: fig.base,
     }];
     (job.materials || []).forEach((m) => {

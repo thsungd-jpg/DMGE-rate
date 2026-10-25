@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { MatChip, OptionGrid, PBtn, PCollapsible, PInput, PSelect, PStepper } from "../components/ui";
 import { Screen, Card, Pill, Field, Segmented, IconBtn } from "../components/kit";
-import { clientMods, complexityMods, usageRightsMods } from "../utils/pricing";
+import { clientMods, complexityMods, hasLicensing, usageRightsMods, usageTermMods, EXCLUSIVITY_MOD } from "../utils/pricing";
 import { IconStar, IconCheck, IconVolume, IconVolumeOff, IconBook, IconPlus, IconCopy } from "../icons";
 import "./calc.css";
 
@@ -54,6 +54,8 @@ export default function CalcScreen({ ctx }) {
     }
   }, [price]);
 
+  const licensing = hasLicensing(category, role.name);
+  const term = form.usageTerm || "1 year";
   const allMats = [...mats, ...customMaterials];
   const unitLabel = model.unit.replace("per hour", "per hr");
   const guideLabel = { role: "Start here", clientType: "Next", usage: "Next" };
@@ -147,6 +149,26 @@ export default function CalcScreen({ ctx }) {
             <Card pad="lg">
               <Step n="03" title="Usage rights" hint="Personal is one-time use; commercial grants broader rights." />
               <OptionGrid options={usageRightsMods} value={form.usage} onChange={(v) => { set("usage")(v); advanceGlow("usage"); }} activeColor="var(--mint)" activeShadow="var(--mint-deep)" />
+              {licensing && (
+                <div className="calc-license">
+                  <Field label="Licence term" hint="How long the client may use the work.">
+                    <Segmented
+                      ariaLabel="Licence term"
+                      value={term}
+                      onChange={(v) => { setForm((f) => ({ ...f, usageTerm: v })); setPrice(null); }}
+                      options={Object.keys(usageTermMods).map((k) => ({ value: k, label: k }))}
+                    />
+                  </Field>
+                  <Field label="Category exclusivity" hint={`The client's competitors may not license it. Adds ${Math.round((EXCLUSIVITY_MOD - 1) * 100)}%.`}>
+                    <Segmented
+                      ariaLabel="Category exclusivity"
+                      value={!!form.exclusive}
+                      onChange={(v) => { setForm((f) => ({ ...f, exclusive: v })); setPrice(null); }}
+                      options={[{ value: false, label: "Not exclusive" }, { value: true, label: "Exclusive" }]}
+                    />
+                  </Field>
+                </div>
+              )}
             </Card>
           </Guided>
 
@@ -216,7 +238,7 @@ export default function CalcScreen({ ctx }) {
               <Pill tone="butter">{form.units} {unitLabel}</Pill>
               <Pill tone="butter">{form.complexity}</Pill>
               <Pill tone="blue">{form.clientType}</Pill>
-              <Pill tone="mint">{form.usage}</Pill>
+              <Pill tone="mint">{form.usage}{licensing ? ` · ${term}` : ""}{licensing && form.exclusive ? " · exclusive" : ""}</Pill>
               {form.rush && <Pill tone="pink">Rush</Pill>}
               {materialsCost > 0 && <Pill tone="lilac">Supplies {money(materialsCost)}</Pill>}
             </div>
@@ -236,6 +258,12 @@ export default function CalcScreen({ ctx }) {
                   <b>{money(price[selectedTier])}</b>
                   <small>Pick a tier below to change it</small>
                 </div>
+                {price.licenseFrac > 0 && (
+                  <dl className="calc-split" aria-label="Price split">
+                    <div><dt>Creative fee</dt><dd>{money(price[selectedTier] * (1 - price.licenseFrac))}</dd></div>
+                    <div><dt>Usage licence</dt><dd>{money(price[selectedTier] * price.licenseFrac)}</dd></div>
+                  </dl>
+                )}
                 <div className="calc-tiers" role="group" aria-label="Choose a price tier">
                   {TIERS_UI.map((t) => (
                     <button key={t.key} type="button" className={`calc-tier calc-tier--${t.tone}`} aria-pressed={selectedTier === t.key} onClick={() => setSelectedTier(t.key)}>
