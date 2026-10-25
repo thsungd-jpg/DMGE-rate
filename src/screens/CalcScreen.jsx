@@ -207,6 +207,14 @@ export default function CalcScreen({ ctx }) {
                 </Field>
               </PCollapsible>
               <PCollapsible key={`platform-${resetKey}`} title="Platform fee" collapsedInfo={form.platformFee ? `${form.platformFee}%` : "None"} tooltip="Add a percentage to cover payment processing costs">
+                <Field label="Common fees" hint="Add the processor's cut so you are not paying it out of your fee.">
+                  <Segmented
+                    ariaLabel="Common processing fees"
+                    value={Number(form.platformFee) || 0}
+                    onChange={(v) => { setForm((f) => ({ ...f, platformFee: v })); setPrice(null); }}
+                    options={[{ value: 0, label: "None" }, { value: 2.9, label: "Stripe 2.9%" }, { value: 3.5, label: "PayPal 3.5%" }]}
+                  />
+                </Field>
                 <Field label="Fee (%)"><PInput type="number" value={form.platformFee || 0} onChange={(v) => { setForm((f) => ({ ...f, platformFee: v })); setPrice(null); }} placeholder="0" /></Field>
               </PCollapsible>
               <PCollapsible key={`materials-${resetKey}`} title="Supplies" collapsedInfo={materialSummary}>

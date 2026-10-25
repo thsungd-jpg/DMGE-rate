@@ -140,3 +140,9 @@
 
 .prof-ok { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--mint-deep); }
 .prof-msg { margin: 14px 0 0; font-size: 14px; color: var(--danger); }
+
+.rf-presets { display: flex; gap: 8px; margin-top: 8px; }
+.rf-preset { min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--paper); color: var(--ink); font: 700 13px/1 var(--font-body); cursor: pointer; }
+.rf-preset[aria-pressed="true"] { background: var(--butter); border-color: transparent; color: var(--on-fill); }
+.rf-note { margin: 0; font-size: 13px; color: var(--ink-2); }
+@media (pointer: coarse), (max-width: 640px) { .rf-preset { min-height: 44px; } }

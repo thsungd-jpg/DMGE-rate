@@ -24,8 +24,13 @@ export default function BaseRateFinder({ profile, update }) {
         <Field label="Yearly take-home goal ($)" htmlFor="rf-goal" hint="What you want to keep after tax.">
           <PInput id="rf-goal" type="number" inputMode="numeric" min={0} value={inputs.goal} onChange={set("goal")} />
         </Field>
-        <Field label="Tax set-aside (%)" htmlFor="rf-tax" hint="Share of income you put aside for tax.">
+        <Field label="Tax set-aside (%)" htmlFor="rf-tax" hint="Share of income you put aside for tax. Freelancers in the US often set aside 25 to 30%.">
           <PInput id="rf-tax" type="number" inputMode="numeric" min={0} value={inputs.taxRate} onChange={set("taxRate")} />
+          <div className="rf-presets" role="group" aria-label="Quick tax set-aside">
+            {[20, 25, 30, 35].map((n) => (
+              <button key={n} type="button" className="rf-preset" aria-pressed={Number(inputs.taxRate) === n} onClick={() => set("taxRate")(n)}>{n}%</button>
+            ))}
+          </div>
         </Field>
         <Field label="Yearly business costs ($)" htmlFor="rf-exp" hint="Software, gear, insurance, workspace.">
           <PInput id="rf-exp" type="number" inputMode="numeric" min={0} value={inputs.expenses} onChange={set("expenses")} />
@@ -46,8 +51,10 @@ export default function BaseRateFinder({ profile, update }) {
               <li><span>Income to bill</span><b>{money(res.gross)}</b></li>
               <li><span>Billable hours a year</span><b>{res.hours.toLocaleString("en-US")}</b></li>
               <li><span>Tax set aside</span><b>{money(res.taxSetAside)}</b></li>
+              <li><span>US self-employment tax (est.)</span><b>{money(res.seTax)}</b></li>
               <li><span>Typical week</span><b>{money(res.perWeek)}</b></li>
             </ul>
+            <p className="rf-note">Estimates only, not tax advice. Self-employment tax is part of your set-aside, not on top of it.</p>
             <PBtn color="var(--butter)" disabled={applied} onClick={() => update({ defaultBaseRate: res.rate, rateFinder: inputs })}>
               {applied ? <><IconCheck size={18} /> Set as your default rate</> : "Use as my default rate"}
             </PBtn>

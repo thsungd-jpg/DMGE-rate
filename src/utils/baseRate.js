@@ -26,5 +26,8 @@ export function calcBaseRate(input = {}) {
   const net = goal;
   const gross = net / (1 - taxRate / 100) + expenses;
   const rate = Math.ceil(gross / hours);
-  return { valid: true, rate, gross: Math.round(gross), hours: Math.round(hours), taxSetAside: Math.round(gross - expenses - net), perWeek: Math.round(rate * hoursPerWeek) };
+  // US self-employment tax: 15.3% of 92.35% of net profit. Rough guide only (ignores the Social Security cap and deductions).
+  const profit = gross - expenses;
+  const seTax = Math.round(profit * 0.9235 * 0.153);
+  return { valid: true, seTax, rate, gross: Math.round(gross), hours: Math.round(hours), taxSetAside: Math.round(gross - expenses - net), perWeek: Math.round(rate * hoursPerWeek) };
 }
