@@ -227,6 +227,22 @@ function brandLockup(brand, t, size = 'lg') {
   </div>`;
 }
 
+// Big, centered logo at the top of page 1 (no banner behind it).
+function heroLogo(brand, t) {
+  const MAX_W = 300, MAX_H = 130;
+  if (brand.logo) {
+    const k = Math.min(MAX_W / brand.logo.w, MAX_H / brand.logo.h);
+    const w = Math.round(brand.logo.w * k), h = Math.round(brand.logo.h * k);
+    const cors = brand.logo.src.startsWith('data:') ? '' : ' crossorigin="anonymous"';
+    return `<img src="${esc(brand.logo.src)}"${cors} alt="${esc(brand.name || 'Logo')}" style="display:block;width:${w}px;height:${h}px;object-fit:contain;" />`;
+  }
+  if (brand.name) {
+    return `<div style="font-family:${F.display};font-weight:400;font-size:52px;line-height:1.05;letter-spacing:-0.01em;text-align:center;color:${t.ink};">${esc(brand.name)}</div>`;
+  }
+  const mark = brand.mark ? `<img src="${esc(brand.mark.src)}" alt="" style="display:block;width:120px;height:120px;object-fit:contain;margin:0 auto;" />` : '';
+  return `<div style="text-align:center;">${mark}<div style="margin-top:${mark ? 8 : 0}px;font-family:${F.display};font-weight:400;font-size:34px;line-height:1;letter-spacing:0.04em;color:${t.ink};">DMGE</div></div>`;
+}
+
 function heroHTML(d, t) {
   const pill = d.status ? (() => {
     const tone = statusTone(d.status);
@@ -235,15 +251,13 @@ function heroHTML(d, t) {
       <div style="font-family:${F.body};font-weight:700;font-size:11px;line-height:1;letter-spacing:0.12em;text-transform:uppercase;color:${t.ink};">${esc(d.status)}</div>
     </div>`;
   })() : '';
-  return `<div style="position:relative;height:164px;background:${marble(t.band, 0)};border-radius:0 0 32px 32px;overflow:hidden;">
-    <div style="position:absolute;left:${SIDE}px;right:${SIDE}px;top:30px;display:flex;align-items:center;justify-content:space-between;">
-      <div>${brandLockup(d.brand, t, 'lg')}</div>
-      ${pill}
-    </div>
-    <div style="position:absolute;left:${SIDE}px;right:${SIDE}px;bottom:24px;display:flex;align-items:flex-end;justify-content:space-between;">
+  return `<div style="padding:46px ${SIDE}px 0;">
+    <div style="display:flex;justify-content:center;">${heroLogo(d.brand, t)}</div>
+    <div style="margin-top:34px;display:flex;align-items:flex-end;justify-content:space-between;">
       <div style="font-family:${F.display};font-weight:400;font-size:62px;line-height:0.86;letter-spacing:-0.03em;font-style:italic;color:${t.ink};">Invoice</div>
       <div style="text-align:right;max-width:300px;">
-        ${label('Invoice no.', t.ink, 'margin-bottom:6px;')}
+        <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">${pill}</div>
+        ${label('Invoice no.', t.labelText, 'margin-bottom:6px;')}
         <div style="font-family:${F.mono};font-weight:500;font-size:17px;line-height:1.2;color:${t.ink};word-break:break-all;">${esc(d.invoiceNumber)}</div>
       </div>
     </div>
