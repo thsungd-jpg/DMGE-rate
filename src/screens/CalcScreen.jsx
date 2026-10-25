@@ -39,7 +39,7 @@ const TIERS_UI = [
 
 export default function CalcScreen({ ctx }) {
   const {
-    ALL_DATA, advanceGlow, catData, category, clients, customMaterials, form, glowStep, handleAddCustomMaterial,
+    ALL_DATA, profile, advanceGlow, catData, category, clients, customMaterials, form, glowStep, handleAddCustomMaterial,
     handleCalc, handleReset, handleResetModel, handleSave, handleToggleMute, matPriceOverrides, matQtys,
     materialSummary, materialsCost, mats, model, modelIdx, muted, price, resetKey, role, roleIdx, saved,
     selectedClientId, selectedTier, set, setCategory, setForm, setMatPriceOverrides, setMatQtys, setModelIdx,
@@ -54,6 +54,7 @@ export default function CalcScreen({ ctx }) {
     }
   }, [price]);
 
+  const takeTax = Math.min(60, Math.max(0, Number(profile?.rateFinder?.taxRate ?? 25)));
   const licensing = hasLicensing(category, role.name);
   const term = form.usageTerm || "1 year";
   const allMats = [...mats, ...customMaterials];
@@ -195,6 +196,16 @@ export default function CalcScreen({ ctx }) {
                   />
                 </Field>
               </PCollapsible>
+              <PCollapsible key={`buffer-${resetKey}`} title="Buffer" collapsedInfo={form.buffer ? `+${form.buffer}%` : "None"} tooltip="Contingency for scope creep and slow payers">
+                <Field label="Contingency" hint="Most projects need 10 to 25% for surprises.">
+                  <Segmented
+                    ariaLabel="Contingency buffer"
+                    value={form.buffer || 0}
+                    onChange={(v) => { setForm((f) => ({ ...f, buffer: v })); setPrice(null); }}
+                    options={[0, 10, 15, 25].map((n) => ({ value: n, label: n ? `+${n}%` : "None" }))}
+                  />
+                </Field>
+              </PCollapsible>
               <PCollapsible key={`platform-${resetKey}`} title="Platform fee" collapsedInfo={form.platformFee ? `${form.platformFee}%` : "None"} tooltip="Add a percentage to cover payment processing costs">
                 <Field label="Fee (%)"><PInput type="number" value={form.platformFee || 0} onChange={(v) => { setForm((f) => ({ ...f, platformFee: v })); setPrice(null); }} placeholder="0" /></Field>
               </PCollapsible>
@@ -244,6 +255,7 @@ export default function CalcScreen({ ctx }) {
               <Pill tone="blue">{form.clientType}</Pill>
               <Pill tone="mint">{form.usage}{licensing ? ` · ${term}` : ""}{licensing && form.exclusive ? " · exclusive" : ""}</Pill>
               {form.rush && <Pill tone="pink">Rush</Pill>}
+              {form.buffer > 0 && <Pill tone="butter">Buffer +{form.buffer}%</Pill>}
               {materialsCost > 0 && <Pill tone="lilac">Supplies {money(materialsCost)}</Pill>}
             </div>
 
@@ -262,6 +274,9 @@ export default function CalcScreen({ ctx }) {
                   <b>{money(price[selectedTier])}</b>
                   <small>Pick a tier below to change it</small>
                 </div>
+                <p className="calc-keep" role="status">
+                  You keep about <b>{money(price[selectedTier] * (1 - takeTax / 100))}</b> after a {takeTax}% tax set-aside.
+                </p>
                 {price.licenseFrac > 0 && (
                   <dl className="calc-split" aria-label="Price split">
                     <div><dt>Creative fee</dt><dd>{money(price[selectedTier] * (1 - price.licenseFrac))}</dd></div>

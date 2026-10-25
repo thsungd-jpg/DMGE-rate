@@ -30,6 +30,7 @@ export function calcPrice({
   revisions,
   materialsCost,
   platformFee,
+  buffer,
   clientType,
   travelExpense,
   clientMultiplier = 1.0,
@@ -46,7 +47,8 @@ export function calcPrice({
   // Share of the price that is the usage licence (the rest is the creative fee). Client multiplier and fees scale both.
   const preClient = withMats + travel;
   const licenseFrac = preClient > 0 && uM > 1 ? (subtotal - subtotal / uM) / preClient : 0;
-  const final = (withMats + travel) * clientMultiplier;
+  const bufferM = 1 + (Number(buffer) || 0) / 100; // contingency for scope creep and slow payers
+  const final = (withMats + travel) * clientMultiplier * bufferM;
   const withFee = final * (1 + (Number(platformFee) || 0) / 100);
   const fair = Math.max(withFee, 50);
   return { low: fair * 0.8, fair, premium: fair * 1.3, travel, licenseFrac, usageFactor: uM };
@@ -68,7 +70,8 @@ export function buildInvoiceFigures(job, clientMultiplier = 1.0) {
   const materialsTotal = Number(job.materialsCost) || 0;
   const travelTotal = Number(job.travelExpense) || 0;
   const preClient = subtotal + materialsTotal + travelTotal;
-  const afterClient = preClient * clientMultiplier;
+  const bufferPct = Number(job.buffer) || 0;
+  const afterClient = preClient * clientMultiplier * (1 + bufferPct / 100);
   const platformPct = Number(job.platformFee) || 0;
   const platformFeeAmount = afterClient * (platformPct / 100);
   const totalDue = Math.max(afterClient + platformFeeAmount, 50);
@@ -88,6 +91,7 @@ export function buildInvoiceFigures(job, clientMultiplier = 1.0) {
     clientMultiplier,
     preClient,
     afterClient,
+    bufferPct,
     platformPct,
     platformFeeAmount,
     totalDue,
