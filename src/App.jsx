@@ -434,7 +434,7 @@ export default function App() {
     const file = e.target.files[0];
     if (!file) return;
     if (file.size > 2 * 1024 * 1024) {
-      alert("LOGO FILE TOO LARGE (MAX 2MB)");
+      alert("That logo file is too large. Please use an image under 2MB.");
       return;
     }
     const reader = new FileReader();
@@ -750,7 +750,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   };
   function handleEditJob(j) {
     if (!j.category || !ALL_DATA[j.category]) {
-      alert("CATEGORY DATA NOT FOUND FOR THIS JOB.");
+      alert("Could not find the category for this job.");
       return;
     }
     setCategory(j.category);
@@ -861,7 +861,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   }
 
   async function resetAppData() {
-    if (!confirm("🚨 WARNING: This will permanently delete all local jobs, clients, and templates. Are you sure?")) return;
+    if (!confirm("This will permanently delete all local jobs, clients and templates. Are you sure?")) return;
 
     // Clear localStorage
     const keys = ['rateapp_jobs', 'rateapp_profile', 'rateapp_clients', 'rateapp_templates'];
@@ -967,7 +967,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
   async function sendEmail() {
     if (!emailForm.to) {
-      alert("Please enter a recipient email address.");
+      setEmailStatus({ type: "error", message: "Please enter a recipient email address." });
       return;
     }
 
@@ -994,15 +994,14 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       // Successfully sent
       try { playEmail(); } catch {}
       setEmailStatus({ type: "success", message: "Invoice successfully dispatched!" });
+      // let the inline success banner be seen before heading back to Jobs
       setTimeout(() => {
-        alert("Invoice successfully dispatched!");
         setTab("history");
         setEmailStatus({ type: null, message: "" });
-      }, 100);
+      }, 1600);
     } catch (err) {
       console.error("Failed to send email:", err);
       setEmailStatus({ type: "error", message: "Failed to send: " + (err.message || "") });
-      alert("Uh oh! Failed to send email. " + (err.message || ""));
     } finally {
       setIsSendingEmail(false);
     }

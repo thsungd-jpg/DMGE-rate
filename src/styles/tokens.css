@@ -20,12 +20,12 @@
   --line-strong: rgba(43, 33, 64, 0.28);
 
   /* sorbet pastels: fills & accents; use the -deep variants for colored TEXT (AA on cream) */
-  --pink: #FF9EC7;    --pink-soft: #FFD3E6;    --pink-deep: #C2326F;
-  --blue: #8EC5FF;    --blue-soft: #D2E8FF;    --blue-deep: #2F6FD0;
+  --pink: #FF9EC7;    --pink-soft: #FFD3E6;    --pink-deep: #AE2C63;
+  --blue: #8EC5FF;    --blue-soft: #D2E8FF;    --blue-deep: #2A63BB;
   --mint: #9BF0C8;    --mint-soft: #D3F8E6;    --mint-deep: #167A55;
   --butter: #FFE98A;  --butter-soft: #FFF5C4;  --butter-deep: #8A6300;
-  --lilac: #C7B8FF;   --lilac-soft: #E5DEFF;   --lilac-deep: #6B4FD1;
-  --danger: #C42B4A;  --danger-soft: #FFD6DD;
+  --lilac: #C7B8FF;   --lilac-soft: #E5DEFF;   --lilac-deep: #684DCC;
+  --danger: #B3263F;  --danger-soft: #FFD6DD;
 
   /* pricing tiers (match the strata art) */
   --tier-low: var(--blue);

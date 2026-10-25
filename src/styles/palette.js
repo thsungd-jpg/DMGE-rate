@@ -11,11 +11,11 @@ export const PALETTE = {
 
   pink: "#FF9EC7",
   pinkSoft: "#FFD3E6",
-  pinkDeep: "#C2326F",
+  pinkDeep: "#AE2C63",
 
   blue: "#8EC5FF",
   blueSoft: "#D2E8FF",
-  blueDeep: "#2F6FD0",
+  blueDeep: "#2A63BB",
 
   mint: "#9BF0C8",
   mintSoft: "#D3F8E6",
@@ -27,9 +27,9 @@ export const PALETTE = {
 
   lilac: "#C7B8FF",
   lilacSoft: "#E5DEFF",
-  lilacDeep: "#6B4FD1",
+  lilacDeep: "#684DCC",
 
-  danger: "#C42B4A",
+  danger: "#B3263F",
   dangerSoft: "#FFD6DD",
 };
 

@@ -77,7 +77,7 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
     const confirmReset = window.confirm("Reset agency colors to base scheme?");
     if (confirmReset) {
       const p = { ...profile, branding: { ...profile.branding, bgColor: "", surfaceColor: "", textColor: "", accentColor: "", overrideThemes: true } };
-      setProfile(p); saveProfile(p, userTier);
+      setProfile(p); saveProfile(p, userTier, currentUser);
     }
   };
 
