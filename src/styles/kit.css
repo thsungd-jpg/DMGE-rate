@@ -97,3 +97,10 @@ button.kit-row:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
 @keyframes kitPageIn { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: none; } }
 .kit-page-enter { animation: kitPageIn 0.7s var(--ease-out) both; }
 @media (prefers-reduced-motion: reduce) { .kit-page-enter { animation: none; } }
+
+/* Touch targets: phones and coarse pointers get 44px minimums on the compact controls */
+@media (pointer: coarse), (max-width: 640px) {
+  .app-stage .lq-btn--sm, .app-stage .kit-seg-btn, .app-stage .jb-status-btn, .app-stage .iv-quickfill,
+  .app-stage .lq-chip-cost { min-height: 44px; }
+  .app-stage .kit-iconbtn { min-width: 44px; min-height: 44px; }
+}

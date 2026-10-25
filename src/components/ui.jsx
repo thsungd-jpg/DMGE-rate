@@ -9,6 +9,9 @@ import { fill, textOn, edge, halo } from "../styles/tone";
 // call sites are translated through ../styles/tone; styling lives in src/styles/base.css.
 // ─────────────────────────────────────────────
 
+// soft pink glow under cards (what the old default shadow colour mapped to)
+const PINK_HALO = "color-mix(in srgb, var(--pink) 80%, transparent)";
+
 function Chevron({ className }) {
   return (
     <svg className={className} viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -17,7 +20,7 @@ function Chevron({ className }) {
   );
 }
 
-export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB347", shadowColor = "#E91E63", onClick, glow = false, className = "", ...rest }) {
+export function PBox({ children, style = {}, bg = "var(--paper)", borderColor = "var(--line)", shadowColor = PINK_HALO, onClick, glow = false, className = "", ...rest }) {
   return (
     <div
       onClick={onClick}
@@ -31,7 +34,7 @@ export function PBox({ children, style = {}, bg = "#1A1A1A", borderColor = "#FFB
   );
 }
 
-export function PBtn({ children, onClick, color = "#b5d5f5", full = false, small = false, disabled = false, style = {}, glow = false, className = "", type, ...rest }) {
+export function PBtn({ children, onClick, color = "var(--blue)", full = false, small = false, disabled = false, style = {}, glow = false, className = "", type, ...rest }) {
   // `type` is intentionally left undefined unless passed: Auth relies on PBtn acting as a form submit button.
   return (
     <button
@@ -105,11 +108,11 @@ export function PModal({ isOpen, onClose, title, children }) {
         aria-label={typeof title === "string" ? title : undefined}
         tabIndex={-1}
         style={{ maxWidth: "min(700px, calc(100vw - 16px))", width: "100%", maxHeight: "95vh", overflowY: "auto", boxShadow: "var(--sh-3)" }}
-        bg="#1A1A1A"
+        bg="var(--paper)"
       >
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16, marginBottom: 24 }}>
           <div className="lq-modal-title" id={titleId}>{title}</div>
-          <PBtn small color="#E91E63" onClick={onClose} aria-label="Close" data-modal-close="" style={{ minWidth: 44, minHeight: 44, padding: "7px 12px" }}>✕</PBtn>
+          <PBtn small color="var(--pink)" onClick={onClose} aria-label="Close" data-modal-close="" style={{ minWidth: 44, minHeight: 44, padding: "7px 12px" }}>✕</PBtn>
         </div>
         {children}
       </PBox>
@@ -117,8 +120,8 @@ export function PModal({ isOpen, onClose, title, children }) {
   );
 }
 
-export function PLbl({ children, accent = "#FFB34788", style = {} }) {
-  return <div className="lq-lbl" style={{ color: textOn(accent), ...style }}>{children}</div>;
+export function PLbl({ children, accent, style = {} }) {
+  return <div className="lq-lbl" style={{ color: accent ? textOn(accent) : "var(--ink-2)", ...style }}>{children}</div>;
 }
 
 export function PInput({ value, onChange, placeholder, style = {}, type = "text", min, step, ...rest }) {
@@ -151,7 +154,7 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
 
   return (
     <div className="lq-stepper">
-      <PBtn small className="lq-stepper-btn" color="#E91E63" aria-label="Decrease" onClick={() => onChange(Math.max(min, value - step))}>
+      <PBtn small className="lq-stepper-btn" color="var(--pink)" aria-label="Decrease" onClick={() => onChange(Math.max(min, value - step))}>
         −
       </PBtn>
       <div
@@ -176,7 +179,7 @@ export function PStepper({ value, onChange, min = 0, step = 1, suffix = "" }) {
           <>{value}{suffix}</>
         )}
       </div>
-      <PBtn small className="lq-stepper-btn" color="#FFB347" aria-label="Increase" onClick={() => onChange(value + step)}>
+      <PBtn small className="lq-stepper-btn" color="var(--butter)" aria-label="Increase" onClick={() => onChange(value + step)}>
         +
       </PBtn>
     </div>
@@ -267,7 +270,7 @@ export function PSelect({ label, value, options, onChange, iconType = "cat", sty
   );
 }
 
-export function PCollapsible({ title, accent = "#000", children, defaultOpen = false, bg = "#FFB347", activeBg, collapsedInfo = "", collapsedColor = "#FFB347", tooltip = null, modelShadow = "#E91E63", modelColor }) {
+export function PCollapsible({ title, accent = "var(--ink)", children, defaultOpen = false, bg = "var(--butter)", activeBg, collapsedInfo = "", collapsedColor = "var(--butter)", tooltip = null, modelShadow = PINK_HALO, modelColor }) {
   const [isOpen, setIsOpen] = useState(defaultOpen);
   const toggle = () => setIsOpen(o => !o);
   return (
@@ -280,8 +283,8 @@ export function PCollapsible({ title, accent = "#000", children, defaultOpen = f
         title={tooltip || undefined}
         onKeyDown={e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } }}
         bg={isOpen ? (activeBg || bg) : bg}
-        borderColor="#0A0A0A"
-        shadowColor={isOpen ? modelShadow : "#E91E63"}
+        borderColor="var(--line)"
+        shadowColor={isOpen ? modelShadow : PINK_HALO}
         className="lq-collapse-head"
         style={{ padding: "12px 18px" }}
       >
@@ -295,7 +298,7 @@ export function PCollapsible({ title, accent = "#000", children, defaultOpen = f
       )}
       {isOpen && (
         <div className="lq-collapse-body">
-          <PBox shadowColor={modelShadow} bg={modelColor || "#1A1A1A"} style={{ padding: "16px 24px 24px 16px" }}>
+          <PBox shadowColor={modelShadow} bg={modelColor || "var(--paper)"} style={{ padding: "16px 24px 24px 16px" }}>
             {children}
           </PBox>
         </div>
@@ -344,10 +347,10 @@ export function MatChip({ mat, qty, onAdd, onRemove, onCostChange, accent, bg })
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
         {active && <>
-          <PBtn small aria-label={`Remove one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onRemove(); }} color="#ffd6e8" style={{ minWidth: 36, padding: "7px 12px" }}>−</PBtn>
+          <PBtn small aria-label={`Remove one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onRemove(); }} color="var(--pink-soft)" style={{ minWidth: 36, padding: "7px 12px" }}>−</PBtn>
           <div className="lq-chip-qty">{qty}</div>
         </>}
-        <PBtn small aria-label={`Add one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onAdd(); }} color="#d6f5e3" style={{ minWidth: 36, padding: "7px 12px" }}>+</PBtn>
+        <PBtn small aria-label={`Add one ${mat.name}`} onClick={(e) => { e.stopPropagation(); onAdd(); }} color="var(--mint)" style={{ minWidth: 36, padding: "7px 12px" }}>+</PBtn>
       </div>
     </div>
   );
