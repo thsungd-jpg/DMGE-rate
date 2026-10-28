@@ -25,7 +25,7 @@ const frameUrls = Object.entries(import.meta.glob("./assets/logo-frames/*.webp",
 
 const finaleUrls = Object.entries(import.meta.glob("./assets/finale-frames/*.webp", { eager: true, query: "?url", import: "default" }))
   .sort(([a], [b]) => a.localeCompare(b)).map(([, url]) => url);
-const FINALE_FPS = 18; // the finale plays forward, then in reverse, then forward again: no hard restart
+const FINALE_FPS = 24; // the finale plays forward, then in reverse, then forward again: no hard restart
 
 const OBJECTS = [
   { id: "clapper", label: "Film and TV", src: clapper, x: 22, y: 32, w: 22, rot: -8, spin: false },
@@ -39,7 +39,7 @@ const PIECES = [
   { src: wave, x: 86, y: 78, w: 7, d: 1.2, t: 13 },
 ];
 const LOOPS = 5;
-const IDLE_FPS = 14; // the logo keeps playing on its own; scroll adds extra turns on top // how many times the logo animation loops across the whole scroll
+const IDLE_FPS = 24; // the logo keeps playing on its own; scroll adds extra turns on top // how many times the logo animation loops across the whole scroll
 const MESSAGE = "Every craft carries a different price. Yours deserves to be priced like it.";
 
 export default function Scrapbook() {
@@ -67,7 +67,10 @@ export default function Scrapbook() {
     function drawFrame(p) {
       const c = jelly.current; if (!c) return;
       const n = frameUrls.length;
-      const idx = n ? ((Math.floor(idle + p * LOOPS * n) % n) + n) % n : 0;
+      // forward, then back, then forward again (the clip is a morph, not a loop, so it ping-pongs instead of restarting)
+      const period = Math.max(1, 2 * (n - 1));
+      const pos = (((idle + p * LOOPS * period) % period) + period) % period;
+      const idx = n ? Math.floor(pos < n ? pos : period - pos) : 0;
       if (idx === lastIdx && n) return;
       const im = n ? frames[idx] : still;
       if (!im) return;
