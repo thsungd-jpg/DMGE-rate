@@ -1,3 +1,4 @@
+@font-face { font-family: "Showtoon"; src: url("./assets/fonts/Showtoon.otf") format("opentype"); font-display: swap; }
 :root { --ink: #F6F0FF; --pink: #FF9EC7; --blue: #8EC5FF; --mint: #9BF0C8; --butter: #FFE98A; --lilac: #C7B8FF; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { background: #05030D; color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; }
@@ -35,19 +36,19 @@ html.lenis, html.lenis body { height: auto; }
 
 /* scroll track + overlay text */
 .sb-track { position: relative; height: 760vh; }
-.sb-hero { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 8vh; text-align: center; pointer-events: none; z-index: 2; }
-.sb-h1 { font: 400 clamp(40px, 6.4vw, 108px)/0.95 "Instrument Serif", serif; letter-spacing: -0.03em; text-shadow: 0 4px 40px rgba(5,3,13,.55); }
-.sb-h1 em { font-style: italic; }
+.sb-hero { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 6vh; text-align: center; pointer-events: none; z-index: 2; }
+.sb-h1 { font: 400 clamp(34px, 5.6vw, 92px)/1 "Showtoon", sans-serif; letter-spacing: 0.01em; text-transform: uppercase; text-shadow: 0 4px 40px rgba(5,3,13,.55); }
+.sb-h1 em, .sb-pick em, .sb-cta em { font-style: normal; color: var(--butter); }
 .sb-line { display: block; overflow: hidden; padding: .04em 0 .08em; }
 .sb-line > span { display: inline-block; }
 .sb-hint { position: fixed; left: 50%; bottom: 3.5vh; transform: translateX(-50%); font: 500 13px/1 "DM Sans"; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); z-index: 3; }
-.sb-message { position: fixed; inset: 0; display: flex; flex-wrap: wrap; align-content: center; gap: 0 .3em; padding: 0 clamp(28px, 16vw, 320px); text-align: left;
-  font: 400 clamp(34px, 5.2vw, 78px)/1.1 "Instrument Serif", serif; z-index: 3; pointer-events: none; }
+.sb-message { position: fixed; inset: 0; display: flex; flex-wrap: wrap; align-content: center; gap: 0 .28em; padding: 0 clamp(24px, 9vw, 200px); text-align: left;
+  font: 400 clamp(44px, 7.4vw, 120px)/1.08 "Showtoon", sans-serif; text-transform: uppercase; z-index: 3; pointer-events: none; }
 .sb-word { opacity: 0; display: inline-block; }
-.sb-pick { position: fixed; left: 50%; top: 9vh; transform: translateX(-50%); font: 400 clamp(34px, 4.4vw, 64px)/1 "Instrument Serif", serif; z-index: 3; opacity: 0; pointer-events: none; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
+.sb-pick { position: fixed; left: 50%; top: 9vh; transform: translateX(-50%); font: 400 clamp(34px, 4.4vw, 64px)/1 "Showtoon", sans-serif; z-index: 3; opacity: 0; pointer-events: none; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
 .sb-pick em { font-style: italic; }
-.sb-cta { position: fixed; left: 50%; bottom: 12vh; transform: translateX(-50%); text-align: center; z-index: 4; opacity: 0; }
-.sb-cta h2 { font: 400 clamp(36px, 5vw, 72px)/1 "Instrument Serif", serif; margin-bottom: 22px; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
+.sb-cta { position: fixed; left: 8vw; top: 50%; transform: translateY(-50%); text-align: left; max-width: 40vw; z-index: 4; opacity: 0; }
+.sb-cta h2 { font: 400 clamp(36px, 5vw, 72px)/1 "Showtoon", sans-serif; margin-bottom: 22px; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
 .sb-cta em { font-style: italic; }
 .sb-btn { display: inline-block; padding: 18px 36px; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%), var(--butter); color: #2B2140; font: 700 17px "DM Sans"; text-decoration: none;
   box-shadow: 0 6px 0 #D9B74A, 0 18px 24px -8px rgba(0,0,0,.6); transition: transform .15s; }
@@ -66,3 +67,8 @@ html.lenis, html.lenis body { height: auto; }
 .sb-reduced .sb-obj, .sb-reduced .sb-word { opacity: 1; }
 .sb-reduced .sb-piece { animation: none; }
 @media (prefers-reduced-motion: reduce) { .sb-piece, .sb-obj, .sb-btn { animation: none !important; transition: none !important; } }
+
+.sb-finale { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; pointer-events: none; }
+.sb-pick, .sb-cta h2 { text-transform: uppercase; }
+.sb-pick { font-size: clamp(28px, 3.6vw, 56px); }
+.sb-cta h2 { font-size: clamp(30px, 4.4vw, 70px); line-height: 1.04; }

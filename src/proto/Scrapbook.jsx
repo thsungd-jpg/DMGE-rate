@@ -16,6 +16,7 @@ import rainbow from "./assets/piece-rainbow.webp";
 import wave from "./assets/piece-wave.webp";
 import star4 from "./assets/piece-star4.webp";
 import star6 from "./assets/piece-star6.webp";
+import nightVideo from "./assets/night-collage.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -30,17 +31,18 @@ const OBJECTS = [
   { id: "gem", label: "Featured crafts", src: gem, x: 77, y: 70, w: 19, rot: -6, spin: false },
 ];
 const PIECES = [
-  { src: saturn, x: 14, y: 27, w: 14, d: 0.5, t: 14 }, { src: planetA, x: 87, y: 26, w: 11, d: 0.7, t: 18 },
-  { src: crescent, x: 50, y: 10, w: 7, d: 0.4, t: 16 }, { src: rainbow, x: 14, y: 52, w: 16, d: 0.9, t: 20 },
-  { src: wave, x: 87, y: 50, w: 14, d: 0.8, t: 17 }, { src: star4, x: 33, y: 86, w: 8, d: 1.1, t: 12 },
-  { src: star6, x: 68, y: 88, w: 7, d: 1.2, t: 13 }, { src: planetB, x: 58, y: 86, w: 9, d: 0.6, t: 19 },
+  { src: saturn, x: 12, y: 24, w: 13, d: 0.5, t: 14 }, { src: planetA, x: 88, y: 22, w: 10, d: 0.7, t: 18 },
+  { src: crescent, x: 50, y: 7, w: 6, d: 0.4, t: 16 }, { src: rainbow, x: 15, y: 80, w: 8, d: 1.1, t: 12 },
+  { src: wave, x: 86, y: 78, w: 7, d: 1.2, t: 13 },
 ];
-const LOOPS = 5; // how many times the logo animation loops across the whole scroll
+const LOOPS = 5;
+const IDLE_FPS = 14; // the logo keeps playing on its own; scroll adds extra turns on top // how many times the logo animation loops across the whole scroll
 const MESSAGE = "Every craft carries a different price. Yours deserves to be priced like it.";
 
 export default function Scrapbook() {
   const root = useRef(null);
   const jelly = useRef(null);
+  const finale = useRef(null);
   const [pct, setPct] = useState(0);
   const [chapter, setChapter] = useState("Open");
   const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -62,13 +64,16 @@ export default function Scrapbook() {
     function drawFrame(p) {
       const c = jelly.current; if (!c) return;
       const n = frameUrls.length;
-      const idx = n ? Math.min(n - 1, Math.floor((((p * LOOPS) % 1) + 1) % 1 * n)) : 0;
+      const idx = n ? ((Math.floor(idle + p * LOOPS * n) % n) + n) % n : 0;
       if (idx === lastIdx && n) return;
       const im = n ? frames[idx] : still;
       if (!im) return;
       const ctx = c.getContext("2d"); ctx.clearRect(0, 0, c.width, c.height); ctx.drawImage(im, 0, 0, c.width, c.height); lastIdx = idx;
     }
     const prog = { p: 0 };
+    let idle = 0;
+    const idleTick = (_t, dt) => { idle += (dt / 1000) * IDLE_FPS; drawFrame(prog.p); };
+    gsap.ticker.add(idleTick);
 
     // ---- opening (plays on load) ----
     const open = gsap.timeline({ delay: 0.3 });
@@ -80,7 +85,7 @@ export default function Scrapbook() {
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: { trigger: ".sb-track", start: "top top", end: "bottom bottom", scrub: true,
-        onUpdate: (self) => { setPct(Math.round(self.progress * 100)); setChapter(self.progress < 0.12 ? "Open" : self.progress < 0.38 ? "Threshold" : self.progress < 0.86 ? "Your craft" : "Begin"); } },
+        onUpdate: (self) => { const f = finale.current; if (f) { if (self.progress > 0.78 && f.paused) f.play().catch(() => {}); else if (self.progress <= 0.78 && !f.paused) f.pause(); } setPct(Math.round(self.progress * 100)); setChapter(self.progress < 0.12 ? "Open" : self.progress < 0.38 ? "Threshold" : self.progress < 0.86 ? "Your craft" : "Begin"); } },
     });
     // 0.00-0.12 headline leaves
     tl.to(".sb-hero", { opacity: 0, yPercent: -12, duration: 0.1 }, 0.04)
@@ -106,20 +111,21 @@ export default function Scrapbook() {
       .fromTo(".sb-pick", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.06 }, 0.52)
       .to(".sb-world", { scale: 1.18, xPercent: -4, duration: 0.3 }, 0.55)
     // 0.86-1 settle: call to action
-      .to(".sb-pick", { opacity: 0, duration: 0.05 }, 0.84)
+      .to(".sb-pick", { opacity: 0, duration: 0.05 }, 0.78)
+      .to(".sb-finale", { opacity: 1, duration: 0.08 }, 0.8)
+      .to(".sb-world", { opacity: 0, duration: 0.08 }, 0.8)
       .to(".sb-world", { scale: 1, xPercent: 0, duration: 0.12 }, 0.86)
-      .to(".sb-jelly-wrap", { scale: 0.7, yPercent: -16, duration: 0.12 }, 0.86)
-      .fromTo(".sb-cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.1 }, 0.9)
+      .fromTo(".sb-cta", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.05 }, 0.86)
       .to(prog, { p: 1, duration: 1, onUpdate: () => drawFrame(prog.p) }, 0);   // jelly scrubs through its frames across the whole journey
 
     // ---- cursor parallax (far layers lean) ----
     const move = (e) => { el.style.setProperty("--px", (e.clientX / window.innerWidth - 0.5).toFixed(3)); el.style.setProperty("--py", (e.clientY / window.innerHeight - 0.5).toFixed(3)); };
     window.addEventListener("pointermove", move, { passive: true });
 
-    const resize = () => { const c = jelly.current; if (!c) return; const s = Math.min(window.innerHeight * 0.66, window.innerWidth * 0.8); c.width = c.height = Math.round(s * Math.min(2, window.devicePixelRatio || 1)); c.style.width = c.style.height = s + "px"; drawFrame(prog.p); };
+    const resize = () => { const c = jelly.current; if (!c) return; const s = Math.min(window.innerHeight * 0.52, window.innerWidth * 0.7); c.width = c.height = Math.round(s * Math.min(2, window.devicePixelRatio || 1)); c.style.width = c.style.height = s + "px"; drawFrame(prog.p); };
     resize(); window.addEventListener("resize", resize);
 
-    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("resize", resize); gsap.ticker.remove(tick); lenis.destroy(); tl.scrollTrigger?.kill(); tl.kill(); open.kill(); };
+    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("resize", resize); gsap.ticker.remove(tick); gsap.ticker.remove(idleTick); lenis.destroy(); tl.scrollTrigger?.kill(); tl.kill(); open.kill(); };
   }, [reduced]);
 
   // click: ink splat at the pointer
@@ -150,6 +156,7 @@ export default function Scrapbook() {
             </button>
           ))}
         </div>
+        <video ref={finale} className="sb-finale" src={nightVideo} muted loop playsInline preload="auto" />
         <div className="sb-dim" />
       </div>
 
