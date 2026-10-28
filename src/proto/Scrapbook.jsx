@@ -16,13 +16,16 @@ import rainbow from "./assets/piece-rainbow.webp";
 import wave from "./assets/piece-wave.webp";
 import star4 from "./assets/piece-star4.webp";
 import star6 from "./assets/piece-star6.webp";
-import nightVideo from "./assets/night-collage.mp4";
 
 gsap.registerPlugin(ScrollTrigger);
 
 // jelly frame sequence (generated from the Kling clip); falls back to the still mark when no frames exist yet
 const frameUrls = Object.entries(import.meta.glob("./assets/logo-frames/*.webp", { eager: true, query: "?url", import: "default" }))
   .sort(([a], [b]) => a.localeCompare(b)).map(([, url]) => url);
+
+const finaleUrls = Object.entries(import.meta.glob("./assets/finale-frames/*.webp", { eager: true, query: "?url", import: "default" }))
+  .sort(([a], [b]) => a.localeCompare(b)).map(([, url]) => url);
+const FINALE_FPS = 18; // the finale plays forward, then in reverse, then forward again: no hard restart
 
 const OBJECTS = [
   { id: "clapper", label: "Film and TV", src: clapper, x: 22, y: 32, w: 22, rot: -8, spin: false },
@@ -42,7 +45,7 @@ const MESSAGE = "Every craft carries a different price. Yours deserves to be pri
 export default function Scrapbook() {
   const root = useRef(null);
   const jelly = useRef(null);
-  const finale = useRef(null);
+  const finale = useRef(null); // canvas for the finale frames
   const [pct, setPct] = useState(0);
   const [chapter, setChapter] = useState("Open");
   const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -71,6 +74,21 @@ export default function Scrapbook() {
       const ctx = c.getContext("2d"); ctx.clearRect(0, 0, c.width, c.height); ctx.drawImage(im, 0, 0, c.width, c.height); lastIdx = idx;
     }
     const prog = { p: 0 };
+    // ---- finale: ping-pong playback of the night collage frames on a canvas ----
+    const fframes = new Array(finaleUrls.length);
+    finaleUrls.forEach((u, i) => { fetch(u).then((r) => r.blob()).then((bl) => createImageBitmap(bl)).then((bm) => { fframes[i] = bm; }); });
+    let finaleOn = false, fpos = 0, lastF = -1;
+    const finaleTick = (_t, dt) => {
+      const n = finaleUrls.length, c = finale.current;
+      if (!n || !c || !finaleOn) return;
+      fpos = (fpos + (dt / 1000) * FINALE_FPS) % (2 * (n - 1));
+      const idx = Math.floor(fpos < n ? fpos : 2 * (n - 1) - fpos);
+      const bm = fframes[idx];
+      if (!bm || idx === lastF) return;
+      if (c.width !== bm.width) { c.width = bm.width; c.height = bm.height; }
+      c.getContext("2d").drawImage(bm, 0, 0); lastF = idx;
+    };
+    gsap.ticker.add(finaleTick);
     let idle = 0;
     const idleTick = (_t, dt) => { idle += (dt / 1000) * IDLE_FPS; drawFrame(prog.p); };
     gsap.ticker.add(idleTick);
@@ -85,7 +103,7 @@ export default function Scrapbook() {
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: { trigger: ".sb-track", start: "top top", end: "bottom bottom", scrub: true,
-        onUpdate: (self) => { const f = finale.current; if (f) { if (self.progress > 0.78 && f.paused) f.play().catch(() => {}); else if (self.progress <= 0.78 && !f.paused) f.pause(); } setPct(Math.round(self.progress * 100)); setChapter(self.progress < 0.12 ? "Open" : self.progress < 0.38 ? "Threshold" : self.progress < 0.86 ? "Your craft" : "Begin"); } },
+        onUpdate: (self) => { finaleOn = self.progress > 0.78; setPct(Math.round(self.progress * 100)); setChapter(self.progress < 0.12 ? "Open" : self.progress < 0.38 ? "Threshold" : self.progress < 0.86 ? "Your craft" : "Begin"); } },
     });
     // 0.00-0.12 headline leaves
     tl.to(".sb-hero", { opacity: 0, yPercent: -12, duration: 0.1 }, 0.04)
@@ -125,7 +143,7 @@ export default function Scrapbook() {
     const resize = () => { const c = jelly.current; if (!c) return; const s = Math.min(window.innerHeight * 0.52, window.innerWidth * 0.7); c.width = c.height = Math.round(s * Math.min(2, window.devicePixelRatio || 1)); c.style.width = c.style.height = s + "px"; drawFrame(prog.p); };
     resize(); window.addEventListener("resize", resize);
 
-    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("resize", resize); gsap.ticker.remove(tick); gsap.ticker.remove(idleTick); lenis.destroy(); tl.scrollTrigger?.kill(); tl.kill(); open.kill(); };
+    return () => { window.removeEventListener("pointermove", move); window.removeEventListener("resize", resize); gsap.ticker.remove(tick); gsap.ticker.remove(idleTick); gsap.ticker.remove(finaleTick); lenis.destroy(); tl.scrollTrigger?.kill(); tl.kill(); open.kill(); };
   }, [reduced]);
 
   // click: ink splat at the pointer
@@ -156,7 +174,7 @@ export default function Scrapbook() {
             </button>
           ))}
         </div>
-        <video ref={finale} className="sb-finale" src={nightVideo} muted loop playsInline preload="auto" />
+        <canvas ref={finale} className="sb-finale" />
         <div className="sb-dim" />
       </div>
 
