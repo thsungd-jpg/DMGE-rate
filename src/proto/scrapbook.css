@@ -1,0 +1,68 @@
+:root { --ink: #F6F0FF; --pink: #FF9EC7; --blue: #8EC5FF; --mint: #9BF0C8; --butter: #FFE98A; --lilac: #C7B8FF; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: #05030D; color: var(--ink); font-family: "DM Sans", system-ui, sans-serif; }
+html.lenis, html.lenis body { height: auto; }
+.sb-root { position: relative; --px: 0; --py: 0; }
+
+/* fixed stage */
+.sb-stage { position: fixed; inset: 0; overflow: hidden; background: #05030D; }
+.sb-sky { position: absolute; inset: -4%; width: 108%; height: 108%; object-fit: cover; opacity: 0.95; }
+.sb-world { position: absolute; inset: 0; transform-origin: 50% 50%; will-change: transform; }
+.sb-pieces { position: absolute; inset: 0; }
+.sb-piece { position: absolute; transform: translate(calc(-50% + var(--px) * var(--d) * -34px), calc(-50% + var(--py) * var(--d) * -34px)); height: auto; opacity: 0.9;
+  animation: sbFloat 16s ease-in-out infinite alternate; filter: drop-shadow(0 8px 18px rgba(0,0,0,.5)); }
+@keyframes sbFloat { from { margin-top: -10px; rotate: -3deg; } to { margin-top: 12px; rotate: 4deg; } }
+.sb-jelly-wrap { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 50% 50%; mix-blend-mode: screen; }
+.sb-jelly { display: block; }
+.sb-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
+
+/* objects: cut-paper pieces you can hover */
+.sb-obj { position: absolute; transform: translate(-50%, -50%) rotate(var(--rot)); height: auto; border: none; background: none; cursor: pointer; padding: 0;
+  transition: transform .45s cubic-bezier(.34,1.56,.64,1), filter .3s; filter: drop-shadow(0 14px 22px rgba(0,0,0,.55)); opacity: 0; }
+.sb-obj img { display: block; width: 100%; height: auto; pointer-events: none; }
+.sb-obj:hover { transform: translate(-50%, -54%) rotate(calc(var(--rot) * -0.5)) scale(1.1); filter: drop-shadow(0 24px 30px rgba(0,0,0,.6)) brightness(1.08); }
+.sb-obj.is-spin:hover img { animation: sbSpin 1.4s linear infinite; }
+.sb-obj[data-id="gem"]:hover img { animation: sbGlint .9s ease-in-out infinite; }
+.sb-obj[data-id="clapper"]:hover img { animation: sbClap .5s ease-in-out 2; transform-origin: 20% 40%; }
+.sb-obj[data-id="paint"]:hover img { animation: sbWobble .7s ease-in-out infinite; }
+@keyframes sbSpin { to { transform: rotate(360deg); } }
+@keyframes sbGlint { 50% { filter: brightness(1.35) saturate(1.3); transform: scale(1.04); } }
+@keyframes sbClap { 50% { transform: rotate(-9deg) scale(1.03); } }
+@keyframes sbWobble { 25% { transform: rotate(5deg); } 75% { transform: rotate(-5deg); } }
+.sb-tag { position: absolute; left: 50%; bottom: -6px; transform: translate(-50%, 100%); padding: 5px 12px; border-radius: 999px; background: var(--butter); color: #2B2140;
+  font: 700 11px/1 "DM Sans"; letter-spacing: .12em; text-transform: uppercase; opacity: 0; transition: opacity .25s; white-space: nowrap; }
+.sb-obj:hover .sb-tag { opacity: 1; }
+
+/* scroll track + overlay text */
+.sb-track { position: relative; height: 760vh; }
+.sb-hero { position: fixed; inset: 0; display: grid; place-items: center; text-align: center; pointer-events: none; z-index: 2; }
+.sb-h1 { font: 400 clamp(52px, 9.5vw, 150px)/0.95 "Instrument Serif", serif; letter-spacing: -0.03em; text-shadow: 0 4px 40px rgba(5,3,13,.55); }
+.sb-h1 em { font-style: italic; }
+.sb-line { display: block; overflow: hidden; padding: .04em 0 .08em; }
+.sb-line > span { display: inline-block; }
+.sb-hint { position: fixed; left: 50%; bottom: 7vh; transform: translateX(-50%); font: 500 13px/1 "DM Sans"; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); z-index: 3; }
+.sb-message { position: fixed; inset: 0; display: grid; place-content: center; padding: 0 8vw; margin: 0 auto; text-align: left; opacity: 0; font: 400 clamp(30px, 4.6vw, 64px)/1.12 "Instrument Serif", serif; z-index: 3; pointer-events: none; }
+.sb-message { max-width: min(20ch, 84vw); }
+.sb-word { opacity: .14; transition: none; }
+.sb-pick { position: fixed; left: 50%; top: 9vh; transform: translateX(-50%); font: 400 clamp(34px, 4.4vw, 64px)/1 "Instrument Serif", serif; z-index: 3; opacity: 0; pointer-events: none; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
+.sb-pick em { font-style: italic; }
+.sb-cta { position: fixed; left: 50%; bottom: 12vh; transform: translateX(-50%); text-align: center; z-index: 4; opacity: 0; }
+.sb-cta h2 { font: 400 clamp(36px, 5vw, 72px)/1 "Instrument Serif", serif; margin-bottom: 22px; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
+.sb-cta em { font-style: italic; }
+.sb-btn { display: inline-block; padding: 18px 36px; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%), var(--butter); color: #2B2140; font: 700 17px "DM Sans"; text-decoration: none;
+  box-shadow: 0 6px 0 #D9B74A, 0 18px 24px -8px rgba(0,0,0,.6); transition: transform .15s; }
+.sb-btn:hover { transform: translateY(-2px) rotate(-1deg); } .sb-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #D9B74A; }
+.sb-hud { position: fixed; left: 28px; bottom: 24px; display: flex; gap: 18px; font: 500 12px "DM Sans"; letter-spacing: .18em; text-transform: uppercase; color: var(--lilac); z-index: 5; font-variant-numeric: tabular-nums; }
+
+/* click ink splat */
+.sb-splat { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--c); pointer-events: none; z-index: 9; animation: sbSplat .8s ease-out forwards;
+  box-shadow: 18px -10px 0 -3px var(--c), -16px 12px 0 -2px var(--c), 6px 20px 0 -4px var(--c), -14px -16px 0 -4px var(--c), 26px 8px 0 -5px var(--c); }
+@keyframes sbSplat { 0% { transform: scale(.2); opacity: 1; } 40% { transform: scale(2.4); opacity: 1; } 100% { transform: scale(3); opacity: 0; } }
+
+/* reduced motion: a still, composed poster; no scroll scrubbing */
+.sb-reduced .sb-track { height: auto; }
+.sb-reduced .sb-hero, .sb-reduced .sb-hint, .sb-reduced .sb-message, .sb-reduced .sb-pick, .sb-reduced .sb-cta, .sb-reduced .sb-hud { position: relative; inset: auto; left: auto; transform: none; opacity: 1; }
+.sb-reduced .sb-hero { min-height: 100vh; }
+.sb-reduced .sb-obj, .sb-reduced .sb-word { opacity: 1; }
+.sb-reduced .sb-piece { animation: none; }
+@media (prefers-reduced-motion: reduce) { .sb-piece, .sb-obj, .sb-btn { animation: none !important; transition: none !important; } }
