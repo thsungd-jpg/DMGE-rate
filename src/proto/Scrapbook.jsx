@@ -34,9 +34,9 @@ const OBJECTS = [
   { id: "gem", label: "Featured crafts", src: gem, x: 77, y: 70, w: 19, rot: -6, spin: false },
 ];
 const PIECES = [
-  { src: saturn, x: 12, y: 24, w: 13, d: 0.5, t: 14 }, { src: planetA, x: 88, y: 22, w: 10, d: 0.7, t: 18 },
-  { src: crescent, x: 50, y: 7, w: 6, d: 0.4, t: 16 }, { src: rainbow, x: 15, y: 80, w: 8, d: 1.1, t: 12 },
-  { src: wave, x: 86, y: 78, w: 7, d: 1.2, t: 13 },
+  { src: saturn, x: 9, y: 52, w: 13, d: 0.5, t: 14 }, { src: planetA, x: 91, y: 50, w: 10, d: 0.7, t: 18 },
+  { src: crescent, x: 50, y: 93, w: 6, d: 0.4, t: 16 }, { src: rainbow, x: 36, y: 88, w: 7, d: 1.1, t: 12 },
+  { src: wave, x: 64, y: 88, w: 6.5, d: 1.2, t: 13 },
 ];
 const LOOPS = 5;
 const IDLE_FPS = 24; // the logo keeps playing on its own; scroll adds extra turns on top // how many times the logo animation loops across the whole scroll
