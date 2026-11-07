@@ -163,6 +163,15 @@ export const ROLE_SOC = {
   "Photo And Video Services::Real Estate Photographer": "27-4021",
   "Photo And Video Services::Product Photographer": "27-4021",
   "Photo And Video Services::Video Editor (YouTube / Social)": "27-4032",
+  "Marketing And Advertising::SEO Specialist": "13-1161",
+  "Marketing And Advertising::Paid Ads Manager (PPC / Paid Social)": "13-1161",
+  "Marketing And Advertising::Email Marketing Specialist": "13-1161",
+  "Marketing And Advertising::Content Marketing Strategist": "13-1161",
+  "Marketing And Advertising::Growth Marketer / CRO Specialist": "13-1161",
+  "Marketing And Advertising::Marketing Analyst": "13-1161",
+  "Marketing And Advertising::Marketing Automation / CRM Specialist": "13-1161",
+  "Marketing And Advertising::Product Marketing / Launch Manager": "13-1161",
+  "Marketing And Advertising::Fractional CMO": "11-2021",
 };
 
 /** The BLS wages for a role, or null when there is no honest match: { soc, title, p25, median, p75, year, url }. */

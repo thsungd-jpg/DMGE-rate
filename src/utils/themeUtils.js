@@ -22,7 +22,7 @@ const CATEGORY_NAMES = [
   "Education And Coaching", "Cosmetology", "Culinary Arts",
   // added later: appended so the colours of the fields above stay as they were
   "Creator Economy", "Design And UX", "Games And 3D", "Audio And Voice", "Writing And Publishing", "Makers And Crafts", "Body Art And Beauty",
-  "Architecture And Interiors", "Weddings And Events Design", "Photo And Video Services", "My crafts",
+  "Architecture And Interiors", "Weddings And Events Design", "Photo And Video Services", "My crafts", "Marketing And Advertising",
 ];
 
 const PASTELS = [

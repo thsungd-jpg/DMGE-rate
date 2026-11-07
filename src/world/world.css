@@ -2,7 +2,9 @@
    By day it is the same world on cream paper. Content sits directly on the scene; controls are little paper pieces (control style B) that lift on hover and press down
    on click. Everything here is scoped to .qw-stage, .qw and .qw-bar so no other screen changes. */
 
-@font-face { font-family: "Showtoon"; src: url("./assets/Showtoon.otf") format("opentype"); font-display: swap; }
+/* Titan One (titles) and Nunito (everything else): both SIL Open Font License 1.1, self-hosted; licence texts sit beside the files in ./assets/fonts */
+@font-face { font-family: "Titan One"; src: url("./assets/fonts/TitanOne.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Nunito"; src: url("./assets/fonts/Nunito.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
 
 .qw-stage, .qw, .qw-bar, .qw-scrim, .wp {
   --qw-sky: #05030D;
@@ -77,10 +79,17 @@
 .qw-top { position: absolute; top: clamp(70px, 9.5vh, 84px); right: clamp(14px, 3vw, 28px); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; z-index: 2; }
 .qw-editing { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--pink); color: var(--qw-ink); font: 700 13px/1 var(--font-body); box-shadow: 0 3px 0 var(--tone-lip, #D9709E), 0 10px 14px -8px var(--qw-drop); }
 
-.qw-title { margin: 0 0 12px; font: 400 clamp(36px, 4.7vw, 72px)/1 "Showtoon", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
+.qw-title { margin: 0 0 12px; font: 400 clamp(36px, 4.7vw, 72px)/1 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
   color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); outline: none; }
 :root[data-theme="light"] .qw-title { text-shadow: none; }
 .qw-title em { font-style: normal; color: var(--qw-accent); }
+/* a little life in the type: the title springs in, its glowing word pops a beat later and then drifts, very slightly, like a balloon */
+@keyframes qwTitleIn { 0% { opacity: 0; transform: translateY(26px) rotate(-2.2deg) scale(.94); } 55% { opacity: 1; } 100% { opacity: 1; transform: none; } }
+@keyframes qwPop { 0% { opacity: 0; transform: translateY(16px) scale(.78) rotate(-5deg); } 100% { opacity: 1; transform: none; } }
+@keyframes qwBob { from { rotate: -1.3deg; translate: 0 -1px; } to { rotate: 1.5deg; translate: 0 2px; } }
+.qw-title, .wp .kit-title { transform-origin: 0 75%; animation: qwTitleIn .75s var(--ease-spring) both; }
+.qw-title em, .wp .kit-title em { display: inline-block; animation: qwPop .85s var(--ease-spring) .2s both, qwBob 6s ease-in-out 1.2s infinite alternate; }
+@media (prefers-reduced-motion: reduce) { .qw-title, .wp .kit-title, .qw-title em, .wp .kit-title em { animation: none; } }
 .qw-hint { margin: 0 0 var(--qw-gap); max-width: 34em; font: 500 clamp(15px, 1.35vw, 18px)/1.55 var(--font-body); color: var(--qw-copy); text-wrap: pretty; }
 .qw-body { display: grid; gap: var(--qw-gap); justify-items: start; }
 .qw-group { display: grid; gap: 12px; justify-items: start; min-width: 0; max-width: 100%; }

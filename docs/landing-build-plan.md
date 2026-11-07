@@ -91,8 +91,8 @@ decides what is shown when. `?classic=1` still shows the earlier boxed screen (i
   different amount (its depth), the jelly crossfades into the next pose, and at the price the cream glow of the arrival returns behind the note. Phones have their own
   piece positions (`ph` on each piece) and keep the top of the screen clear for text. The stage is a portal to `body` and the ambient liquid sits this tab out.
 - **Controls are the approved style B** (cream paper pieces with a lip and a soft shadow, a tilt that straightens on hover, filled with a tone and ticked when chosen), the
-  toy button is the landing's, and the paper notes (extras, the total) have torn edges and tape. They are ordinary buttons and inputs underneath. Type: Showtoon for
-  the station titles only, DM Sans for labels and buttons, Instrument Serif for numbers.
+  toy button is the landing's, and the paper notes (extras, the total) have torn edges and tape. They are ordinary buttons and inputs underneath. Type: Titan One for
+  the station titles only, Nunito for labels and buttons, Instrument Serif for numbers.
 - **Day mode** is the same world on cream: a pastel wash instead of the starfield, deep-pink accent word, white paper. **Reduced motion:** no floating, no springs, instant
   station changes. **Keyboard:** natural Tab order (controls, then the step rail and Next, then the dock); the station title takes focus on every change and a live region
   says "Step 2 of 7: Job"; the chosen state never relies on colour alone (a tick sits on every chosen piece).
@@ -104,7 +104,7 @@ decides what is shown when. `?classic=1` still shows the earlier boxed screen (i
   60 fps through every station change, and a production build. **Not checked:** a real phone and a real GPU.
 - **Next for this page:** the 13 craft objects (gem, mask, vinyl, clapperboard, ...) as cut-paper stickers in place of the line icons on the Craft station; they need art
   (see the Higgsfield notes in the memory file: the unlimited allowance is not available through the connected account). Then the same treatment for Jobs, Templates,
-  Clients, Insights, Profile, Plans and Tutorial. `PRODUCT.md` still says "Instrument Serif headings"; the landing and this page use Showtoon for titles, so update it once
+  Clients, Insights, Profile, Plans and Tutorial. `PRODUCT.md` still says "Instrument Serif headings"; the Quote page and the other screens use Titan One for titles, so update it once
   that is confirmed.
 
 ### The Quote page for almost any creator: Craft search, a Rate step, My crafts (2026-11-06)
@@ -188,3 +188,7 @@ Budget estimate: 13 objects at 7 credits, about 8 environment pieces at 7, 1 her
 - A go for the Milestone 1 prototype (and about 100 credits for its assets).
 - Which 4 objects to feature first (suggested: clapperboard, vinyl, paint tube and brush, gem).
 - Any further references, especially cut-paper textures.
+
+### Type and marketing jobs (2026-11-07)
+- **Fonts, both licensed (SIL Open Font License 1.1), self-hosted in `src/world/assets/fonts/` with their licence texts:** Titan One for titles (it replaced Showtoon, whose licence was never confirmed; the closest licensed match to its weight and rounded shapes, not identical) and Nunito as the app's body font (`--font-body` in `src/styles/tokens.css`; the invoice sheet and the PDF stay on DM Sans so the preview matches the PDF). Showtoon files are deleted from the working tree; they remain in git history. Titles now spring in and the glowing word pops and drifts slightly (CSS, off with reduced motion).
+- **Marketing And Advertising (new field, 14 roles):** strategist, fractional CMO, brand strategist, SEO, paid ads (fee as a share of ad spend), email, content, influencer, PR, growth/CRO, analytics, automation/CRM, product marketing and affiliate. Starting rates are judgment calls like the others (see `docs/starter-rates.md`); nine have a BLS Quick check (Market Research Analysts and Marketing Specialists, or Marketing Managers for the CMO). The landing's "roles · fields" line now counts the real data.

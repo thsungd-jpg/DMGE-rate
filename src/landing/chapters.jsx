@@ -5,7 +5,7 @@ import { PBtn } from "../components/ui";
 import Auth from "../components/Auth";
 import { TIERS, PROMO } from "../utils/subscription";
 import {
-  CATEGORIES, ROLE_COUNT, CLIENT_TYPES, USAGES, clientMods, usageRightsMods,
+  CATEGORIES, TOTAL_ROLES, TOTAL_FIELDS, CLIENT_TYPES, USAGES, clientMods, usageRightsMods,
   niceCategory, rolesOf, quote, money,
 } from "./demo";
 
@@ -93,7 +93,7 @@ export function Hero({ onStart, onFlow }) {
             <PBtn color="var(--ink)" onClick={onStart} className="auth-primary">Start free</PBtn>
             <PBtn color="var(--paper)" onClick={onFlow} className="lq-btn--neutral">See how it flows</PBtn>
           </div>
-          <p className="ll-meta ll-reveal">{ROLE_COUNT} roles · {CATEGORIES.length} creative fields · free to start</p>
+          <p className="ll-meta ll-reveal">{TOTAL_ROLES} roles · {TOTAL_FIELDS} creative fields · free to start</p>
         </div>
         <div className="ll-stage" ref={stage} aria-hidden="true" />
       </div>

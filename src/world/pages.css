@@ -1,5 +1,5 @@
 /* The other screens in the scrapbook world (Jobs, Templates, Clients, Insights, Profile, Plans, Tutorial). They keep their own markup and logic; this file only dresses
-   what the shared kit renders (src/components/kit.jsx, src/components/ui.jsx): titles in Showtoon on the scene, and every card as a cream paper piece. Scoped to .wp, so
+   what the shared kit renders (src/components/kit.jsx, src/components/ui.jsx): titles in Titan One on the scene, and every card as a cream paper piece. Scoped to .wp, so
    nothing outside these screens changes. Tokens (--qw-*) come from world.css.
    .wp--paper: cards are cream in both themes, by flipping the app's colour tokens inside the card (so every form, pill and button inside keeps working).
    .wp--glass: cards keep the theme's own colours (night glass), for screens that draw charts to <canvas> from those colours. */
@@ -9,12 +9,12 @@
 /* ── on the scene: title, eyebrow, subtitle, section titles ── */
 .wp .kit-screen { max-width: 1000px; margin: 0; padding-left: clamp(18px, 7vw, 112px); padding-right: clamp(16px, 4vw, 40px); }
 .wp .kit-screen--wide { max-width: 1280px; }
-.wp .kit-title { font: 400 clamp(32px, 4vw, 60px)/1 "Showtoon", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); }
+.wp .kit-title { font: 400 clamp(32px, 4vw, 60px)/1 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); }
 :root[data-theme="light"] .wp .kit-title { text-shadow: none; }
 .wp .kit-title em { font-style: normal; letter-spacing: .01em; color: var(--qw-accent); }
 .wp .kit-eyebrow { color: var(--qw-label); }
 .wp .kit-sub { color: var(--qw-copy); }
-.wp .kit-sectiontitle h2 { font: 400 clamp(24px, 2.6vw, 32px)/1.05 "Showtoon", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; color: var(--qw-title); }
+.wp .kit-sectiontitle h2 { font: 400 clamp(24px, 2.6vw, 32px)/1.05 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; color: var(--qw-title); }
 .wp .kit-screen .jb-note { color: var(--qw-copy); }
 .wp .kit-screen .jb-quota { display: inline-block; padding: 5px 12px; border-radius: 999px; color: var(--qw-ink); background: var(--qw-piece); box-shadow: 0 2px 0 var(--qw-lip); } /* it can land on the blob */
 .wp .kit-screen .jb-quota b { color: inherit; }

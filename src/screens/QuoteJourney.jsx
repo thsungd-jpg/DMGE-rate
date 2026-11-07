@@ -83,7 +83,7 @@ export default function QuoteJourney({ ctx }) {
         <p className="qw-sr" role="status" aria-live="polite">{`Step ${at + 1} of ${STATIONS.length}: ${st.name}`}</p>
 
         <div className="qw-col" ref={stationRef} key={at}>
-          <h1 className="qw-title qw-in" tabIndex={-1} ref={titleRef}>{st.title}</h1>
+          <h1 className="qw-title" tabIndex={-1} ref={titleRef}>{st.title}</h1>
           <p className="qw-hint qw-in">{st.hint}</p>
 
           <div className="qw-body">

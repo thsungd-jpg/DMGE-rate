@@ -1275,3 +1275,134 @@ it is shown to users only as orientation, never as a freelance rate.
 | Podcast Clips | per clip | $25 | 0.5 | new |
 | Hourly Rate | per hour | $45 | 1 | new |
 
+## Marketing & Advertising
+
+### Marketing Strategist / Consultant
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Hourly Rate | per hour | $110 | 1 | new |
+| Marketing Audit | per audit | $1,800 | 16 | new |
+| Marketing Plan (90 days) | per project | $3,500 | 30 | new |
+| Strategy Workshop (half day) | per workshop | $1,500 | 8 | new |
+| Monthly Advisory Retainer | per month | $3,000 | 20 | new |
+
+### Fractional CMO  (BLS: Marketing Managers, median $80.19/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Monthly Retainer (part time) | per month | $6,000 | 40 | new |
+| Day Rate | per day | $1,200 | 8 | new |
+| Hourly Rate | per hour | $175 | 1 | new |
+
+### Brand Strategist
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Brand Strategy Project | per project | $5,000 | 60 | new |
+| Positioning Workshop | per workshop | $1,800 | 10 | new |
+| Messaging Framework | per project | $2,200 | 24 | new |
+| Hourly Rate | per hour | $100 | 1 | new |
+
+### SEO Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Hourly Rate | per hour | $85 | 1 | new |
+| SEO Audit | per audit | $1,200 | 15 | new |
+| Keyword Research & Plan | per project | $600 | 8 | new |
+| Monthly SEO Retainer | per month | $1,500 | 15 | new |
+| On-Page Optimisation | per page | $120 | 1.5 | new |
+
+### Paid Ads Manager (PPC / Paid Social)  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Management Fee (share of ad spend) | % of ad spend | 12% |  | new |
+| Monthly Management Fee | per month | $1,500 | 15 | new |
+| Ad Account Setup | per project | $800 | 10 | new |
+| Ad Creative Set (3 variations) | per set | $250 | 3 | new |
+| Hourly Rate | per hour | $85 | 1 | new |
+
+### Email Marketing Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Single Email / Newsletter | per email | $150 | 2 | new |
+| Welcome Flow (5 emails) | per flow | $900 | 12 | new |
+| Monthly Retainer (4 sends) | per month | $1,200 | 14 | new |
+| List & Deliverability Audit | per audit | $600 | 6 | new |
+| Hourly Rate | per hour | $70 | 1 | new |
+
+### Content Marketing Strategist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Content Strategy & Calendar | per project | $2,200 | 24 | new |
+| Blog Post (1,000 words) | per post | $350 | 4 | new |
+| Monthly Content Retainer | per month | $2,500 | 30 | new |
+| Hourly Rate | per hour | $75 | 1 | new |
+
+### Influencer Marketing Manager
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Campaign Management | per campaign | $1,500 | 20 | new |
+| Creator Sourcing & Outreach | per creator | $150 | 2 | new |
+| Monthly Retainer | per month | $2,500 | 30 | new |
+| Management Fee (share of creator budget) | % of campaign budget | 15% |  | new |
+
+### PR Specialist / Publicist
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Monthly PR Retainer | per month | $3,000 | 30 | new |
+| Press Release (write and distribute) | per release | $450 | 4 | new |
+| Media Pitch Campaign | per campaign | $2,000 | 25 | new |
+| Hourly Rate | per hour | $90 | 1 | new |
+
+### Growth Marketer / CRO Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Hourly Rate | per hour | $100 | 1 | new |
+| A/B Test (design, run, report) | per test | $700 | 8 | new |
+| Conversion Audit | per audit | $1,800 | 20 | new |
+| Monthly Growth Retainer | per month | $3,500 | 35 | new |
+
+### Marketing Analyst  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Analytics & Tracking Setup | per project | $1,500 | 20 | new |
+| Monthly Performance Report | per report | $600 | 6 | new |
+| Dashboard Build | per dashboard | $1,200 | 14 | new |
+| Hourly Rate | per hour | $80 | 1 | new |
+
+### Marketing Automation / CRM Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Platform Setup & Migration | per project | $2,500 | 30 | new |
+| Workflow Build | per workflow | $400 | 5 | new |
+| Monthly Management | per month | $1,500 | 16 | new |
+| Hourly Rate | per hour | $95 | 1 | new |
+
+### Product Marketing / Launch Manager  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Launch Plan & Execution | per launch | $3,500 | 35 | new |
+| Messaging & Positioning | per project | $2,000 | 20 | new |
+| Monthly Retainer | per month | $4,000 | 40 | new |
+| Hourly Rate | per hour | $100 | 1 | new |
+
+### Affiliate / Partnerships Manager
+
+| Pricing model | Unit | Starting rate | Hours | Source |
+|---|---|---|---|---|
+| Commission (share of sales) | % of sales | 10% |  | new |
+| Program Setup | per project | $2,000 | 25 | new |
+| Monthly Management Fee | per month | $2,000 | 20 | new |
+| Hourly Rate | per hour | $80 | 1 | new |
+

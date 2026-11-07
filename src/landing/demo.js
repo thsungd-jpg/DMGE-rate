@@ -1,8 +1,13 @@
 // Demo data for the landing's live mini-calculator. Uses the app's real pricing math and role data.
 import rolesData from "../processed_roles.json";
+import { buildRoleData } from "../data/allRoles";
 import { calcPrice, clientMods, usageRightsMods } from "../utils/pricing";
 
 export const CATEGORIES = Object.keys(rolesData);
+// what the app really offers (every field and role on the Quote page), for the claims on the landing; the demo below still plays with the original fields
+const ALL = buildRoleData(rolesData);
+export const TOTAL_FIELDS = Object.keys(ALL).length;
+export const TOTAL_ROLES = Object.values(ALL).reduce((n, f) => n + f.roles.length, 0);
 export const ROLE_COUNT = CATEGORIES.reduce((n, c) => n + rolesData[c].roles.length, 0);
 export const CLIENT_TYPES = Object.keys(clientMods);
 export const USAGES = Object.keys(usageRightsMods);

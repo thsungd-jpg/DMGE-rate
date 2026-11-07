@@ -24,6 +24,7 @@ export function searchCrafts(index, query, limit = 12) {
   for (const e of index) {
     let score = 0;
     if (e.name === q) score = 100;
+    else if (e.name.split(" ").includes(q)) score = 92;                  // a whole word of the name: "pr" finds PR Specialist before Prop Master
     else if (e.name.startsWith(q)) score = 85;
     else if (hasWordStart(e.name, q)) score = 75;
     else if (e.name.includes(q)) score = 62;

@@ -449,6 +449,98 @@ export const NEW_FIELDS = {
       ]),
     ],
   },
+
+  "Marketing And Advertising": {
+    roles: [
+      role("Marketing Strategist / Consultant", ["marketing", "strategy", "consultant", "go to market", "gtm", "marketing plan", "advisor"], [
+        ["Hourly Rate", "per hour", 110],
+        ["Marketing Audit", "per audit", 1800, 16],
+        ["Marketing Plan (90 days)", "per project", 3500, 30],
+        ["Strategy Workshop (half day)", "per workshop", 1500, 8],
+        ["Monthly Advisory Retainer", "per month", 3000, 20],
+      ]),
+      role("Fractional CMO", ["cmo", "chief marketing officer", "fractional", "head of marketing", "marketing lead", "interim"], [
+        ["Monthly Retainer (part time)", "per month", 6000, 40],
+        ["Day Rate", "per day", 1200],
+        ["Hourly Rate", "per hour", 175],
+      ]),
+      role("Brand Strategist", ["brand strategy", "positioning", "messaging", "brand platform", "naming", "tone of voice"], [
+        ["Brand Strategy Project", "per project", 5000, 60],
+        ["Positioning Workshop", "per workshop", 1800, 10],
+        ["Messaging Framework", "per project", 2200, 24],
+        ["Hourly Rate", "per hour", 100],
+      ]),
+      role("SEO Specialist", ["seo", "search engine", "keywords", "organic traffic", "backlinks", "technical seo", "google ranking"], [
+        ["Hourly Rate", "per hour", 85],
+        ["SEO Audit", "per audit", 1200, 15],
+        ["Keyword Research & Plan", "per project", 600, 8],
+        ["Monthly SEO Retainer", "per month", 1500, 15],
+        ["On-Page Optimisation", "per page", 120, 1.5],
+      ]),
+      role("Paid Ads Manager (PPC / Paid Social)", ["ppc", "google ads", "facebook ads", "meta ads", "paid social", "ad spend", "paid media", "tiktok ads", "advertising"], [
+        ["Management Fee (share of ad spend)", "% of ad spend", 12],
+        ["Monthly Management Fee", "per month", 1500, 15],
+        ["Ad Account Setup", "per project", 800, 10],
+        ["Ad Creative Set (3 variations)", "per set", 250, 3],
+        ["Hourly Rate", "per hour", 85],
+      ]),
+      role("Email Marketing Specialist", ["email", "newsletter", "klaviyo", "mailchimp", "flows", "drip", "email campaign", "lifecycle"], [
+        ["Single Email / Newsletter", "per email", 150, 2],
+        ["Welcome Flow (5 emails)", "per flow", 900, 12],
+        ["Monthly Retainer (4 sends)", "per month", 1200, 14],
+        ["List & Deliverability Audit", "per audit", 600, 6],
+        ["Hourly Rate", "per hour", 70],
+      ]),
+      role("Content Marketing Strategist", ["content marketing", "content strategy", "blog", "content calendar", "editorial", "thought leadership", "inbound"], [
+        ["Content Strategy & Calendar", "per project", 2200, 24],
+        ["Blog Post (1,000 words)", "per post", 350, 4],
+        ["Monthly Content Retainer", "per month", 2500, 30],
+        ["Hourly Rate", "per hour", 75],
+      ]),
+      role("Influencer Marketing Manager", ["influencer", "creator partnerships", "ugc campaign", "sponsorships", "creator outreach", "brand deals"], [
+        ["Campaign Management", "per campaign", 1500, 20],
+        ["Creator Sourcing & Outreach", "per creator", 150, 2],
+        ["Monthly Retainer", "per month", 2500, 30],
+        ["Management Fee (share of creator budget)", "% of campaign budget", 15],
+      ]),
+      role("PR Specialist / Publicist", ["pr", "public relations", "publicist", "press release", "media relations", "press", "journalists"], [
+        ["Monthly PR Retainer", "per month", 3000, 30],
+        ["Press Release (write and distribute)", "per release", 450, 4],
+        ["Media Pitch Campaign", "per campaign", 2000, 25],
+        ["Hourly Rate", "per hour", 90],
+      ]),
+      role("Growth Marketer / CRO Specialist", ["growth", "conversion", "cro", "a/b test", "funnel", "landing page optimisation", "experiments", "growth hacking"], [
+        ["Hourly Rate", "per hour", 100],
+        ["A/B Test (design, run, report)", "per test", 700, 8],
+        ["Conversion Audit", "per audit", 1800, 20],
+        ["Monthly Growth Retainer", "per month", 3500, 35],
+      ]),
+      role("Marketing Analyst", ["analytics", "ga4", "reporting", "dashboard", "attribution", "data", "tracking", "looker"], [
+        ["Analytics & Tracking Setup", "per project", 1500, 20],
+        ["Monthly Performance Report", "per report", 600, 6],
+        ["Dashboard Build", "per dashboard", 1200, 14],
+        ["Hourly Rate", "per hour", 80],
+      ]),
+      role("Marketing Automation / CRM Specialist", ["automation", "crm", "hubspot", "salesforce", "zapier", "lead nurturing", "marketing ops", "workflows"], [
+        ["Platform Setup & Migration", "per project", 2500, 30],
+        ["Workflow Build", "per workflow", 400, 5],
+        ["Monthly Management", "per month", 1500, 16],
+        ["Hourly Rate", "per hour", 95],
+      ]),
+      role("Product Marketing / Launch Manager", ["product marketing", "launch", "product launch", "positioning", "go to market", "pmm", "release"], [
+        ["Launch Plan & Execution", "per launch", 3500, 35],
+        ["Messaging & Positioning", "per project", 2000, 20],
+        ["Monthly Retainer", "per month", 4000, 40],
+        ["Hourly Rate", "per hour", 100],
+      ]),
+      role("Affiliate / Partnerships Manager", ["affiliate", "partnerships", "partner program", "referral", "commission", "reseller"], [
+        ["Commission (share of sales)", "% of sales", 10],
+        ["Program Setup", "per project", 2000, 25],
+        ["Monthly Management Fee", "per month", 2000, 20],
+        ["Hourly Rate", "per hour", 80],
+      ]),
+    ],
+  },
 };
 
 /** More roles for fields that already exist (added after the roles they have). */

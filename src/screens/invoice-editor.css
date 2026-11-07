@@ -36,7 +36,7 @@
 .iv-nojob { margin-top: 8px; }
 
 /* ── sheet ──────────────────────────────────────────────────── */
-.iv-sheet { --iv-pad: clamp(16px, 4vw, 48px); position: relative; overflow: hidden; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--sh-2); font-family: var(--font-body); }
+.iv-sheet { --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif; --iv-pad: clamp(16px, 4vw, 48px); position: relative; overflow: hidden; background: var(--paper); color: var(--ink); border: 1px solid var(--line); border-radius: 28px; box-shadow: var(--sh-2); font-family: var(--font-body); }
 .iv-sheet *, .iv-sheet *::before, .iv-sheet *::after { box-sizing: border-box; }
 .iv-sheet-bar { height: 6px; background: linear-gradient(90deg, var(--pink), var(--butter), var(--mint), var(--blue)); }
 .iv-sheet section, .iv-sheet .iv-top { padding-left: var(--iv-pad); padding-right: var(--iv-pad); }

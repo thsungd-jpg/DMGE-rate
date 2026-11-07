@@ -37,7 +37,7 @@ export default function JobStation({ ctx, patch }) {
             </Group>
           </div>
           <div className="qw-in">
-            <Group label="Of what amount?" hint="The total value of the deal, in dollars.">
+            <Group label="Of what amount?" hint="What your cut is a share of (the deal, the ad spend, the sales), in dollars.">
               <Money value={deal.amount} onChange={(v) => patchDeal({ amount: v })} label="Deal amount in dollars" placeholder="20,000" />
             </Group>
             {rate.mode === "deal" && rate.rate > 0 && <p className="qw-keep" role="status">That makes a fee of <b>{money(rate.rate)}</b>.</p>}

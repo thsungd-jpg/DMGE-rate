@@ -56,7 +56,7 @@ export function describeModel(model) {
   const kind = modelKind(model), noun = unitNoun(model), u = String(model.unit || "").toLowerCase();
   const start = kind === "percent" ? `Typical cut: ${model.base}%.` : `Typical start: ${rateText(model.base)} ${u.replace("per hour", "per hr")}.`;
   let text;
-  if (kind === "percent") text = "You earn a share of what the deal is worth: you give the amount and your cut, and that becomes one flat fee.";
+  if (kind === "percent") text = "You earn a share of an amount (a deal, ad spend or sales): you give the amount and your cut, and that becomes one flat fee.";
   else if (u === "per hour") text = "Billed by the hour: your rate times the hours you bill.";
   else if (u === "per day") text = "A day rate: one price for a full working day, about eight hours.";
   else if (u === "per week") text = "A weekly rate: one price for each week of work.";
