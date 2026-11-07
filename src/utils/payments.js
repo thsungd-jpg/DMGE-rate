@@ -1,6 +1,12 @@
 // Online invoice payments (Agency): thin client for the Connect edge functions.
 import { invokeEdgeFunction, getValidSession } from "./stripe";
 
+/**
+ * The online-payment UI (Profile "Get paid online", the Jobs "Pay link" button, the pay link in emailed invoices) is switched OFF until the Stripe Connect functions are
+ * deployed and live keys are approved (docs/pay-link-architecture.md). Turn it on for a build with VITE_PAY_LINK=1; nothing else needs to change.
+ */
+export const PAY_LINK_ENABLED = import.meta.env?.VITE_PAY_LINK === "1";
+
 async function call(name, body) {
   const session = await getValidSession();
   if (!session?.access_token) throw new Error("Please sign in again to use online payments.");

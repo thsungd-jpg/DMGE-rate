@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Card } from "../../components/kit";
 import { PBtn } from "../../components/ui";
-import { createInvoicePayLink } from "../../utils/payments";
+import { createInvoicePayLink, PAY_LINK_ENABLED } from "../../utils/payments";
 import { IconClients, IconDelete, IconDownload, IconEdit, IconLock, IconSend, IconTemplates } from "../../icons";
 import { fmtMoney, isValidDate, normalizeStatus, STATUS_META, STATUS_ORDER } from "./statusModel";
 
@@ -81,7 +81,7 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
           >
             <IconDownload size={16} /> PDF {pdfLocked && <IconLock size={14} />}
           </PBtn>
-          {userTier === "agency" && status !== "completed" && (
+          {PAY_LINK_ENABLED && userTier === "agency" && status !== "completed" && (
             <PBtn
               small color="var(--mint)" disabled={pay.busy}
               aria-label={`Create an online payment link for ${label}`}

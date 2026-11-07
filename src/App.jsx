@@ -12,7 +12,7 @@ import { devMock } from "./dev/mock";
 import { AppTopBar, AppDock } from "./app/AppChrome";
 import { playCalculate, playSave, playEmail, playGlow, isMuted, toggleMuted } from "./utils/sfx";
 import { TIERS, loadSubscription, canAddTemplate, canExportCSV, canViewAnalytics, canExportPDF, canWhiteLabel, getJobsWithinWindow, canCloudSync } from "./utils/subscription";
-import { createInvoicePayLink } from "./utils/payments";
+import { createInvoicePayLink, PAY_LINK_ENABLED } from "./utils/payments";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, hasLicensing } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
@@ -1027,7 +1027,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       // Generate PDF using the enhanced template logic, passing the editor data
       // Agency with Stripe connected: add a pay-online link. Optional, so any failure just sends the plain invoice.
       let payUrl = null;
-      if (userTier === "agency" && selectedJobForEmail?.id && selectedJobForEmail.invoiceStatus !== "paid") {
+      if (PAY_LINK_ENABLED && userTier === "agency" && selectedJobForEmail?.id && selectedJobForEmail.invoiceStatus !== "paid") {
         try {
           // The link must charge what the invoice shows, including any discount or tax edited on the sheet.
           const total = Number(invoiceEditorData?.totalDue);

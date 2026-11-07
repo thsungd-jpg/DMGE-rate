@@ -7,18 +7,19 @@ import SettingsCard, { Group } from "./profile/SettingsCard";
 import BrandingCard from "./profile/BrandingCard";
 import BaseRateFinder from "./profile/BaseRateFinder";
 import PaymentsCard from "./profile/PaymentsCard";
+import { PAY_LINK_ENABLED } from "../utils/payments";
 import PlanCard from "./profile/PlanCard";
 import "./profile.css";
 
-const SECTIONS = [
+const SECTIONS_ALL = [
   { id: "account", label: "Account" },
   { id: "ratefinder", label: "Base rate" },
   { id: "invoice", label: "Invoices" },
-  { id: "payments", label: "Payments" },
   { id: "branding", label: "Branding" },
   { id: "plan", label: "Plan" },
   { id: "danger", label: "Danger zone" },
 ];
+const SECTIONS = PAY_LINK_ENABLED ? [...SECTIONS_ALL.slice(0, 3), { id: "payments", label: "Payments" }, ...SECTIONS_ALL.slice(3)] : SECTIONS_ALL;
 
 function jumpTo(id) {
   const el = document.getElementById(id);
@@ -141,7 +142,7 @@ export default function ProfileScreen({ ctx }) {
           </SettingsCard>
 
           {/* ONLINE PAYMENTS (AGENCY) */}
-          <PaymentsCard userTier={userTier} setTab={setTab} />
+          {PAY_LINK_ENABLED && <PaymentsCard userTier={userTier} setTab={setTab} />}
 
           {/* BRANDING (AGENCY) */}
           <BrandingCard
