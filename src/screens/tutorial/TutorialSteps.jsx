@@ -118,8 +118,8 @@ export const STEPS = [
     tone: "pink",
     Icon: IconTalent,
     title: "Pick your craft",
-    body: "Choose your field, then your role and how you charge: by the hour, the day or the project. DMGE starts from the going market rate for that work, and you can change it any time.",
-    tip: "Your base rate is the foundation. Everything else builds on it.",
+    body: "Search for what you do, or browse the fields. If your craft is not listed, add it once and it is yours to reuse. Then choose how you charge: by the hour, the day, the project, the piece, or a share of a deal.",
+    tip: "Try typing podcast, tattoo or florist.",
     Art: ArtCraft,
   },
   {
@@ -127,8 +127,8 @@ export const STEPS = [
     tone: "blue",
     Icon: IconTag,
     title: "Set the context",
-    body: "Tell us about the job: how many units, how complex it is, where the work will be used, who the client is and how many revisions are included. Each answer nudges the price up or down.",
-    tip: "Follow the glowing box from top to bottom.",
+    body: "Set your base rate, then tell us about the job: how many units, how complex it is, who the client is, where the work will be used and how many revisions are included. Each answer nudges the price up or down.",
+    tip: "Next and Back move you along, or tap a dot to jump.",
     Art: ArtContext,
   },
   {
@@ -136,7 +136,7 @@ export const STEPS = [
     tone: "mint",
     Icon: IconMoney,
     title: "Get three prices",
-    body: "Press Calculate and you get three numbers: a budget price, a fair price and a premium price. Pick the one that suits the client and the moment.",
+    body: "The last step gives you three numbers: a budget price, a fair price and a premium price. Pick the one that suits the client and the moment.",
     tip: "Not sure? Start with fair and adjust from there.",
     Art: ArtPrices,
   },
@@ -162,7 +162,8 @@ export const STEPS = [
 
 /** What each calculator box does, in plain words. */
 export const FIELD_NOTES = [
-  { Icon: IconStar, title: "Field and role", body: "Sets your starting price. Every role has an average market rate, and all other adjustments build on that number." },
+  { Icon: IconStar, title: "Craft and how you charge", body: "Sets your starting point. Every way of charging comes with a typical starting rate: a starting point, not a promise. All other adjustments build on the rate you settle on." },
+  { Icon: IconMoney, title: "Rate", body: "Your base rate for one unit. Start from a typical rate (adjusted for your experience), from your own goal (what you want to take home, worked out in Profile) or from a number you already use. Where it fits, a quick check shows what US employees in a similar job earn, for orientation only." },
   { Icon: IconTech, title: "Quantity", body: "Multiplies your starting price. Charging by the hour, day or item? Enter how many. For example, $50/hr for 3 hours is $150." },
   { Icon: IconHelp, title: "Complexity", body: "Adjusts the price for how hard the job is. An easy job lowers it slightly; a tough one raises it so you are paid fairly." },
   { Icon: IconTag, title: "Usage rights", body: "Charges for where the work will be shown. A quick local flyer stays cheap; a national TV ad reflects the bigger value." },

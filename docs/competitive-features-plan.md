@@ -13,7 +13,7 @@ Research summary (web research 2026-10-24; vendor pages and blogs, prices unveri
 2. **Licensing split** on quote and invoice. Replace the single usage multiplier with an explicit line: labor (base x units x complexity) and usage licence (term: 30 days / 1 yr / 3 yr / perpetual; scope: personal / commercial / merch / exclusive; exclusivity toggle). Research ranges to seed (treat as defaults, user-editable): 1-yr about 2-3x a 30-day baseline, perpetual 10-25x, exclusivity 1.5-3x. Show as two line items on the invoice sheet and PDF. Must keep `calcPrice` outputs stable for existing saved jobs (add new fields, default to current multipliers). Effort: medium.
 3. **Margin and buffer check** on the quote panel: "contingency 10-25%" toggle and a plain "you keep about $X after tax and expenses" line using the base-rate finder inputs. Effort: small.
 4. **Pay-online link on invoices** (largest gap vs HoneyBook/Bonsai/Wave). New edge function `create-invoice-payment` creating a Stripe Payment Link or Checkout Session for the invoice total; link goes into the emailed PDF and the invoice sheet; webhook marks the job Paid. Agency tier first. Needs the stripe-best-practices skill review, webhook idempotency, test-mode first. Effort: medium-large; needs the user's go-ahead for any live-mode keys.
-5. **Market-range band** on the three tiers: small per-craft low/high range from public sources (Graphic Artists Guild style data, BLS), shown as a muted band. Needs a vetted data set and attribution, so do last; skip if no reliable source. Effort: medium plus research.
+5. **Market-range band** on the three tiers: small per-craft low/high range from public sources (Graphic Artists Guild style data, BLS), shown as a muted band. Needs a vetted data set and attribution, so do last; skip if no reliable source. Effort: medium plus research. **Done differently (2026-11-06):** as the *Quick check* on the Rate step of the Quote page, from BLS wages only, only where an occupation honestly matches, with source and year (see `docs/landing-build-plan.md`). There is no free freelance-rate data set to cite, so there is no band on the tiers.
 6. **Tax and fee helpers**: Stripe/PayPal fee line on the invoice ("pass the fee on"), self-employment tax estimate in the base-rate finder. Effort: small.
 
 ## Cross-cutting
@@ -23,7 +23,7 @@ Research summary (web research 2026-10-24; vendor pages and blogs, prices unveri
 - Each feature on its own branch off `redesign/liquid-ledger` (or off `main` after the redesign merges); nothing pushed or deployed without explicit approval.
 
 ## Status
-- Done: base-rate finder, licensing split (photo/video), margin and buffer line.
+- Done: base-rate finder, licensing split (photo/video), margin and buffer line, the sourced Quick check (item 5, in a different form).
 - Designed, waiting on decisions: pay-online link, see `docs/pay-link-architecture.md`.
 
 ## Decisions (2026-10-24)

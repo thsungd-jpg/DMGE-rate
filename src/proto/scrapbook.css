@@ -13,47 +13,46 @@ html.lenis, html.lenis body { height: auto; }
 .sb-piece { position: absolute; transform: translate(calc(-50% + var(--px) * var(--d) * -34px), calc(-50% + var(--py) * var(--d) * -34px)); height: auto; opacity: 0.9;
   animation: sbFloat 16s ease-in-out infinite alternate; }
 @keyframes sbFloat { from { margin-top: -10px; rotate: -3deg; } to { margin-top: 12px; rotate: 4deg; } }
-.sb-jelly-wrap { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 50% 50%; mix-blend-mode: screen; }
+/* The entrances of the jelly and the hint are CSS animations, not tweens: a tween would leave its end value behind and, if you scroll while it is still
+   running, overwrite the fade-out the scroll timeline has already applied (the hint stayed on over the message). An animation lets go when it ends. */
+.sb-jelly-wrap { position: absolute; inset: 0; display: grid; place-items: center; transform-origin: 50% 50%; mix-blend-mode: screen;
+  animation: sbJellyIn 1.6s cubic-bezier(.215, .61, .355, 1) .4s backwards; }
+@keyframes sbJellyIn { from { opacity: 0; transform: scale(.82); } }
+@keyframes sbHintIn { from { opacity: 0; } }
+.sb-scrolled .sb-jelly-wrap, .sb-scrolled .sb-hint { animation: none; } /* the first scroll ends the entrances at once, so the scroll timeline has the last word */
+/* the logo frames are black around the jelly, so screen-blending makes the black see-through. A soft glow is baked into the frames and spills into a margin
+   around the picture, so the jelly's edge is soft, and where it grazes the picture's edge it dissolves into the glow instead of being sliced. The margin
+   fades to pure black before the canvas edge, so nothing needs masking. */
 .sb-jelly { display: block; }
 .sb-dim { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
 
-/* objects: cut-paper pieces you can hover */
-.sb-obj { position: absolute; transform: translate(-50%, -50%) rotate(var(--rot)); height: auto; border: none; background: none; cursor: pointer; padding: 0;
-  transition: transform .45s cubic-bezier(.34,1.56,.64,1), filter .3s; filter: drop-shadow(0 14px 22px rgba(0,0,0,.55)); opacity: 0; }
-.sb-obj img { display: block; width: 100%; height: auto; pointer-events: none; }
-.sb-obj:hover { transform: translate(-50%, -54%) rotate(calc(var(--rot) * -0.5)) scale(1.1); filter: drop-shadow(0 24px 30px rgba(0,0,0,.6)) brightness(1.08); }
-.sb-obj.is-spin:hover img { animation: sbSpin 1.4s linear infinite; }
-.sb-obj[data-id="gem"]:hover img { animation: sbGlint .9s ease-in-out infinite; }
-.sb-obj[data-id="clapper"]:hover img { animation: sbClap .5s ease-in-out 2; transform-origin: 20% 40%; }
-.sb-obj[data-id="paint"]:hover img { animation: sbWobble .7s ease-in-out infinite; }
-@keyframes sbSpin { to { transform: rotate(360deg); } }
-@keyframes sbGlint { 50% { filter: brightness(1.35) saturate(1.3); transform: scale(1.04); } }
-@keyframes sbClap { 50% { transform: rotate(-9deg) scale(1.03); } }
-@keyframes sbWobble { 25% { transform: rotate(5deg); } 75% { transform: rotate(-5deg); } }
-.sb-tag { position: absolute; left: 50%; bottom: -6px; transform: translate(-50%, 100%); padding: 5px 12px; border-radius: 999px; background: var(--butter); color: #2B2140;
-  font: 700 11px/1 "DM Sans"; letter-spacing: .12em; text-transform: uppercase; opacity: 0; transition: opacity .25s; white-space: nowrap; }
-.sb-obj:hover .sb-tag { opacity: 1; }
-
-/* scroll track + overlay text */
-.sb-track { position: relative; height: 760vh; }
+/* scroll track + overlay text. The track height is set from Scrapbook.jsx (TRACK_VH) so it follows the length of the scroll timeline. */
+.sb-track { position: relative; }
 .sb-hero { position: fixed; inset: 0; display: grid; place-items: start center; padding-top: 6vh; text-align: center; pointer-events: none; z-index: 2; }
 .sb-h1 { font: 400 clamp(34px, 5.6vw, 92px)/1 "Showtoon", sans-serif; letter-spacing: 0.01em; text-transform: uppercase; text-shadow: 0 4px 40px rgba(5,3,13,.55); }
-.sb-h1 em, .sb-pick em, .sb-cta em { font-style: normal; color: var(--butter); }
+.sb-h1 em, .sb-message em, .sb-cta em { font-style: normal; color: var(--butter); }
 .sb-line { display: block; overflow: hidden; padding: .04em 0 .08em; }
 .sb-line > span { display: inline-block; }
-.sb-hint { position: fixed; left: 50%; bottom: 3.5vh; transform: translateX(-50%); font: 500 13px/1 "DM Sans"; letter-spacing: .22em; text-transform: uppercase; color: var(--lilac); z-index: 3; }
-.sb-message { position: fixed; inset: 0; display: flex; flex-wrap: wrap; align-content: center; gap: 0 .28em; padding: 0 clamp(24px, 9vw, 200px); text-align: left;
+/* The hint is near-white with a lilac glow, and the glow (not the text, which would dip below the old brightness) slowly breathes once it has arrived. Both
+   animations end at the first scroll (.sb-scrolled below), so the scroll timeline fades it out as before. */
+.sb-hint { position: fixed; left: 50%; bottom: 3.5vh; transform: translateX(-50%); font: 600 15px/1 "DM Sans"; letter-spacing: .24em; text-transform: uppercase; color: rgba(246, 240, 255, .96); z-index: 3;
+  text-shadow: 0 0 2px rgba(5, 3, 13, .8), 0 0 14px rgba(199, 184, 255, .8), 0 0 32px rgba(199, 184, 255, .45);
+  animation: sbHintIn 1s cubic-bezier(.25, .46, .45, .94) 1.3s backwards, sbHintBreathe 4.6s ease-in-out 2.3s infinite; }
+@keyframes sbHintBreathe { 50% { text-shadow: 0 0 2px rgba(5, 3, 13, .8), 0 0 8px rgba(199, 184, 255, .35), 0 0 18px rgba(199, 184, 255, .15); } }
+@media (max-width: 600px) { .sb-hint { font-size: 14px; letter-spacing: .2em; bottom: calc(3.5vh + 30px); } } /* on a phone it rides a row above the counter instead of beside it, so it can stay large */
+/* the message is two lines, one under the other; each wraps on its own and balances, so neither ends on a stranded word */
+.sb-message { position: fixed; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: .32em; padding: 0 clamp(24px, 9vw, 200px); text-align: left;
   font: 400 clamp(44px, 7.4vw, 120px)/1.08 "Showtoon", sans-serif; text-transform: uppercase; z-index: 3; pointer-events: none; }
+.sb-ln { display: block; text-wrap: balance; word-spacing: .12em; }
 .sb-word { opacity: 0; display: inline-block; }
-.sb-pick { position: fixed; left: 50%; top: 9vh; transform: translateX(-50%); font: 400 clamp(34px, 4.4vw, 64px)/1 "Showtoon", sans-serif; z-index: 3; opacity: 0; pointer-events: none; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
-.sb-pick em { font-style: italic; }
-.sb-cta { position: fixed; left: 8vw; top: 50%; transform: translateY(-50%); text-align: left; max-width: 40vw; z-index: 4; opacity: 0; }
+.sb-cta { position: fixed; left: 8vw; top: 50%; transform: translateY(-50%); text-align: left; max-width: 40vw; z-index: 4; opacity: 0; visibility: hidden; }
 .sb-cta h2 { font: 400 clamp(36px, 5vw, 72px)/1 "Showtoon", sans-serif; margin-bottom: 22px; text-shadow: 0 4px 30px rgba(5,3,13,.7); }
 .sb-cta em { font-style: italic; }
 .sb-btn { display: inline-block; padding: 18px 36px; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,0) 55%), var(--butter); color: #2B2140; font: 700 17px "DM Sans"; text-decoration: none;
   box-shadow: 0 6px 0 #D9B74A, 0 18px 24px -8px rgba(0,0,0,.6); transition: transform .15s; }
 .sb-btn:hover { transform: translateY(-2px) rotate(-1deg); } .sb-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #D9B74A; }
 .sb-hud { position: fixed; left: 28px; bottom: 24px; display: flex; gap: 18px; font: 500 12px "DM Sans"; letter-spacing: .18em; text-transform: uppercase; color: var(--lilac); z-index: 5; font-variant-numeric: tabular-nums; }
+@media (max-width: 600px) { .sb-hud { left: 16px; gap: 10px; font-size: 10px; letter-spacing: .12em; } } /* on a phone the counter would run into the centred hint */
 
 /* click ink splat */
 .sb-splat { position: absolute; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: var(--c); pointer-events: none; z-index: 9; animation: sbSplat .8s ease-out forwards;
@@ -62,14 +61,32 @@ html.lenis, html.lenis body { height: auto; }
 
 /* reduced motion: a still, composed poster; no scroll scrubbing */
 .sb-reduced .sb-track { height: auto; }
-.sb-reduced .sb-hero, .sb-reduced .sb-hint, .sb-reduced .sb-message, .sb-reduced .sb-pick, .sb-reduced .sb-cta, .sb-reduced .sb-hud { position: relative; inset: auto; left: auto; transform: none; opacity: 1; }
+.sb-reduced .sb-hero, .sb-reduced .sb-hint, .sb-reduced .sb-message, .sb-reduced .sb-cta, .sb-reduced .sb-hud { position: relative; inset: auto; left: auto; transform: none; opacity: 1; visibility: visible; }
 .sb-reduced .sb-hero { min-height: 100vh; }
-.sb-reduced .sb-obj, .sb-reduced .sb-word { opacity: 1; }
+.sb-reduced .sb-word { opacity: 1; }
 .sb-reduced .sb-piece { animation: none; }
-@media (prefers-reduced-motion: reduce) { .sb-piece, .sb-obj, .sb-btn { animation: none !important; transition: none !important; } }
+@media (prefers-reduced-motion: reduce) { .sb-piece, .sb-btn, .sb-jelly-wrap, .sb-hint { animation: none !important; transition: none !important; } }
 
-.sb-finale { position: absolute; left: 50%; top: 50%; width: min(100vw, 177.78vh); height: min(56.25vw, 100vh); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
-  -webkit-mask-image: radial-gradient(ellipse 62% 66% at 50% 50%, #000 70%, transparent 100%); mask-image: radial-gradient(ellipse 62% 66% at 50% 50%, #000 70%, transparent 100%); }
-.sb-pick, .sb-cta h2 { text-transform: uppercase; }
-.sb-pick { font-size: clamp(28px, 3.6vw, 56px); }
-.sb-cta h2 { font-size: clamp(30px, 4.4vw, 70px); line-height: 1.04; }
+/* the reveal: a 16:9 box fitted to the screen with a soft vignette, above the black dim. It fades in from black when the text is gone and its frames
+   are scrubbed by the scroll: the blob bursts into the galaxy, then the galaxy loop turns (the burst ends on the loop's first picture). The call to
+   action fades in over the galaxy. */
+.sb-reveal { position: absolute; left: 50%; top: 50%; width: min(100vw, 177.78vh); height: min(56.25vw, 100vh); transform: translate(-50%, -50%); opacity: 0; pointer-events: none;
+  --v: linear-gradient(to bottom, transparent, rgba(0,0,0,.2) 5%, rgba(0,0,0,.55) 10%, rgba(0,0,0,.85) 16%, #000 24%, #000 76%, rgba(0,0,0,.85) 84%, rgba(0,0,0,.55) 90%, rgba(0,0,0,.2) 95%, transparent); /* eased fade so the top and bottom edges of the picture melt into the black */
+  -webkit-mask-image: radial-gradient(ellipse 62% 66% at 50% 50%, #000 70%, transparent 100%), var(--v); -webkit-mask-composite: source-in;
+  mask-image: radial-gradient(ellipse 62% 66% at 50% 50%, #000 70%, transparent 100%), var(--v); mask-composite: intersect; }
+.sb-reveal canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+/* the dive: a full-screen layer over the reveal. Pressing "Start pricing" fades it in and plays the clip in which the camera falls into the blob until its light is the
+   whole picture. The picture (.sb-dive-pic, always 1280x720 and moved and scaled by Scrapbook.jsx) starts exactly where the film's box is, so the film is replaced
+   without a seam, then opens out until it fills the screen, whatever its shape. Its soft dark rim hides the picture's straight edges while it is still smaller than
+   the screen, and fades away as it fills it. */
+.sb-dive { position: absolute; inset: 0; overflow: hidden; opacity: 0; pointer-events: none; }
+.sb-dive-pic { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; will-change: transform; }
+.sb-dive-pic canvas { display: block; width: 100%; height: 100%; }
+.sb-dive-edge { position: absolute; inset: 0; box-shadow: inset 0 0 90px 50px #05030D; }
+.sb-cta h2 { text-transform: uppercase; font-size: clamp(30px, 4.4vw, 70px); line-height: 1.04; }
+
+/* the bloom: at the end of the dive (Scrapbook.jsx) the clip's last light fills the screen, and this gradient is crossfaded over it. The next page then opens from the
+   same gradient (the dmge-arriving rules in index.html), so --s here must stay 170vmax and the stops must match that one exactly. The colours were measured from the
+   clip's last frame: cream-yellow at the centre, peach, then pink towards the edges. (The plain dive, used when the clip's frames are missing, grows --s from small.) */
+.sb-bloom { position: fixed; inset: 0; z-index: 8; pointer-events: none; opacity: 0; --s: 170vmax; --ox: 52%; --oy: 47%;
+  background: radial-gradient(circle at var(--ox) var(--oy), #FDFDF0 0, #FDFCE8 calc(var(--s) * .08), #FDF6E1 calc(var(--s) * .14), #FEEBD9 calc(var(--s) * .21), #FDDDD8 calc(var(--s) * .28), #FCD4DC calc(var(--s) * .35), #F9D0E0 calc(var(--s) * .45), #EBD2F0 calc(var(--s) * .74), rgba(235, 210, 240, 0) var(--s)); }

@@ -1,0 +1,80 @@
+/* The other screens in the scrapbook world (Jobs, Templates, Clients, Insights, Profile, Plans, Tutorial). They keep their own markup and logic; this file only dresses
+   what the shared kit renders (src/components/kit.jsx, src/components/ui.jsx): titles in Showtoon on the scene, and every card as a cream paper piece. Scoped to .wp, so
+   nothing outside these screens changes. Tokens (--qw-*) come from world.css.
+   .wp--paper: cards are cream in both themes, by flipping the app's colour tokens inside the card (so every form, pill and button inside keeps working).
+   .wp--glass: cards keep the theme's own colours (night glass), for screens that draw charts to <canvas> from those colours. */
+
+.wp { position: relative; z-index: 1; }
+
+/* ── on the scene: title, eyebrow, subtitle, section titles ── */
+.wp .kit-screen { max-width: 1000px; margin: 0; padding-left: clamp(18px, 7vw, 112px); padding-right: clamp(16px, 4vw, 40px); }
+.wp .kit-screen--wide { max-width: 1280px; }
+.wp .kit-title { font: 400 clamp(32px, 4vw, 60px)/1 "Showtoon", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); }
+:root[data-theme="light"] .wp .kit-title { text-shadow: none; }
+.wp .kit-title em { font-style: normal; letter-spacing: .01em; color: var(--qw-accent); }
+.wp .kit-eyebrow { color: var(--qw-label); }
+.wp .kit-sub { color: var(--qw-copy); }
+.wp .kit-sectiontitle h2 { font: 400 clamp(24px, 2.6vw, 32px)/1.05 "Showtoon", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; color: var(--qw-title); }
+.wp .kit-screen .jb-note { color: var(--qw-copy); }
+.wp .kit-screen .jb-quota { display: inline-block; padding: 5px 12px; border-radius: 999px; color: var(--qw-ink); background: var(--qw-piece); box-shadow: 0 2px 0 var(--qw-lip); } /* it can land on the blob */
+.wp .kit-screen .jb-quota b { color: inherit; }
+
+/* ── cards and rows are paper pieces ── */
+.wp .kit-card, .wp .kit-row { border: 0; border-radius: 22px; box-shadow: 0 3px 0 var(--qw-lip), 0 18px 24px -12px var(--qw-drop); }
+.wp .kit-card--glass { -webkit-backdrop-filter: none; backdrop-filter: none; background: var(--paper); }
+/* a strip of tape on the big pieces */
+.wp .kit-screen > .kit-card::before, .wp .kit-card.jb-card::before { content: ""; position: absolute; top: -8px; left: clamp(20px, 6%, 56px); width: 68px; height: 17px; border-radius: 2px;
+  background: rgba(255, 233, 138, .88); transform: rotate(-3deg); pointer-events: none; z-index: 1; }
+.wp .kit-card.jb-card:nth-child(even)::before, .wp li:nth-child(even) > .kit-card::before { transform: rotate(2.5deg); }
+.wp button.kit-row:hover { transform: translateY(-3px) rotate(-.3deg); }
+
+/* cream in both themes: flip the tokens inside the piece (night only; by day they are already light) */
+:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row) {
+  color-scheme: light;
+  --cream: #FFF6E8; --cream-deep: #FFEBD2; --paper: #FFFBF4;
+  --ink: #2B2140; --ink-2: #5B5170; --ink-3: #8A809E; --on-fill: #2B2140; --glass: rgba(255, 251, 244, .78);
+  --line: rgba(43, 33, 64, .12); --line-strong: rgba(43, 33, 64, .28);
+  --pink-soft: #FFD3E6; --pink-deep: #AE2C63; --blue-soft: #D2E8FF; --blue-deep: #2A63BB; --mint-soft: #D3F8E6; --mint-deep: #167A55;
+  --butter-soft: #FFF5C4; --butter-deep: #8A6300; --lilac-soft: #E5DEFF; --lilac-deep: #684DCC; --danger: #B3263F; --danger-soft: #FFD6DD;
+  --sh-1: 0 1px 2px rgba(43, 33, 64, .06), 0 8px 20px -10px rgba(43, 33, 64, .16); --sh-2: 0 2px 4px rgba(43, 33, 64, .08), 0 16px 32px -14px rgba(43, 33, 64, .22);
+  color: var(--ink);
+}
+/* glass pages: the piece stays the theme's own surface, just edged like paper */
+.wp--glass .kit-card { background: var(--glass); }
+
+/* ── buttons: the toy button, smaller ── */
+.wp .lq-btn { border: 0; box-shadow: 0 4px 0 color-mix(in srgb, var(--lq-fill) 62%, #000), 0 14px 18px -10px rgba(0, 0, 0, .55); transition: transform .25s var(--ease-spring), box-shadow .25s var(--ease-out); }
+.wp .lq-btn:hover:not(:disabled) { transform: translateY(-2px) rotate(-1deg); filter: none; }
+.wp .lq-btn:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--lq-fill) 62%, #000); }
+.wp .lq-btn--neutral { background: var(--qw-piece); color: var(--qw-ink); box-shadow: 0 3px 0 var(--qw-lip), 0 14px 18px -10px var(--qw-drop); }
+
+/* ── filters: little paper chips ── */
+.wp .kit-seg { gap: 10px; padding: 0; background: none; border: 0; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.wp .kit-seg-btn { min-height: 42px; padding: 0 16px; color: var(--qw-ink); background: var(--qw-piece); border-radius: 18px; box-shadow: 0 3px 0 var(--qw-lip), 0 12px 16px -10px var(--qw-drop);
+  transition: transform .25s var(--ease-spring), box-shadow .25s; }
+.wp .kit-seg-btn:hover { color: var(--qw-ink); transform: translateY(-3px) rotate(-.6deg); }
+.wp .kit-seg-btn[aria-pressed="true"] { background: var(--butter); box-shadow: 0 3px 0 #D9B74A, 0 0 24px -2px color-mix(in srgb, var(--butter) 55%, transparent), 0 12px 16px -10px var(--qw-drop); }
+.wp .kit-iconbtn { border: 0; box-shadow: 0 3px 0 var(--qw-lip), 0 10px 14px -8px var(--qw-drop); }
+
+/* focus rings that show on both the night and the paper */
+.wp :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--qw-accent); outline-offset: 3px; }
+:root[data-theme="light"] .wp :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline-color: var(--qw-ink); }
+:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row) :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline-color: var(--qw-ink); }
+
+/* loose pills (not on a card) can land on a piece of the scene: give them paper to sit on */
+.wp .kit-pill:not(.kit-card *) { background: var(--qw-piece); color: var(--qw-ink); box-shadow: 0 2px 0 var(--qw-lip); }
+/* placeholders were the decorative grey (3.6 to 4.4:1): use the secondary text colour */
+.wp .lq-input::placeholder, .wp input::placeholder, .wp textarea::placeholder { color: var(--ink-2); opacity: 1; }
+
+/* plans and insights need room for their grids */
+.wp-pricing .kit-screen, .wp-analytics .kit-screen { max-width: 1200px; }
+.wp .kit-stat-value { white-space: nowrap; font-size: clamp(30px, 3.4vw, 48px); }
+
+@media (max-width: 700px) {
+  .wp .kit-screen { padding: 118px 16px 150px; }
+  .wp .kit-title { font-size: clamp(36px, 11.2vw, 52px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wp .lq-btn, .wp .kit-seg-btn { transition-duration: .01s !important; }
+  .wp .lq-btn:hover:not(:disabled), .wp .kit-seg-btn:hover, .wp button.kit-row:hover { transform: none; }
+}

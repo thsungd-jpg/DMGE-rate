@@ -1,5 +1,8 @@
-import React, { useState, useEffect, useRef, Suspense } from "react";
+import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import rolesData from "./processed_roles.json";
+import { buildRoleData } from "./data/allRoles";
+import { withCustomCrafts, addCraft, removeCraft, craftPayload, CUSTOM_FIELD } from "./utils/customCrafts";
+import { rateFor, defaultUnits, modelKind } from "./utils/rateModels";
 import { exportJobsToCSV } from "./utils/csvExport";
 import { generateInvoicePDF } from "./utils/pdfExport";
 import { supabase } from "./utils/supabaseClient";
@@ -14,6 +17,8 @@ import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getVal
 import { calcPrice, hasLicensing } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
 import CalcScreen from "./screens/CalcScreen";
+import QuoteJourney from "./screens/QuoteJourney";
+import Stage from "./world/Stage";
 import HistoryScreen from "./screens/HistoryScreen";
 import TemplatesScreen from "./screens/TemplatesScreen";
 import ClientsScreen from "./screens/ClientsScreen";
@@ -28,37 +33,17 @@ import AppModals from "./screens/AppModals";
 const Landing = React.lazy(() => import("./landing/Landing"));
 // Ambient liquid behind the app (shader + textures are code-split).
 const AppLiquid = React.lazy(() => import("./app/AppLiquid"));
+// The Quote page is the scrapbook world's first screen (src/world, src/screens/QuoteJourney.jsx). It paints its own scene, so the ambient liquid sits it out.
+// ?classic=1 brings back the earlier boxed calculator while the redesign is under review.
+// The scrapbook scene behind every screen. The Quote page moves the camera station by station (scene = the station); the other screens each have a place in it.
+const PAGE_SCENE = { history: 1, templates: 2, clients: 3, analytics: 4, profile: 5, pricing: 6, tutorial: 0 };
+const CLASSIC_CALC = typeof window !== "undefined" && new URLSearchParams(window.location.search).has("classic");
 
-// Add Legacy disciplines to the data (No emojis)
-const LEGACY_DISCIPLINES = {
-  "Featured Crafts": {
-    color: "#ffd6e8",
-    accent: "#d94a8a",
-    roles: [
-      {
-        name: "Photography",
-        models: [{ type: "Standard Session", unit: "per hour", base: 25 }],
-        materials: [
-          { name: "Film Roll (36exp)", cost: 14 },
-          { name: "Print 8x10 (each)", cost: 4 },
-          { name: "USB Delivery Drive", cost: 12 },
-        ],
-      },
-      {
-        name: "Illustration",
-        models: [{ type: "Commission", unit: "per hour", base: 30 }],
-        materials: [
-          { name: "Arches Watercolor Sheet", cost: 5 },
-          { name: "Copic Markers (set/12)", cost: 55 },
-        ],
-      },
-    ],
-  },
-};
+// Every field and role the Quote page offers: Featured Crafts, the original fields (src/processed_roles.json) and the newer ones (src/data). The App adds the
+// user's own "My crafts" on top of this (see ALL_DATA inside App). Saved jobs and templates find a role by its name, so names are only ever added to.
+const rawData = buildRoleData(rolesData);
 
-const rawData = { ...LEGACY_DISCIPLINES, ...rolesData };
-
-const ALL_DATA = Object.keys(rawData).reduce((acc, catName) => {
+const BASE_DATA = Object.keys(rawData).reduce((acc, catName) => {
   const theme = CATEGORY_THEMES[catName] || { color: CARTRIDGE.surface, accent: "#2a2a2a", activeBg: CARTRIDGE.surface };
   acc[catName] = { ...rawData[catName], ...theme };
   return acc;
@@ -359,12 +344,14 @@ export default function App() {
       accentColor: ""
     }
   });
-  const [category, setCategory] = useState(Object.keys(ALL_DATA)[0]);
+  const [category, setCategory] = useState(Object.keys(BASE_DATA)[0]);
   const [roleIdx, setRoleIdx] = useState(0);
   const [modelIdx, setModelIdx] = useState(0);
 
-  const [baseRate, setBaseRate] = useState(25);
-  const [baseRateHasCents, setBaseRateHasCents] = useState(false);
+  // The rate the user types themselves ("My own number", the pill in the top bar, or a saved job's rate). The base rate a quote actually uses is worked out
+  // from the form each time (rateFor below), so picking a role or a model no longer overwrites a rate you chose.
+  const [ownRate, setOwnRate] = useState(25);
+  const [scene, setScene] = useState(0); // the Quote page's station, for the camera
   const [matQtys, setMatQtys] = useState({});
   const [matPriceOverrides, setMatPriceOverrides] = useState({});
   const [customMaterials, setCustomMaterials] = useState([]);
@@ -454,10 +441,16 @@ export default function App() {
   const [baseRateInputStr, setBaseRateInputStr] = useState("");
   const baseInputRef = useRef(null);
 
-  const catData = ALL_DATA[category];
-  const role = catData.roles[roleIdx];
-  const model = role.models[modelIdx];
+  // the built-in fields, plus a "My crafts" field once the user has added a craft of their own
+  const ALL_DATA = useMemo(() => withCustomCrafts(BASE_DATA, profile.customCrafts), [profile.customCrafts]);
+  const catData = ALL_DATA[category] || BASE_DATA[Object.keys(BASE_DATA)[0]]; // (a craft removed while selected falls back to the first field)
+  const role = catData.roles[roleIdx] || catData.roles[0];
+  const model = role.models[modelIdx] || role.models[0];
   const mats = role.materials;
+
+  const rate = rateFor({ model, form, profile, own: ownRate });
+  const baseRate = rate.rate;
+  const baseRateHasCents = !!(baseRate % 1);
 
   const activeTheme = getMashupTheme(category, role?.name, model?.type);
 
@@ -466,6 +459,21 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(devMock ? devMock.user : null);
   const [authLoading, setAuthLoading] = useState(!devMock);
   const [recoveredMode, setRecoveredMode] = useState(false);
+  // Arriving through the landing's orb (see the script in index.html): once there is something to show, the glow opens like an iris onto it. The iris is a
+  // main-thread animation and its clock starts when the class lands, so wait until the background liquid has drawn its first frame (or 1.5 s), and then two
+  // more frames, so the heavy first layout and paint are over before it starts instead of eating it. Without the arrival class this does nothing.
+  useEffect(() => {
+    const root = document.documentElement;
+    if (authLoading || !root.classList.contains("dmge-arriving")) return undefined;
+    const t0 = performance.now();
+    let raf = 0;
+    const poll = () => {
+      if (document.querySelector(".ll-canvas.ll-live, .qw-stage[data-live]") || performance.now() - t0 > 1500) raf = requestAnimationFrame(() => { raf = requestAnimationFrame(() => root.classList.add("dmge-ready")); });
+      else raf = requestAnimationFrame(poll);
+    };
+    poll();
+    return () => cancelAnimationFrame(raf);
+  }, [authLoading]);
 
   // Visit ?reset_auth=1 to sign out and clear a stale session (fixes Edge 401 after env/project changes).
   useEffect(() => {
@@ -541,7 +549,7 @@ export default function App() {
     const tier = subscription.tier;
     loadProfile(tier, currentUser).then(p => {
       setProfile(p);
-      setBaseRate(p.defaultBaseRate || 25);
+      setOwnRate(p.defaultBaseRate || 25);
       const d = pdfQuotaDayKey();
       const pq = p.pdfQuota;
       setTodayPdfCount(pq && pq.day === d ? pq.count : 0);
@@ -619,12 +627,37 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     );
   }
 
+  // A different role or pricing model starts the quote over for that model: a sensible quantity, the rate worked out afresh (rateFor), and a share-of-a-deal
+  // model starts with its usual cut. What you said about yourself (experience) stays.
   const handleResetModel = (newModel) => {
-    setBaseRate(newModel.base);
-    setBaseRateHasCents(!!(newModel.base % 1));
+    setForm((f) => ({
+      ...f,
+      units: defaultUnits(newModel),
+      rateMode: undefined,
+      hoursPerUnit: undefined,
+      deal: modelKind(newModel) === "percent" ? { pct: newModel.base, amount: "" } : undefined,
+    }));
     setMatQtys({});
     setCustomMaterials([]);
     setPrice(null);
+  };
+
+  // "My crafts": a craft the user adds is kept on the profile (so it follows them), and a copy goes into every job and template that uses it.
+  const saveCrafts = (crafts) => {
+    const p = { ...profile, customCrafts: crafts };
+    setProfile(p);
+    return saveProfile(p, userTier, currentUser);
+  };
+  const addCustomCraft = (craft) => saveCrafts(addCraft(profile.customCrafts, craft));
+  const removeCustomCraft = (name) => {
+    if (category === CUSTOM_FIELD && role.name === name) { setCategory(Object.keys(BASE_DATA)[0]); setRoleIdx(0); setModelIdx(0); }
+    return saveCrafts(removeCraft(profile.customCrafts, name));
+  };
+  // A saved job or template that used a craft this profile does not have (another device, or it was removed) brings its own copy: put it back.
+  const craftsWith = (item) => {
+    const c = item?.customCraft;
+    if (!c?.name || ALL_DATA[item.category]?.roles.some((r) => r.name === item.role)) return null;
+    return addCraft(profile.customCrafts, { keywords: [], materials: [], ...c, custom: true });
   };
 
   const materialsCost = [
@@ -646,7 +679,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
   function handleReset() {
     setForm({
-      units: 2,
+      units: defaultUnits(model),
       complexity: "Standard",
       usage: "Personal",
       rush: false,
@@ -654,7 +687,9 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       platformFee: 0,
       clientType: "Individual",
       travelExpense: 0,
-      notes: ""
+      notes: "",
+      experience: form.experience, // who you are does not change with a new quote
+      deal: modelKind(model) === "percent" ? { pct: model.base, amount: "" } : undefined,
     });
     setMatQtys({});
     setCustomMaterials([]);
@@ -691,9 +726,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       const updatedJobs = await saveJob({
         ...form,
         baseRate,
+        rateMode: rate.mode, // how the rate was reached (typical, goal, mine, deal); a saved job reopens on its own rate whatever this says
         category,
         role: role.name,
         model: model.type,
+        customCraft: role.custom ? craftPayload(role) : undefined, // a craft of the user's own travels with the job so it reopens anywhere
         materialsCost,
         materials: activeMaterials,
         travelExpense: form.travelExpense,
@@ -754,12 +791,15 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     }
   };
   function handleEditJob(j) {
-    if (!j.category || !ALL_DATA[j.category]) {
+    const restored = craftsWith(j);
+    const data = restored ? withCustomCrafts(BASE_DATA, restored) : ALL_DATA;
+    if (!j.category || !data[j.category]) {
       alert("Could not find the category for this job.");
       return;
     }
+    if (restored) saveCrafts(restored);
     setCategory(j.category);
-    const catD = ALL_DATA[j.category];
+    const catD = data[j.category];
     const rIdx = catD.roles.findIndex(r => r.name === j.role);
     if (rIdx >= 0) {
       setRoleIdx(rIdx);
@@ -767,7 +807,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       if (mIdx >= 0) setModelIdx(mIdx);
     }
 
-    setBaseRate(j.baseRate || 25);
+    setOwnRate(j.baseRate || 25); // a saved job reopens on the rate it was saved with (see rateMode below)
 
     // Restore materials and custom items
     const qtys = {};
@@ -796,7 +836,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       platformFee: j.platformFee || 0,
       clientType: j.clientType || "Individual",
       travelExpense: j.travelExpense || 0,
-      notes: j.notes || ""
+      notes: j.notes || "",
+      rateMode: j.deal ? undefined : "mine" // a saved quote keeps the rate it was saved with; a deal is worked out again from its own figures
     });
     setPrice(null);
     setTab("calc");
@@ -815,6 +856,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       category,
       role: role.name,
       model: model.type,
+      customCraft: role.custom ? craftPayload(role) : undefined,
       baseRate,
       form,
       materials: [
@@ -913,8 +955,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     await saveTemplateToStorage(t, userTier, currentUser);
     setTemplates(await loadTemplatesFromStorage(userTier, currentUser));
 
+    const restored = craftsWith(t);
+    const data = restored ? withCustomCrafts(BASE_DATA, restored) : ALL_DATA;
+    if (restored) saveCrafts(restored);
     setCategory(t.category);
-    const catD = ALL_DATA[t.category];
+    const catD = data[t.category];
     if (catD) {
       const rIdx = catD.roles.findIndex(r => r.name === t.role);
       if (rIdx >= 0) {
@@ -923,9 +968,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         if (mIdx >= 0) setModelIdx(mIdx);
       }
     }
-    setBaseRate(t.baseRate);
-    setBaseRateHasCents(!!(t.baseRate % 1));
-    setForm(t.form);
+    setOwnRate(t.baseRate);
+    setForm({ ...t.form, rateMode: t.form?.deal ? undefined : "mine" }); // a template keeps the rate it was saved with
 
     const restoredQtys = {};
     const restoredCustomMats = [];
@@ -1056,6 +1100,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     // White-label colors only count when the user really customised them: the old retro defaults saved in existing
   // profiles (#1A1A1A, #0A0A0A, #FFB347, #E91E63) are treated as unset so they do not fight the new look.
   const LEGACY_BRAND_DEFAULTS = ["#1a1a1a", "#0a0a0a", "#ffb347", "#e91e63"];
+  const worldScreen = (tab === "calc" && !CLASSIC_CALC) || tab in PAGE_SCENE; // screens painted over the scrapbook scene
   const brandColor = (key) => {
     const v = profile.branding?.[key];
     const custom = canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && v && !LEGACY_BRAND_DEFAULTS.includes(String(v).toLowerCase());
@@ -1065,7 +1110,9 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   // Everything the extracted screens need, in one bag (see src/screens/*).
   const ctx = {
     ALL_DATA,
+    addCustomCraft,
     advanceGlow,
+    baseRate,
     catData,
     category,
     clients,
@@ -1113,8 +1160,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     muted,
     newMatForm,
     newTemplateForm,
+    ownRate,
     price,
     profile,
+    rate,
+    removeCustomCraft,
     resetAppData,
     resetKey,
     role,
@@ -1143,9 +1193,11 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     setModelIdx,
     setNewMatForm,
     setNewTemplateForm,
+    setOwnRate,
     setPrice,
     setProfile,
     setRoleIdx,
+    setScene,
     setSelectedClientId,
     setSelectedTier,
     setShowDeleteModal,
@@ -1196,7 +1248,9 @@ return (
         }
       `}</style>
 
-      <React.Suspense fallback={null}><AppLiquid tab={tab} /></React.Suspense>
+      {worldScreen
+        ? <Stage scene={tab === "calc" ? scene : PAGE_SCENE[tab]} />
+        : <React.Suspense fallback={null}><AppLiquid tab={tab} /></React.Suspense>}
 
       <AppTopBar
         tab={tab}
@@ -1204,7 +1258,7 @@ return (
         setTab={setTab}
         baseRate={baseRate}
         baseRateHasCents={baseRateHasCents}
-        onBaseRateChange={(n) => { setBaseRate(n); setBaseRateHasCents(!!(n % 1)); }}
+        onBaseRateChange={(n) => { setOwnRate(n); setForm((f) => ({ ...f, rateMode: "mine", deal: undefined })); setPrice(null); }}
       />
 
       <div className="app-wrapper" style={{
@@ -1222,10 +1276,10 @@ return (
         "--pixel-bg": brandColor("bgColor") || "var(--cream)",
       }}>
         {/* each tab remounts on change and eases in while the liquid flies out and back in */}
-        <div className="app-stage kit-page-enter" key={tab}>
+        <div className={"app-stage" + (tab === "calc" && !CLASSIC_CALC ? "" : " kit-page-enter") + (tab in PAGE_SCENE ? ` wp wp-${tab} wp--${tab === "analytics" ? "glass" : "paper"}` : "")} key={tab}>
 
           {/* MAIN CALCULATION CONTENT */}
-          {tab === "calc" && <CalcScreen ctx={ctx} />}
+          {tab === "calc" && (CLASSIC_CALC ? <CalcScreen ctx={ctx} /> : <QuoteJourney ctx={ctx} />)}
 
           {tab === "history" && <HistoryScreen ctx={ctx} />}
 

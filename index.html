@@ -23,6 +23,44 @@
         document.documentElement.setAttribute('data-theme', t);
       } catch (e) {}
     </script>
+    <script>
+      // Arriving through the landing's glowing orb (src/proto): its last frame was a full-screen glow, so open on that same glow and, once the app
+      // reports it is ready (dmge-ready, set in App.jsx), open an iris from where the orb was. Only the landing sets the flag, and it is used once.
+      try {
+        var arrive = JSON.parse(sessionStorage.getItem('dmge-arrive') || 'null');
+        sessionStorage.removeItem('dmge-arrive');
+        if (arrive && Date.now() - arrive.t < 20000 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          var root = document.documentElement;
+          root.classList.add('dmge-arriving');
+          root.style.setProperty('--ox', (arrive.x * 100).toFixed(2) + '%');
+          root.style.setProperty('--oy', (arrive.y * 100).toFixed(2) + '%');
+          setTimeout(function () { root.classList.add('dmge-ready'); }, 3500); // never hold the glow for ever if the app is slow
+          setTimeout(function () { root.classList.remove('dmge-arriving'); }, 6500);
+        }
+      } catch (e) {}
+    </script>
+    <style>
+      /* the arrival: the glow below must match .sb-bloom in src/proto/scrapbook.css at its largest (--s: 170vmax) */
+      @property --iris { syntax: '<length>'; inherits: false; initial-value: -20vmax; }
+      html.dmge-arriving::before, html.dmge-arriving::after { content: ""; position: fixed; inset: 0; z-index: 2147483000; pointer-events: none; }
+      html.dmge-arriving::before {
+        background: radial-gradient(circle at var(--ox) var(--oy), #FDFDF0 0, #FDFCE8 calc(170vmax * .08), #FDF6E1 calc(170vmax * .14), #FEEBD9 calc(170vmax * .21), #FDDDD8 calc(170vmax * .28), #FCD4DC calc(170vmax * .35), #F9D0E0 calc(170vmax * .45), #EBD2F0 calc(170vmax * .74), rgba(235,210,240,0) 170vmax);
+        -webkit-mask-image: radial-gradient(circle at var(--ox) var(--oy), transparent var(--iris), #000 calc(var(--iris) + 18vmax));
+        mask-image: radial-gradient(circle at var(--ox) var(--oy), transparent var(--iris), #000 calc(var(--iris) + 18vmax));
+      }
+      html.dmge-arriving::after { /* a bright rim rides the edge of the opening */
+        background: radial-gradient(circle at var(--ox) var(--oy), transparent calc(var(--iris) + 1vmax), rgba(255, 246, 252, .9) calc(var(--iris) + 7vmax), transparent calc(var(--iris) + 15vmax));
+        opacity: 0;
+      }
+      /* slow to start (the glow lingers for a beat), quick through the middle, a long soft landing. The hole only needs to reach the farthest corner, which is
+         never more than about 72vmax from the orb, so it ends just past that and none of the run is spent on a screen that is already open. There is no
+         transform on #root: it would turn every fixed bar and dock inside it into children of #root for the length of the run. */
+      html.dmge-arriving.dmge-ready::before { animation: dmgeIris 1.5s cubic-bezier(.45, 0, .2, 1) forwards; }
+      html.dmge-arriving.dmge-ready::after { animation: dmgeIris 1.5s cubic-bezier(.45, 0, .2, 1) forwards, dmgeRim 1.5s ease forwards; }
+      @keyframes dmgeIris { to { --iris: 80vmax; } }
+      @keyframes dmgeRim { 0% { opacity: 0; } 15% { opacity: 1; } 75% { opacity: .8; } 100% { opacity: 0; } }
+      @media (prefers-reduced-motion: reduce) { html.dmge-arriving::before, html.dmge-arriving::after { display: none; } }
+    </style>
     <style>
       html, body { margin: 0; min-height: 100%; background: #FFF6E8; }
       html[data-theme="dark"], html[data-theme="dark"] body { background: #05030D; }

@@ -91,8 +91,30 @@ export const IconFashion = (p) => (<Icon {...p}><path d="M9 4l-5 3.500 2 3 2-1V2
 export const IconLive = (p) => (<Icon {...p}><path d="M4 18.500c0-5 3-8 8-8s8 3 8 8" /><path d="M12 10.500V4M6 12.500L4.500 11M18 12.500l1.500-1.500" /></Icon>);
 export const IconLegacy = (p) => (<Icon {...p}><path d="M12 3.500l1.800 4.700 4.700.5-3.500 3.200 1 4.800L12 14.300 8 16.700l1-4.800L5.500 8.700l4.700-.5z" /></Icon>);
 
+// Fields added later (checked first: some of their names also contain a word the older checks below look for).
+export const IconCreator = (p) => (<Icon {...p}><rect x="3.500" y="5.500" width="17" height="13" rx="3.500" /><path d="M10.500 9.500l4.500 2.500-4.500 2.500z" /></Icon>);
+export const IconDesign = (p) => (<Icon {...p}><rect x="4" y="4" width="16" height="16" rx="2.500" /><path d="M4 9.500h16M9.500 9.500V20" /></Icon>);
+export const IconGames = (p) => (<Icon {...p}><path d="M7 8h10a4 4 0 0 1 3.900 4.900l-.9 3.600a2.200 2.200 0 0 1-3.800.9L14.500 15h-5l-1.700 2.400a2.200 2.200 0 0 1-3.800-.9l-.9-3.600A4 4 0 0 1 7 8z" /><path d="M8 10.500v3M6.500 12h3" /><circle cx="15.500" cy="11.200" r=".8" fill="currentColor" /><circle cx="17.500" cy="13" r=".8" fill="currentColor" /></Icon>);
+export const IconAudio = (p) => (<Icon {...p}><rect x="9" y="3.500" width="6" height="10.500" rx="3" /><path d="M5.500 11.500a6.500 6.500 0 0 0 13 0M12 18v2.500M9 20.500h6" /></Icon>);
+export const IconMakers = (p) => (<Icon {...p}><circle cx="6.500" cy="17" r="2.500" /><circle cx="6.500" cy="7" r="2.500" /><path d="M8.500 8.500L20 18M8.500 15.500L20 6" /></Icon>);
+export const IconBody = (p) => (<Icon {...p}><path d="M12 3.500l1.800 5.200 5.200 1.800-5.200 1.800L12 17.500l-1.800-5.200L5 10.500l5.200-1.800z" /><path d="M19 3.500v3M17.500 5h3M5 17.500v3M3.500 19h3" /></Icon>);
+export const IconHome = (p) => (<Icon {...p}><path d="M4 11l8-6.500 8 6.500" /><path d="M6 9.500V20h12V9.500" /><path d="M10 20v-5.500h4V20" /></Icon>);
+export const IconRings = (p) => (<Icon {...p}><circle cx="9" cy="14" r="4.500" /><circle cx="15" cy="14" r="4.500" /><path d="M12 3v3M10.500 4.500h3" /></Icon>);
+export const IconCamera = (p) => (<Icon {...p}><path d="M4 8.500A1.500 1.500 0 0 1 5.500 7H8l1.200-2h5.600L16 7h2.500A1.500 1.500 0 0 1 20 8.500v9a1.500 1.500 0 0 1-1.500 1.500h-13A1.500 1.500 0 0 1 4 17.500z" /><circle cx="12" cy="12.800" r="3.400" /></Icon>);
+export const IconHeart = (p) => (<Icon {...p}><path d="M12 20s-7-4.400-7-10a4 4 0 0 1 7-2.600A4 4 0 0 1 19 10c0 5.600-7 10-7 10z" /></Icon>);
+
 export const getCategoryIcon = (name) => {
   const n = name.toLowerCase();
+  if (n.includes("creator")) return IconCreator;
+  if (n.includes("design and ux")) return IconDesign;
+  if (n.includes("games")) return IconGames;
+  if (n.includes("audio")) return IconAudio;
+  if (n.includes("makers")) return IconMakers;
+  if (n.includes("body art")) return IconBody;
+  if (n.includes("architecture")) return IconHome;
+  if (n.includes("wedding")) return IconRings;
+  if (n.includes("photo and video")) return IconCamera;
+  if (n.includes("my crafts")) return IconHeart;
   if (n.includes("music")) return IconMusic;
   if (n.includes("film") || n.includes("tv")) return IconFilm;
   if (n.includes("talent") || n.includes("performance")) return IconTalent;

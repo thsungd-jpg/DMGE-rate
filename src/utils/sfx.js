@@ -15,6 +15,11 @@ function getCtx() {
   return ctx;
 }
 
+/** Create the audio context ahead of the first sound (it costs a moment, so do it on an early tap instead of at the first Calculate). */
+export function warmAudio() {
+  if (!isMuted()) getCtx();
+}
+
 export function isMuted() {
   try { return localStorage.getItem(MUTE_KEY) === "1"; } catch { return false; }
 }

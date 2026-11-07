@@ -28,7 +28,7 @@
           },
           {
             "type": "Licensing / Royalties",
-            "unit": "per use / stream",
+            "unit": "per use",
             "base": 50
           }
         ],
@@ -371,7 +371,7 @@
           },
           {
             "type": "Publishing Royalties",
-            "unit": "per stream / play",
+            "unit": "% of royalties",
             "base": 50
           },
           {
@@ -443,7 +443,7 @@
           {
             "type": "Points (royalty backend)",
             "unit": "% of royalties",
-            "base": 50
+            "base": 3
           }
         ],
         "materials": [
@@ -560,7 +560,7 @@
           },
           {
             "type": "Remote Recording",
-            "unit": "per track/song",
+            "unit": "per song",
             "base": 75
           },
           {
@@ -682,7 +682,7 @@
           {
             "type": "Back-End Points",
             "unit": "% of profits",
-            "base": 50
+            "base": 5
           }
         ],
         "materials": [
@@ -868,7 +868,7 @@
           {
             "type": "Producing Fee (% of budget)",
             "unit": "% of total budget",
-            "base": 50
+            "base": 5
           },
           {
             "type": "Flat Fee (indie)",
@@ -883,7 +883,7 @@
           {
             "type": "Back-End Points",
             "unit": "% of profits",
-            "base": 50
+            "base": 5
           }
         ],
         "materials": [
@@ -1512,8 +1512,8 @@
           },
           {
             "type": "Licensing Deal",
-            "unit": "royalty %",
-            "base": 50
+            "unit": "% of royalties",
+            "base": 8
           }
         ],
         "materials": [
@@ -1674,7 +1674,7 @@
           {
             "type": "Percentage of Ticket Revenue",
             "unit": "% of gross",
-            "base": 50
+            "base": 10
           },
           {
             "type": "Retainer (ongoing events)",
@@ -2055,7 +2055,7 @@
           },
           {
             "type": "Per Platform Rate",
-            "unit": "per platform/mo",
+            "unit": "per platform per month",
             "base": 300
           },
           {
@@ -2108,7 +2108,7 @@
           {
             "type": "Affiliate Commission",
             "unit": "% of sales",
-            "base": 50
+            "base": 10
           }
         ],
         "materials": [
@@ -2196,7 +2196,7 @@
           {
             "type": "Commission on Client Earnings",
             "unit": "% of gross",
-            "base": 50
+            "base": 10
           }
         ],
         "materials": [
@@ -2228,7 +2228,7 @@
           {
             "type": "Commission on All Earnings",
             "unit": "% of gross",
-            "base": 50
+            "base": 15
           },
           {
             "type": "Flat Monthly Fee (early-career)",
@@ -2276,7 +2276,7 @@
           {
             "type": "Commission (deal negotiation)",
             "unit": "% of deal",
-            "base": 50
+            "base": 5
           }
         ],
         "materials": [
@@ -2309,7 +2309,7 @@
           {
             "type": "Percentage of Gross Income",
             "unit": "% of income managed",
-            "base": 50
+            "base": 5
           },
           {
             "type": "Hourly Rate",
@@ -2337,7 +2337,7 @@
         "models": [
           {
             "type": "Salaried (label staff)",
-            "unit": "annual salary",
+            "unit": "per year",
             "base": 40000
           },
           {
@@ -2348,7 +2348,7 @@
           {
             "type": "Points on Signed Artists",
             "unit": "% of royalties",
-            "base": 50
+            "base": 3
           }
         ],
         "materials": [
@@ -2423,7 +2423,7 @@
         "models": [
           {
             "type": "Salaried (in-house)",
-            "unit": "annual salary",
+            "unit": "per year",
             "base": 50000
           },
           {
@@ -2457,7 +2457,7 @@
         "models": [
           {
             "type": "Salaried (studio)",
-            "unit": "annual salary",
+            "unit": "per year",
             "base": 55000
           },
           {
@@ -2468,7 +2468,7 @@
           {
             "type": "Revenue Share (indie)",
             "unit": "% of sales",
-            "base": 50
+            "base": 30
           }
         ],
         "materials": [
