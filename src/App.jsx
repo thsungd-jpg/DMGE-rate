@@ -31,8 +31,8 @@ import PricingScreen from "./screens/PricingScreen";
 import ProfileScreen from "./screens/ProfileScreen";
 import AppModals from "./screens/AppModals";
 
-// Landing is code-split: it pulls in WebGL/GSAP/Lenis only for logged-out visitors.
-const Landing = React.lazy(() => import("./landing/Landing"));
+// The landing is code-split: it pulls in GSAP/Lenis and the animation frames only for logged-out visitors.
+const Scrapbook = React.lazy(() => import("./proto/Scrapbook")); // the scroll landing
 // Ambient liquid behind the app (shader + textures are code-split).
 const AppLiquid = React.lazy(() => import("./app/AppLiquid"));
 // The Quote page is the scrapbook world's first screen (src/world, src/screens/QuoteJourney.jsx). It paints its own scene, so the ambient liquid sits it out.
@@ -480,7 +480,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(devMock ? devMock.user : null);
   const [authLoading, setAuthLoading] = useState(!devMock);
   const [recoveredMode, setRecoveredMode] = useState(false);
-  const [authOpen, setAuthOpen] = useState(false); // the sign-in page on the scene, opened from the landing's Start buttons
+  const [authOpen, setAuthOpen] = useState(() => new URLSearchParams(window.location.search).has("signin")); // the sign-in page on the scene, opened from the landing's Start buttons
   // Arriving through the landing's orb (see the script in index.html): once there is something to show, the glow opens like an iris onto it. The iris is a
   // main-thread animation and its clock starts when the class lands, so wait until the background liquid has drawn its first frame (or 1.5 s), and then two
   // more frames, so the heavy first layout and paint are over before it starts instead of eating it. Without the arrival class this does nothing.
@@ -643,15 +643,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   // Logged-out visitors get the animated Liquid Ledger landing, which hosts sign-in.
   if (!currentUser) {
     return (
-      <Suspense fallback={<div style={{ height: "100vh", background: "var(--cream, #FFF6E8)" }} />}>
-        <Landing
-          onOpenAuth={() => setAuthOpen(true)}
-          onAuthSuccess={(user) => {
-            setCurrentUser(user);
-            setRecoveredMode(false);
-          }}
-          initialMode="login"
-        />
+      <Suspense fallback={<div style={{ height: "100vh", background: "#05030D" }} />}>
+        <Scrapbook />
       </Suspense>
     );
   }

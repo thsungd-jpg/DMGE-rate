@@ -4,6 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
 import { frameSequence } from "../world/framePlayer";
 import { SAYINGS } from "./sayings";
+import "./scrapbook.css";
 
 import sky from "./assets/sky.webp";
 import saturn from "./assets/piece-saturn.webp";
@@ -55,7 +56,8 @@ const place = (g, p, e) => {
   return { S, H, k: S / 1280, x: g.vw / 2 - ux * S, y: g.vh / 2 - uy * H };
 };
 // Where "Start pricing" goes. In dev, ?mock=1 signs in as a demo user so the page the orb opens onto can be seen; theme=dark keeps the night going.
-const NEXT = import.meta.env.DEV ? "/?mock=1&theme=dark" : "/?theme=dark";
+const NEXT = import.meta.env.DEV ? "/?mock=1&theme=dark" : "/?signin=1&theme=dark";
+const SIGN_IN = "/?signin=1&theme=dark"; // the plain link for people who already have an account: no dive
 
 const PIECES = [
   { src: saturn, x: 9, y: 52, w: 13, d: 0.5, t: 14 }, { src: planetA, x: 91, y: 50, w: 10, d: 0.7, t: 18 },
@@ -136,7 +138,8 @@ export default function Scrapbook() {
     // back, and they play in reverse as it fades up again.
     let auto = false, autoAt = 0, frozen = false, fade = null; // fade: the tween or timeline that dims or brightens the film
     let diving = false; // the dive clip covers the film: nothing more is painted on it
-    const showJelly = () => jellySeq.show(idleAt + spin.f), showFilm = () => { if (!frozen && !diving) filmSeq.show(auto ? autoAt : reel.f); };
+    let shiftFilm = () => {}; // portrait screens: slides the crop along with the blob (set by layoutFilm below)
+    const showJelly = () => jellySeq.show(idleAt + spin.f), showFilm = () => { if (!frozen && !diving) { filmSeq.show(auto ? autoAt : reel.f); shiftFilm(auto ? CLIP_FRAMES : reel.f); } };
     const setAuto = (on) => {
       if (on === auto) return;
       auto = on; fade?.kill();
@@ -205,7 +208,20 @@ export default function Scrapbook() {
     const move = (e) => { el.style.setProperty("--px", (e.clientX / window.innerWidth - 0.5).toFixed(3)); el.style.setProperty("--py", (e.clientY / window.innerHeight - 0.5).toFixed(3)); };
     window.addEventListener("pointermove", move, { passive: true });
 
-    const resize = () => { jc.style.width = jc.style.height = jellySize() + "px"; };
+    // On a screen taller than it is wide the 16:9 film would be a thin strip: it fills the screen instead, cropped around the orb (the dive starts from the same crop).
+    const portrait = () => window.innerWidth < window.innerHeight * 0.9;
+    const layoutFilm = () => {
+      const rv = el.querySelector(".sb-reveal"), on = portrait();
+      el.classList.toggle("sb-portrait", on);
+      shiftFilm = () => {};
+      if (!on) { rv.style.cssText = ""; return; }
+      const vw = window.innerWidth, vh = window.innerHeight, fill = Math.max(vw, vh * 16 / 9), g = { vw, vh, fit: fill, fill }, q = place(g, 0, 1);
+      rv.style.cssText = `left:0;top:0;width:${q.S}px;height:${q.H}px`;
+      // the blob starts in the middle of the picture and ends where the orb sits (follow(0)): the crop moves from one to the other as the burst plays
+      shiftFilm = (f) => { const hx = Math.min(0.5, vw / (2 * q.S)), u = Math.min(1 - hx, Math.max(hx, 0.5 + (follow(0) - 0.5) * Math.min(1, f / CLIP_FRAMES))); rv.style.transform = `translate(${(vw / 2 - u * q.S).toFixed(1)}px,${q.y.toFixed(1)}px)`; };
+      shiftFilm(reel.f);
+    };
+    const resize = () => { jc.style.width = jc.style.height = jellySize() + "px"; layoutFilm(); };
     resize(); window.addEventListener("resize", resize);
 
     // ---- leaving: the dive clip opens out to fill the screen and the camera falls into the blob until its light is the whole picture; then the next page opens
@@ -241,16 +257,16 @@ export default function Scrapbook() {
         }
         diving = true;
         const layer = dc.closest(".sb-dive"), pic = dc.parentElement, g = { vw: layer.clientWidth, vh: layer.clientHeight };
-        g.fit = Math.min(g.vw, g.vh * 16 / 9); g.fill = Math.max(g.vw, g.vh * 16 / 9);
+        g.fill = Math.max(g.vw, g.vh * 16 / 9); g.fit = portrait() ? g.fill : Math.min(g.vw, g.vh * 16 / 9); // portrait: the film already fills the screen
         const end = place(g, 1, 1); arrive(end.x + END.x * end.S, end.y + END.y * end.H);
-        const n = diveUrls.length, secs = (n - 1) / DIVE_FPS, st = { f: 0, e: 0 }; // f: the frame; e: how far the picture has opened out
+        const n = diveUrls.length, secs = (n - 1) / DIVE_FPS, st = { f: 0, e: portrait() ? 1 : 0 }; // f: the frame; e: how far the picture has opened out
         const draw = () => { diveSeq.show(st.f); const q = place(g, st.f / (n - 1), st.e); pic.style.transform = `translate(${q.x.toFixed(1)}px, ${q.y.toFixed(1)}px) scale(${q.k.toFixed(4)})`; };
         draw();
         leaving = gsap.timeline({ defaults: { ease: "none" }, onComplete: go })
           .to(layer, { opacity: 1, duration: 0.25 }, 0) // its first frame is the film's picture, so the film is replaced without a seam
           .add(() => { filmSeq.release(); gsap.set(".sb-reveal", { visibility: "hidden" }); }, 0.3) // the clip covers the film now: let go of it
           .fromTo(st, { f: 0 }, { f: n - 1, duration: secs, onUpdate: draw }, 0) // the clip plays as it was made; it eases in by itself
-          .fromTo(st, { e: 0 }, { e: 1, duration: OPEN_SECS, ease: "power2.inOut", onUpdate: draw }, 0)
+          .fromTo(st, { e: st.e }, { e: 1, duration: OPEN_SECS, ease: "power2.inOut", onUpdate: draw }, 0)
           .to(pic.querySelector(".sb-dive-edge"), { opacity: 0, duration: OPEN_SECS, ease: "power2.inOut" }, 0) // the soft dark rim that hides the picture's straight edges goes as it fills the screen
           .fromTo(bloom, { opacity: 0 }, { opacity: 1, duration: BLOOM_SECS, ease: "power1.in" }, secs - BLOOM_SECS); // the last light becomes the glow the next page opens from
       });
@@ -320,6 +336,7 @@ export default function Scrapbook() {
             <span className="sb-line"><span>Know what your <em>work</em> is worth.</span></span>
           </h1>
         </section>
+        <a className="sb-signin" href={SIGN_IN}>Sign in</a>
         <p className="sb-hint">Scroll to start</p>
         <p className="sb-message" aria-label={plain(SAYINGS[saying].join(" "))}>
           {SAYINGS[saying].map((line, li) => (

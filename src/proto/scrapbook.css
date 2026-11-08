@@ -90,3 +90,17 @@ html.lenis, html.lenis body { height: auto; }
    clip's last frame: cream-yellow at the centre, peach, then pink towards the edges. (The plain dive, used when the clip's frames are missing, grows --s from small.) */
 .sb-bloom { position: fixed; inset: 0; z-index: 8; pointer-events: none; opacity: 0; --s: 170vmax; --ox: 52%; --oy: 47%;
   background: radial-gradient(circle at var(--ox) var(--oy), #FDFDF0 0, #FDFCE8 calc(var(--s) * .08), #FDF6E1 calc(var(--s) * .14), #FEEBD9 calc(var(--s) * .21), #FDDDD8 calc(var(--s) * .28), #FCD4DC calc(var(--s) * .35), #F9D0E0 calc(var(--s) * .45), #EBD2F0 calc(var(--s) * .74), rgba(235, 210, 240, 0) var(--s)); }
+
+.sb-signin { position: fixed; top: 18px; right: clamp(16px, 4vw, 40px); z-index: 20; min-height: 44px; display: inline-flex; align-items: center; padding: 0 20px; border-radius: 18px; font: 800 15px "Titan One", "DM Sans", system-ui, sans-serif; letter-spacing: .02em; color: #2B2140; background: #FFFBF4; text-decoration: none; box-shadow: 0 3px 0 rgba(43, 33, 64, .3), 0 12px 16px -10px rgba(0, 0, 0, .6); }
+.sb-signin:hover { transform: translateY(-2px) rotate(-1deg); }
+.sb-signin:focus-visible { outline: 3px solid #FFE98A; outline-offset: 3px; }
+
+/* a screen taller than wide: the film fills it (Scrapbook.jsx sizes it), so no soft edges; the words sit at the foot on a dark wash; the button never wraps */
+.sb-portrait .sb-reveal { -webkit-mask-image: none; mask-image: none; }
+.sb-btn { white-space: nowrap; }
+@media (max-width: 700px) {
+  .sb-cta { left: 0; right: 0; top: auto; bottom: 0; transform: none; max-width: none; padding: 90px 7vw calc(9vh + 24px); background: linear-gradient(to bottom, rgba(5, 3, 13, 0), rgba(5, 3, 13, .86) 46%, rgba(5, 3, 13, .94)); }
+  .sb-cta h2 { font-size: clamp(30px, 9.4vw, 44px); margin-bottom: 18px; }
+  .sb-btn { padding: 16px 30px; }
+}
+.sb-reduced .sb-hero { padding-top: 96px; } /* clear of the Sign in button */
