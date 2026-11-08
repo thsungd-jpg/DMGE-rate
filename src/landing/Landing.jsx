@@ -19,7 +19,7 @@ const SECTION_IDS = ["top", ...DOCK.map((d) => d.id)];
 
 const prefersReduced = () => window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
-export default function Landing({ onAuthSuccess, initialMode = "login" }) {
+export default function Landing({ onAuthSuccess, onOpenAuth, initialMode = "login" }) {
   const rootRef = useRef(null);
   const lenisRef = useRef(null);
   const [noGL, setNoGL] = useState(false);
@@ -32,11 +32,12 @@ export default function Landing({ onAuthSuccess, initialMode = "login" }) {
   const setDemo = useCallback((patch) => setDemoState((d) => ({ ...d, ...patch })), []);
 
   const scrollToId = useCallback((id) => {
+    if (id === "start" && onOpenAuth) { onOpenAuth(); return; } // "Start" opens the sign-in page on the scene
     const el = document.getElementById(id);
     if (!el) return;
     if (lenisRef.current) lenisRef.current.scrollTo(el, { duration: 1.5, easing: (t) => 1 - Math.pow(1 - t, 4) });
     else el.scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-  }, [reduced]);
+  }, [reduced, onOpenAuth]);
 
   // Smooth scroll + reveal choreography (lazy-loaded so the app bundle stays small).
   useEffect(() => {

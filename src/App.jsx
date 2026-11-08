@@ -480,6 +480,7 @@ export default function App() {
   const [currentUser, setCurrentUser] = useState(devMock ? devMock.user : null);
   const [authLoading, setAuthLoading] = useState(!devMock);
   const [recoveredMode, setRecoveredMode] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false); // the sign-in page on the scene, opened from the landing's Start buttons
   // Arriving through the landing's orb (see the script in index.html): once there is something to show, the glow opens like an iris onto it. The iris is a
   // main-thread animation and its clock starts when the class lands, so wait until the background liquid has drawn its first frame (or 1.5 s), and then two
   // more frames, so the heavy first layout and paint are over before it starts instead of eating it. Without the arrival class this does nothing.
@@ -622,17 +623,18 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   // Password-recovery links land straight on the new-password form.
   // (In development, ?authpage=login|register|forgot_password|update_password shows this page without a recovery link, to look at it.)
   const devAuthPage = import.meta.env.DEV ? new URLSearchParams(window.location.search).get("authpage") : null;
-  if (recoveredMode || devAuthPage) {
+  if (recoveredMode || devAuthPage || (authOpen && !currentUser)) {
     return (
       <>
         <Stage scene={0} />
+        {authOpen && !recoveredMode && !devAuthPage && <button type="button" className="auth-back" onClick={() => setAuthOpen(false)}>← Back</button>}
         <Auth
           variant="page"
           onAuthSuccess={(user) => {
             setCurrentUser(user);
             setRecoveredMode(false);
           }}
-          initialMode={recoveredMode ? "update_password" : devAuthPage}
+          initialMode={recoveredMode ? "update_password" : (devAuthPage || "login")}
         />
       </>
     );
@@ -643,6 +645,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     return (
       <Suspense fallback={<div style={{ height: "100vh", background: "var(--cream, #FFF6E8)" }} />}>
         <Landing
+          onOpenAuth={() => setAuthOpen(true)}
           onAuthSuccess={(user) => {
             setCurrentUser(user);
             setRecoveredMode(false);
