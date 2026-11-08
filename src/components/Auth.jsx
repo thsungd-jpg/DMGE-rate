@@ -3,6 +3,7 @@ import { PBox, PBtn, PInput, PLbl } from './ui';
 import { Wordmark } from './Brand';
 import { supabase } from '../utils/supabaseClient';
 import { PALETTE as P } from '../styles/palette';
+import './auth.css';
 
 function GoogleG() {
   return (
@@ -21,6 +22,12 @@ const TITLES = {
   forgot_password: 'Reset your password',
   update_password: 'Choose a new password',
 };
+
+/** The title in the scrapbook type: the last word is the glowing one ("Welcome <em>back</em>"). */
+function Title({ text }) {
+  const i = text.lastIndexOf(' ');
+  return <>{text.slice(0, i + 1)}<em>{text.slice(i + 1)}</em></>;
+}
 
 const SUBMIT = {
   login: 'Sign in',
@@ -124,14 +131,14 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
   const switchMode = (next) => { setMode(next); setError(''); setMessage(''); };
 
   const card = (
-    <PBox bg="var(--paper)" className="auth-card" style={{ padding: 'clamp(20px, 5vw, 36px)', width: '100%', maxWidth: 460, boxShadow: 'var(--sh-3)' }}>
+    <PBox bg="var(--paper)" className="auth-card" style={{ padding: 'clamp(22px, 5vw, 36px)', width: '100%', maxWidth: 460 }}>
       {variant === 'page' && (
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+        <div className="auth-mark">
           <Wordmark size={26} />
         </div>
       )}
-      <h2 style={{ fontFamily: 'var(--font-display)', fontWeight: 400, fontSize: 'clamp(34px, 5vw, 44px)', letterSpacing: '-0.02em', lineHeight: 1.0, textAlign: variant === 'page' ? 'center' : 'left', margin: '0 0 22px' }}>
-        {TITLES[mode]}
+      <h2 className="auth-title">
+        <Title text={TITLES[mode]} />
       </h2>
 
       <form onSubmit={handleSubmit} noValidate>
@@ -194,7 +201,7 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
           </div>
         )}
 
-        <PBtn full color="var(--ink)" type="submit" disabled={loading} className="auth-primary" style={{ marginBottom: 16 }}>
+        <PBtn full color="var(--butter)" type="submit" disabled={loading} className="auth-go" style={{ marginBottom: 16 }}>
           {loading ? 'One moment…' : SUBMIT[mode]}
         </PBtn>
 
@@ -223,10 +230,11 @@ export default function Auth({ onAuthSuccess, initialMode = 'login', variant = '
     </PBox>
   );
 
-  if (variant === 'card') return card;
+  // The scrapbook world's page scope (.wp, src/world/pages.css): the inputs, buttons and paper tokens come from there. The standalone page sits on the scene (App draws it).
+  if (variant === 'card') return <div className="wp wp--paper auth-wrap">{card}</div>;
 
   return (
-    <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 20, background: 'var(--cream)' }}>
+    <div className="wp wp--paper auth-page">
       {card}
     </div>
   );

@@ -35,7 +35,7 @@
 .wp button.kit-row:hover { transform: translateY(-3px) rotate(-.3deg); }
 
 /* cream in both themes: flip the tokens inside the piece (night only; by day they are already light) */
-:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row) {
+:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row, .auth-card) {
   color-scheme: light;
   --cream: #FFF6E8; --cream-deep: #FFEBD2; --paper: #FFFBF4;
   --ink: #2B2140; --ink-2: #5B5170; --ink-3: #8A809E; --on-fill: #2B2140; --glass: rgba(255, 251, 244, .78);
@@ -65,7 +65,7 @@
 /* focus rings that show on both the night and the paper */
 .wp :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid var(--qw-accent); outline-offset: 3px; }
 :root[data-theme="light"] .wp :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline-color: var(--qw-ink); }
-:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row) :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline-color: var(--qw-ink); }
+:root[data-theme="dark"] .wp--paper :is(.kit-card, .kit-row, .auth-card) :is(button, a, input, select, textarea, [tabindex]):focus-visible { outline-color: var(--qw-ink); }
 
 /* loose pills (not on a card) can land on a piece of the scene: give them paper to sit on */
 .wp .kit-pill:not(.kit-card *) { background: var(--qw-piece); color: var(--qw-ink); box-shadow: 0 2px 0 var(--qw-lip); }

@@ -620,16 +620,21 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   );
 
   // Password-recovery links land straight on the new-password form.
-  if (recoveredMode) {
+  // (In development, ?authpage=login|register|forgot_password|update_password shows this page without a recovery link, to look at it.)
+  const devAuthPage = import.meta.env.DEV ? new URLSearchParams(window.location.search).get("authpage") : null;
+  if (recoveredMode || devAuthPage) {
     return (
-      <Auth
-        variant="page"
-        onAuthSuccess={(user) => {
-          setCurrentUser(user);
-          setRecoveredMode(false);
-        }}
-        initialMode="update_password"
-      />
+      <>
+        <Stage scene={0} />
+        <Auth
+          variant="page"
+          onAuthSuccess={(user) => {
+            setCurrentUser(user);
+            setRecoveredMode(false);
+          }}
+          initialMode={recoveredMode ? "update_password" : devAuthPage}
+        />
+      </>
     );
   }
 

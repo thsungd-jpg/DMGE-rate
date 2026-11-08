@@ -1,0 +1,22 @@
+/* Sign in, create account and password reset in the scrapbook world: a cream paper note with a strip of tape, the title in Modak (the last word glowing),
+   the world's input and toy-button looks (they come from the .wp scope in src/world/pages.css). Two homes: "card" (the landing's last chapter, on its glass shape)
+   and "page" (the password-recovery link; App draws the scene behind it). The form and its Supabase calls are in Auth.jsx and did not change. */
+
+.auth-wrap { width: 100%; max-width: 460px; }
+.auth-page { min-height: 100svh; box-sizing: border-box; display: flex; align-items: center; padding: clamp(84px, 14vh, 128px) clamp(16px, 4vw, 40px) 40px clamp(18px, 7vw, 112px); }
+
+.auth-card { border: 0; border-radius: 26px; color: var(--ink); text-align: left; /* the landing centres its text */ box-shadow: 0 4px 0 var(--qw-lip), 0 26px 38px -18px var(--qw-drop); }
+.auth-card::before { content: ""; position: absolute; top: -9px; left: clamp(22px, 8%, 44px); width: 74px; height: 18px; border-radius: 2px; background: rgba(255, 233, 138, .92); transform: rotate(-3deg); pointer-events: none; }
+
+.auth-mark { display: flex; margin-bottom: 18px; --font-display: "Instrument Serif", "Iowan Old Style", "Times New Roman", Georgia, serif; } /* the DMGE wordmark keeps its serif */
+.auth-title { margin: 0 0 var(--s4, 21px); font: 400 clamp(38px, 6vw, 52px)/1 "Modak", "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--ink); }
+.auth-title em { font-style: normal; color: var(--pink-deep); }
+
+.auth-card .lq-lbl { font: 800 12px/1.2 var(--font-body); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 8px; }
+.auth-card .lq-input { min-height: 52px; border-radius: 18px; font-size: 16px; }
+.auth-card .auth-go { min-height: 54px; font-size: 17px; }
+.auth-card .auth-link { font-weight: 800; }
+
+@media (max-width: 700px) {
+  .auth-page { align-items: flex-start; padding-top: 104px; padding-left: 16px; padding-right: 16px; }
+}
