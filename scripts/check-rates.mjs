@@ -2,6 +2,7 @@
 // Checks the Quote page's rate logic (src/utils/rateModels.js) and that it feeds the unchanged price engine (src/utils/pricing.js) correctly.
 //   node scripts/check-rates.mjs        exits 1 on the first run that has a failed check
 import assert from "node:assert/strict";
+import { sizeMultFor, defaultSize, sizesOf } from "../src/utils/rateModels.js";
 import { rateFor, ratesByMode, goalHourly, defaultUnits, hoursPerUnit, unitNoun, askQuantity, modelKind, groupModels, freelanceEquivalent, hourlyEquivalent } from "../src/utils/rateModels.js";
 import { calcPrice } from "../src/utils/pricing.js";
 
@@ -98,6 +99,19 @@ check("the BLS reality check uses the user's own finder settings", () => {
   const fe = freelanceEquivalent(30, withFinder);
   // 30 an hour employed = 62,400 a year; take-home after 25% = 46,800; (46,800 / .75 + 6,000) / 940 billable hours = 72.8 -> 73 an hour
   assert.equal(fe.rate, 73);
+});
+
+check("sizes scale the rate (typical, goal and my own number), a missing or unknown size is the base, and a deal ignores them", () => {
+  const poster = { type: "Poster Print", unit: "per poster", base: 18, qty: 5, sizes: [{ label: "18 × 24 in", mult: 1, base: true }, { label: "24 × 36 in", mult: 1.8 }, { label: "11 × 17 in", mult: 0.55 }] };
+  assert.equal(defaultSize(poster), "18 × 24 in"); assert.equal(defaultUnits(poster), 5); assert.equal(sizesOf(hourly), null);
+  assert.equal(sizeMultFor(poster, "24 × 36 in"), 1.8); assert.equal(sizeMultFor(poster, undefined), 1); assert.equal(sizeMultFor(poster, "nonsense"), 1); assert.equal(sizeMultFor(hourly, "24 × 36 in"), 1);
+  const r = rateFor({ model: poster, form: { size: "24 × 36 in" }, profile: noProfile });
+  assert.equal(r.rate, 32.4); assert.equal(r.sizeMult, 1.8);
+  assert.equal(rateFor({ model: poster, form: { size: "11 × 17 in" }, profile: noProfile }).rate, 9.9);
+  assert.equal(rateFor({ model: poster, form: { size: "24 × 36 in", rateMode: "mine" }, profile: noProfile, own: 20 }).rate, 36);
+  assert.equal(rateFor({ model: poster, form: {}, profile: noProfile }).rate, 18); assert.equal(rateFor({ model: hourly, form: { size: "24 × 36 in" }, profile: noProfile }).sizeMult, 1);
+  const p = calcPrice({ units: 5, complexity: "Standard", usage: "Personal", clientType: "Individual", revisions: 1, baseRate: r.rate, materialsCost: 0, clientMultiplier: 1 });
+  assert.equal(Math.round(p.fair), 162); // 5 posters x $32.40
 });
 
 console.log(process.exitCode ? "\nrate checks FAILED" : `rate checks OK (${n} groups)`);

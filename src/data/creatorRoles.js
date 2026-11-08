@@ -1,3 +1,5 @@
+import { FLYER_DESIGN_SIZES, FLYER_PRINT_SIZES, POSTER_DESIGN_SIZES, POSTER_PRINT_SIZES } from "./printSizes.js";
+
 // More crafts for the Quote page: new fields, and extra roles for three existing ones. Same shape as src/processed_roles.json, plus per role `keywords`
 // (extra words people search with) and per model an optional `hours` (about how many hours one unit takes a working freelancer; it only feeds the
 // "From my goal" rate, where the user can always change it).
@@ -7,10 +9,12 @@
 // (src/data/wageAnchors.js). `scripts/check-roles.mjs` warns when a time-based starting rate is below what employees in that job earn per hour.
 //
 // Names are permanent: saved jobs and templates find a role and model by name, so never rename or remove one here.
+// A model is [type, unit, base, hours?, extras?]. extras: { sizes } (see ./printSizes.js: the rate is for the base size and scales with the one chosen) and
+// { qty } (how many a quote starts with, for products sold by the hundred, like flyers).
 const role = (name, keywords, models, materials = []) => ({
   name,
   keywords,
-  models: models.map(([type, unit, base, hours]) => (hours ? { type, unit, base, hours } : { type, unit, base })),
+  models: models.map(([type, unit, base, hours, extras]) => ({ type, unit, base, ...(hours ? { hours } : {}), ...(extras || {}) })),
   materials: materials.map(([n, cost]) => ({ name: n, cost })),
 });
 
@@ -450,6 +454,173 @@ export const NEW_FIELDS = {
     ],
   },
 
+  "Graphic Design And Visual Communication": {
+    roles: [
+      role("Logo Designer", ["logo", "logomark", "wordmark", "brand mark", "logo design", "monogram", "emblem"], [
+        ["Logo Starter (1-2 concepts)", "per logo", 350, 6],
+        ["Logo Package (3 concepts, revisions, files)", "per logo", 900, 14],
+        ["Logo + Mini Brand Guide", "per project", 2200, 32],
+        ["Logo Refresh / Redesign", "per project", 600, 10],
+        ["Hourly Rate", "per hour", 65],
+      ]),
+      role("Brand Guidelines / Visual Identity Designer", ["brand guidelines", "style guide", "brand book", "visual identity", "brand system", "brand standards", "rebrand"], [
+        ["Brand Guidelines (10-20 pages)", "per project", 2800, 40],
+        ["Full Visual Identity System", "per project", 6500, 90],
+        ["Brand Toolkit (templates + assets)", "per project", 1800, 28],
+        ["Hourly Rate", "per hour", 75],
+      ]),
+      role("Art Director", ["art director", "art direction", "creative lead", "campaign visuals", "shoot direction", "visual direction"], [
+        ["Day Rate", "per day", 800],
+        ["Hourly Rate", "per hour", 100],
+        ["Campaign Art Direction", "per project", 5000, 50],
+        ["Photo / Video Shoot Direction", "per day", 1000],
+        ["Monthly Retainer", "per month", 4000, 40],
+      ]),
+      role("Creative Director (Freelance)", ["creative director", "cd", "concept lead", "campaign concept", "creative lead", "head of creative"], [
+        ["Day Rate", "per day", 1200],
+        ["Hourly Rate", "per hour", 150],
+        ["Campaign Concept & Direction", "per project", 8000, 60],
+        ["Creative Strategy Sprint (1 week)", "per week", 5000],
+        ["Monthly Retainer", "per month", 6000, 40],
+      ]),
+      role("Editorial / Layout Designer", ["layout", "magazine", "editorial", "indesign", "annual report", "book interior", "newsletter", "report design", "publication"], [
+        ["Per Page (editorial layout)", "per page", 55, 1],
+        ["Magazine / Report Spread", "per spread", 110, 2],
+        ["Annual / Corporate Report (24 pages)", "per project", 3200, 50],
+        ["Book Interior (text only)", "per book", 700, 12],
+        ["Hourly Rate", "per hour", 60],
+      ]),
+      role("Book Cover Designer", ["book cover", "cover design", "ebook", "kindle", "paperback", "jacket", "author", "self publishing"], [
+        ["eBook Cover", "per cover", 350, 6],
+        ["Print Wrap (front, spine, back)", "per cover", 650, 10],
+        ["Series Cover Package (3 books)", "per series", 1500, 24],
+        ["Pre-Made Cover (customised)", "per cover", 140, 2],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+      role("Social Media Graphic Designer", ["social graphics", "instagram", "carousel", "templates", "canva", "social media design", "stories", "social posts"], [
+        ["Single Post / Story", "per graphic", 40, 0.75],
+        ["Carousel (5-8 slides)", "per carousel", 160, 3],
+        ["Template Pack (10 editable templates)", "per pack", 450, 8],
+        ["Monthly Content Package (12 graphics)", "per month", 500, 9],
+        ["Hourly Rate", "per hour", 50],
+      ]),
+      role("Thumbnail & Channel Art Designer", ["youtube thumbnail", "thumbnail", "channel art", "banner", "overlay", "stream overlay", "twitch", "end screen"], [
+        ["Single Thumbnail", "per thumbnail", 40, 0.75],
+        ["Thumbnail Bundle (8 a month)", "per month", 280, 6],
+        ["Channel Art Kit (banner, avatar, end screens)", "per kit", 220, 4],
+        ["Stream Overlay Package", "per package", 350, 6],
+      ]),
+      role("Poster / Flyer / Event Designer", ["poster", "flyer", "gig poster", "event graphics", "concert", "festival", "handbill", "key art"], [
+        ["Poster", "per poster", 180, 3, { sizes: POSTER_DESIGN_SIZES }],
+        ["Flyer (front and back)", "per flyer", 110, 2, { sizes: FLYER_DESIGN_SIZES }],
+        ["Event Graphics Pack (poster, social, signage)", "per event", 600, 10],
+        ["Festival / Series Key Art", "per project", 1400, 22],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+      role("Infographic / Information Designer", ["infographic", "infographics", "charts", "visualization", "report graphics", "information design", "diagram", "explainer graphic"], [
+        ["Single Infographic", "per infographic", 500, 8],
+        ["Chart / Data Visual Set (5 visuals)", "per set", 650, 10],
+        ["Interactive / Animated Infographic", "per project", 2200, 32],
+        ["Report Visual System", "per project", 3000, 45],
+        ["Hourly Rate", "per hour", 70],
+      ]),
+      role("Digital Ad / Banner Designer", ["banner ads", "display ads", "ad creative", "google ads", "social ads", "ad sizes", "web banners", "creative for ads"], [
+        ["Static Ad Set (5 sizes)", "per set", 320, 5],
+        ["Animated Banner Set (5 sizes)", "per set", 750, 12],
+        ["Social Ad Creative Pack (6 variations)", "per pack", 420, 7],
+        ["Monthly Ad Creative Retainer", "per month", 1800, 30],
+        ["Hourly Rate", "per hour", 60],
+      ]),
+      role("Signage / Wayfinding Designer", ["signage", "wayfinding", "environmental graphics", "window graphics", "vehicle wrap", "storefront", "billboard", "outdoor"], [
+        ["Sign Design (single)", "per sign", 250, 4],
+        ["Wayfinding System (building)", "per project", 6000, 80],
+        ["Vehicle Wrap Design", "per vehicle", 650, 10],
+        ["Storefront / Window Graphics", "per project", 900, 14],
+        ["Hourly Rate", "per hour", 80],
+      ]),
+      role("Exhibit / Trade Show Designer", ["exhibit", "trade show", "booth", "display", "pop up", "retail display", "museum", "expo"], [
+        ["Booth Graphics (10x10)", "per booth", 900, 14],
+        ["Booth Concept & Layout", "per project", 2500, 36],
+        ["Retail Display / Pop-up Design", "per project", 1800, 26],
+        ["Hourly Rate", "per hour", 80],
+      ]),
+      role("Brand Motion Designer (Logo Animation / Social)", ["logo animation", "motion graphics", "animated logo", "lottie", "reels", "bumper", "ident", "after effects"], [
+        ["Logo Animation", "per animation", 400, 6],
+        ["Animated Social Post (10-15 sec)", "per post", 180, 3],
+        ["Explainer Motion (60 sec)", "per video", 2400, 36],
+        ["Title / Lower-Third Package", "per package", 500, 8],
+        ["Hourly Rate", "per hour", 80],
+      ]),
+      role("Icon / Sticker / Merch Designer", ["icons", "icon set", "sticker", "stickers", "merch", "t-shirt", "apparel graphics", "enamel pin", "patch"], [
+        ["Custom Icon Set (12 icons)", "per set", 650, 10],
+        ["Sticker Sheet / Pack (6 designs)", "per pack", 500, 8],
+        ["T-Shirt / Apparel Graphic", "per design", 160, 3],
+        ["Merch Collection (5 designs)", "per collection", 700, 12],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+      role("Pattern / Surface Designer", ["pattern", "surface design", "repeat", "textile print", "wallpaper", "wrapping paper", "seamless", "licensing"], [
+        ["Seamless Pattern", "per pattern", 250, 5],
+        ["Pattern Collection (6 patterns)", "per collection", 1200, 24],
+        ["Custom Print for a Brand", "per project", 1800, 30],
+        ["Licensing Royalty", "% of sales", 6],
+        ["Hourly Rate", "per hour", 60],
+      ]),
+      role("Stationery / Greeting Card Designer", ["invitation", "stationery", "greeting card", "wedding invitation", "save the date", "card design", "paper goods", "announcement"], [
+        ["Invitation Suite (invite, RSVP, details)", "per suite", 550, 9],
+        ["Greeting Card Design", "per card", 220, 4],
+        ["Custom Stationery Set", "per set", 450, 8],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+      role("Menu / Restaurant Graphics Designer", ["menu", "restaurant branding", "food packaging", "menu board", "cafe", "bar menu", "table tent"], [
+        ["Menu Design", "per menu", 350, 6],
+        ["Menu + Mini Brand Kit", "per project", 1800, 28],
+        ["Seasonal Menu Update", "per update", 120, 2],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+      role("Mascot / Character Designer", ["mascot", "character design", "brand character", "cartoon", "sports mascot", "character sheet"], [
+        ["Mascot Design (concepts + final)", "per mascot", 900, 16],
+        ["Character Sheet (poses + expressions)", "per character", 600, 10],
+        ["Mascot Pose Pack (6 poses)", "per pack", 450, 8],
+        ["Hourly Rate", "per hour", 60],
+      ]),
+      role("Print Production / Prepress Artist", ["prepress", "print ready", "preflight", "color separation", "die line", "production artist", "mechanicals", "print production"], [
+        ["Print-Ready File Prep", "per file", 60, 1],
+        ["Packaging / Label Production Artwork", "per SKU", 90, 1.5],
+        ["Press Check / Proofing Day", "per day", 450],
+        ["Hourly Rate", "per hour", 55],
+      ]),
+    ],
+  },
+
+  "Print Services": {
+    roles: [
+      role("Flyer Printing", ["flyer", "flyers", "print run", "leaflet", "handout", "print shop", "digital print", "offset", "brochure", "printing"], [
+        ["Digital Print Run (single-sided)", "per flyer", 0.45, null, { sizes: FLYER_PRINT_SIZES, qty: 250 }],
+        ["Double-Sided Print Run", "per flyer", 0.7, null, { sizes: FLYER_PRINT_SIZES, qty: 250 }],
+        ["Offset Print Run (1,000+)", "per flyer", 0.12, null, { sizes: FLYER_PRINT_SIZES, qty: 1000 }],
+        ["Print Setup & Proofing", "per job", 40],
+      ]),
+      role("Poster Printing (Large Format)", ["poster", "posters", "poster print", "large format", "plotter", "print shop", "banner", "foam board", "lamination", "printing"], [
+        ["Poster Print (satin / matte)", "per poster", 18, null, { sizes: POSTER_PRINT_SIZES, qty: 5 }],
+        ["Laminated / Mounted Poster", "per poster", 34, null, { sizes: POSTER_PRINT_SIZES, qty: 5 }],
+        ["Rush Print (same day)", "per poster", 30, null, { sizes: POSTER_PRINT_SIZES, qty: 3 }],
+        ["Print Setup & Colour Proof", "per job", 35],
+      ]),
+      role("Art Print / Poster Print Seller", ["art print", "poster print", "prints", "giclee", "fine art print", "limited edition", "print sales", "wall art", "editions", "framed print"], [
+        ["Open Edition Print", "per print", 35, null, { sizes: POSTER_PRINT_SIZES, qty: 10 }],
+        ["Signed Limited Edition Print", "per print", 85, null, { sizes: POSTER_PRINT_SIZES, qty: 10 }],
+        ["Framed Print", "per print", 140, null, { sizes: POSTER_PRINT_SIZES, qty: 2 }],
+        ["Print Set (3 prints)", "per set", 90, null, { sizes: POSTER_PRINT_SIZES, qty: 5 }],
+      ]),
+      role("Flyer & Poster Distribution", ["distribution", "flyering", "street team", "handing out", "door to door", "poster posting", "wheatpasting", "promo team", "leafleting"], [
+        ["Hand-Out Shift (4 hours)", "per 4-hr shift", 120, 4],
+        ["Poster Posting Route (up to 50 sites)", "per route", 180, 5],
+        ["Door-to-Door Drop (1,000 flyers)", "per 1,000 flyers", 220, 10, { qty: 1 }],
+        ["Hourly Rate", "per hour", 22],
+      ]),
+    ],
+  },
+
   "Marketing And Advertising": {
     roles: [
       role("Marketing Strategist / Consultant", ["marketing", "strategy", "consultant", "go to market", "gtm", "marketing plan", "advisor"], [
@@ -538,6 +709,49 @@ export const NEW_FIELDS = {
         ["Program Setup", "per project", 2000, 25],
         ["Monthly Management Fee", "per month", 2000, 20],
         ["Hourly Rate", "per hour", 80],
+      ]),
+      role("Media Buyer / Planner", ["media buyer", "media planner", "media buying", "ad buying", "programmatic", "ad placement", "media plan", "tv radio"], [
+        ["Media Buying Fee", "% of ad spend", 12],
+        ["Media Plan", "per plan", 1200, 14],
+        ["Monthly Retainer", "per month", 2000, 24],
+        ["Hourly Rate", "per hour", 85],
+      ]),
+      role("Advertising Copywriter / Creative Concept", ["ad copy", "advertising copywriter", "tagline", "slogan", "ad concept", "script", "headline", "billboard copy", "campaign idea"], [
+        ["Campaign Concept & Taglines", "per campaign", 1200, 14],
+        ["Ad Script (30-60 sec)", "per script", 450, 5],
+        ["Headline / Slogan Set (10 options)", "per set", 300, 4],
+        ["Outdoor / Print Ad Copy", "per ad", 250, 3],
+        ["Hourly Rate", "per hour", 85],
+      ]),
+      role("Direct Response / Funnel Copywriter", ["direct response", "sales page", "funnel", "launch emails", "vsl", "sales letter", "conversion copy", "landing page copy"], [
+        ["Sales Page", "per page", 1800, 20],
+        ["Email Launch Sequence (7 emails)", "per sequence", 2500, 28],
+        ["Video Sales Letter Script", "per script", 2000, 22],
+        ["Performance Bonus", "% of sales", 5],
+        ["Hourly Rate", "per hour", 95],
+      ]),
+      role("Brand Naming / Verbal Identity Writer", ["naming", "brand name", "name generation", "tagline", "brand voice", "messaging", "verbal identity", "tone of voice"], [
+        ["Naming Project (shortlist + checks)", "per project", 3000, 30],
+        ["Tagline / Positioning Statement", "per project", 750, 8],
+        ["Brand Voice & Messaging Guide", "per project", 2500, 28],
+        ["Hourly Rate", "per hour", 90],
+      ]),
+      role("Video Ad Producer / Creative", ["video ad", "commercial", "ad spot", "tv spot", "social video ad", "ugc ad", "pre roll", "ad production"], [
+        ["Short Video Ad (15-30 sec)", "per ad", 1500, 20],
+        ["UGC-Style Ad Batch (5 variations)", "per batch", 900, 14],
+        ["Full Commercial Spot (60 sec)", "per spot", 6000, 70],
+        ["Day Rate", "per day", 700],
+      ]),
+      role("Customer Research Specialist", ["customer research", "survey", "market research", "interviews", "audience research", "focus group", "persona", "voice of customer"], [
+        ["Survey Project (design, run, report)", "per project", 2500, 28],
+        ["Customer Interview", "per interview", 150, 2],
+        ["Research Report & Personas", "per project", 3500, 40],
+        ["Hourly Rate", "per hour", 90],
+      ]),
+      role("Agency Account Manager / Executive", ["account manager", "account executive", "client services", "account director", "agency", "client manager", "project manager"], [
+        ["Monthly Account Management", "per month", 1800, 25],
+        ["Campaign Coordination", "per campaign", 1200, 16],
+        ["Hourly Rate", "per hour", 65],
       ]),
     ],
   },

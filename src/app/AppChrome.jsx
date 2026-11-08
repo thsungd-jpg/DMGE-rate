@@ -12,7 +12,7 @@ import "../styles/appchrome.css";
 const TIER_ICON = { free: IconTierFree, pro: IconTierPro, agency: IconTierAgency };
 
 /** Fixed top bar: brand, editable base rate (calculator only), plan chip, day/night toggle. */
-export function AppTopBar({ tab, userTier, setTab, baseRate, baseRateHasCents, onBaseRateChange }) {
+export function AppTopBar({ tab, userTier, setTab, brand, baseRate, baseRateHasCents, onBaseRateChange }) {
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
   const inputRef = useRef(null);
@@ -28,9 +28,17 @@ export function AppTopBar({ tab, userTier, setTab, baseRate, baseRateHasCents, o
 
   return (
     <header className="app-topbar">
-      <button type="button" className="app-brand" onClick={() => setTab("calc")} aria-label="DMGE, go to calculator">
-        <Wordmark size={19} />
-      </button>
+      {brand?.name || brand?.logo ? (
+        // white-label (Agency): the freelancer's own logo and name replace the DMGE wordmark
+        <button type="button" className="app-brand app-brand--own" onClick={() => setTab("calc")} aria-label={`${brand.name || "Home"}, go to calculator`}>
+          {brand.logo && <img className="app-brand-logo" src={brand.logo} alt="" />}
+          {brand.name && <span className="app-brand-name">{brand.name}</span>}
+        </button>
+      ) : (
+        <button type="button" className="app-brand" onClick={() => setTab("calc")} aria-label="DMGE, go to calculator">
+          <Wordmark size={19} />
+        </button>
+      )}
       <div className="app-topbar-right">
         {tab === "calc" && (
           editing ? (
@@ -57,6 +65,9 @@ export function AppTopBar({ tab, userTier, setTab, baseRate, baseRateHasCents, o
     </header>
   );
 }
+
+/** Focus that came from the keyboard (or a screen reader), not from a mouse click: a click leaves the button focused in Chrome, and that must not hold the dock open. */
+const keyboardFocus = (el) => { try { return el.matches(":focus-visible"); } catch { return true; } };
 
 /** Floating dock + "More" sheet. */
 export function AppDock({ tab, setTab, canViewInsights, onLockedInsights, jobCount, onSignOut }) {
@@ -133,7 +144,7 @@ export function AppDock({ tab, setTab, canViewInsights, onLockedInsights, jobCou
         className="lq-dock-wrap" ref={wrapRef} data-hidden={!shown}
         onPointerEnter={(e) => { if (e.pointerType !== "touch") { hover.current = true; reveal(); } }}
         onPointerLeave={(e) => { if (e.pointerType !== "touch") { hover.current = false; hideSoon(900); } }}
-        onFocus={() => { focused.current = true; reveal(); }}
+        onFocus={(e) => { if (keyboardFocus(e.target)) { focused.current = true; reveal(); } }}
         onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) { focused.current = false; hideSoon(900); } }}
       >
         <FloatingDock position="bottom" items={items} activeId={active} onSelect={select} ariaLabel="App navigation" />

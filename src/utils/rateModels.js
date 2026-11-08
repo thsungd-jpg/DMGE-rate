@@ -72,9 +72,20 @@ export const unitLabel = (model) => String(model?.unit || "").replace("per hour"
 /** The question the quantity stepper answers. */
 export const askQuantity = (model) => `How many ${unitNoun(model).many}?`;
 
+// ── sizes (flyers, posters): a model with `sizes` is priced for its base size, and its rate scales with the size chosen ────────────────────────────────
+
+/** The model's sizes, or null: [{ label, mult, note, base? }]. */
+export const sizesOf = (model) => (Array.isArray(model?.sizes) && model.sizes.length ? model.sizes : null);
+/** The size the model's rate is for. */
+export const baseSize = (model) => { const list = sizesOf(model); return list ? list.find((x) => x.base) || list.find((x) => Number(x.mult) === 1) || list[0] : null; };
+export const defaultSize = (model) => baseSize(model)?.label;
+/** The multiplier for a size label: 1 when the model has no sizes, or for a label it does not have (a job saved before sizes existed). */
+export const sizeMultFor = (model, label) => { const list = sizesOf(model); if (!list) return 1; const hit = list.find((x) => x.label === label) || baseSize(model); return Number(hit.mult) > 0 ? Number(hit.mult) : 1; };
+
 /** A sensible starting quantity for a model (the old default was 2 for everything). */
 export function defaultUnits(model) {
   const u = String(model?.unit || "").toLowerCase();
+  if (Number(model?.qty) > 0) return Number(model.qty); // products sold in bulk say how many a quote starts with (250 flyers)
   if (modelKind(model) === "percent") return 1;
   if (/^per hour$/.test(u)) return 2;
   if (/\bword\b/.test(u)) return 500;
@@ -135,7 +146,7 @@ export const hasOwnRate = (profile) => goalHourly(profile) !== null;
  * `wanted` says what is missing when the chosen way cannot give a number yet ("hours", "goal", "mine", "deal"); the typical start stands in meanwhile.
  * Returns { mode, rate, hours, wanted }.
  */
-export function rateFor({ model, form = {}, profile = {}, own = 0 }) {
+function rawRate({ model, form = {}, profile = {}, own = 0 }) {
   const hours = num(form.hoursPerUnit) || hoursPerUnit(model);
   if (modelKind(model) === "percent" && form.deal) {
     const rate = roundRate((num(form.deal.pct ?? model.base) * num(form.deal.amount)) / 100);
@@ -150,6 +161,15 @@ export function rateFor({ model, form = {}, profile = {}, own = 0 }) {
     return { mode, rate: typical, hours, wanted: hourly ? "hours" : "goal" };
   }
   return { mode, rate: typical, hours, wanted: null };
+}
+
+/**
+ * The base rate a quote uses and how it was reached (see rawRate above), times the size multiplier for a model sold in sizes: the rate you pick or type is for the
+ * base size (a Letter flyer, an 18 x 24 in poster), and a larger or smaller size scales it. Returns { mode, rate, hours, wanted, sizeMult }.
+ */
+export function rateFor(args) {
+  const r = rawRate(args), sm = sizeMultFor(args.model, args.form?.size);
+  return sm === 1 || r.mode === "deal" ? { ...r, sizeMult: 1 } : { ...r, rate: roundRate(r.rate * sm), sizeMult: sm };
 }
 
 /** What each way would give for this model, for labelling the three choices: { typical, goal, mine } each a rateFor() result. */

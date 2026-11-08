@@ -56,12 +56,12 @@ export default function CraftStation({ ctx }) {
     if (next) next.focus(); else if (e.key === "ArrowUp") inputRef.current?.focus();
   };
 
-  const chip = (c, tone) => <Chip key={c.field + c.role} tone={tone} on={isCurrent(c.field, c.role)} sub={prettyCategory(c.field)} onClick={() => pick(c.field, indexOf(c.field, c.role))} {...peek({ name: c.role, text: describeCraft(ALL_DATA[c.field].roles[indexOf(c.field, c.role)]) })}>{c.role}</Chip>;
+  const chip = (c, tone) => <Chip key={c.field + c.role} tone={tone} on={isCurrent(c.field, c.role)} sub={prettyCategory(c.field)} onClick={() => pick(c.field, indexOf(c.field, c.role))} {...peek({ name: c.role, text: describeCraft(ALL_DATA[c.field].roles[indexOf(c.field, c.role)], c.field) })}>{c.role}</Chip>;
 
   return (
     <>
       <div className="qw-in qw-group qw-group--search">
-        <label className="qw-lab" htmlFor="qw-craft-search">Search every craft</label>
+        <label className="qw-sr" htmlFor="qw-craft-search">Search every craft</label>
         <div className="qw-search">
           <IconSearch size={21} />
           <input
@@ -75,7 +75,7 @@ export default function CraftStation({ ctx }) {
         <p className="qw-picked">
           <span>Quoting for</span> <b>{role.name}</b> <i>{prettyCategory(category)}</i>
         </p>
-        <Desc d={dc} selected={{ name: role.name, text: describeCraft(role) }} tone="blue" />
+        <Desc d={dc} selected={{ name: role.name, text: describeCraft(role, category) }} tone="blue" />
       </div>
 
       {q ? (

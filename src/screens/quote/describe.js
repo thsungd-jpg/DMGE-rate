@@ -1,7 +1,7 @@
 // Plain-language descriptions of every choice on the Quote page, so a person always knows exactly what they have picked. Each is { name, text }.
 // The multipliers are the real ones from src/utils/pricing.js (shown beside each name by the controls); these say what they MEAN.
-import { modelKind, unitNoun, EXPERIENCE_DEFAULT } from "../../utils/rateModels";
-import { rateText } from "./common";
+import { baseSize, modelKind, sizesOf, unitNoun, EXPERIENCE_DEFAULT } from "../../utils/rateModels";
+import { prettyCategory, rateText } from "./common";
 
 export const COMPLEXITY = {
   Simple: "Straightforward work with few decisions and little back and forth. Priced 20% below a standard job.",
@@ -64,15 +64,22 @@ export function describeModel(model) {
   else if (kind === "time") text = `One price for each ${noun.one} of your time.`;
   else if (/^flat\b/.test(u)) text = "One fee for the whole job, however long it takes.";
   else text = `One price for each ${noun.one}; you say how many ${noun.many}.`;
-  return `${text} ${start}`;
+  return `${text} ${start}${sizesOf(model) ? " Priced by size: pick one below." : ""}`;
 }
 
-/** A craft in a line: how many ways to charge, and the first few. */
-export function describeCraft(role) {
+/** A size in words: what it is, and what it does to the rate. */
+export function describeSize(model, size) {
+  const base = baseSize(model);
+  const rel = size.mult === 1 ? "This is the size the rate is for." : `Priced ×${size.mult} of the ${base.label} rate.`;
+  return `${size.note || ""} ${rel}`.trim();
+}
+
+/** A craft in a line: its field, how many ways to charge, and the first few. */
+export function describeCraft(role, field) {
   const units = [...new Set(role.models.map((m) => String(m.unit).replace("per hour", "per hr")))];
   const shown = units.slice(0, 3).join(", ");
   const n = role.models.length;
-  return `${n} ${n === 1 ? "way" : "ways"} to charge, like ${shown}${units.length > 3 ? " and more" : ""}.`;
+  return `${field ? prettyCategory(field) + " · " : ""}${n} ${n === 1 ? "way" : "ways"} to charge, like ${shown}${units.length > 3 ? " and more" : ""}.`;
 }
 
 export { EXPERIENCE_DEFAULT };

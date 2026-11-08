@@ -30,17 +30,47 @@ const SIZE = 704;
 // x, y: where the piece sits on the first station (% of the screen); w: its width in vmin; d: depth (how far the camera carries it: 0 stays with the sky);
 // r: its tilt; t: seconds one float takes; o: opacity, for pieces that sit behind text.
 const PIECES = [
-  { src: saturn,   x: 86, y: 27, w: 24, d: 0.55, r: -10, t: 15, ph: { x: 91, y: 57, w: 19 } },
-  { src: planetA,  x: 67, y: 74, w: 15, d: 0.80, r: 0,   t: 18, ph: { x: 76, y: 72, w: 14, o: 0.9 } },
-  { src: planetB,  x: 83, y: 89, w: 9,  d: 0.35, r: 8,   t: 16, o: 0.85, ph: { x: 80, y: 91, w: 12, o: 0.7 } },
-  { src: crescent, x: 95, y: 70, w: 11, d: 0.90, r: 16,  t: 14, ph: { x: 94, y: 80, w: 12 } },
-  { src: bigStar,  x: 60, y: 8,  w: 14, d: 0.60, r: -14, t: 12, ph: { x: 73, y: 5, w: 12 } },
-  { src: wave,     x: 79, y: 90, w: 13, d: 1.10, r: 0,   t: 13, ph: { x: 90, y: 40, w: 11, o: 0.85 } },
-  { src: arc,      x: 64, y: 27, w: 9,  d: 0.70, r: 12,  t: 11, ph: { x: 82, y: 49, w: 9 } },
-  { src: star6,    x: 94, y: 46, w: 8,  d: 0.45, r: -6,  t: 10, ph: { x: 92, y: 66, w: 8 } },
+  { src: saturn,   spin: true, x: 91, y: 21, w: 24, d: 0.55, r: -10, t: 15, ph: { x: 100, y: 52, w: 19, o: 0.5 } },
+  { src: planetA,  spin: true, x: 70, y: 88, w: 15, d: 0.80, r: 0,   t: 18, ph: { x: 96, y: 74, w: 14, o: 0.5 } },
+  { src: planetB,  spin: true, x: 82, y: 94, w: 9,  d: 0.35, r: 8,   t: 16, o: 0.85, ph: { x: 90, y: 93, w: 12, o: 0.45 } },
+  { src: crescent, spin: true, x: 96, y: 66, w: 11, d: 0.90, r: 16,  t: 14, ph: { x: 98, y: 86, w: 12, o: 0.5 } },
+  { src: bigStar,  spin: true, x: 58, y: 9,  w: 15, d: 0.60, r: -14, t: 12, ph: { x: 72, y: 5, w: 12 } },
+  { src: wave,     x: 80, y: 8,  w: 13, d: 1.10, r: 0,   t: 13, ph: { hide: true } },
+  { src: arc,      x: 97, y: 44, w: 9,  d: 0.70, r: 12,  t: 11, ph: { hide: true } },
+  { src: star6,    spin: true, x: 92, y: 86, w: 8,  d: 0.45, r: -6,  t: 10, ph: { x: 97, y: 64, w: 8, o: 0.55 } },
 ];
-const ORB = { x: 73, y: 47, w: 58, d: 1.2 };
-const ORB_PHONE = { x: 86, y: 10, w: 40, d: 1.2 };
+// What each piece does is picked at random, once per visit, so no two are alike: some stay perfectly still, some bob or sway, some turn slowly, some wander a little
+// (and a few do both). Only the planets and stars may spin; the rainbow arc and the wave just bob, sway, wander or rest. Never all alike: at least one is still and at
+// least three move. Reduced motion switches all of it off in world.css.
+const rnd = (a, b) => a + Math.random() * (b - a);
+const pick = (list) => list[Math.floor(Math.random() * list.length)];
+const sign = () => (Math.random() < 0.5 ? -1 : 1);
+const SPINNERS = ["still", "still", "bob", "sway", "spin", "spin", "wander", "spinwander", "spinwander"];
+const OTHERS = ["still", "bob", "sway", "wander", "wander"];
+function motionFor(kind) {
+  const anim = [], vars = {}, delay = () => `${(-rnd(0, 24)).toFixed(1)}s`;
+  if (kind === "bob") anim.push(`qwFloat ${rnd(9, 17).toFixed(1)}s ease-in-out ${delay()} infinite alternate`);
+  if (kind === "sway") { vars["--sw"] = `${rnd(5, 15).toFixed(1)}deg`; anim.push(`qwSway ${rnd(7, 15).toFixed(1)}s ease-in-out ${delay()} infinite alternate`); }
+  if (kind === "spin" || kind === "spinwander") anim.push(`qwSpin ${rnd(28, 95).toFixed(0)}s linear ${delay()} infinite ${Math.random() < 0.5 ? "reverse" : "normal"}`);
+  if (kind === "wander" || kind === "spinwander") {
+    vars["--dx"] = `${(sign() * rnd(1.2, 3.4)).toFixed(2)}vmin`; vars["--dy"] = `${(sign() * rnd(1, 2.8)).toFixed(2)}vmin`;
+    anim.push(`qwDrift ${rnd(16, 38).toFixed(1)}s ease-in-out ${delay()} infinite`);
+  }
+  return { ...vars, ...(anim.length ? { animation: anim.join(", ") } : {}) };
+}
+function pieceMotions() {
+  const kinds = PIECES.map((p) => pick(p.spin ? SPINNERS : OTHERS));
+  if (!kinds.includes("still")) kinds[Math.floor(Math.random() * kinds.length)] = "still";
+  while (kinds.filter((k) => k !== "still").length < 3) { const i = Math.floor(Math.random() * kinds.length); if (kinds[i] === "still") kinds[i] = pick(["bob", "sway", "wander"]); }
+  return kinds.map(motionFor);
+}
+
+// The scene is the right 61.8% of the screen and the content column the left 38.2%: the blob sits at the middle of the scene, and the camera may carry it only a little
+// to the left (so it never goes behind the column) and further to the right. On the other screens it is smaller and tucked into the lower right.
+const ORB = { x: 69, y: 45, w: 58, d: 1.2 };
+const ORB_CALM = { x: 88, y: 72, w: 36, d: 0.4 };
+const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+const ORB_PHONE = { x: 88, y: 3, w: 34, d: 1.2 }; // tucked into the top corner, behind the buttons, clear of the title (measured: no title line enters the blob on any step or page, 320 to 430 px wide)
 const ORB_PHONE_PRICE = { x: 98, y: 44, w: 78, d: 1.2 };
 
 // One camera position per station (Craft, Job, Rate, Who, Rights, Extras, Price): pan (% of the screen), zoom, spin of the pieces, and the jelly's pose.
@@ -60,6 +90,9 @@ const reducedMotion = () => typeof window !== "undefined" && window.matchMedia?.
 export default function Stage({ scene = 0, calm = false }) {
   const root = useRef(null), skyEl = useRef(null), orbEl = useRef(null), orbCanvas = useRef(null), bloomEl = useRef(null), pieceEls = useRef([]);
   const sceneRef = useRef(scene), apply = useRef(() => {}), pose = useRef({ v: CAMERA[scene].pose }), seq = useRef(null);
+  const calmRef = useRef(calm); calmRef.current = calm;
+  const motions = useRef(null);
+  if (!motions.current) motions.current = pieceMotions();
   const turns = useRef(0), prevScene = useRef(scene), fade = useRef(null); // the orb takes one turn per station change (forward or back) and dips softly in opacity as it goes
 
   useEffect(() => {
@@ -76,18 +109,20 @@ export default function Stage({ scene = 0, calm = false }) {
       PIECES.forEach((base, n) => {
         const p = phone ? { ...base, ...base.ph } : base; // phones: the top is left to the text, so the pieces sit lower and at the edges
         const node = pieceEls.current[n];
-        node.style.width = p.w * u * k + "px";
-        go(node, { x: (p.x + cam.x * p.d) * W / 100, y: (p.y + cam.y * p.d) * H / 100, rotation: p.r + cam.spin * p.d, scale: 1 + (cam.z - 1) * p.d * 1.5, opacity: p.o ?? 1 });
+        node.style.width = (p.w || base.w) * u * k + "px";
+        go(node, { x: (p.x + cam.x * p.d) * W / 100, y: (p.y + cam.y * p.d) * H / 100, rotation: p.r + cam.spin * p.d, scale: 1 + (cam.z - 1) * p.d * 1.5, opacity: p.hide ? 0 : (p.o ?? 1) * (calmRef.current && !phone ? 0.6 : 1) });
       });
       const last = i === CAMERA.length - 1;
       // On a phone the text fills the width, so the orb tucks into the top corner (behind the buttons) and only comes forward, large, behind the price.
-      const o = phone ? (last ? ORB_PHONE_PRICE : ORB_PHONE) : ORB;
+      const calmNow = calmRef.current && !phone;
+      const o = phone ? (last && !calmRef.current ? ORB_PHONE_PRICE : ORB_PHONE) : calmNow ? ORB_CALM : ORB;
       const reach = phone ? 0.25 : 1; // how far the camera carries it
       orbEl.current.style.width = orbEl.current.style.height = o.w * u + "px";
-      const ox = (o.x + cam.x * o.d * reach) * W / 100, oy = (o.y + cam.y * o.d * reach) * H / 100;
-      go(orbEl.current, { x: ox, y: oy, rotation: cam.spin * 0.6 + turns.current * 360, scale: phone ? 1 : (1 + (cam.z - 1) * o.d * 1.3) * (last ? 1.1 : 1) });
+      const lift = last && !calmNow && !phone ? 3 : 0; // behind the price it comes a little forward and to the right
+      const ox = (o.x + lift + clamp(cam.x * o.d * reach, -3, 5)) * W / 100, oy = (o.y + clamp(cam.y * o.d * reach, phone ? 0 : -5, 5)) * H / 100; // on a phone it may sink a little with the camera but never rise out of sight behind the top bar
+      go(orbEl.current, { x: ox, y: oy, rotation: cam.spin * 0.6 + turns.current * 360, scale: phone ? 1 : (1 + (cam.z - 1) * o.d * 0.8) * (last && !calmNow ? 1.06 : 1) });
       el.style.setProperty("--bx", (ox / W * 100).toFixed(1) + "%"); el.style.setProperty("--by", (oy / H * 100).toFixed(1) + "%");
-      go(bloomEl.current, { opacity: last ? 1 : 0 });
+      go(bloomEl.current, { opacity: last && !calmRef.current ? 1 : 0 });
       if (animate) gsap.to(pose.current, { v: cam.pose, duration: 1.15, ease: "power2.inOut", overwrite: "auto", onUpdate: () => seqq.show(pose.current.v) });
       else { pose.current.v = cam.pose; seqq.show(cam.pose); }
     };
@@ -118,7 +153,7 @@ export default function Stage({ scene = 0, calm = false }) {
     }
     prevScene.current = scene; sceneRef.current = scene;
     apply.current(scene, animate);
-  }, [scene]);
+  }, [scene, calm]);
 
   return createPortal(
     <div className={"qw-stage" + (calm ? " qw-stage--calm" : "")} ref={root} aria-hidden="true">
@@ -127,7 +162,7 @@ export default function Stage({ scene = 0, calm = false }) {
       <div className="qw-bloom" ref={bloomEl} />
       {PIECES.map((p, n) => (
         <div className="qw-piece" key={n} ref={(node) => { pieceEls.current[n] = node; }}>
-          <img src={p.src} alt="" style={{ "--d": p.d, "--t": p.t + "s" }} />
+          <img src={p.src} alt="" style={{ "--d": p.d, ...motions.current[n] }} />
         </div>
       ))}
       <div className="qw-orb" ref={orbEl}><canvas ref={orbCanvas} /></div>

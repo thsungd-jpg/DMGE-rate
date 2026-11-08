@@ -1,9 +1,11 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { Card, EmptyState, Screen, Segmented, Stat } from "../components/kit";
 import { PBtn } from "../components/ui";
-import { IconDownload, IconJobs, IconLock, IconPlus } from "../icons";
+import { IconDownload, IconJobs, IconLock, IconPlus, IconSend } from "../icons";
 import { canExportCSV, canExportPDF, TIERS } from "../utils/subscription";
 import JobCard from "./history/JobCard";
+import BulkSend from "./history/BulkSend";
+import { BATCH_MAX } from "./history/bulkInvoices";
 import useJobActions from "./history/useJobActions";
 import { fmtMoney, normalizeStatus, STATUS_META } from "./history/statusModel";
 import "./history.css";
@@ -27,6 +29,13 @@ export default function HistoryScreen({ ctx }) {
   } = ctx;
 
   const actions = useJobActions(ctx);
+
+  // "Send several": tick the jobs whose invoices should go out, review, send (see history/BulkSend.jsx). Paid jobs have nothing left to send.
+  const [selecting, setSelecting] = useState(false);
+  const [picked, setPicked] = useState(() => new Set());
+  const [reviewing, setReviewing] = useState(false);
+  const togglePick = (id) => setPicked((s) => { const n = new Set(s); if (n.has(id)) n.delete(id); else n.add(id); return n; });
+  const stopSelecting = () => { setSelecting(false); setPicked(new Set()); setReviewing(false); };
 
   const clientById = useMemo(() => {
     const m = new Map();
@@ -75,6 +84,9 @@ export default function HistoryScreen({ ctx }) {
 
   const headerActions = hasJobs ? (
     <>
+      <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={() => (selecting ? stopSelecting() : setSelecting(true))} aria-pressed={selecting}>
+        <IconSend size={16} /> {selecting ? "Done choosing" : "Send several"}
+      </PBtn>
       <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={handleGatedCSV} aria-label={csvLocked ? "Export CSV (upgrade to unlock)" : "Export CSV"}>
         <IconDownload size={16} /> Export CSV {csvLocked && <IconLock size={14} />}
       </PBtn>
@@ -129,11 +141,20 @@ export default function HistoryScreen({ ctx }) {
             )}
           </div>
 
+          {selecting && (
+            <div className="jb-selbar" role="region" aria-label="Choose the invoices to send">
+              <span className="jb-selcount" role="status">{picked.size} selected{picked.size > BATCH_MAX ? ` (${BATCH_MAX} go at a time)` : ""}</span>
+              <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={() => setPicked(new Set(visible.filter((r) => r.status !== "completed").map((r) => r.j.id)))}>Select all unpaid</PBtn>
+              <PBtn small color="var(--butter)" disabled={picked.size === 0} onClick={() => setReviewing(true)}><IconSend size={16} /> Review &amp; send</PBtn>
+              <PBtn small color="var(--paper)" className="lq-btn--neutral" onClick={stopSelecting}>Cancel</PBtn>
+            </div>
+          )}
+
           <p className="jb-sr" role="status">{visible.length} {visible.length === 1 ? "job" : "jobs"} shown</p>
 
           {visible.length > 0 ? (
             <ul className="jb-list">
-              {visible.map(({ j }, i) => (
+              {visible.map(({ j, status }, i) => (
                 <li key={j.id} style={{ "--i": Math.min(i, 8) }}>
                   <JobCard
                     job={j}
@@ -141,6 +162,7 @@ export default function HistoryScreen({ ctx }) {
                     ctx={ctx}
                     actions={actions}
                     pdfLocked={pdfLocked}
+                    pick={selecting && status !== "completed" ? { checked: picked.has(j.id), onChange: () => togglePick(j.id) } : null}
                   />
                 </li>
               ))}
@@ -166,6 +188,7 @@ export default function HistoryScreen({ ctx }) {
           )}
         </p>
       )}
+      {reviewing && <BulkSend jobs={rows.filter((r) => picked.has(r.j.id)).map((r) => r.j)} ctx={ctx} onClose={stopSelecting} />}
     </Screen>
   );
 }

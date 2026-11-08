@@ -7,7 +7,7 @@ import { fmtMoney, isValidDate, normalizeStatus, STATUS_META, STATUS_ORDER } fro
 
 // One job: reference + status, client / role, amount, due line, actions, and a status control.
 // All behavior comes from ctx handlers and from `actions` (useJobActions).
-export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
+export default function JobCard({ job: j, client, ctx, actions, pdfLocked, pick = null }) {
   const { fmtDate, handleDeleteJob, handleEditJob, handleGatedPDF, handleSendQuote, userTier } = ctx;
   const [pay, setPay] = useState({ busy: false, msg: "", error: false });
 
@@ -38,6 +38,12 @@ export default function JobCard({ job: j, client, ctx, actions, pdfLocked }) {
   return (
     <Card as="article" className="jb-card" data-status={status} aria-busy={busy || undefined} aria-label={`${label}, ${meta.label}`}>
       <div className="jb-head">
+        {pick && (
+          <label className="jb-pick">
+            <input type="checkbox" checked={pick.checked} onChange={pick.onChange} />
+            <span className="jb-sr">Select {label} to send its invoice</span>
+          </label>
+        )}
         <p className="jb-ref">
           <span className="jb-num">{j.invoiceNumber || "Estimate"}</span>
           {day(j.date) && (

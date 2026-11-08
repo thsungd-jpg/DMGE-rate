@@ -110,7 +110,7 @@ decides what is shown when. `?classic=1` still shows the earlier boxed screen (i
 ### The Quote page for almost any creator: Craft search, a Rate step, My crafts (2026-11-06)
 The owner wanted "almost any kind of creator" to come here and work out the best rate to charge or get paid. The Craft and Job steps grew, and a new **Rate** step sits between
 Job and Who. Pricing itself (`calcPrice`, `buildInvoiceFigures`, tiers, the invoice maths) is untouched: everything new ends in a base rate and a number of units.
-- **Data, 23 fields / 137 roles / 537 pricing models (was 13 / 61):** `src/data/` holds `featuredCrafts.js` (the old inline block, same first models), `creatorRoles.js`
+- **Data, now 26 fields / 182 roles / 734 pricing models (13 / 61 before this work; 23 / 137 / 537 when this section was first written):** `src/data/` holds `featuredCrafts.js` (the old inline block, same first models), `creatorRoles.js`
   (10 new fields and roles added to three existing ones), `roleKeywords.js` (search words for the existing roles), `wageAnchors.js` (BLS wages) and `allRoles.js` (merges them
   with `src/processed_roles.json`). **Append-only:** saved jobs and templates find a role and model by *name*, so nothing is renamed or removed; the cleanup of the JSON changed
   only `unit` text and `base` values (about 20 models: a talent agent's "commission" was a $50 placeholder, now 10 "% of gross"; three salary models are "per year"). Starter rates
@@ -143,6 +143,40 @@ Job and Who. Pricing itself (`calcPrice`, `buildInvoiceFigures`, tiers, the invo
 - **Price ledger:** after the price, "How we got your fair price" lists each step from rate x quantity through every multiplier and add-on with a running total, then how Budget (80%) and Premium (130%) come from it. It is built from `buildInvoiceFigures` (the invoice maths) and is hidden rather than shown if it ever disagreed with the price. Small jobs show the $50 minimum.
 - **The blob:** one turn and a soft dip in opacity on every move to a new station or page (forward or back); none with reduced motion. `Stage.jsx`.
 - **The other pages (Jobs, Templates, Clients, Insights, Profile, Plans, How it works):** same scene, kept logic. The scene now lives in `App.jsx` (one `Stage` for all of them; the camera moves between pages: `PAGE_SCENE`), and `src/world/pages.css` (scoped to `.wp`) dresses what the kit renders: Showtoon titles, cream paper cards with tape, toy buttons, paper filter chips. Inside a card the colour tokens are flipped to the light set at night, so forms and pills keep working; Insights keeps night glass cards because its charts read the theme colours from `:root`. Checked: no sideways overflow at 320 and 820 px on every page, contrast scan clean after fixing placeholders and loose pills, phone and day mode looked at. **Not done:** the invoice editor (a document view), per-page bespoke touches, a real phone.
+
+### Type, proportion, white-label, print jobs, bulk invoices (2026-11-07)
+- **Type (all SIL OFL 1.1, self-hosted in `src/world/assets/fonts/` with their licence texts):** Modak for the big titles (the closest open-licence match to the cartoon face first
+  used, whose licence was never verified: at x1.22 it has the same letter height and the same width; its files are gone from the repo), Titan One for figures and card headings, Nunito
+  for text. `--font-display` and `--font-mono` are overridden only inside the scene (`.qw*`, `.wp`) and the top bar's rate pill, so the DMGE wordmark, the landing, sign-in, invoices and
+  PDFs are unchanged. Titles spring in and the glowing word pops then drifts; the blob turns once and dips in opacity on every move; planets and stars each get a random behaviour
+  per visit (still, bob, sway, slow spin, wander, spin and wander; the arc and wave never spin; at least one still, three moving). Reduced motion stops all of it.
+- **Golden ratio:** `world.css` tokens. Space is Fibonacci (5, 8, 13, 21, 34, 55). Type steps by the 4th root of 1.618 from 16px (12.6, 14.2, 16, 18.1, 20.4, 26 ... titles 68px = 16 x
+  1.618^3). The content column is 38.2% of the screen (the scene the other 61.8%), the blob sits at the middle of the scene and the camera may carry it only 3% left (never behind the
+  column); on the other screens it is smaller and tucked into the lower right. Body line-height is about 1.6. Repeated text was removed: each choice set had a hint plus the description,
+  the craft step said the field twice.
+- **White-label (Agency):** `src/utils/brandTheme.js` turns the Branding card's colours into `--brand-*` variables on `<html>` (background -> scene, text -> titles, surface -> paper and
+  cards, accent -> the glowing word and primary buttons), checking WCAG contrast and replacing any colour that would not read (the card says so). The brand name and logo replace the DMGE
+  wordmark in the top bar and the browser tab. `brandProfile` (App.jsx) blanks the branding for plans that are not Agency, and is what invoices, PDFs and emails use. The invoice sheet no
+  longer carries DMGE's own addresses as defaults, and an Agency invoice has no "Made with DMGE" line. The old `--pixel-*` colour variables nothing read are gone.
+- **Jobs:** a Graphic Design & Visual Communication field (20 roles: logo, brand guidelines, art and creative director, editorial layout, book covers, social graphics, thumbnails, posters,
+  infographics, ad creative, signage, exhibits, motion, icons and merch, patterns, stationery, menus, mascots, prepress), seven advertising roles in Marketing & Advertising (media buying, ad
+  copy, funnel copy, naming, video ads, customer research, account management), and a Print Services field (flyer printing, poster printing, art print seller, flyer and poster distribution).
+- **Sizes:** a model can carry `sizes` (`src/data/printSizes.js`): its rate is for the base size (A4 / Letter flyer, 18 x 24 in poster) and a larger or smaller size scales it, in every way
+  of starting. The multiplier lives in `rateFor` (the price engine is untouched), is saved on the job as `sizeMult`, so a job reopens on the same rate, and shows as its own ledger step and
+  on the invoice line. `qty` sets how many a quote starts with (250 flyers). The designer's poster and flyer models gained sizes at their old rate (the base size).
+- **Send several invoices (Jobs):** "Send several" ticks unpaid jobs, "Review & send" lists who gets what (clients without an email are held back with the reason), and sends them one after
+  another with progress, Stop, and Try again for failures. Each invoice is the same PDF, subject and function as a single send, marks the job Sent, and counts against the plan's daily PDF
+  allowance (up to 25 a run). `src/screens/history/BulkSend.jsx`, `bulkInvoices.js`. In the dev mock session nothing is ever emailed.
+- **Fixed on the way:** the page-enter animation left a transform on the page after it played, which turned every `position: fixed` thing inside a screen into a page-sized box (a dialog
+  opened from Jobs landed off screen); it now leaves nothing behind (`styles/kit.css`).
+- **Final pass, found on phone and light renders and with real pointer input:** a mouse click on a dock item left it focused and the dock never tucked away again (only keyboard focus,
+  `:focus-visible`, holds it open now); dialogs opened inside a page were under the fixed top bar and dock (they hide while any dialog is open, `styles/base.css`), and the send-several
+  dialog keeps its Send bar in view on phones and short screens; the check badge on a selected chip covered the last letter of long labels (moved out, chips padded, and the stress run now
+  measures badge-to-text clearance on every role and model); on phones the blob sat behind the end of titles (now tucked into the top corner and measured clear of every title on every step
+  and page at 320 to 430 px wide). The design detector reports advisory notes only across eight pages, two themes and two viewport sizes. A stress run over every role and pricing model at
+  320 and 390 px (and the first and last model of each role at 390, 820 and 1280) found two more: the three price tiles side by side left about 70 px per figure on a phone, so a price over
+  $999 ran off the screen (now full-width rows, and long figures scale down, tested from $196 to $2.4 million at seven widths), and a long field name crowded the check badge at 320 px (one
+  column of fields below 360 px). The price ledger now ends on the same whole-dollar figure as the tiles and says so when it rounded cents.
 
 ## 4. Asset pipeline
 1. **Generate** pieces in Higgsfield (GPT Image 2.5 sunburst xhigh 4K, explicit aspect ratios), one object per image on a

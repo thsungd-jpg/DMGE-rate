@@ -1,5 +1,5 @@
 /* The other screens in the scrapbook world (Jobs, Templates, Clients, Insights, Profile, Plans, Tutorial). They keep their own markup and logic; this file only dresses
-   what the shared kit renders (src/components/kit.jsx, src/components/ui.jsx): titles in Titan One on the scene, and every card as a cream paper piece. Scoped to .wp, so
+   what the shared kit renders (src/components/kit.jsx, src/components/ui.jsx): titles in Modak on the scene (section headings in Titan One), and every card as a cream paper piece. Scoped to .wp, so
    nothing outside these screens changes. Tokens (--qw-*) come from world.css.
    .wp--paper: cards are cream in both themes, by flipping the app's colour tokens inside the card (so every form, pill and button inside keeps working).
    .wp--glass: cards keep the theme's own colours (night glass), for screens that draw charts to <canvas> from those colours. */
@@ -7,13 +7,19 @@
 .wp { position: relative; z-index: 1; }
 
 /* ── on the scene: title, eyebrow, subtitle, section titles ── */
-.wp .kit-screen { max-width: 1000px; margin: 0; padding-left: clamp(18px, 7vw, 112px); padding-right: clamp(16px, 4vw, 40px); }
+.wp .kit-screen { max-width: max(720px, 61.8vw); margin: 0; padding-left: clamp(18px, 7vw, 112px); padding-right: clamp(16px, 4vw, 40px); }
 .wp .kit-screen--wide { max-width: 1280px; }
-.wp .kit-title { font: 400 clamp(32px, 4vw, 60px)/1 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); }
+.wp .kit-title { font: 400 clamp(44px, 4.7vw, 68px)/1 "Modak", "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance; color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); }
 :root[data-theme="light"] .wp .kit-title { text-shadow: none; }
 .wp .kit-title em { font-style: normal; letter-spacing: .01em; color: var(--qw-accent); }
-.wp .kit-eyebrow { color: var(--qw-label); }
-.wp .kit-sub { color: var(--qw-copy); }
+.wp .kit-eyebrow { color: var(--qw-label); font-size: var(--fs-1); font-weight: 800; }
+.wp .kit-sub { color: var(--qw-copy); font-size: clamp(var(--fs-3), 1.42vw, var(--fs-5)); line-height: 1.6; }
+.wp .kit-head { margin-bottom: var(--s5); }
+.wp .kit-title { margin-bottom: 0; }
+.wp .kit-sub { margin-top: var(--s3); }
+.wp .kit-sectiontitle { margin: var(--s6) 0 var(--s3); }
+.wp .kit-pad-md { padding: clamp(var(--s3), 2.4vw, var(--s4)); }
+.wp .kit-pad-lg { padding: clamp(var(--s4), 3.4vw, var(--s5)); }
 .wp .kit-sectiontitle h2 { font: 400 clamp(24px, 2.6vw, 32px)/1.05 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; color: var(--qw-title); }
 .wp .kit-screen .jb-note { color: var(--qw-copy); }
 .wp .kit-screen .jb-quota { display: inline-block; padding: 5px 12px; border-radius: 999px; color: var(--qw-ink); background: var(--qw-piece); box-shadow: 0 2px 0 var(--qw-lip); } /* it can land on the blob */
@@ -68,11 +74,16 @@
 
 /* plans and insights need room for their grids */
 .wp-pricing .kit-screen, .wp-analytics .kit-screen { max-width: 1200px; }
-.wp .kit-stat-value { white-space: nowrap; font-size: clamp(30px, 3.4vw, 48px); }
+/* figures and card headings on every screen use the playful face; it is wider and heavier than the serif they were tuned for, so ease the tracking and the largest sizes */
+.wp :is(.jb-client, .jb-money, .cli-card-stats b, .cli-card-h, .cli-form-h, .plans-manage-text h2, .plan-name, .plan-amount, .cmp-head, .cmp-val, .kit-row-aside, .kit-empty h3, .tpl-base b) { letter-spacing: -.005em; }
+.wp .jb-money { font-size: clamp(28px, 3.6vw, 42px); }
+.wp .plan-amount { font-size: clamp(44px, 4.6vw, 56px); }
+.wp .kit-empty h3 { font-size: clamp(22px, 2.6vw, 30px); }
+.wp .kit-stat-value { white-space: nowrap; font-size: clamp(26px, 3vw, 40px); letter-spacing: -.01em; }
 
 @media (max-width: 700px) {
   .wp .kit-screen { padding: 118px 16px 150px; }
-  .wp .kit-title { font-size: clamp(36px, 11.2vw, 52px); }
+  .wp .kit-title { font-size: clamp(44px, 13.6vw, 64px); }
 }
 @media (prefers-reduced-motion: reduce) {
   .wp .lq-btn, .wp .kit-seg-btn { transition-duration: .01s !important; }

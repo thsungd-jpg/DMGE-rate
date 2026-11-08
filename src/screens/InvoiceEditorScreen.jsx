@@ -139,7 +139,7 @@ export default function InvoiceEditorScreen({ ctx }) {
         </Card>
 
         <div className="iv-sheet-wrap">
-          <DMGEInvoiceEditor job={job} profile={profile} clients={clients} onUpdate={handleUpdate} />
+          <DMGEInvoiceEditor job={job} profile={ctx.brandProfile || profile} whiteLabel={!!ctx.whiteLabel} clients={clients} onUpdate={handleUpdate} />
         </div>
       </div>
     </Screen>

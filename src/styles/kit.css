@@ -95,7 +95,8 @@ button.kit-row:hover { transform: translateY(-2px); box-shadow: var(--sh-2); }
 
 /* page enter animation, applied by the shell when the screen changes */
 @keyframes kitPageIn { from { opacity: 0; transform: translateY(18px) scale(0.985); } to { opacity: 1; transform: none; } }
-.kit-page-enter { animation: kitPageIn 0.7s var(--ease-out) both; }
+/* "backwards", not "both": once it has played the page must have no transform left, or every position:fixed thing inside it (dialogs, bars) is placed against the page, not the screen */
+.kit-page-enter { animation: kitPageIn 0.7s var(--ease-out) backwards; }
 @media (prefers-reduced-motion: reduce) { .kit-page-enter { animation: none; } }
 
 /* Touch targets: phones and coarse pointers get 44px minimums on the compact controls */

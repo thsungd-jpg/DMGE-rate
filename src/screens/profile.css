@@ -146,3 +146,9 @@
 .rf-preset[aria-pressed="true"] { background: var(--butter); border-color: transparent; color: var(--on-fill); }
 .rf-note { margin: 0; font-size: 13px; color: var(--ink-2); }
 @media (pointer: coarse), (max-width: 640px) { .rf-preset { min-height: 44px; } }
+
+/* the brand preview mirrors the app: scene, a paper piece, the accent button */
+.prof-note { margin: 0; font: 600 var(--fs-2, 14px)/1.5 var(--font-body); color: var(--ink-2); }
+.prof-preview-head { display: flex; align-items: center; gap: 10px; padding: 18px 20px 8px; font: 400 26px/1 var(--font-display); text-transform: uppercase; }
+.prof-preview-head img { height: 30px; width: auto; max-width: 90px; object-fit: contain; border-radius: 6px; }
+.prof-preview-btn { display: inline-flex; align-items: center; margin-top: 6px; padding: 8px 18px; border-radius: 999px; font: 800 13px/1 var(--font-body); box-shadow: 0 3px 0 rgba(0,0,0,.25); }

@@ -24,7 +24,7 @@ export function buildInvoiceItems(job) {
   items.push({
     id: "primary",
     desc: `${job.role} - ${job.category}`,
-    note: `${job.model} (${detail})`,
+    note: `${job.model}${job.size ? ` · ${job.size}` : ""} (${detail})`,
     qty,
     rate: Math.round((creative / qty) * 100) / 100,
     amount: creative,

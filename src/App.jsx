@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef, Suspense } from "react";
 import rolesData from "./processed_roles.json";
 import { buildRoleData } from "./data/allRoles";
 import { withCustomCrafts, addCraft, removeCraft, craftPayload, CUSTOM_FIELD } from "./utils/customCrafts";
-import { rateFor, defaultUnits, modelKind } from "./utils/rateModels";
+import { rateFor, defaultUnits, defaultSize, modelKind } from "./utils/rateModels";
 import { exportJobsToCSV } from "./utils/csvExport";
 import { generateInvoicePDF } from "./utils/pdfExport";
 import { supabase } from "./utils/supabaseClient";
@@ -16,6 +16,8 @@ import { createInvoicePayLink, PAY_LINK_ENABLED } from "./utils/payments";
 import { redirectToCheckout, redirectToBillingPortal, invokeEdgeFunction, getValidSession } from "./utils/stripe";
 import { calcPrice, hasLicensing } from "./utils/pricing";
 import { CATEGORY_THEMES, getMashupTheme, CARTRIDGE } from "./utils/themeUtils";
+import { brandTokens, applyBrand } from "./utils/brandTheme";
+import { useTheme } from "./styles/theme";
 import CalcScreen from "./screens/CalcScreen";
 import QuoteJourney from "./screens/QuoteJourney";
 import Stage from "./world/Stage";
@@ -436,6 +438,25 @@ export default function App() {
   };
   const userTier = (subscription?.tier || 'free').toLowerCase();
 
+  // White-label (Agency): the brand name, logo and colours from Profile > Branding. Everything a client or the app shows goes through these, so a plan that is not
+  // Agency (or one that was downgraded) shows DMGE's own look: `brandProfile` is the profile with the branding blanked, and is what invoices, PDFs and emails use.
+  const whiteLabel = canWhiteLabel(userTier);
+  const [theme] = useTheme();
+  const brandName = whiteLabel ? String(profile.branding?.companyName || "").trim() : "";
+  const brandLogo = whiteLabel ? profile.branding?.logoBase64 || "" : "";
+  const brandProfile = useMemo(
+    () => (whiteLabel ? profile : { ...profile, branding: { ...profile.branding, companyName: "", logoBase64: "", bgColor: "", surfaceColor: "", textColor: "", accentColor: "" } }),
+    [whiteLabel, profile]
+  );
+  // the app's own colours (scene, paper, accent), unless switched off on the Branding card; contrast is guarded in brandTokens
+  const brand = useMemo(
+    () => (whiteLabel && profile.branding?.overrideThemes !== false ? brandTokens(profile.branding, { dark: theme !== "light" }) : null),
+    [whiteLabel, profile.branding, theme]
+  );
+  useEffect(() => { applyBrand(document.documentElement, brand); return () => applyBrand(document.documentElement, null); }, [brand]);
+  const defaultTitle = useRef(typeof document !== "undefined" ? document.title : "");
+  useEffect(() => { document.title = brandName || defaultTitle.current; return () => { document.title = defaultTitle.current; }; }, [brandName]);
+
   // Base Rate Editing State
   const [isEditingBase, setIsEditingBase] = useState(false);
   const [baseRateInputStr, setBaseRateInputStr] = useState("");
@@ -633,6 +654,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     setForm((f) => ({
       ...f,
       units: defaultUnits(newModel),
+      size: defaultSize(newModel), // flyers and posters: the size the rate is for
       rateMode: undefined,
       hoursPerUnit: undefined,
       deal: modelKind(newModel) === "percent" ? { pct: newModel.base, amount: "" } : undefined,
@@ -680,6 +702,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
   function handleReset() {
     setForm({
       units: defaultUnits(model),
+      size: defaultSize(model),
       complexity: "Standard",
       usage: "Personal",
       rush: false,
@@ -727,6 +750,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         ...form,
         baseRate,
         rateMode: rate.mode, // how the rate was reached (typical, goal, mine, deal); a saved job reopens on its own rate whatever this says
+        sizeMult: rate.sizeMult, // baseRate already includes this (a 24 x 36 in poster is the base rate x 1.8); kept so the job can be reopened
         category,
         role: role.name,
         model: model.type,
@@ -807,7 +831,8 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       if (mIdx >= 0) setModelIdx(mIdx);
     }
 
-    setOwnRate(j.baseRate || 25); // a saved job reopens on the rate it was saved with (see rateMode below)
+    // a saved job reopens on the rate it was saved with (see rateMode below); its baseRate includes any size multiplier, which rateFor applies again, so take it out here
+    setOwnRate(Math.round(((j.baseRate || 25) / (j.sizeMult || 1)) * 10000) / 10000);
 
     // Restore materials and custom items
     const qtys = {};
@@ -858,6 +883,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
       model: model.type,
       customCraft: role.custom ? craftPayload(role) : undefined,
       baseRate,
+      sizeMult: rate.sizeMult,
       form,
       materials: [
         ...mats.filter(m => (matQtys[m.name] || 0) > 0).map(m => ({ ...m, cost: matPriceOverrides[m.name] ?? m.cost, qty: matQtys[m.name] })),
@@ -925,13 +951,57 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     window.location.reload();
   }
 
+  // Emailing one job's invoice without opening the editor: the same PDF, subject and function as "Invoice & email" (the editor flow below), used by "Send invoices" to
+  // send several at once. In the dev mock session the PDF is made but nothing is ever sent.
+  async function emailInvoiceFor(job, { to, message = "" }) {
+    const catD = ALL_DATA[job.category] || Object.values(ALL_DATA)[0];
+    const pdfBase64 = await generateInvoicePDF(job, brandProfile, clients, catD, true, null, null);
+    if (devMock) { // dev only: no email leaves the browser; one job can be made to fail (localStorage rateapp_dev_fail_send = its id) to try the failure path
+      if (localStorage.getItem("rateapp_dev_fail_send") === String(job.id)) throw new Error("Simulated failure (dev mock)");
+      return;
+    }
+    const session = await getValidSession();
+    if (!session?.access_token) throw new Error("You must be signed in to send invoices.");
+    const invNum = job.invoiceNumber ? ` #${job.invoiceNumber}` : "";
+    const data = await invokeEdgeFunction("send-invoice", {
+      to,
+      subject: `Invoice${invNum} for ${job.role} - ${job.category}`,
+      message: message || "Please find your invoice attached.",
+      pdfBase64,
+      pdfName: `${job.invoiceNumber || "INV"}_${job.role.replace(/\s+/g, "_")}.pdf`,
+      fromName: brandName || profile.companyName || profile.name?.trim() || "DMGE Invoicing",
+    }, session.access_token);
+    if (data?.error) throw new Error(data.error);
+  }
+
+  // After an invoice went out: the job is "Sent" (the same change as the Sent button on a job card).
+  async function markJobSent(id) {
+    const all = await loadJobs(userTier, currentUser);
+    const rec = all.find((x) => String(x.id) === String(id));
+    if (!rec) return;
+    rec.status = "in_progress"; rec.invoiceStatus = "sent"; rec.sentAt = new Date().toISOString();
+    await saveJob(rec, userTier, currentUser);
+    setJobs(await loadJobs(userTier, currentUser));
+  }
+
+  // Each emailed invoice makes a PDF, and PDFs are what a plan's daily allowance counts.
+  async function addPdfCount(n) {
+    const d = pdfQuotaDayKey();
+    const prev = profile.pdfQuota?.day === d ? profile.pdfQuota.count : 0;
+    const next = { day: d, count: prev + n };
+    const p = { ...profile, pdfQuota: next };
+    setProfile(p);
+    setTodayPdfCount(next.count);
+    await saveProfile(p, userTier, currentUser);
+  }
+
   async function handleGatedPDF(j) {
     if (!canExportPDF(userTier, todayPdfCount)) {
       setUpgradeFeature('pdf');
       setShowUpgradeModal(true);
       return;
     }
-    generateInvoicePDF(j, profile, clients, ALL_DATA[j.category] || catData);
+    generateInvoicePDF(j, brandProfile, clients, ALL_DATA[j.category] || catData);
     const d = pdfQuotaDayKey();
     const prev = profile.pdfQuota?.day === d ? profile.pdfQuota.count : 0;
     const next = { day: d, count: prev + 1 };
@@ -968,7 +1038,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         if (mIdx >= 0) setModelIdx(mIdx);
       }
     }
-    setOwnRate(t.baseRate);
+    setOwnRate(Math.round((t.baseRate / (t.sizeMult || 1)) * 10000) / 10000);
     setForm({ ...t.form, rateMode: t.form?.deal ? undefined : "mine" }); // a template keeps the rate it was saved with
 
     const restoredQtys = {};
@@ -1037,7 +1107,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
           payUrl = await createInvoicePayLink(selectedJobForEmail.id);
         } catch (e) { console.info("[invoice] no pay link:", e.message); }
       }
-      const pdfBase64 = await generateInvoicePDF(selectedJobForEmail, profile, clients, catD, true, invoiceEditorData, payUrl);
+      const pdfBase64 = await generateInvoicePDF(selectedJobForEmail, brandProfile, clients, catD, true, invoiceEditorData, payUrl);
 
       const invoicePayload = {
         to: emailForm.to,
@@ -1046,7 +1116,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
         message: [emailForm.message || "Please find your invoice attached.", payUrl ? `Pay online by card: ${payUrl}` : ""].filter(Boolean).join("\n\n"),
         pdfBase64: pdfBase64,
         pdfName: `${selectedJobForEmail.invoiceNumber || 'INV'}_${selectedJobForEmail.role.replace(/\s+/g, '_')}.pdf`,
-        fromName: profile.companyName || profile.name?.trim() || "DMGE Invoicing"
+        fromName: brandName || profile.companyName || profile.name?.trim() || "DMGE Invoicing"
       };
       const session = await getValidSession();
       if (!session?.access_token) throw new Error('You must be signed in to send invoices.');
@@ -1099,19 +1169,16 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
 
     // White-label colors only count when the user really customised them: the old retro defaults saved in existing
   // profiles (#1A1A1A, #0A0A0A, #FFB347, #E91E63) are treated as unset so they do not fight the new look.
-  const LEGACY_BRAND_DEFAULTS = ["#1a1a1a", "#0a0a0a", "#ffb347", "#e91e63"];
   const worldScreen = (tab === "calc" && !CLASSIC_CALC) || tab in PAGE_SCENE; // screens painted over the scrapbook scene
-  const brandColor = (key) => {
-    const v = profile.branding?.[key];
-    const custom = canWhiteLabel(userTier) && profile.branding?.overrideThemes !== false && v && !LEGACY_BRAND_DEFAULTS.includes(String(v).toLowerCase());
-    return custom ? v : null;
-  };
 
   // Everything the extracted screens need, in one bag (see src/screens/*).
   const ctx = {
     ALL_DATA,
     addCustomCraft,
+    addPdfCount,
     advanceGlow,
+    brandProfile,
+    whiteLabel,
     baseRate,
     catData,
     category,
@@ -1122,6 +1189,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     customMaterials,
     deleteTarget,
     emailForm,
+    emailInvoiceFor,
     emailStatus,
     filteredJobs,
     fmtDate,
@@ -1150,6 +1218,7 @@ VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...`}
     loadClientsFromStorage,
     loadJobs,
     loadTemplatesFromStorage,
+    markJobSent,
     matPriceOverrides,
     matQtys,
     materialSummary,
@@ -1240,25 +1309,20 @@ return (
         .app-wrapper { overflow-wrap: break-word; word-break: normal; }
         @media (max-width: 768px) { .app-wrapper { overflow-x: hidden !important; } }
 
-        :root {
-          --pixel-bg: ${brandColor("bgColor") || "var(--cream)"};
-          --pixel-surface: ${brandColor("surfaceColor") || "var(--paper)"};
-          --pixel-text: ${brandColor("textColor") || "var(--ink)"};
-          --pixel-accent: ${brandColor("accentColor") || "var(--pink)"};
-        }
       `}</style>
 
       {worldScreen
-        ? <Stage scene={tab === "calc" ? scene : PAGE_SCENE[tab]} />
+        ? <Stage scene={tab === "calc" ? scene : PAGE_SCENE[tab]} calm={tab !== "calc"} />
         : <React.Suspense fallback={null}><AppLiquid tab={tab} /></React.Suspense>}
 
       <AppTopBar
         tab={tab}
         userTier={userTier}
         setTab={setTab}
+        brand={{ name: brandName, logo: brandLogo }}
         baseRate={baseRate}
         baseRateHasCents={baseRateHasCents}
-        onBaseRateChange={(n) => { setOwnRate(n); setForm((f) => ({ ...f, rateMode: "mine", deal: undefined })); setPrice(null); }}
+        onBaseRateChange={(n) => { setOwnRate(Math.round((n / (rate.sizeMult || 1)) * 10000) / 10000); setForm((f) => ({ ...f, rateMode: "mine", deal: undefined })); setPrice(null); }}
       />
 
       <div className="app-wrapper" style={{
@@ -1269,11 +1333,7 @@ return (
         position: "relative",
         zIndex: 1,
         fontFamily: "var(--font-body)",
-        color: "var(--pixel-text)",
-        "--pixel-surface": brandColor("surfaceColor") || "var(--paper)",
-        "--pixel-accent": brandColor("accentColor") || "var(--pink)",
-        "--pixel-text": brandColor("textColor") || "var(--ink)",
-        "--pixel-bg": brandColor("bgColor") || "var(--cream)",
+        color: "var(--ink)",
       }}>
         {/* each tab remounts on change and eases in while the liquid flies out and back in */}
         <div className={"app-stage" + (tab === "calc" && !CLASSIC_CALC ? "" : " kit-page-enter") + (tab in PAGE_SCENE ? ` wp wp-${tab} wp--${tab === "analytics" ? "glass" : "paper"}` : "")} key={tab}>

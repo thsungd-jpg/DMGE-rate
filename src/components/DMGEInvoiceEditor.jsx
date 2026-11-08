@@ -81,7 +81,7 @@ function NumField({ value, onCommit, label, prefix = "", className = "", ...rest
   );
 }
 
-export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate }) {
+export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate, whiteLabel = false }) {
   profile = profile || {};
   const client = (clients || []).find(c => c.id === job.clientId) || { name: "Client name / company", email: "", phone: "", address: "", city: "" };
   const uid = useId();
@@ -93,7 +93,7 @@ export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate }) {
     issuedDate: job.invoiceDate ? new Date(job.invoiceDate).toLocaleDateString() : new Date().toLocaleDateString(),
     dueDate: job.dueDate ? new Date(job.dueDate).toLocaleDateString() : new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toLocaleDateString(),
     status: STATUS_FROM_JOB[normalizeStatus(job)],
-    fromName: profile.companyName || profile.name || "DMGE Rate System",
+    fromName: (profile.branding?.companyName || "").trim() || profile.companyName || profile.name || "DMGE Rate System",
     fromAddress: [profile.companyAddress, profile.companyEmail, profile.companyPhone].filter(Boolean).join("\n")
       || "Your street address\nCity, State ZIP\nyou@example.com\n+1 (000) 000-0000",
     toName: client.name || "Client name / company",
@@ -103,12 +103,15 @@ export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate }) {
     discount: 0,
     taxRate: 0,
     notes: job.notes || "Thank you for your business.\nReach out with any questions\nregarding this invoice.",
+    // the freelancer's own payment details; never DMGE's address (a placeholder they overwrite when there is nothing saved)
     paymentDetails: [
-      profile.paypalEmail || !profile.paymentInstructions
-        ? { key: "PayPal", val: profile.paypalEmail || "pay@dmgeratesystem.com" }
-        : { key: "Payment", val: profile.paymentInstructions }
+      profile.paypalEmail
+        ? { key: "PayPal", val: profile.paypalEmail }
+        : profile.paymentInstructions
+          ? { key: "Payment", val: profile.paymentInstructions }
+          : { key: "Payment", val: "Add your payment details here" }
     ],
-    footerNote: "questions? hello@dmgeratesystem.com"
+    footerNote: profile.companyEmail ? `Questions? ${profile.companyEmail}` : "Thank you for your business."
   }));
 
   // A different job replaces the line items (the rest of the sheet keeps what was typed).
@@ -181,6 +184,7 @@ export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate }) {
 
   const branding = profile.branding || {};
   const brandName = (branding.companyName || "").trim() || "DMGE Rate System";
+  const whiteLabelBrand = whiteLabel && !!((branding.companyName || "").trim() || branding.logoBase64); // an Agency invoice with their brand carries no DMGE line
   const onlyOne = invoiceData.items.length <= 1;
 
   return (
@@ -324,7 +328,7 @@ export default function DMGEInvoiceEditor({ job, profile, clients, onUpdate }) {
         </div>
       </section>
 
-      <footer className="iv-page-foot">Made with DMGE</footer>
+      {!whiteLabelBrand && <footer className="iv-page-foot">Made with DMGE</footer>}
     </div>
   );
 }

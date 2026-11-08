@@ -30,3 +30,8 @@
   .app-tier { padding: 0 11px; }
 }
 
+
+/* white-label brand in the top bar: their logo (kept to the bar's height) and name */
+.app-brand--own { display: inline-flex; align-items: center; gap: 10px; max-width: min(46vw, 320px); }
+.app-brand-logo { display: block; height: 28px; width: auto; max-width: 96px; object-fit: contain; border-radius: 6px; }
+.app-brand-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 800 16px/1 var(--font-body); letter-spacing: .01em; color: var(--ink); }

@@ -103,11 +103,15 @@ export const IconRings = (p) => (<Icon {...p}><circle cx="9" cy="14" r="4.500" /
 export const IconCamera = (p) => (<Icon {...p}><path d="M4 8.500A1.500 1.500 0 0 1 5.500 7H8l1.200-2h5.600L16 7h2.500A1.500 1.500 0 0 1 20 8.500v9a1.500 1.500 0 0 1-1.500 1.500h-13A1.500 1.500 0 0 1 4 17.500z" /><circle cx="12" cy="12.800" r="3.400" /></Icon>);
 export const IconHeart = (p) => (<Icon {...p}><path d="M12 20s-7-4.400-7-10a4 4 0 0 1 7-2.600A4 4 0 0 1 19 10c0 5.600-7 10-7 10z" /></Icon>);
 
+export const IconPenNib = (p) => (<Icon {...p}><path d="M12 21v-7.500" /><path d="M12 13.500c-3.200 0-5.500-2.600-5.500-6.300L12 3l5.500 4.200c0 3.700-2.300 6.300-5.500 6.300z" /><circle cx="12" cy="8.800" r="1.100" fill="currentColor" /></Icon>);
+export const IconPrinter = (p) => (<Icon {...p}><path d="M7 9V4h10v5" /><rect x="4" y="9" width="16" height="8" rx="2" /><path d="M7 14h10v6H7z" /><circle cx="16.500" cy="11.500" r=".7" fill="currentColor" /></Icon>);
 export const IconMegaphone = (p) => (<Icon {...p}><path d="M4 10v4a1 1 0 0 0 1 1h2.500l7 4V5l-7 4H5a1 1 0 0 0-1 1z" /><path d="M18 9.500a3.500 3.500 0 0 1 0 5" /><path d="M8 15l1 4.500h2L10.500 16" /></Icon>);
 
 export const getCategoryIcon = (name) => {
   const n = name.toLowerCase();
+  if (n.includes("print services")) return IconPrinter;
   if (n.includes("marketing")) return IconMegaphone;
+  if (n.includes("graphic design")) return IconPenNib;
   if (n.includes("creator")) return IconCreator;
   if (n.includes("design and ux")) return IconDesign;
   if (n.includes("games")) return IconGames;

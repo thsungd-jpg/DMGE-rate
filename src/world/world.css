@@ -2,7 +2,9 @@
    By day it is the same world on cream paper. Content sits directly on the scene; controls are little paper pieces (control style B) that lift on hover and press down
    on click. Everything here is scoped to .qw-stage, .qw and .qw-bar so no other screen changes. */
 
-/* Titan One (titles) and Nunito (everything else): both SIL Open Font License 1.1, self-hosted; licence texts sit beside the files in ./assets/fonts */
+/* Modak (big titles), Titan One (small headings) and Nunito (everything else): all SIL Open Font License 1.1, self-hosted; licence texts sit beside the files in ./assets/fonts.
+   Modak is the closest open-licence match to the cartoon face the app first used: sized x1.22 it has the same letter height and the same width. */
+@font-face { font-family: "Modak"; src: url("./assets/fonts/Modak.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Titan One"; src: url("./assets/fonts/TitanOne.woff2") format("woff2"); font-weight: 400; font-display: swap; }
 @font-face { font-family: "Nunito"; src: url("./assets/fonts/Nunito.woff2") format("woff2"); font-weight: 400 800; font-display: swap; }
 
@@ -19,7 +21,18 @@
   --qw-lip: rgba(0, 0, 0, .46);   /* the thin edge under a piece */
   --qw-drop: rgba(0, 0, 0, .72);  /* its soft shadow */
   --qw-dock: 84px;           /* room kept for the floating dock */
-  --qw-gap: clamp(18px, 2.7vh, 26px);
+  --qw-gap: var(--s4);
+  /* the golden ratio (1.618) as the scale. Space is Fibonacci; type steps by phi^(1/4) from 16px (so every fourth step is x1.618); the content column is 38.2% of the screen and
+     the scene the other 61.8%. */
+  --s1: 5px; --s2: 8px; --s3: 13px; --s4: 21px; --s5: 34px; --s6: 55px;
+  --fs-1: 12.6px; --fs-2: 14.2px; --fs-3: 16px; --fs-4: 18.1px; --fs-5: 20.4px; --fs-6: 26px;
+}
+@media (min-width: 701px) and (min-height: 760px) { .qw-stage, .qw, .qw-bar, .qw-scrim, .wp { --qw-gap: var(--s5); } }
+/* the type of the scene: figures and headings share the titles' playful family (Titan One), small labels use Nunito, so nothing reads as the old serif and mono.
+   Scoped here (and to the rate pill in the top bar) on purpose: the DMGE wordmark, the landing and sign-in keep their own look. */
+.qw-stage, .qw, .qw-bar, .qw-scrim, .wp, .app-rate {
+  --font-display: "Titan One", "Nunito", system-ui, sans-serif;
+  --font-mono: "Nunito", system-ui, sans-serif;
 }
 :root[data-theme="light"] .qw-stage, :root[data-theme="light"] .qw, :root[data-theme="light"] .qw-bar, :root[data-theme="light"] .qw-scrim, :root[data-theme="light"] .wp {
   --qw-sky: #FFF6E8;
@@ -53,9 +66,12 @@
     radial-gradient(40vmax 32vmax at 56% 112%, rgba(155, 240, 200, .32), transparent 60%);
 }
 .qw-piece { position: absolute; left: 0; top: 0; will-change: transform; }
-.qw-piece img { display: block; width: 100%; height: auto; opacity: .92; transform: translate(calc(var(--px) * var(--d, .5) * -30px), calc(var(--py) * var(--d, .5) * -30px));
-  animation: qwFloat var(--t, 15s) ease-in-out infinite alternate; }
-@keyframes qwFloat { from { margin-top: -9px; rotate: -3deg; } to { margin-top: 11px; rotate: 4deg; } }
+/* what each piece does (still, bob, sway, spin, wander) is chosen at random in Stage.jsx and arrives as an inline `animation`; here are only the keyframes */
+.qw-piece img { display: block; width: 100%; height: auto; opacity: .92; transform: translate(calc(var(--px) * var(--d, .5) * -30px), calc(var(--py) * var(--d, .5) * -30px)); }
+@keyframes qwFloat { from { translate: 0 -9px; rotate: -3deg; } to { translate: 0 11px; rotate: 4deg; } }
+@keyframes qwSway { from { rotate: calc(var(--sw, 8deg) * -1); } to { rotate: var(--sw, 8deg); } }
+@keyframes qwSpin { to { rotate: 360deg; } }
+@keyframes qwDrift { 0%, 100% { translate: 0 0; } 28% { translate: var(--dx, 2vmin) var(--dy, -1.5vmin); } 55% { translate: calc(var(--dx, 2vmin) * -.7) calc(var(--dy, -1.5vmin) * .6); } 80% { translate: calc(var(--dx, 2vmin) * .3) calc(var(--dy, -1.5vmin) * -1.1); } }
 :root[data-theme="light"] .qw-piece img { opacity: .8; filter: saturate(1.05) drop-shadow(0 10px 14px rgba(43, 33, 64, .22)); }
 
 .qw-orb { position: absolute; left: 0; top: 0; will-change: transform; }
@@ -75,11 +91,11 @@
 /* a screen change fades in (opacity only: a transform here would turn the fixed bar into a child of the page) */
 .qw { animation: qwIn .6s var(--ease-out) both; }
 @keyframes qwIn { from { opacity: 0; } }
-.qw-col { max-width: 680px; }
+.qw-col { max-width: min(100%, max(520px, 38.2vw)); }
 .qw-top { position: absolute; top: clamp(70px, 9.5vh, 84px); right: clamp(14px, 3vw, 28px); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; justify-content: flex-end; z-index: 2; }
 .qw-editing { display: inline-flex; align-items: center; min-height: 36px; padding: 0 14px; border-radius: 999px; background: var(--pink); color: var(--qw-ink); font: 700 13px/1 var(--font-body); box-shadow: 0 3px 0 var(--tone-lip, #D9709E), 0 10px 14px -8px var(--qw-drop); }
 
-.qw-title { margin: 0 0 12px; font: 400 clamp(36px, 4.7vw, 72px)/1 "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
+.qw-title { margin: 0 0 var(--s3); font: 400 clamp(44px, 4.7vw, 68px)/1 "Modak", "Titan One", var(--font-display), sans-serif; letter-spacing: .01em; text-transform: uppercase; text-wrap: balance;
   color: var(--qw-title); text-shadow: 0 4px 40px rgba(5, 3, 13, .55); outline: none; }
 :root[data-theme="light"] .qw-title { text-shadow: none; }
 .qw-title em { font-style: normal; color: var(--qw-accent); }
@@ -90,24 +106,24 @@
 .qw-title, .wp .kit-title { transform-origin: 0 75%; animation: qwTitleIn .75s var(--ease-spring) both; }
 .qw-title em, .wp .kit-title em { display: inline-block; animation: qwPop .85s var(--ease-spring) .2s both, qwBob 6s ease-in-out 1.2s infinite alternate; }
 @media (prefers-reduced-motion: reduce) { .qw-title, .wp .kit-title, .qw-title em, .wp .kit-title em { animation: none; } }
-.qw-hint { margin: 0 0 var(--qw-gap); max-width: 34em; font: 500 clamp(15px, 1.35vw, 18px)/1.55 var(--font-body); color: var(--qw-copy); text-wrap: pretty; }
+.qw-hint { margin: 0 0 var(--qw-gap); max-width: 100%; font: 500 clamp(var(--fs-3), 1.42vw, var(--fs-5))/1.6 var(--font-body); color: var(--qw-copy); text-wrap: pretty; }
 .qw-body { display: grid; gap: var(--qw-gap); justify-items: start; }
-.qw-group { display: grid; gap: 12px; justify-items: start; min-width: 0; max-width: 100%; }
-.qw-lab { margin: 0; font: 700 12px/1.2 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--qw-label); }
-.qw-small { margin: 0; max-width: 34em; font: 500 14px/1.5 var(--font-body); color: var(--qw-copy); }
-.qw-row { display: flex; flex-wrap: wrap; gap: 12px 11px; max-width: 100%; }
+.qw-group { display: grid; gap: var(--s3); justify-items: start; min-width: 0; max-width: 100%; }
+.qw-lab { margin: 0; font: 800 var(--fs-1)/1.2 var(--font-body); letter-spacing: .14em; text-transform: uppercase; color: var(--qw-label); }
+.qw-small { margin: 0; max-width: 34em; font: 500 var(--fs-2)/1.6 var(--font-body); color: var(--qw-copy); }
+.qw-row { display: flex; flex-wrap: wrap; gap: var(--s3); max-width: 100%; }
 .qw-sr { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* ───────────── controls: little paper pieces ───────────── */
 :where(.qw) :is(button, input, textarea) { font: inherit; } /* zero weight, so every piece's own font wins */
-.qw-chip { position: relative; display: inline-flex; align-items: center; gap: 9px; min-height: 46px; max-width: 100%; padding: 9px 16px 10px;
+.qw-chip { position: relative; display: inline-flex; align-items: center; gap: 9px; min-height: 46px; max-width: 100%; padding: 9px 19px 10px 17px; /* the extra right keeps the label clear of the check badge */
   color: var(--qw-ink); text-align: left; background: var(--qw-piece); border: 0; border-radius: 22px; cursor: pointer;
   box-shadow: 0 3px 0 var(--qw-lip), 0 14px 18px -10px var(--qw-drop);
   transform: rotate(var(--r, 0deg)); transition: transform .3s var(--ease-spring), box-shadow .3s var(--ease-out), background-color .2s;
   -webkit-tap-highlight-color: transparent; }
-.qw-row > .qw-chip:nth-child(3n + 1) { --r: -1.3deg; }
-.qw-row > .qw-chip:nth-child(3n + 2) { --r: .9deg; }
-.qw-row > .qw-chip:nth-child(3n) { --r: -.4deg; }
+.qw-row > .qw-chip:nth-child(3n + 1) { --r: -.7deg; }
+.qw-row > .qw-chip:nth-child(3n + 2) { --r: .5deg; }
+.qw-row > .qw-chip:nth-child(3n) { --r: -.25deg; }
 .qw-chip:hover { transform: translateY(-4px) rotate(0) scale(1.04); box-shadow: 0 7px 0 var(--qw-lip), 0 22px 24px -10px var(--qw-drop); }
 .qw-chip:active { transform: translateY(2px) rotate(0) scale(.98); box-shadow: 0 1px 0 var(--qw-lip), 0 6px 10px -6px var(--qw-drop); transition-duration: .08s; }
 .qw-chip[aria-pressed="true"] { background: var(--tone); box-shadow: 0 3px 0 var(--tone-lip), 0 0 28px -2px color-mix(in srgb, var(--tone) 60%, transparent), 0 14px 18px -10px var(--qw-drop); }
@@ -117,7 +133,7 @@
 .qw-chip-txt b { font: 700 15px/1.15 var(--font-body); }
 .qw-chip-txt small { font: 500 12px/1.1 var(--font-mono); letter-spacing: .02em; color: var(--qw-ink-2); }
 .qw-chip[aria-pressed="true"] small { color: color-mix(in srgb, var(--qw-ink) 82%, var(--tone)); }
-.qw-tick { position: absolute; top: -7px; right: -5px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--qw-ink);
+.qw-tick { position: absolute; top: -9px; right: -9px; width: 22px; height: 22px; display: grid; place-items: center; border-radius: 50%; color: #fff; background: var(--qw-ink);
   box-shadow: 0 0 0 2px var(--qw-piece); transform: scale(0) rotate(-40deg); transition: transform .3s var(--ease-spring); }
 .qw-chip[aria-pressed="true"] .qw-tick { transform: scale(1) rotate(0); }
 :root[data-theme="light"] .qw-tick { box-shadow: 0 0 0 2px var(--qw-piece); }
@@ -132,7 +148,7 @@
   box-shadow: 0 5px 0 var(--tone-lip), 0 14px 16px -8px var(--qw-drop); transition: transform .25s var(--ease-spring), box-shadow .25s var(--ease-out); -webkit-tap-highlight-color: transparent; }
 .qw-round:hover { transform: translateY(-2px) rotate(-5deg); }
 .qw-round:active { transform: translateY(4px); box-shadow: 0 1px 0 var(--tone-lip), 0 4px 8px -4px var(--qw-drop); transition-duration: .08s; }
-.qw-num { width: 116px; height: 64px; padding: 0 8px; text-align: center; font: 400 46px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink);
+.qw-num { width: 116px; height: 64px; padding: 0 8px; text-align: center; font: 400 38px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink);
   background: var(--qw-piece); border: 0; border-radius: 18px; box-shadow: inset 0 3px 9px rgba(43, 33, 64, .2), 0 3px 0 var(--qw-lip); -moz-appearance: textfield; appearance: textfield; }
 .qw-num::-webkit-outer-spin-button, .qw-num::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
@@ -152,9 +168,9 @@
 .qw-ghost { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 6px; border: 0; background: none; cursor: pointer; font: 700 14px/1 var(--font-body); color: var(--qw-copy); text-decoration: underline; text-underline-offset: 4px; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); }
 .qw-ghost:hover { color: var(--qw-title); }
 /* what a choice means: a short note under the chips, tinted in the tone of what is picked, with a small dot of it */
-.qw-desc { position: relative; min-height: 3.2em; max-width: 34em; margin: 2px 0 0; padding: 10px 16px 11px 34px; border-radius: 16px;
-  background: color-mix(in srgb, var(--tone, var(--butter)) 14%, transparent); font: 500 14px/1.5 var(--font-body); color: var(--qw-copy); }
-.qw-desc::before { content: ""; position: absolute; left: 15px; top: 17px; width: 9px; height: 9px; border-radius: 50%; background: var(--tone, var(--butter)); box-shadow: 0 0 10px color-mix(in srgb, var(--tone, var(--butter)) 70%, transparent); }
+.qw-desc { position: relative; min-height: 3.4em; max-width: 34em; margin: 0; padding: var(--s3) var(--s4) var(--s3) var(--s5); border-radius: 16px;
+  background: color-mix(in srgb, var(--tone, var(--butter)) 14%, transparent); font: 500 var(--fs-2)/1.6 var(--font-body); color: var(--qw-copy); }
+.qw-desc::before { content: ""; position: absolute; left: 14px; top: 20px; width: 9px; height: 9px; border-radius: 50%; background: var(--tone, var(--butter)); box-shadow: 0 0 10px color-mix(in srgb, var(--tone, var(--butter)) 70%, transparent); }
 .qw-desc b { color: var(--qw-title); font-weight: 700; }
 .qw-desc:empty { display: none; }
 /* a link inside a sentence */
@@ -178,25 +194,23 @@
 .qw-search-x { flex: none; display: grid; place-items: center; width: 40px; height: 40px; padding: 0 0 2px; border: 0; border-radius: 50%; cursor: pointer; color: var(--qw-ink); background: var(--qw-piece-2);
   font: 700 24px/1 var(--font-body); box-shadow: 0 2px 0 var(--qw-lip); }
 .qw-search-x:active { transform: translateY(2px); box-shadow: none; }
-.qw-picked { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; margin: 2px 0 0; font: 500 14px/1.45 var(--font-body); color: var(--qw-copy); }
-.qw-picked b { font: 700 15px/1.3 var(--font-body); color: var(--qw-title); }
-.qw-picked i { font-style: normal; color: var(--qw-label); }
-.qw-browse { display: grid; gap: var(--qw-gap); justify-items: start; max-width: 100%; margin-top: 6px; }
+.qw-picked { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; } /* said once, in the note below; kept for screen readers */
+.qw-browse { display: grid; gap: var(--s4); justify-items: start; max-width: 100%; margin-top: 6px; }
 
 /* the job: models grouped by how they charge */
-.qw-kind { display: grid; gap: 10px; justify-items: start; max-width: 100%; }
-.qw-sublab { margin: 6px 0 0; font: 600 12px/1 var(--font-mono); letter-spacing: .04em; color: var(--qw-label); }
+.qw-kind { display: grid; gap: var(--s2); justify-items: start; max-width: 100%; }
+.qw-sublab { margin: 0; font: 700 var(--fs-1)/1 var(--font-body); letter-spacing: .04em; color: var(--qw-label); }
 .qw-keep { margin: 0; max-width: 34em; font: 500 15px/1.5 var(--font-body); color: var(--qw-copy); }
 .qw-keep b { color: var(--qw-title); font-weight: 700; }
 
 /* a dollar amount: the sign on the scene, the number on paper */
 .qw-money { display: inline-flex; align-items: center; gap: 10px; }
-.qw-money-sign { font: 400 44px/1 var(--font-display); color: var(--qw-title); }
+.qw-money-sign { font: 400 38px/1 var(--font-display); color: var(--qw-title); }
 .qw-num.qw-num--money { width: min(56vw, 250px); padding: 0 18px; text-align: left; font-size: 40px; }
 
 /* the rate step: the base rate on a paper note, and the sourced quick check */
 .qw-rate { min-width: min(100%, 340px); }
-.qw-rate-num { display: block; font: 400 clamp(52px, 6.4vw, 84px)/.95 var(--font-display); letter-spacing: -.03em; font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink); overflow-wrap: anywhere; }
+.qw-rate-num { display: block; font: 400 clamp(44px, 5.4vw, 70px)/1 var(--font-display); letter-spacing: -.01em; font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink); overflow-wrap: anywhere; }
 .qw-rate-num small { margin-left: 10px; font: 600 15px/1 var(--font-mono); letter-spacing: 0; color: var(--qw-ink-2); }
 .qw-check { width: min(100%, 600px); }
 .qw-check p { margin: 8px 0 0; font: 500 14.5px/1.5 var(--font-body); color: var(--qw-ink); }
@@ -238,7 +252,7 @@
 .qw-tag[aria-expanded="true"] small { color: var(--qw-ink); }
 .qw-tag.is-set small::before { content: ""; display: inline-block; width: 7px; height: 7px; margin-right: 6px; border-radius: 50%; background: var(--tone-lip); vertical-align: 1px; }
 
-.qw-paper { position: relative; width: min(100%, 560px); padding: 22px 22px 24px; color: var(--qw-ink); background: var(--qw-piece); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .45));
+.qw-paper { position: relative; width: min(100%, 560px); padding: var(--s4); color: var(--qw-ink); background: var(--qw-piece); filter: drop-shadow(0 14px 16px rgba(0, 0, 0, .45));
   clip-path: polygon(0 2%, 4% 0, 38% 1.5%, 72% 0, 100% 2.5%, 99% 97%, 64% 99%, 30% 100%, 3% 98%); transform: rotate(-.5deg); }
 :root[data-theme="light"] .qw-paper { filter: drop-shadow(0 12px 14px rgba(43, 33, 64, .3)); }
 .qw-paper::before { content: ""; position: absolute; top: 4px; left: 42%; width: 86px; height: 20px; background: rgba(255, 233, 138, .9); transform: rotate(-3deg); }
@@ -272,12 +286,12 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
 .qw-sq:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--tone-lip, #5FC79A); }
 
 /* the price: a paper note with the total, three tier tags, and what you keep */
-.qw-note { position: relative; width: fit-content; min-width: min(100%, 380px); max-width: min(100%, 520px); padding: 20px 30px 22px; color: var(--qw-ink); background: var(--qw-piece); filter: drop-shadow(0 18px 20px rgba(0, 0, 0, .5));
+.qw-note { position: relative; width: fit-content; min-width: min(100%, 380px); max-width: min(100%, 520px); padding: var(--s4) var(--s5); color: var(--qw-ink); background: var(--qw-piece); filter: drop-shadow(0 18px 20px rgba(0, 0, 0, .5));
   clip-path: polygon(0 3%, 5% 0, 40% 2%, 70% 0, 100% 3%, 98% 100%, 60% 98%, 30% 100%, 2% 97%); transform: rotate(.8deg); }
 :root[data-theme="light"] .qw-note { filter: drop-shadow(0 16px 18px rgba(43, 33, 64, .32)); }
 .qw-note::before { content: ""; position: absolute; top: 6px; left: 40%; width: 96px; height: 22px; background: rgba(255, 233, 138, .9); transform: rotate(-4deg); }
 .qw-note .qw-paper-lab { margin-top: 12px; }
-.qw-total { display: block; font: 400 clamp(64px, 8vw, 108px)/.92 var(--font-display); letter-spacing: -.03em; font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink); overflow-wrap: anywhere; }
+.qw-total { display: block; font: 400 clamp(50px, 6.4vw, 90px)/1 var(--font-display); font-size: calc(clamp(50px, 6.4vw, 90px) * var(--fit, 1)); letter-spacing: -.01em; font-variant-numeric: lining-nums tabular-nums; color: var(--qw-ink); overflow-wrap: anywhere; }
 .qw-stamp { position: absolute; top: 24px; right: 22px; padding: 6px 12px 7px; border-radius: 10px; color: var(--qw-ink); background: var(--tone); font: 700 12px/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
   box-shadow: 0 2px 0 var(--tone-lip); transform: rotate(6deg); }
 .qw-keep { margin: 0; max-width: 34em; font: 500 15px/1.5 var(--font-body); color: var(--qw-copy); }
@@ -286,14 +300,14 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
 .qw-split > div { padding: 10px 16px 11px; border-radius: 14px; color: var(--qw-ink); background: var(--mint); box-shadow: 0 3px 0 #5FC79A, 0 12px 16px -10px var(--qw-drop); transform: rotate(-.8deg); }
 .qw-split > div:nth-child(2) { transform: rotate(.9deg); background: var(--lilac); box-shadow: 0 3px 0 #9A86E0, 0 12px 16px -10px var(--qw-drop); }
 .qw-split dt { font: 700 11px/1 var(--font-body); letter-spacing: .1em; text-transform: uppercase; color: var(--qw-ink-2); }
-.qw-split dd { margin: 6px 0 0; font: 400 28px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+.qw-split dd { margin: 6px 0 0; font: 400 24px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
 .qw-tiers { display: flex; flex-wrap: wrap; gap: 14px 12px; }
 .qw-tier { display: grid; gap: 4px; min-width: 132px; padding: 14px 20px 16px; text-align: left; border: 0; border-radius: 20px; cursor: pointer; color: var(--qw-ink);
   background: var(--qw-piece); box-shadow: 0 3px 0 var(--qw-lip), 0 14px 18px -10px var(--qw-drop); transform: rotate(var(--r, 0deg)); transition: transform .3s var(--ease-spring), box-shadow .3s; -webkit-tap-highlight-color: transparent; }
 .qw-tiers > .qw-tier:nth-child(1) { --r: -1.4deg; } .qw-tiers > .qw-tier:nth-child(2) { --r: .6deg; } .qw-tiers > .qw-tier:nth-child(3) { --r: -.8deg; }
 .qw-tier:hover { transform: translateY(-4px) rotate(0) scale(1.03); }
 .qw-tier-name { display: inline-flex; align-items: center; gap: 5px; font: 700 11px/1 var(--font-body); letter-spacing: .12em; text-transform: uppercase; color: var(--qw-ink-2); }
-.qw-tier b { font: 400 34px/1 var(--font-display); letter-spacing: -.02em; font-variant-numeric: lining-nums tabular-nums; }
+.qw-tier b { font: 400 28px/1 var(--font-display); font-size: calc(28px * var(--fit, 1)); letter-spacing: -.01em; font-variant-numeric: lining-nums tabular-nums; }
 .qw-tier small { font: 500 12px/1.2 var(--font-body); color: var(--qw-ink-2); }
 .qw-tier[aria-pressed="true"] { background: var(--tone); transform: translateY(-5px) rotate(0) scale(1.05); box-shadow: 0 4px 0 var(--tone-lip), 0 0 30px -2px color-mix(in srgb, var(--tone) 60%, transparent), 0 20px 24px -10px var(--qw-drop); }
 .qw-tier[aria-pressed="true"] .qw-tier-name, .qw-tier[aria-pressed="true"] small { color: var(--qw-ink); }
@@ -304,16 +318,18 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
 
 /* the price breakdown: a ledger on paper */
 .qw-how { width: min(100%, 620px); }
+.qw-how-head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--s3); }
+.qw-how-head .qw-paper-lab { margin: 0 0 var(--s2); }
 .qw-how-list { margin: 8px 0 14px; padding: 0; list-style: none; }
 .qw-how-list li { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; padding: 9px 0; border-bottom: 1px dashed rgba(43, 33, 64, .22); }
 .qw-how-list b { font: 700 14.5px/1.3 var(--font-body); color: var(--qw-ink); }
 .qw-how-list small { display: block; margin-top: 2px; font: 500 12.5px/1.4 var(--font-body); color: var(--qw-ink-2); }
 .qw-how-num { display: flex; align-items: baseline; gap: 10px; flex: none; text-align: right; }
 .qw-how-num i { font: 500 12px/1 var(--font-mono); font-style: normal; color: var(--qw-ink-2); }
-.qw-how-num b { font: 400 22px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
+.qw-how-num b { font: 400 19px/1 var(--font-display); font-variant-numeric: lining-nums tabular-nums; }
 .qw-how-total { border-bottom: 0 !important; padding-top: 14px !important; }
 .qw-how-total b:first-child { font-size: 16px; }
-.qw-how-total .qw-how-num b { font-size: 30px; }
+.qw-how-total .qw-how-num b { font-size: 25px; }
 
 /* ───────────── the bar: back, where you are, next ───────────── */
 .qw-scrim { position: fixed; left: 0; right: 0; bottom: 0; height: calc(var(--qw-dock) + 86px); z-index: 30; pointer-events: none;
@@ -347,8 +363,8 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
   .qw-top .qw-paperbtn { width: 44px; padding: 0; justify-content: center; }
   .qw-top .qw-paperbtn span { display: none; }
   .qw-stop-name, .qw-stop[aria-current="step"] .qw-stop-name { display: none; }
-  .qw-title { font-size: clamp(36px, 11.2vw, 52px); }
-  .qw-hint, .qw-small { max-width: calc(100% - 46px); } /* lines end before the pieces that sit at the screen's edge */
+  .qw-title { font-size: clamp(44px, 13.6vw, 64px); }
+  .qw-hint, .qw-small, .qw-desc { max-width: calc(100% - 46px); } /* lines end before the pieces that sit at the screen's edge */
   .qw-bar { left: 14px; right: 14px; gap: 6px; justify-content: space-between; }
   .qw-rail { flex: 1; justify-content: center; min-width: 0; gap: 0; }
   .qw-rail li { flex: 1 1 0; min-width: 0; display: flex; justify-content: center; } /* seven stops share whatever room Back and Next leave */
@@ -361,20 +377,32 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
   .qw-back { padding: 0; width: 48px; }
   .qw-back span { display: none; }
   .qw-round { width: 56px; height: 56px; }
-  .qw-chip { min-height: 44px; padding: 8px 13px 9px; gap: 7px; }
+  .qw-chip { min-height: 44px; padding: 8px 18px 9px 14px; gap: 7px; }
   .qw-chip-txt b { font-size: 14px; }
   .qw-row--cats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); width: 100%; }
   .qw-row--cats .qw-chip { width: 100%; }
   .qw-row--cats .qw-chip-txt b { line-height: 1.2; }
   .qw-scrim { height: calc(var(--qw-dock) + 150px); }
   .qw-note { padding: 20px 20px 22px; }
-  .qw-tier { min-width: 0; flex: 1 1 100px; }
+  /* three price tiles side by side leave about 70 px for a figure, which fits $144 and not $1,800: on a phone they are full-width rows, name and note on the left, the figure on the right */
+  .qw-tiers { flex-direction: column; flex-wrap: nowrap; gap: 12px; width: 100%; }
+  .qw-tier { flex: none; width: 100%; min-width: 0; box-sizing: border-box; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name price" "note price"; align-items: center; gap: 3px 14px; padding: 13px 18px 14px; }
+  .qw-tier .qw-tier-name { grid-area: name; }
+  .qw-tier small { grid-area: note; }
+  .qw-tier b { grid-area: price; text-align: right; }
   .qw-search { min-height: 56px; }
   .qw-search-input { height: 52px; font-size: 16px; }
 }
 @media (max-width: 400px) {
   .qw-bar { gap: 4px; }
   .qw-go { padding: 0 16px; }
+}
+/* the smallest phones (320 to 359 px): two columns of chips leave about 137 px each, which a long word such as "Performance" plus an icon and the badge's room does not fit, so
+   the chip's type and spacing come down a notch (measured: the word then stays inside the chip with the badge clear of it) */
+@media (max-width: 359px) {
+  .qw-chip { padding: 8px 17px 9px 12px; gap: 6px; }
+  .qw-chip-txt b { font-size: 13px; }
+  .qw-row--cats { grid-template-columns: minmax(0, 1fr); } /* one column of fields: "Communication" does not fit beside an icon in half of 284 px */
 }
 
 /* ───────────── calm: nothing floats, nothing springs ───────────── */
@@ -383,3 +411,15 @@ textarea.qw-field { min-height: 96px; resize: vertical; }
   .qw-chip, .qw-round, .qw-go, .qw-back, .qw-tag, .qw-tier, .qw-icon, .qw-paperbtn, .qw-tick, .qw-dot, .qw-search { transition-duration: .01s !important; }
   .qw-chip:hover, .qw-tag:hover, .qw-tier:hover, .qw-go:hover:not(:disabled), .qw-back:hover:not(:disabled), .qw-round:hover, .qw-icon:hover, .qw-paperbtn:hover { transform: none; }
 }
+
+/* ───────────── white-label colours (Agency) ─────────────
+   App.jsx sets --brand-* variables and data-brand-* flags on <html> from the Branding card (src/utils/brandTheme.js, which checks every pairing for contrast).
+   Each group only applies when its flag is on, so a profile that customised just the accent keeps the starfield. */
+:root[data-brand-bg] .qw-stage { background: var(--brand-bg); }
+:root[data-brand-bg] .qw-sky, :root[data-brand-bg] .qw-wash { display: none; }
+:root[data-brand-bg] :is(.qw-stage, .qw, .qw-bar, .qw-scrim, .wp) { --qw-sky: var(--brand-bg); }
+:root[data-brand-title] :is(.qw-stage, .qw, .qw-bar, .qw-scrim, .wp) { --qw-title: var(--brand-title); --qw-copy: var(--brand-copy); --qw-label: var(--brand-label); }
+:root[data-brand-accent] :is(.qw-stage, .qw, .qw-bar, .qw-scrim, .wp) { --qw-accent: var(--brand-glow); }
+:root[data-brand-accent] .qw-tone-butter { --tone: var(--brand-fill); --tone-lip: var(--brand-lip); }
+:root[data-brand-surface] :is(.qw-stage, .qw, .qw-bar, .qw-scrim, .wp) { --qw-piece: var(--brand-surface); --qw-piece-2: var(--brand-surface-2); --qw-ink: var(--brand-ink); --qw-ink-2: var(--brand-ink-2); }
+:root[data-brand-surface][data-theme] .wp--paper :is(.kit-card, .kit-row) { --paper: var(--brand-surface); --ink: var(--brand-ink); --ink-2: var(--brand-ink-2); color: var(--brand-ink); }

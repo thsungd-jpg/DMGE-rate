@@ -3,6 +3,9 @@
 /** $1,250 (whole dollars). */
 export const money = (n) => "$" + Math.round(Number(n) || 0).toLocaleString("en-US");
 
+/** How far to shrink a big figure so it stays inside its box: 1 up to `from` characters, then in proportion ("$65,000" is 7 characters, "$1,300,000" is 10). Set as --fit. */
+export const fitFor = (text, from = 8) => Math.min(1, from / Math.max(from, String(text).length));
+
 /** A rate as it is said: $1,500 / $18.75 / $0.045 (rates under a dollar keep their thousandths, because a per-word rate lives there). */
 export function rateText(n) {
   const v = Number(n) || 0;

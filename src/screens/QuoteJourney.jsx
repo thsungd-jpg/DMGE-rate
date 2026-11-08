@@ -16,7 +16,7 @@ import "../world/world.css";
 // handler still come from App through `ctx`, unchanged; this file decides what is shown and in what order, and each station lives in ./quote.
 
 const STATIONS = [
-  { id: "craft",  name: "Craft",  title: <>What do you <em>do?</em></>,         hint: "Search for your craft, or browse the fields. Not listed? Add it." },
+  { id: "craft",  name: "Craft",  title: <>What do you <em>do?</em></>,         hint: "Search for your craft, or browse the fields." },
   { id: "job",    name: "Job",    title: <>Size the <em>job.</em></>,           hint: "How you charge, how much of it, and how demanding it is." },
   { id: "rate",   name: "Rate",   title: <>What should you <em>charge?</em></>, hint: "Your base rate for one unit of this job. The next steps adjust it." },
   { id: "who",    name: "Who",    title: <>Who is it <em>for?</em></>,          hint: "Say who is paying, or pick a client you have saved." },

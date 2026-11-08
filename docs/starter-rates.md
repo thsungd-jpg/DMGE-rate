@@ -11,1398 +11,1695 @@ it is shown to users only as orientation, never as a freelance rate.
 
 ### Photography  (BLS: Photographers, median $21.47/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Standard Session | per hour | $25 | 1 | owner |
-| Portrait / Headshot Session | per session | $150 | 3 | new |
-| Event Photography | per event | $500 | 6 | new |
-| Commercial / Editorial Day Rate | per day | $1,000 | 8 | new |
-| Licensing Fee | per image use | $100 |  | new |
-| Retouching | per image | $10 | 0.2 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Standard Session | per hour | $25 | 1 |  | owner |
+| Portrait / Headshot Session | per session | $150 | 3 |  | new |
+| Event Photography | per event | $500 | 6 |  | new |
+| Commercial / Editorial Day Rate | per day | $1,000 | 8 |  | new |
+| Licensing Fee | per image use | $100 |  |  | new |
+| Retouching | per image | $10 | 0.2 |  | new |
 
 ### Illustration  (BLS: Fine Artists, Including Painters, Sculptors, and Illustrators, median $26.68/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commission | per hour | $30 | 1 | owner |
-| Per Illustration | per piece | $100 | 3 | new |
-| Character / Portrait Commission | per piece | $150 | 5 | new |
-| Editorial / Publishing | per project | $200 | 5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commission | per hour | $30 | 1 |  | owner |
+| Per Illustration | per piece | $100 | 3 |  | new |
+| Character / Portrait Commission | per piece | $150 | 5 |  | new |
+| Editorial / Publishing | per project | $200 | 5 |  | new |
 
 ## Performance & Talent
 
 ### Musician / Singer  (BLS: Musicians and Singers, median $47.8/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Performance / Gig | flat fee | $150 |  | owner |
-| Hourly Rehearsal Rate | per hour | $50 | 1 | owner |
-| Residency / Weekly | per week | $500 | 40 | owner |
-| Session Recording | per 3-hr session | $150 | 3 | owner |
-| Licensing / Royalties | per use | $50 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Performance / Gig | flat fee | $150 |  |  | owner |
+| Hourly Rehearsal Rate | per hour | $50 | 1 |  | owner |
+| Residency / Weekly | per week | $500 | 40 |  | owner |
+| Session Recording | per 3-hr session | $150 | 3 |  | owner |
+| Licensing / Royalties | per use | $50 |  |  | owner |
 
 ### Actor / Performer  (BLS: Actors, median $29.05/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate (Union) | per day | $900 | 8 | owner |
-| Day Rate (Non-Union) | per day | $100 | 8 | owner |
-| Weekly Contract | per week | $3,000 | 40 | owner |
-| Theater Run | per production | $500 |  | owner |
-| Commercial Buyout | flat fee + residuals | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate (Union) | per day | $900 | 8 |  | owner |
+| Day Rate (Non-Union) | per day | $100 | 8 |  | owner |
+| Weekly Contract | per week | $3,000 | 40 |  | owner |
+| Theater Run | per production | $500 |  |  | owner |
+| Commercial Buyout | flat fee + residuals | $2,000 |  |  | owner |
 
 ### Comedian / MC / Host
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Club Set | per set | $50 |  | owner |
-| Corporate Event | flat fee | $1,500 |  | owner |
-| Festival / Headliner | flat fee | $5,000 |  | owner |
-| MC / Hosting (event) | per event | $500 |  | owner |
-| Podcast / Media Appearance | per appearance | $50 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Club Set | per set | $50 |  |  | owner |
+| Corporate Event | flat fee | $1,500 |  |  | owner |
+| Festival / Headliner | flat fee | $5,000 |  |  | owner |
+| MC / Hosting (event) | per event | $500 |  |  | owner |
+| Podcast / Media Appearance | per appearance | $50 |  |  | owner |
 
 ### Dancer / Choreographer  (BLS: Dancers, median $24.8/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Performance | flat fee | $100 |  | owner |
-| Choreography Fee | per project | $500 |  | owner |
-| Teaching / Class Rate | per class | $30 |  | owner |
-| Music Video / Commercial | per day | $400 | 8 | owner |
-| Tour Contract | per week | $1,500 | 40 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Performance | flat fee | $100 |  |  | owner |
+| Choreography Fee | per project | $500 |  |  | owner |
+| Teaching / Class Rate | per class | $30 |  |  | owner |
+| Music Video / Commercial | per day | $400 | 8 |  | owner |
+| Tour Contract | per week | $1,500 | 40 |  | owner |
 
 ### Voice Actor
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Word Rate | per word | $0.1 |  | owner |
-| Per Finished Minute | per minute of audio | $100 |  | owner |
-| Project / Script Fee | flat fee | $200 |  | owner |
-| Audiobook (per hour finished) | per finished hour | $100 |  | owner |
-| Character / Animation | per session | $700 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Word Rate | per word | $0.1 |  |  | owner |
+| Per Finished Minute | per minute of audio | $100 |  |  | owner |
+| Project / Script Fee | flat fee | $200 |  |  | owner |
+| Audiobook (per hour finished) | per finished hour | $100 |  |  | owner |
+| Character / Animation | per session | $700 |  |  | owner |
 
 ### DJ / Live Electronic Artist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Club / Bar Gig | per night | $200 |  | owner |
-| Private Event / Wedding | flat fee | $500 |  | owner |
-| Festival Set | flat fee | $2,000 |  | owner |
-| Online Mix / Radio Show | per episode | $50 |  | owner |
-| Music Licensing (original tracks) | per sync | $200 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Club / Bar Gig | per night | $200 |  |  | owner |
+| Private Event / Wedding | flat fee | $500 |  |  | owner |
+| Festival Set | flat fee | $2,000 |  |  | owner |
+| Online Mix / Radio Show | per episode | $50 |  |  | owner |
+| Music Licensing (original tracks) | per sync | $200 |  |  | owner |
 
 ## Music
 
 ### Songwriter / Composer  (BLS: Music Directors and Composers, median $35.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Co-Write Fee | flat fee | $200 |  | owner |
-| Publishing Royalties | % of royalties | 50% |  | owner |
-| Work-for-Hire (jingle/ad) | flat buyout | $500 |  | owner |
-| Sync Licensing | per placement | $500 |  | owner |
-| Score / Soundtrack | per project | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Co-Write Fee | flat fee | $200 |  |  | owner |
+| Publishing Royalties | % of royalties | 50% |  |  | owner |
+| Work-for-Hire (jingle/ad) | flat buyout | $500 |  |  | owner |
+| Sync Licensing | per placement | $500 |  |  | owner |
+| Score / Soundtrack | per project | $2,000 |  |  | owner |
 
 ### Music Producer / Beatmaker
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Beat Lease (non-exclusive) | per beat | $25 |  | owner |
-| Beat Exclusive Sale | per beat | $200 |  | owner |
-| Production Fee (full) | per song | $500 |  | owner |
-| Album Production Deal | per project | $5,000 |  | owner |
-| Points (royalty backend) | % of royalties | 3% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Beat Lease (non-exclusive) | per beat | $25 |  |  | owner |
+| Beat Exclusive Sale | per beat | $200 |  |  | owner |
+| Production Fee (full) | per song | $500 |  |  | owner |
+| Album Production Deal | per project | $5,000 |  |  | owner |
+| Points (royalty backend) | % of royalties | 3% |  |  | owner |
 
 ### Audio Engineer / Mixer / Mastering  (BLS: Sound Engineering Technicians, median $35.16/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Mix Per Song | per song | $100 |  | owner |
-| Mastering Per Song | per song | $50 |  | owner |
-| Hourly Studio Rate | per hour | $50 | 1 | owner |
-| Album Package | per album | $500 |  | owner |
-| Live Sound (event) | per event | $300 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Mix Per Song | per song | $100 |  |  | owner |
+| Mastering Per Song | per song | $50 |  |  | owner |
+| Hourly Studio Rate | per hour | $50 | 1 |  | owner |
+| Album Package | per album | $500 |  |  | owner |
+| Live Sound (event) | per event | $300 |  |  | owner |
 
 ### Session Musician  (BLS: Musicians and Singers, median $47.8/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Union Studio Session (AFM) | per 3-hr session | $400 | 3 | owner |
-| Non-Union Studio Session | per hour | $50 | 1 | owner |
-| Remote Recording | per song | $75 |  | owner |
-| Live Touring | per week | $1,000 | 40 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Union Studio Session (AFM) | per 3-hr session | $400 | 3 |  | owner |
+| Non-Union Studio Session | per hour | $50 | 1 |  | owner |
+| Remote Recording | per song | $75 |  |  | owner |
+| Live Touring | per week | $1,000 | 40 |  | owner |
 
 ### Music Video Director  (BLS: Producers and Directors, median $43.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Indie / Low Budget | flat fee | $500 |  | owner |
-| Mid-Level Production | flat fee | $5,000 |  | owner |
-| Major Label Budget | flat fee | $50,000 |  | owner |
-| Day Rate (crew hire) | per day | $500 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Indie / Low Budget | flat fee | $500 |  |  | owner |
+| Mid-Level Production | flat fee | $5,000 |  |  | owner |
+| Major Label Budget | flat fee | $50,000 |  |  | owner |
+| Day Rate (crew hire) | per day | $500 | 8 |  | owner |
 
 ## Film & TV
 
 ### Director  (BLS: Producers and Directors, median $43.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| DGA Day Rate (TV) | per day | $5,000 | 8 | owner |
-| Indie Film Flat Fee | per project | $5,000 |  | owner |
-| Commercial Director | per day | $3,000 | 8 | owner |
-| Back-End Points | % of profits | 5% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| DGA Day Rate (TV) | per day | $5,000 | 8 |  | owner |
+| Indie Film Flat Fee | per project | $5,000 |  |  | owner |
+| Commercial Director | per day | $3,000 | 8 |  | owner |
+| Back-End Points | % of profits | 5% |  |  | owner |
 
 ### Screenwriter / Script Editor  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| WGA Minimum (feature) | per script | $50,000 |  | owner |
-| Spec Script Sale | flat fee | $10,000 |  | owner |
-| TV Episode (WGA) | per episode | $10,000 |  | owner |
-| Script Coverage / Notes | per script | $50 |  | owner |
-| Ghostwriting / Indie | per project | $1,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| WGA Minimum (feature) | per script | $50,000 |  |  | owner |
+| Spec Script Sale | flat fee | $10,000 |  |  | owner |
+| TV Episode (WGA) | per episode | $10,000 |  |  | owner |
+| Script Coverage / Notes | per script | $50 |  |  | owner |
+| Ghostwriting / Indie | per project | $1,000 |  |  | owner |
 
 ### Cinematographer / Director of Photography  (BLS: Camera Operators, Television, Video, and Film, median $36.05/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate (indie) | per day | $500 | 8 | owner |
-| Day Rate (union/IATSE) | per day | $2,000 | 8 | owner |
-| Weekly Rate | per week | $5,000 | 40 | owner |
-| Package Rate (camera included) | per day | $1,500 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate (indie) | per day | $500 | 8 |  | owner |
+| Day Rate (union/IATSE) | per day | $2,000 | 8 |  | owner |
+| Weekly Rate | per week | $5,000 | 40 |  | owner |
+| Package Rate (camera included) | per day | $1,500 | 8 |  | owner |
 
 ### Film Editor  (BLS: Film and Video Editors, median $36.26/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Indie Film Flat Fee | per project | $2,000 |  | owner |
-| Day Rate | per day | $400 | 8 | owner |
-| Weekly Rate (union) | per week | $4,000 | 40 | owner |
-| Trailer / Sizzle Reel | per deliverable | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Indie Film Flat Fee | per project | $2,000 |  |  | owner |
+| Day Rate | per day | $400 | 8 |  | owner |
+| Weekly Rate (union) | per week | $4,000 | 40 |  | owner |
+| Trailer / Sizzle Reel | per deliverable | $500 |  |  | owner |
 
 ### Producer / Line Producer  (BLS: Producers and Directors, median $43.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Producing Fee (% of budget) | % of total budget | 5% |  | owner |
-| Flat Fee (indie) | per project | $5,000 |  | owner |
-| Weekly Rate | per week | $2,000 | 40 | owner |
-| Back-End Points | % of profits | 5% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Producing Fee (% of budget) | % of total budget | 5% |  |  | owner |
+| Flat Fee (indie) | per project | $5,000 |  |  | owner |
+| Weekly Rate | per week | $2,000 | 40 |  | owner |
+| Back-End Points | % of profits | 5% |  |  | owner |
 
 ### Casting Director
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Flat Fee (TV pilot) | per project | $5,000 |  | owner |
-| Weekly Rate (episodic) | per week | $2,000 | 40 | owner |
-| Commercial Casting | per project | $1,500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Flat Fee (TV pilot) | per project | $5,000 |  |  | owner |
+| Weekly Rate (episodic) | per week | $2,000 | 40 |  | owner |
+| Commercial Casting | per project | $1,500 |  |  | owner |
 
 ### Set Designer / Art Director  (BLS: Set and Exhibit Designers, median $36.17/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate (indie) | per day | $400 | 8 | owner |
-| Weekly Rate (union) | per week | $3,000 | 40 | owner |
-| Flat Fee (commercial) | per project | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate (indie) | per day | $400 | 8 |  | owner |
+| Weekly Rate (union) | per week | $3,000 | 40 |  | owner |
+| Flat Fee (commercial) | per project | $2,000 |  |  | owner |
 
 ### Prop Master
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $300 | 8 | owner |
-| Weekly Rate | per week | $1,500 | 40 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $300 | 8 |  | owner |
+| Weekly Rate | per week | $1,500 | 40 |  | owner |
 
 ### Costume Designer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Flat Fee (indie film) | per project | $2,000 |  | owner |
-| Weekly Rate (TV/union) | per week | $2,000 | 40 | owner |
-| Day Rate | per day | $300 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Flat Fee (indie film) | per project | $2,000 |  |  | owner |
+| Weekly Rate (TV/union) | per week | $2,000 | 40 |  | owner |
+| Day Rate | per day | $300 | 8 |  | owner |
 
 ### Videographer  (BLS: Camera Operators, Television, Video, and Film, median $36.05/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Wedding / Event Film | flat fee | $1,500 |  | owner |
-| Corporate Day Rate | per day | $800 | 8 | owner |
-| Social Media Content | per video | $250 |  | owner |
-| Promo / Commercial | flat fee | $3,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Wedding / Event Film | flat fee | $1,500 |  |  | owner |
+| Corporate Day Rate | per day | $800 | 8 |  | owner |
+| Social Media Content | per video | $250 |  |  | owner |
+| Promo / Commercial | flat fee | $3,000 |  |  | owner |
 
 ## Visual & Graphic Arts
 
 ### Graphic Designer  (BLS: Graphic Designers, median $30.27/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $35 | 1 | owner |
-| Logo Design (flat fee) | per project | $300 |  | owner |
-| Album / Poster Design | per project | $200 |  | owner |
-| Retainer | per month | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $35 | 1 |  | owner |
+| Logo Design (flat fee) | per project | $300 |  |  | owner |
+| Album / Poster Design | per project | $200 |  |  | owner |
+| Retainer | per month | $500 |  |  | owner |
 
 ### Illustrator / Storyboard Artist  (BLS: Fine Artists, Including Painters, Sculptors, and Illustrators, median $26.68/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Panel (storyboard) | per panel | $25 |  | owner |
-| Per Illustration | per piece | $100 |  | owner |
-| Editorial / Publishing | per project | $200 |  | owner |
-| Hourly Rate | per hour | $40 | 1 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Panel (storyboard) | per panel | $25 |  |  | owner |
+| Per Illustration | per piece | $100 |  |  | owner |
+| Editorial / Publishing | per project | $200 |  |  | owner |
+| Hourly Rate | per hour | $40 | 1 |  | owner |
 
 ### Animator / Motion Graphics Artist  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Second of Animation | per second | $50 |  | owner |
-| Hourly Rate | per hour | $50 | 1 | owner |
-| Project Flat Fee | per deliverable | $500 |  | owner |
-| Retainer | per month | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Second of Animation | per second | $50 |  |  | owner |
+| Hourly Rate | per hour | $50 | 1 |  | owner |
+| Project Flat Fee | per deliverable | $500 |  |  | owner |
+| Retainer | per month | $2,000 |  |  | owner |
 
 ### VFX Artist  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $400 | 8 | owner |
-| Per Shot Rate | per VFX shot | $200 |  | owner |
-| Weekly Rate (studio) | per week | $2,000 | 40 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $400 | 8 |  | owner |
+| Per Shot Rate | per VFX shot | $200 |  |  | owner |
+| Weekly Rate (studio) | per week | $2,000 | 40 |  | owner |
 
 ### Photographer  (BLS: Photographers, median $21.47/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Portrait / Headshot Session | per session | $150 |  | owner |
-| Event Photography | per event | $500 |  | owner |
-| Commercial / Editorial Day Rate | per day | $1,000 | 8 | owner |
-| Licensing Fee | per image use | $100 |  | owner |
-| Retouching | per image | $10 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Portrait / Headshot Session | per session | $150 |  |  | owner |
+| Event Photography | per event | $500 |  |  | owner |
+| Commercial / Editorial Day Rate | per day | $1,000 | 8 |  | owner |
+| Licensing Fee | per image use | $100 |  |  | owner |
+| Retouching | per image | $10 |  |  | owner |
 
 ### Painter / Artist  (BLS: Fine Artists, Including Painters, Sculptors, and Illustrators, median $26.68/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commissioned Canvas | per piece | $150 |  | owner |
-| Mural Production | per sq ft | $50 |  | owner |
-| Live Event Painting | per event | $500 |  | owner |
-| Solo Exhibition Piece | per project | $1,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commissioned Canvas | per piece | $150 |  |  | owner |
+| Mural Production | per sq ft | $50 |  |  | owner |
+| Live Event Painting | per event | $500 |  |  | owner |
+| Solo Exhibition Piece | per project | $1,000 |  |  | owner |
 
 ## Fashion & Styling
 
 ### Wardrobe Stylist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Editorial Day Rate | per day | $500 | 8 | owner |
-| Celebrity / Personal Styling | per event | $500 |  | owner |
-| Commercial Day Rate | per day | $700 | 8 | owner |
-| Retainer (personal styling) | per month | $1,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Editorial Day Rate | per day | $500 | 8 |  | owner |
+| Celebrity / Personal Styling | per event | $500 |  |  | owner |
+| Commercial Day Rate | per day | $700 | 8 |  | owner |
+| Retainer (personal styling) | per month | $1,000 |  |  | owner |
 
 ### Fashion Designer  (BLS: Fashion Designers, median $38.92/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Custom / Bespoke Garment | per piece | $500 |  | owner |
-| Collection Design Fee | per collection | $5,000 |  | owner |
-| Costume Design (production) | per project | $2,000 |  | owner |
-| Licensing Deal | % of royalties | 8% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Custom / Bespoke Garment | per piece | $500 |  |  | owner |
+| Collection Design Fee | per collection | $5,000 |  |  | owner |
+| Costume Design (production) | per project | $2,000 |  |  | owner |
+| Licensing Deal | % of royalties | 8% |  |  | owner |
 
 ### Hair Stylist  (BLS: Hairdressers, Hairstylists, and Cosmetologists, median $17.21/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Film / TV Day Rate | per day | $400 | 8 | owner |
-| Editorial / Print Day Rate | per day | $300 | 8 | owner |
-| Event / Wedding | per person | $100 |  | owner |
-| Music Video | per day | $350 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Film / TV Day Rate | per day | $400 | 8 |  | owner |
+| Editorial / Print Day Rate | per day | $300 | 8 |  | owner |
+| Event / Wedding | per person | $100 |  |  | owner |
+| Music Video | per day | $350 | 8 |  | owner |
 
 ### Makeup Artist / SFX Makeup  (BLS: Makeup Artists, Theatrical and Performance, median $46.71/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Bridal / Event | per person | $100 |  | owner |
-| Film / TV Day Rate | per day | $400 | 8 | owner |
-| SFX / Prosthetics Day Rate | per day | $600 | 8 | owner |
-| Editorial / Print | per day | $300 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Bridal / Event | per person | $100 |  |  | owner |
+| Film / TV Day Rate | per day | $400 | 8 |  | owner |
+| SFX / Prosthetics Day Rate | per day | $600 | 8 |  | owner |
+| Editorial / Print | per day | $300 | 8 |  | owner |
 
 ## Live Events & Production
 
 ### Event Producer / Promoter  (BLS: Meeting, Convention, and Event Planners, median $29.41/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Flat Production Fee | per event | $2,000 |  | owner |
-| Percentage of Ticket Revenue | % of gross | 10% |  | owner |
-| Retainer (ongoing events) | per month | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Flat Production Fee | per event | $2,000 |  |  | owner |
+| Percentage of Ticket Revenue | % of gross | 10% |  |  | owner |
+| Retainer (ongoing events) | per month | $2,000 |  |  | owner |
 
 ### Stage Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Theater (weekly) | per week | $800 | 40 | owner |
-| Live Event Day Rate | per day | $300 | 8 | owner |
-| Tour (weekly) | per week | $1,500 | 40 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Theater (weekly) | per week | $800 | 40 |  | owner |
+| Live Event Day Rate | per day | $300 | 8 |  | owner |
+| Tour (weekly) | per week | $1,500 | 40 |  | owner |
 
 ### Lighting Designer / Operator  (BLS: Lighting Technicians, median $32.72/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $300 | 8 | owner |
-| Tour (weekly) | per week | $1,500 | 40 | owner |
-| Design Fee (theatrical) | per production | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $300 | 8 |  | owner |
+| Tour (weekly) | per week | $1,500 | 40 |  | owner |
+| Design Fee (theatrical) | per production | $2,000 |  |  | owner |
 
 ### Sound Technician / FOH Engineer  (BLS: Sound Engineering Technicians, median $35.16/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Live Event Day Rate | per day | $300 | 8 | owner |
-| Tour Weekly Rate | per week | $1,500 | 40 | owner |
-| Install / System Design | per project | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Live Event Day Rate | per day | $300 | 8 |  | owner |
+| Tour Weekly Rate | per week | $1,500 | 40 |  | owner |
+| Install / System Design | per project | $2,000 |  |  | owner |
 
 ### Tour Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Weekly Rate | per week | $1,500 | 40 | owner |
-| Per Show Rate | per show | $300 |  | owner |
-| Flat Fee (short tour) | per tour | $3,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Weekly Rate | per week | $1,500 | 40 |  | owner |
+| Per Show Rate | per show | $300 |  |  | owner |
+| Flat Fee (short tour) | per tour | $3,000 |  |  | owner |
 
 ### Rigger / Stagehand
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate (IATSE union) | per day | $400 | 8 | owner |
-| Hourly (non-union) | per hour | $18 | 1 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate (IATSE union) | per day | $400 | 8 |  | owner |
+| Hourly (non-union) | per hour | $18 | 1 |  | owner |
 
 ### Pyrotechnics / Special Effects
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Show Design + Operation | per show | $2,000 |  | owner |
-| Day Rate | per day | $800 | 8 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Show Design + Operation | per show | $2,000 |  |  | owner |
+| Day Rate | per day | $800 | 8 |  | owner |
 
 ## Writing & Content
 
 ### Entertainment Journalist / Writer  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Word Rate | per word | $0.1 |  | owner |
-| Per Article Flat Fee | per article | $50 |  | owner |
-| Column / Retainer | per month | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Word Rate | per word | $0.1 |  |  | owner |
+| Per Article Flat Fee | per article | $50 |  |  | owner |
+| Column / Retainer | per month | $500 |  |  | owner |
 
 ### Publicist / PR Specialist  (BLS: Public Relations Specialists, median $35.94/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Retainer | per month | $2,000 |  | owner |
-| Project Fee (album, film, tour) | per campaign | $3,000 |  | owner |
-| Per Placement Fee | per media placement | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Retainer | per month | $2,000 |  |  | owner |
+| Project Fee (album, film, tour) | per campaign | $3,000 |  |  | owner |
+| Per Placement Fee | per media placement | $500 |  |  | owner |
 
 ### Social Media Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Retainer | per month | $500 |  | owner |
-| Per Platform Rate | per platform per month | $300 |  | owner |
-| Per Post Rate | per post | $25 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Retainer | per month | $500 |  |  | owner |
+| Per Platform Rate | per platform per month | $300 |  |  | owner |
+| Per Post Rate | per post | $25 |  |  | owner |
 
 ### Content Creator / Influencer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sponsored Post (flat fee) | per post | $100 |  | owner |
-| Brand Deal / Campaign | per campaign | $1,000 |  | owner |
-| Platform Ad Revenue (CPM) | per 1,000 views | $1 |  | owner |
-| Affiliate Commission | % of sales | 10% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sponsored Post (flat fee) | per post | $100 |  |  | owner |
+| Brand Deal / Campaign | per campaign | $1,000 |  |  | owner |
+| Platform Ad Revenue (CPM) | per 1,000 views | $1 |  |  | owner |
+| Affiliate Commission | % of sales | 10% |  |  | owner |
 
 ### Podcast Producer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Episode Production | per episode | $100 |  | owner |
-| Monthly Retainer | per month | $500 |  | owner |
-| Ad Insertion / CPM | per 1,000 downloads | $15 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Episode Production | per episode | $100 |  |  | owner |
+| Monthly Retainer | per month | $500 |  |  | owner |
+| Ad Insertion / CPM | per 1,000 downloads | $15 |  |  | owner |
 
 ## Business & Management
 
 ### Talent Agent  (BLS: Agents and Business Managers of Artists, Performers, and Athletes, median $39.85/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commission on Client Earnings | % of gross | 10% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commission on Client Earnings | % of gross | 10% |  |  | owner |
 
 ### Artist Manager  (BLS: Agents and Business Managers of Artists, Performers, and Athletes, median $39.85/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commission on All Earnings | % of gross | 15% |  | owner |
-| Flat Monthly Fee (early-career) | per month | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commission on All Earnings | % of gross | 15% |  |  | owner |
+| Flat Monthly Fee (early-career) | per month | $500 |  |  | owner |
 
 ### Entertainment Lawyer  (BLS: Lawyers, median $76.76/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $200 | 1 | owner |
-| Flat Fee (contract review) | per contract | $300 |  | owner |
-| Retainer | per month | $1,000 |  | owner |
-| Commission (deal negotiation) | % of deal | 5% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $200 | 1 |  | owner |
+| Flat Fee (contract review) | per contract | $300 |  |  | owner |
+| Retainer | per month | $1,000 |  |  | owner |
+| Commission (deal negotiation) | % of deal | 5% |  |  | owner |
 
 ### Business Manager / Accountant  (BLS: Accountants and Auditors, median $40.23/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Retainer | per month | $500 |  | owner |
-| Percentage of Gross Income | % of income managed | 5% |  | owner |
-| Hourly Rate | per hour | $100 | 1 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Retainer | per month | $500 |  |  | owner |
+| Percentage of Gross Income | % of income managed | 5% |  |  | owner |
+| Hourly Rate | per hour | $100 | 1 |  | owner |
 
 ### A&R Representative
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Salaried (label staff) | per year | $40,000 |  | owner |
-| Freelance / Consulting | per project | $1,000 |  | owner |
-| Points on Signed Artists | % of royalties | 3% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Salaried (label staff) | per year | $40,000 |  |  | owner |
+| Freelance / Consulting | per project | $1,000 |  |  | owner |
+| Points on Signed Artists | % of royalties | 3% |  |  | owner |
 
 ## Tech & Digital
 
 ### Web Developer (Media / Streaming)  (BLS: Web Developers, median $44.54/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $50 | 1 | owner |
-| Project Flat Fee | per project | $2,000 |  | owner |
-| Monthly Retainer (maintenance) | per month | $500 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $50 | 1 |  | owner |
+| Project Flat Fee | per project | $2,000 |  |  | owner |
+| Monthly Retainer (maintenance) | per month | $500 |  |  | owner |
 
 ### Streaming Platform Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Salaried (in-house) | per year | $50,000 |  | owner |
-| Consulting Day Rate | per day | $500 | 8 | owner |
-| Project Fee | per project | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Salaried (in-house) | per year | $50,000 |  |  | owner |
+| Consulting Day Rate | per day | $500 | 8 |  | owner |
+| Project Fee | per project | $2,000 |  |  | owner |
 
 ### Game Designer / Developer  (BLS: Software Developers, median $65.38/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Salaried (studio) | per year | $55,000 |  | owner |
-| Freelance Per Project | per project | $5,000 |  | owner |
-| Revenue Share (indie) | % of sales | 30% |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Salaried (studio) | per year | $55,000 |  |  | owner |
+| Freelance Per Project | per project | $5,000 |  |  | owner |
+| Revenue Share (indie) | % of sales | 30% |  |  | owner |
 
 ### Mobile App Developer  (BLS: Software Developers, median $65.38/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $70 | 1 | new |
-| MVP App | per project | $15,000 | 200 | new |
-| Monthly Retainer | per month | $5,000 | 70 | new |
-| Day Rate | per day | $600 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $70 | 1 |  | new |
+| MVP App | per project | $15,000 | 200 |  | new |
+| Monthly Retainer | per month | $5,000 | 70 |  | new |
+| Day Rate | per day | $600 | 8 |  | new |
 
 ### Front-End Developer  (BLS: Web Developers, median $44.54/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $60 | 1 | new |
-| Component Library | per project | $4,000 | 60 | new |
-| Landing Page Build | per page | $800 | 12 | new |
-| Monthly Retainer | per month | $3,000 | 50 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $60 | 1 |  | new |
+| Component Library | per project | $4,000 | 60 |  | new |
+| Landing Page Build | per page | $800 | 12 |  | new |
+| Monthly Retainer | per month | $3,000 | 50 |  | new |
 
 ### Shopify / No-Code Developer  (BLS: Web Developers, median $44.54/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $55 | 1 | new |
-| Store Setup | per project | $2,500 | 40 | new |
-| Theme Customisation | per project | $1,200 | 20 | new |
-| Monthly Support | per month | $300 | 5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Store Setup | per project | $2,500 | 40 |  | new |
+| Theme Customisation | per project | $1,200 | 20 |  | new |
+| Monthly Support | per month | $300 | 5 |  | new |
 
 ### Creative Coder / Interactive Artist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $75 | 1 | new |
-| Installation Piece | per project | $5,000 | 80 | new |
-| Generative Art Commission | per piece | $1,200 | 20 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $75 | 1 |  | new |
+| Installation Piece | per project | $5,000 | 80 |  | new |
+| Generative Art Commission | per piece | $1,200 | 20 |  | new |
 
 ### Data Visualization Designer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $65 | 1 | new |
-| Dashboard | per project | $3,500 | 50 | new |
-| Infographic | per piece | $600 | 10 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $65 | 1 |  | new |
+| Dashboard | per project | $3,500 | 50 |  | new |
+| Infographic | per piece | $600 | 10 |  | new |
 
 ## Education & Coaching
 
 ### Acting Coach  (BLS: Self-Enrichment Teachers, median $22.5/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Session | per hour | $75 | 1 | owner |
-| Group Workshop | per workshop | $50 |  | owner |
-| Ongoing Class (weekly) | per month | $200 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Session | per hour | $75 | 1 |  | owner |
+| Group Workshop | per workshop | $50 |  |  | owner |
+| Ongoing Class (weekly) | per month | $200 |  |  | owner |
 
 ### Vocal Coach  (BLS: Self-Enrichment Teachers, median $22.5/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Lesson | per hour | $60 | 1 | owner |
-| Group Session | per session | $30 |  | owner |
-| Online Lesson (remote) | per session | $50 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Lesson | per hour | $60 | 1 |  | owner |
+| Group Session | per session | $30 |  |  | owner |
+| Online Lesson (remote) | per session | $50 |  |  | owner |
 
 ### Instrument Teacher  (BLS: Self-Enrichment Teachers, median $22.5/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Lesson (30 min) | per 30 minutes | $30 | 0.5 | owner |
-| Private Lesson (1 hr) | per hour | $50 | 1 | owner |
-| Group Class | per person per session | $15 |  | owner |
-| Online (remote) | per session | $40 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Lesson (30 min) | per 30 minutes | $30 | 0.5 |  | owner |
+| Private Lesson (1 hr) | per hour | $50 | 1 |  | owner |
+| Group Class | per person per session | $15 |  |  | owner |
+| Online (remote) | per session | $40 |  |  | owner |
 
 ### Dance Instructor  (BLS: Self-Enrichment Teachers, median $22.5/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Class (group) | per class | $15 |  | owner |
-| Private Lesson | per hour | $60 | 1 | owner |
-| Workshop / Intensive | per day | $100 | 8 | owner |
-| Monthly Studio Salary | per month | $2,000 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Class (group) | per class | $15 |  |  | owner |
+| Private Lesson | per hour | $60 | 1 |  | owner |
+| Workshop / Intensive | per day | $100 | 8 |  | owner |
+| Monthly Studio Salary | per month | $2,000 |  |  | owner |
 
 ### Online Course Creator  (BLS: Training and Development Specialists, median $33.31/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Course Build | per course | $4,000 | 80 | new |
-| Per Lesson Video | per lesson | $250 | 4 | new |
-| Hourly Rate | per hour | $70 | 1 | new |
-| Revenue Share | % of sales | 30% |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Course Build | per course | $4,000 | 80 |  | new |
+| Per Lesson Video | per lesson | $250 | 4 |  | new |
+| Hourly Rate | per hour | $70 | 1 |  | new |
+| Revenue Share | % of sales | 30% |  |  | new |
 
 ### Tutor  (BLS: Tutors, median $20.84/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Lesson | per hour | $45 | 1 | new |
-| Group Session | per session | $25 |  | new |
-| Test Prep Package | per package | $600 | 12 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Lesson | per hour | $45 | 1 |  | new |
+| Group Session | per session | $25 |  |  | new |
+| Test Prep Package | per package | $600 | 12 |  | new |
 
 ### Fitness / Wellness Coach  (BLS: Exercise Trainers and Group Fitness Instructors, median $22.67/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Session | per hour | $70 | 1 | new |
-| Group Class | per class | $18 |  | new |
-| Monthly Coaching | per month | $300 | 5 | new |
-| Online Program | per program | $250 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Session | per hour | $70 | 1 |  | new |
+| Group Class | per class | $18 |  |  | new |
+| Monthly Coaching | per month | $300 | 5 |  | new |
+| Online Program | per program | $250 | 8 |  | new |
 
 ### Public Speaker / Workshop Facilitator
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Keynote | per event | $3,000 | 15 | new |
-| Workshop (full day) | per day | $2,000 | 8 | new |
-| Virtual Talk | per event | $800 | 6 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Keynote | per event | $3,000 | 15 |  | new |
+| Workshop (full day) | per day | $2,000 | 8 |  | new |
+| Virtual Talk | per event | $800 | 6 |  | new |
 
 ### Art Teacher  (BLS: Self-Enrichment Teachers, median $22.5/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Lesson | per hour | $50 | 1 | new |
-| Group Class | per class | $25 |  | new |
-| Workshop | per person | $55 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Lesson | per hour | $50 | 1 |  | new |
+| Group Class | per class | $25 |  |  | new |
+| Workshop | per person | $55 |  |  | new |
 
 ## Cosmetology
 
 ### Hair Stylist  (BLS: Hairdressers, Hairstylists, and Cosmetologists, median $17.21/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Cut & Style | flat fee | $80 |  | owner |
-| Color / Highlights | flat fee | $120 |  | owner |
-| Extensions | per hour | $90 | 1 | owner |
-| Bridal / Event | per event | $250 |  | owner |
-| Consultation | flat fee | $45 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Cut & Style | flat fee | $80 |  |  | owner |
+| Color / Highlights | flat fee | $120 |  |  | owner |
+| Extensions | per hour | $90 | 1 |  | owner |
+| Bridal / Event | per event | $250 |  |  | owner |
+| Consultation | flat fee | $45 |  |  | owner |
 
 ### Makeup Artist  (BLS: Makeup Artists, Theatrical and Performance, median $46.71/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Natural Makeup | flat fee | $70 |  | owner |
-| Bridal Makeup | per event | $180 |  | owner |
-| Photoshoot | per hour | $95 | 1 | owner |
-| Theatrical / Special FX | per hour | $110 | 1 | owner |
-| Trial Session | per session | $60 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Natural Makeup | flat fee | $70 |  |  | owner |
+| Bridal Makeup | per event | $180 |  |  | owner |
+| Photoshoot | per hour | $95 | 1 |  | owner |
+| Theatrical / Special FX | per hour | $110 | 1 |  | owner |
+| Trial Session | per session | $60 |  |  | owner |
 
 ### Nail Technician  (BLS: Manicurists and Pedicurists, median $17.19/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Basic Manicure / Pedicure | flat fee | $45 |  | owner |
-| Gel / Acrylic | flat fee | $65 |  | owner |
-| Nail Art | per design | $15 |  | owner |
-| Spa Package | per package | $110 |  | owner |
-| Mobile Visit | flat fee | $90 |  | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Basic Manicure / Pedicure | flat fee | $45 |  |  | owner |
+| Gel / Acrylic | flat fee | $65 |  |  | owner |
+| Nail Art | per design | $15 |  |  | owner |
+| Spa Package | per package | $110 |  |  | owner |
+| Mobile Visit | flat fee | $90 |  |  | owner |
 
 ## Culinary Arts
 
 ### Private Chef / Caterer  (BLS: Chefs and Head Cooks, median $30.03/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Private Dinner (per head) | per person | $75 |  | owner |
-| Event Catering | per person | $45 |  | owner |
-| Weekly Meal Prep | flat fee | $300 |  | owner |
-| Culinary Consultant | per hour | $100 | 1 | owner |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Private Dinner (per head) | per person | $75 |  |  | owner |
+| Event Catering | per person | $45 |  |  | owner |
+| Weekly Meal Prep | flat fee | $300 |  |  | owner |
+| Culinary Consultant | per hour | $100 | 1 |  | owner |
 
 ### Baker / Cake Designer  (BLS: Bakers, median $17.86/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Custom Cake (6 inch) | per cake | $75 | 3 | new |
-| Wedding Cake | per cake | $450 | 10 | new |
-| Cupcakes | per dozen | $42 | 1.5 | new |
-| Cookie Favors | per dozen | $36 | 2 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Custom Cake (6 inch) | per cake | $75 | 3 |  | new |
+| Wedding Cake | per cake | $450 | 10 |  | new |
+| Cupcakes | per dozen | $42 | 1.5 |  | new |
+| Cookie Favors | per dozen | $36 | 2 |  | new |
 
 ### Recipe Developer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Recipe | per recipe | $150 | 4 | new |
-| Brand Collaboration | per project | $1,500 | 20 | new |
-| Hourly Rate | per hour | $60 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Recipe | per recipe | $150 | 4 |  | new |
+| Brand Collaboration | per project | $1,500 | 20 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
 
 ### Food Stylist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $700 | 8 | new |
-| Half Day | per session | $400 | 4 | new |
-| Per Dish | per dish | $60 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $700 | 8 |  | new |
+| Half Day | per session | $400 | 4 |  | new |
+| Per Dish | per dish | $60 | 1 |  | new |
 
 ### Bartender / Mixologist  (BLS: Bartenders, median $16.51/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Event Bartending | per hour | $45 | 1 | new |
-| Cocktail Menu Design | per project | $500 | 8 | new |
-| Private Class | per person | $65 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Event Bartending | per hour | $45 | 1 |  | new |
+| Cocktail Menu Design | per project | $500 | 8 |  | new |
+| Private Class | per person | $65 |  |  | new |
 
 ## Creator Economy
 
 ### YouTuber / Video Creator
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sponsored Integration (60-90 sec) | per video | $400 | 3 | new |
-| Dedicated Sponsored Video | per video | $1,500 | 20 | new |
-| Video Production for a Brand | per video | $800 | 12 | new |
-| Ad Revenue (CPM) | per 1,000 views | $4 |  | new |
-| Channel Management Retainer | per month | $1,500 | 25 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sponsored Integration (60-90 sec) | per video | $400 | 3 |  | new |
+| Dedicated Sponsored Video | per video | $1,500 | 20 |  | new |
+| Video Production for a Brand | per video | $800 | 12 |  | new |
+| Ad Revenue (CPM) | per 1,000 views | $4 |  |  | new |
+| Channel Management Retainer | per month | $1,500 | 25 |  | new |
 
 ### Twitch / Livestreamer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sponsored Stream (2-3 hrs) | per stream | $300 | 3 | new |
-| Guest Spot / Co-Stream | per hour | $50 | 1 | new |
-| Subathon / Event Stream | per event | $1,000 | 12 | new |
-| Overlay & Alerts Package | per package | $150 | 4 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sponsored Stream (2-3 hrs) | per stream | $300 | 3 |  | new |
+| Guest Spot / Co-Stream | per hour | $50 | 1 |  | new |
+| Subathon / Event Stream | per event | $1,000 | 12 |  | new |
+| Overlay & Alerts Package | per package | $150 | 4 |  | new |
 
 ### UGC Creator
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| UGC Video (30-60 sec) | per video | $150 | 3 | new |
-| UGC Photo Set | per set | $100 | 2 | new |
-| UGC Bundle (3 videos) | per bundle | $400 | 8 | new |
-| Usage / Whitelisting (30 days) | per month | $200 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| UGC Video (30-60 sec) | per video | $150 | 3 |  | new |
+| UGC Photo Set | per set | $100 | 2 |  | new |
+| UGC Bundle (3 videos) | per bundle | $400 | 8 |  | new |
+| Usage / Whitelisting (30 days) | per month | $200 |  |  | new |
 
 ### Short-Form Video Creator
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sponsored Post | per post | $250 | 3 | new |
-| Series of 4 Posts | per series | $800 | 12 | new |
-| Editing for Brands | per video | $75 | 1.5 | new |
-| Monthly Content Package (12 posts) | per month | $1,800 | 36 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sponsored Post | per post | $250 | 3 |  | new |
+| Series of 4 Posts | per series | $800 | 12 |  | new |
+| Editing for Brands | per video | $75 | 1.5 |  | new |
+| Monthly Content Package (12 posts) | per month | $1,800 | 36 |  | new |
 
 ### Newsletter Writer / Blogger
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sponsored Newsletter Slot | per issue | $300 | 2 | new |
-| Sponsored Blog Post | per post | $350 | 4 | new |
-| Guest Article | per article | $200 | 4 | new |
-| Affiliate Commission | % of sales | 10% |  | new |
-| Newsletter Ghostwriting (monthly) | per month | $800 | 16 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sponsored Newsletter Slot | per issue | $300 | 2 |  | new |
+| Sponsored Blog Post | per post | $350 | 4 |  | new |
+| Guest Article | per article | $200 | 4 |  | new |
+| Affiliate Commission | % of sales | 10% |  |  | new |
+| Newsletter Ghostwriting (monthly) | per month | $800 | 16 |  | new |
 
 ### Podcast Host
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Host Fee (branded show) | per episode | $300 | 5 | new |
-| Sponsored Read (CPM) | per 1,000 downloads | $18 |  | new |
-| Guest Appearance | per appearance | $100 | 2 | new |
-| Show Retainer | per month | $1,200 | 20 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Host Fee (branded show) | per episode | $300 | 5 |  | new |
+| Sponsored Read (CPM) | per 1,000 downloads | $18 |  |  | new |
+| Guest Appearance | per appearance | $100 | 2 |  | new |
+| Show Retainer | per month | $1,200 | 20 |  | new |
 
 ### Community Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Retainer | per month | $1,000 | 25 | new |
-| Moderation / Support | per hour | $25 | 1 | new |
-| Launch Community Setup | per project | $500 | 10 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Retainer | per month | $1,000 | 25 |  | new |
+| Moderation / Support | per hour | $25 | 1 |  | new |
+| Launch Community Setup | per project | $500 | 10 |  | new |
 
 ### Brand Ambassador
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Ambassador Fee | per month | $500 | 8 | new |
-| Event Appearance | per event | $300 | 4 | new |
-| Multi-Post Campaign | per campaign | $1,200 | 15 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Ambassador Fee | per month | $500 | 8 |  | new |
+| Event Appearance | per event | $300 | 4 |  | new |
+| Multi-Post Campaign | per campaign | $1,200 | 15 |  | new |
 
 ## Design & UX
 
 ### UI / UX Designer  (BLS: Web and Digital Interface Designers, median $50/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $60 | 1 | new |
-| Design Sprint (1 week) | per sprint | $3,000 | 40 | new |
-| Wireframes & Clickable Prototype | per project | $2,500 | 40 | new |
-| UX Audit | per audit | $800 | 12 | new |
-| Monthly Retainer | per month | $4,000 | 70 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $60 | 1 |  | new |
+| Design Sprint (1 week) | per sprint | $3,000 | 40 |  | new |
+| Wireframes & Clickable Prototype | per project | $2,500 | 40 |  | new |
+| UX Audit | per audit | $800 | 12 |  | new |
+| Monthly Retainer | per month | $4,000 | 70 |  | new |
 
 ### Product Designer  (BLS: Commercial and Industrial Designers, median $40.34/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $65 | 1 | new |
-| Day Rate | per day | $520 | 8 | new |
-| Feature Design | per project | $3,000 | 45 | new |
-| Concept Sketches (set of 5) | per set | $500 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $65 | 1 |  | new |
+| Day Rate | per day | $520 | 8 |  | new |
+| Feature Design | per project | $3,000 | 45 |  | new |
+| Concept Sketches (set of 5) | per set | $500 | 8 |  | new |
 
 ### Web Designer  (BLS: Web and Digital Interface Designers, median $50/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $50 | 1 | new |
-| Landing Page | per page | $600 | 10 | new |
-| Website (5-10 pages) | per project | $3,000 | 50 | new |
-| Template Customisation | per project | $800 | 14 | new |
-| Monthly Care Plan | per month | $150 | 3 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $50 | 1 |  | new |
+| Landing Page | per page | $600 | 10 |  | new |
+| Website (5-10 pages) | per project | $3,000 | 50 |  | new |
+| Template Customisation | per project | $800 | 14 |  | new |
+| Monthly Care Plan | per month | $150 | 3 |  | new |
 
 ### Brand Identity Designer  (BLS: Graphic Designers, median $30.27/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Logo Package | per project | $800 | 14 | new |
-| Full Brand Identity | per project | $3,500 | 50 | new |
-| Brand Guidelines | per project | $1,200 | 20 | new |
-| Hourly Rate | per hour | $60 | 1 | new |
-| Retainer | per month | $1,500 | 25 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Logo Package | per project | $800 | 14 |  | new |
+| Full Brand Identity | per project | $3,500 | 50 |  | new |
+| Brand Guidelines | per project | $1,200 | 20 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
+| Retainer | per month | $1,500 | 25 |  | new |
 
 ### Packaging Designer  (BLS: Graphic Designers, median $30.27/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Packaging Concept | per project | $1,500 | 24 | new |
-| Per SKU Variation | per SKU | $250 | 4 | new |
-| Dieline & Print-Ready Files | per project | $600 | 10 | new |
-| Hourly Rate | per hour | $60 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Packaging Concept | per project | $1,500 | 24 |  | new |
+| Per SKU Variation | per SKU | $250 | 4 |  | new |
+| Dieline & Print-Ready Files | per project | $600 | 10 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
 
 ### Presentation / Pitch Deck Designer  (BLS: Graphic Designers, median $30.27/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Slide | per slide | $40 | 0.75 | new |
-| Pitch Deck (15-20 slides) | per deck | $1,200 | 20 | new |
-| Template System | per project | $1,800 | 30 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Slide | per slide | $40 | 0.75 |  | new |
+| Pitch Deck (15-20 slides) | per deck | $1,200 | 20 |  | new |
+| Template System | per project | $1,800 | 30 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
 
 ### Lettering / Type Designer  (BLS: Graphic Designers, median $30.27/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Custom Lettering (logo) | per piece | $400 | 8 | new |
-| Font Family (custom) | per project | $5,000 | 100 | new |
-| Hourly Rate | per hour | $50 | 1 | new |
-| Font Licence | per licence | $100 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Custom Lettering (logo) | per piece | $400 | 8 |  | new |
+| Font Family (custom) | per project | $5,000 | 100 |  | new |
+| Hourly Rate | per hour | $50 | 1 |  | new |
+| Font Licence | per licence | $100 |  |  | new |
 
 ## Games & 3D
 
 ### 3D Artist / Modeler  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $55 | 1 | new |
-| Game-Ready Hero Asset | per asset | $400 | 8 | new |
-| Environment Prop | per prop | $150 | 3 | new |
-| Product Render Set (3 views) | per set | $450 | 8 | new |
-| Character Model | per character | $1,500 | 30 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Game-Ready Hero Asset | per asset | $400 | 8 |  | new |
+| Environment Prop | per prop | $150 | 3 |  | new |
+| Product Render Set (3 views) | per set | $450 | 8 |  | new |
+| Character Model | per character | $1,500 | 30 |  | new |
 
 ### Game Artist (2D / Pixel)  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Character Sprite Sheet | per character | $300 | 6 | new |
-| Tileset | per tileset | $400 | 8 | new |
-| UI Kit | per project | $1,200 | 24 | new |
-| Hourly Rate | per hour | $45 | 1 | new |
-| Key Art / Store Capsule | per piece | $400 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Character Sprite Sheet | per character | $300 | 6 |  | new |
+| Tileset | per tileset | $400 | 8 |  | new |
+| UI Kit | per project | $1,200 | 24 |  | new |
+| Hourly Rate | per hour | $45 | 1 |  | new |
+| Key Art / Store Capsule | per piece | $400 | 8 |  | new |
 
 ### Level Designer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Level (blockout + polish) | per level | $800 | 16 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
-| Monthly Contract | per month | $3,500 | 100 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Level (blockout + polish) | per level | $800 | 16 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Monthly Contract | per month | $3,500 | 100 |  | new |
 
 ### Game Audio / Sound Designer  (BLS: Sound Engineering Technicians, median $35.16/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| SFX Pack | per pack | $500 | 10 | new |
-| Single Sound Effect | per sound | $25 | 0.5 | new |
-| Music Loop | per track | $200 | 4 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
-| Audio Implementation | per day | $450 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| SFX Pack | per pack | $500 | 10 |  | new |
+| Single Sound Effect | per sound | $25 | 0.5 |  | new |
+| Music Loop | per track | $200 | 4 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Audio Implementation | per day | $450 | 8 |  | new |
 
 ### Technical Artist  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $500 | 8 | new |
-| Shader / VFX Effect | per effect | $300 | 6 | new |
-| Hourly Rate | per hour | $65 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $500 | 8 |  | new |
+| Shader / VFX Effect | per effect | $300 | 6 |  | new |
+| Hourly Rate | per hour | $65 | 1 |  | new |
 
 ### AR / VR Developer  (BLS: Software Developers, median $65.38/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $75 | 1 | new |
-| AR Filter / Lens | per filter | $600 | 10 | new |
-| Prototype | per project | $6,000 | 80 | new |
-| Monthly Contract | per month | $6,000 | 100 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $75 | 1 |  | new |
+| AR Filter / Lens | per filter | $600 | 10 |  | new |
+| Prototype | per project | $6,000 | 80 |  | new |
+| Monthly Contract | per month | $6,000 | 100 |  | new |
 
 ## Audio & Voice
 
 ### Audiobook Narrator
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Finished Hour | per finished hour | $200 | 6 | new |
-| Multi-Character Narration | per finished hour | $300 | 8 | new |
-| Royalty Share (ACX) | % of royalties | 20% |  | new |
-| Proofing / Retakes | per hour | $45 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Finished Hour | per finished hour | $200 | 6 |  | new |
+| Multi-Character Narration | per finished hour | $300 | 8 |  | new |
+| Royalty Share (ACX) | % of royalties | 20% |  |  | new |
+| Proofing / Retakes | per hour | $45 | 1 |  | new |
 
 ### Podcast Editor
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Edit per Episode (30-60 min) | per episode | $90 | 2 | new |
-| Full Production (edit, mix, show notes) | per episode | $180 | 4 | new |
-| Monthly Retainer (4 episodes) | per month | $480 | 8 | new |
-| Hourly Rate | per hour | $40 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Edit per Episode (30-60 min) | per episode | $90 | 2 |  | new |
+| Full Production (edit, mix, show notes) | per episode | $180 | 4 |  | new |
+| Monthly Retainer (4 episodes) | per month | $480 | 8 |  | new |
+| Hourly Rate | per hour | $40 | 1 |  | new |
 
 ### Sound Designer / Foley  (BLS: Sound Engineering Technicians, median $35.16/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Minute of Picture | per minute | $120 | 3 | new |
-| Day Rate | per day | $400 | 8 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
-| Project Flat Fee | per project | $2,500 | 40 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Minute of Picture | per minute | $120 | 3 |  | new |
+| Day Rate | per day | $400 | 8 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Project Flat Fee | per project | $2,500 | 40 |  | new |
 
 ### Audio Branding / Jingle Writer  (BLS: Music Directors and Composers, median $35.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Sonic Logo | per project | $1,500 | 20 | new |
-| Jingle (30-60 sec) | per jingle | $800 | 12 | new |
-| Podcast Intro / Outro | per package | $300 | 5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sonic Logo | per project | $1,500 | 20 |  | new |
+| Jingle (30-60 sec) | per jingle | $800 | 12 |  | new |
+| Podcast Intro / Outro | per package | $300 | 5 |  | new |
 
 ### Transcription & Captioning
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Transcription | per minute of audio | $1.5 | 0.07 | new |
-| Captions (SRT file) | per minute of video | $2.5 | 0.1 | new |
-| Subtitle Translation | per minute of video | $6 | 0.2 | new |
-| Hourly Rate | per hour | $25 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Transcription | per minute of audio | $1.5 | 0.07 |  | new |
+| Captions (SRT file) | per minute of video | $2.5 | 0.1 |  | new |
+| Subtitle Translation | per minute of video | $6 | 0.2 |  | new |
+| Hourly Rate | per hour | $25 | 1 |  | new |
 
 ## Writing & Publishing
 
 ### Copywriter  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $55 | 1 | new |
-| Landing Page Copy | per page | $500 | 8 | new |
-| Email Sequence (5 emails) | per sequence | $750 | 12 | new |
-| Brand Voice Guide | per project | $1,500 | 24 | new |
-| Monthly Retainer | per month | $2,500 | 40 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $55 | 1 |  | new |
+| Landing Page Copy | per page | $500 | 8 |  | new |
+| Email Sequence (5 emails) | per sequence | $750 | 12 |  | new |
+| Brand Voice Guide | per project | $1,500 | 24 |  | new |
+| Monthly Retainer | per month | $2,500 | 40 |  | new |
 
 ### Editor / Proofreader  (BLS: Editors, median $37.46/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Proofreading | per word | $0.03 | 0.0008 | new |
-| Copyediting | per word | $0.045 | 0.0011 | new |
-| Developmental Edit | per word | $0.07 | 0.0016 | new |
-| Hourly Rate | per hour | $45 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Proofreading | per word | $0.03 | 0.0008 |  | new |
+| Copyediting | per word | $0.045 | 0.0011 |  | new |
+| Developmental Edit | per word | $0.07 | 0.0016 |  | new |
+| Hourly Rate | per hour | $45 | 1 |  | new |
 
 ### Translator / Interpreter  (BLS: Interpreters and Translators, median $28.93/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Translation | per word | $0.12 | 0.004 | new |
-| Hourly Interpreting | per hour | $60 | 1 | new |
-| Conference Day Rate | per day | $600 | 8 | new |
-| Certified Document | per page | $40 | 0.75 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Translation | per word | $0.12 | 0.004 |  | new |
+| Hourly Interpreting | per hour | $60 | 1 |  | new |
+| Conference Day Rate | per day | $600 | 8 |  | new |
+| Certified Document | per page | $40 | 0.75 |  | new |
 
 ### Technical Writer  (BLS: Technical Writers, median $43.46/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $60 | 1 | new |
-| Per Page | per page | $90 | 1.5 | new |
-| Documentation Project | per project | $4,000 | 60 | new |
-| Monthly Retainer | per month | $3,000 | 45 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $60 | 1 |  | new |
+| Per Page | per page | $90 | 1.5 |  | new |
+| Documentation Project | per project | $4,000 | 60 |  | new |
+| Monthly Retainer | per month | $3,000 | 45 |  | new |
 
 ### Ghostwriter  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Word | per word | $0.25 | 0.005 | new |
-| Book (50-60k words) | per project | $12,000 | 250 | new |
-| Article / Thought Leadership | per article | $500 | 6 | new |
-| Hourly Rate | per hour | $70 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Word | per word | $0.25 | 0.005 |  | new |
+| Book (50-60k words) | per project | $12,000 | 250 |  | new |
+| Article / Thought Leadership | per article | $500 | 6 |  | new |
+| Hourly Rate | per hour | $70 | 1 |  | new |
 
 ### Author / Book  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Advance (trade book) | per book | $10,000 | 500 | new |
-| Royalty Rate | % of sales | 10% |  | new |
-| Speaking Fee | per event | $1,500 | 6 | new |
-| Workshop / Class | per session | $300 | 4 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Advance (trade book) | per book | $10,000 | 500 |  | new |
+| Royalty Rate | % of sales | 10% |  |  | new |
+| Speaking Fee | per event | $1,500 | 6 |  | new |
+| Workshop / Class | per session | $300 | 4 |  | new |
 
 ### Grant Writer  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Proposal | per proposal | $1,500 | 20 | new |
-| Hourly Rate | per hour | $65 | 1 | new |
-| Monthly Retainer | per month | $2,000 | 30 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Proposal | per proposal | $1,500 | 20 |  | new |
+| Hourly Rate | per hour | $65 | 1 |  | new |
+| Monthly Retainer | per month | $2,000 | 30 |  | new |
 
 ### Speechwriter  (BLS: Writers and Authors, median $36.98/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Speech (5-10 min) | per speech | $800 | 8 | new |
-| Executive Package | per project | $3,000 | 30 | new |
-| Hourly Rate | per hour | $90 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Speech (5-10 min) | per speech | $800 | 8 |  | new |
+| Executive Package | per project | $3,000 | 30 |  | new |
+| Hourly Rate | per hour | $90 | 1 |  | new |
 
 ## Makers & Crafts
 
 ### Ceramicist / Potter  (BLS: Craft Artists, median $22.15/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commissioned Piece | per piece | $120 | 4 | new |
-| Dinnerware Set (4 place settings) | per set | $400 | 16 | new |
-| Wholesale Piece | per piece | $35 | 1.5 | new |
-| Workshop / Class | per person | $60 |  | new |
-| Studio Hourly (custom work) | per hour | $40 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commissioned Piece | per piece | $120 | 4 |  | new |
+| Dinnerware Set (4 place settings) | per set | $400 | 16 |  | new |
+| Wholesale Piece | per piece | $35 | 1.5 |  | new |
+| Workshop / Class | per person | $60 |  |  | new |
+| Studio Hourly (custom work) | per hour | $40 | 1 |  | new |
 
 ### Jeweler  (BLS: Jewelers and Precious Stone and Metal Workers, median $25.26/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Custom Piece (silver) | per piece | $250 | 6 | new |
-| Custom Piece (gold) | per piece | $900 | 10 | new |
-| Repair / Resize | per job | $60 | 1 | new |
-| Wedding Band | per pair | $700 | 10 | new |
-| Hourly Bench Rate | per hour | $60 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Custom Piece (silver) | per piece | $250 | 6 |  | new |
+| Custom Piece (gold) | per piece | $900 | 10 |  | new |
+| Repair / Resize | per job | $60 | 1 |  | new |
+| Wedding Band | per pair | $700 | 10 |  | new |
+| Hourly Bench Rate | per hour | $60 | 1 |  | new |
 
 ### Woodworker / Furniture Maker  (BLS: Cabinetmakers and Bench Carpenters, median $22.44/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Small Custom Piece | per piece | $600 | 16 | new |
-| Large Commission | per piece | $2,500 | 60 | new |
-| Hourly Shop Rate | per hour | $60 | 1 | new |
-| Install Day | per day | $400 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Small Custom Piece | per piece | $600 | 16 |  | new |
+| Large Commission | per piece | $2,500 | 60 |  | new |
+| Hourly Shop Rate | per hour | $60 | 1 |  | new |
+| Install Day | per day | $400 | 8 |  | new |
 
 ### Textile / Fiber Artist  (BLS: Craft Artists, median $22.15/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Knit / Crochet Piece | per piece | $120 | 5 | new |
-| Woven Wall Hanging | per piece | $300 | 10 | new |
-| Custom Quilt | per piece | $600 | 25 | new |
-| Workshop | per person | $45 |  | new |
-| Hourly Rate | per hour | $30 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Knit / Crochet Piece | per piece | $120 | 5 |  | new |
+| Woven Wall Hanging | per piece | $300 | 10 |  | new |
+| Custom Quilt | per piece | $600 | 25 |  | new |
+| Workshop | per person | $45 |  |  | new |
+| Hourly Rate | per hour | $30 | 1 |  | new |
 
 ### Leatherworker  (BLS: Craft Artists, median $22.15/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Small Goods (wallet, cardholder) | per piece | $120 | 3 | new |
-| Custom Bag | per piece | $450 | 12 | new |
-| Repair | per job | $50 | 1 | new |
-| Hourly Rate | per hour | $40 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Small Goods (wallet, cardholder) | per piece | $120 | 3 |  | new |
+| Custom Bag | per piece | $450 | 12 |  | new |
+| Repair | per job | $50 | 1 |  | new |
+| Hourly Rate | per hour | $40 | 1 |  | new |
 
 ### Printmaker / Screen Printer  (BLS: Fine Artists, Including Painters, Sculptors, and Illustrators, median $26.68/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Print Edition | per print | $45 | 1 | new |
-| Custom Merch Run | per item | $9 | 0.1 | new |
-| Screen Setup | per screen | $25 | 0.5 | new |
-| Studio Hourly | per hour | $45 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Print Edition | per print | $45 | 1 |  | new |
+| Custom Merch Run | per item | $9 | 0.1 |  | new |
+| Screen Setup | per screen | $25 | 0.5 |  | new |
+| Studio Hourly | per hour | $45 | 1 |  | new |
 
 ### Candle & Soap Maker  (BLS: Craft Artists, median $22.15/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Wholesale Candle | per piece | $9 | 0.3 | new |
-| Custom Batch (12) | per batch | $120 | 3 | new |
-| Event Favors | per piece | $4 | 0.15 | new |
-| Workshop | per person | $55 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Wholesale Candle | per piece | $9 | 0.3 |  | new |
+| Custom Batch (12) | per batch | $120 | 3 |  | new |
+| Event Favors | per piece | $4 | 0.15 |  | new |
+| Workshop | per person | $55 |  |  | new |
 
 ### Glass Artist  (BLS: Craft Artists, median $22.15/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commissioned Piece | per piece | $250 | 6 | new |
-| Stained Glass Panel | per sq ft | $120 | 3 | new |
-| Class | per person | $85 |  | new |
-| Hourly Rate | per hour | $55 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commissioned Piece | per piece | $250 | 6 |  | new |
+| Stained Glass Panel | per sq ft | $120 | 3 |  | new |
+| Class | per person | $85 |  |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
 
 ## Body Art & Beauty
 
 ### Tattoo Artist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Shop Minimum | per tattoo | $100 | 1 | new |
-| Hourly Rate | per hour | $150 | 1 | new |
-| Half Day (4 hours) | per session | $550 | 4 | new |
-| Full Day | per day | $1,000 | 7 | new |
-| Custom Flash Design | per design | $60 | 1.5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Shop Minimum | per tattoo | $100 | 1 |  | new |
+| Hourly Rate | per hour | $150 | 1 |  | new |
+| Half Day (4 hours) | per session | $550 | 4 |  | new |
+| Full Day | per day | $1,000 | 7 |  | new |
+| Custom Flash Design | per design | $60 | 1.5 |  | new |
 
 ### Piercer
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Piercing Service | per piercing | $50 | 0.5 | new |
-| Jewelry | per piece | $45 |  | new |
-| Party / Event | per hour | $90 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Piercing Service | per piercing | $50 | 0.5 |  | new |
+| Jewelry | per piece | $45 |  |  | new |
+| Party / Event | per hour | $90 | 1 |  | new |
 
 ### Henna Artist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Bridal Henna | per event | $250 | 4 | new |
-| Party Henna | per hour | $85 | 1 | new |
-| Single Design | per design | $20 | 0.3 | new |
-| Workshop | per person | $40 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Bridal Henna | per event | $250 | 4 |  | new |
+| Party Henna | per hour | $85 | 1 |  | new |
+| Single Design | per design | $20 | 0.3 |  | new |
+| Workshop | per person | $40 |  |  | new |
 
 ### Lash / Brow Artist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Classic Lash Set | per set | $120 | 2 | new |
-| Volume Lash Set | per set | $170 | 2.5 | new |
-| Lash Fill | per fill | $70 | 1 | new |
-| Brow Lamination | per service | $80 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Classic Lash Set | per set | $120 | 2 |  | new |
+| Volume Lash Set | per set | $170 | 2.5 |  | new |
+| Lash Fill | per fill | $70 | 1 |  | new |
+| Brow Lamination | per service | $80 | 1 |  | new |
 
 ## Architecture & Interiors
 
 ### Interior Designer  (BLS: Interior Designers, median $32.31/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Design Consultation | per hour | $100 | 1 | new |
-| Room Design Package | per room | $1,200 | 20 | new |
-| Full Service Design | per hour | $125 | 1 | new |
-| E-Design Mood Board | per room | $350 | 6 | new |
-| Percent of Project Cost | % of project cost | 15% |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Design Consultation | per hour | $100 | 1 |  | new |
+| Room Design Package | per room | $1,200 | 20 |  | new |
+| Full Service Design | per hour | $125 | 1 |  | new |
+| E-Design Mood Board | per room | $350 | 6 |  | new |
+| Percent of Project Cost | % of project cost | 15% |  |  | new |
 
 ### Home Stager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Consultation | per consult | $200 | 2 | new |
-| Staging (per room) | per room | $400 | 8 | new |
-| Full Home Staging | per project | $2,500 | 40 | new |
-| Furniture Rental | per month | $800 |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Consultation | per consult | $200 | 2 |  | new |
+| Staging (per room) | per room | $400 | 8 |  | new |
+| Full Home Staging | per project | $2,500 | 40 |  | new |
+| Furniture Rental | per month | $800 |  |  | new |
 
 ### Landscape Designer  (BLS: Landscape Architects, median $38.4/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Garden Concept Plan | per plan | $900 | 12 | new |
-| Hourly Rate | per hour | $75 | 1 | new |
-| Full Landscape Plan | per project | $3,500 | 45 | new |
-| Site Visit | per visit | $150 | 2 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Garden Concept Plan | per plan | $900 | 12 |  | new |
+| Hourly Rate | per hour | $75 | 1 |  | new |
+| Full Landscape Plan | per project | $3,500 | 45 |  | new |
+| Site Visit | per visit | $150 | 2 |  | new |
 
 ### Architectural Visualizer  (BLS: Special Effects Artists and Animators, median $49.06/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Interior Render | per image | $250 | 5 | new |
-| Exterior Render | per image | $400 | 8 | new |
-| Walkthrough Animation | per minute | $1,500 | 30 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Interior Render | per image | $250 | 5 |  | new |
+| Exterior Render | per image | $400 | 8 |  | new |
+| Walkthrough Animation | per minute | $1,500 | 30 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
 
 ### Architect / Drafter
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Drafting | per hour | $55 | 1 | new |
-| Hourly (Licensed Architect) | per hour | $140 | 1 | new |
-| Permit Drawings | per project | $2,500 | 40 | new |
-| Percent of Construction Cost | % of project cost | 8% |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Drafting | per hour | $55 | 1 |  | new |
+| Hourly (Licensed Architect) | per hour | $140 | 1 |  | new |
+| Permit Drawings | per project | $2,500 | 40 |  | new |
+| Percent of Construction Cost | % of project cost | 8% |  |  | new |
 
 ## Weddings & Events Design
 
 ### Wedding Planner  (BLS: Meeting, Convention, and Event Planners, median $29.41/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Full Planning | per wedding | $4,500 | 120 | new |
-| Partial Planning | per wedding | $2,500 | 60 | new |
-| Month-Of Coordination | per wedding | $1,200 | 25 | new |
-| Day-Of Coordinator | per hour | $60 | 1 | new |
-| Percent of Budget | % of budget | 15% |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Full Planning | per wedding | $4,500 | 120 |  | new |
+| Partial Planning | per wedding | $2,500 | 60 |  | new |
+| Month-Of Coordination | per wedding | $1,200 | 25 |  | new |
+| Day-Of Coordinator | per hour | $60 | 1 |  | new |
+| Percent of Budget | % of budget | 15% |  |  | new |
 
 ### Florist / Floral Designer  (BLS: Floral Designers, median $17.96/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Bridal Bouquet | per bouquet | $150 | 2 | new |
-| Centerpiece | per piece | $65 | 1 | new |
-| Ceremony Arch | per piece | $450 | 6 | new |
-| Full Event Florals | per event | $2,500 | 30 | new |
-| Delivery & Setup | per event | $150 | 3 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Bridal Bouquet | per bouquet | $150 | 2 |  | new |
+| Centerpiece | per piece | $65 | 1 |  | new |
+| Ceremony Arch | per piece | $450 | 6 |  | new |
+| Full Event Florals | per event | $2,500 | 30 |  | new |
+| Delivery & Setup | per event | $150 | 3 |  | new |
 
 ### Event Decor Stylist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Day Rate | per day | $500 | 8 | new |
-| Table Setting | per table | $45 | 0.75 | new |
-| Full Event Styling | per event | $2,000 | 25 | new |
-| Hourly Rate | per hour | $55 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $500 | 8 |  | new |
+| Table Setting | per table | $45 | 0.75 |  | new |
+| Full Event Styling | per event | $2,000 | 25 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
 
 ### Calligrapher
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Envelope Addressing | per envelope | $4 | 0.1 | new |
-| Place Cards | per card | $2.5 | 0.07 | new |
-| Custom Signage | per piece | $120 | 2 | new |
-| Invitation Suite Design | per suite | $900 | 16 | new |
-| Hourly Rate | per hour | $50 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Envelope Addressing | per envelope | $4 | 0.1 |  | new |
+| Place Cards | per card | $2.5 | 0.07 |  | new |
+| Custom Signage | per piece | $120 | 2 |  | new |
+| Invitation Suite Design | per suite | $900 | 16 |  | new |
+| Hourly Rate | per hour | $50 | 1 |  | new |
 
 ### Wedding Officiant
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Basic Ceremony | per ceremony | $350 | 5 | new |
-| Custom Ceremony + Rehearsal | per ceremony | $700 | 10 | new |
-| Elopement | per ceremony | $250 | 3 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Basic Ceremony | per ceremony | $350 | 5 |  | new |
+| Custom Ceremony + Rehearsal | per ceremony | $700 | 10 |  | new |
+| Elopement | per ceremony | $250 | 3 |  | new |
 
 ## Photo & Video Services
 
 ### Wedding Photographer  (BLS: Photographers, median $21.47/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Elopement / Micro (2-3 hrs) | per event | $1,200 | 8 | new |
-| Half Day (4 hours) | per event | $2,000 | 14 | new |
-| Full Day (8 hours) | per event | $3,500 | 22 | new |
-| Second Shooter | per day | $400 | 8 | new |
-| Album | per album | $450 | 4 | new |
-| Engagement Session | per session | $450 | 5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Elopement / Micro (2-3 hrs) | per event | $1,200 | 8 |  | new |
+| Half Day (4 hours) | per event | $2,000 | 14 |  | new |
+| Full Day (8 hours) | per event | $3,500 | 22 |  | new |
+| Second Shooter | per day | $400 | 8 |  | new |
+| Album | per album | $450 | 4 |  | new |
+| Engagement Session | per session | $450 | 5 |  | new |
 
 ### Real Estate Photographer  (BLS: Photographers, median $21.47/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Per Listing (up to 25 photos) | per listing | $175 | 2.5 | new |
-| Listing + Video | per listing | $350 | 5 | new |
-| Twilight Add-on | per listing | $100 | 1 | new |
-| Drone Add-on | per listing | $75 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Listing (up to 25 photos) | per listing | $175 | 2.5 |  | new |
+| Listing + Video | per listing | $350 | 5 |  | new |
+| Twilight Add-on | per listing | $100 | 1 |  | new |
+| Drone Add-on | per listing | $75 | 1 |  | new |
 
 ### Product Photographer  (BLS: Photographers, median $21.47/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| White Background Image | per image | $35 | 0.5 | new |
-| Lifestyle Image | per image | $120 | 1.5 | new |
-| Studio Day Rate | per day | $900 | 8 | new |
-| Hourly Rate | per hour | $75 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| White Background Image | per image | $35 | 0.5 |  | new |
+| Lifestyle Image | per image | $120 | 1.5 |  | new |
+| Studio Day Rate | per day | $900 | 8 |  | new |
+| Hourly Rate | per hour | $75 | 1 |  | new |
 
 ### Drone Pilot
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $120 | 1 | new |
-| Half Day | per session | $450 | 4 | new |
-| Real Estate / Inspection Flight | per job | $250 | 2.5 | new |
-| Cinematic Shoot Day | per day | $1,100 | 8 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $120 | 1 |  | new |
+| Half Day | per session | $450 | 4 |  | new |
+| Real Estate / Inspection Flight | per job | $250 | 2.5 |  | new |
+| Cinematic Shoot Day | per day | $1,100 | 8 |  | new |
 
 ### Photo Retoucher
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Basic Retouch | per image | $8 | 0.15 | new |
-| Beauty / High-End Retouch | per image | $45 | 0.75 | new |
-| Batch Editing | per image | $1.5 | 0.03 | new |
-| Photo Restoration | per image | $60 | 1 | new |
-| Hourly Rate | per hour | $50 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Basic Retouch | per image | $8 | 0.15 |  | new |
+| Beauty / High-End Retouch | per image | $45 | 0.75 |  | new |
+| Batch Editing | per image | $1.5 | 0.03 |  | new |
+| Photo Restoration | per image | $60 | 1 |  | new |
+| Hourly Rate | per hour | $50 | 1 |  | new |
 
 ### Video Editor (YouTube / Social)  (BLS: Film and Video Editors, median $36.26/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Short-Form Video | per video | $60 | 1.5 | new |
-| YouTube Video (8-12 min) | per video | $250 | 6 | new |
-| Monthly Package (8 videos) | per month | $1,600 | 40 | new |
-| Podcast Clips | per clip | $25 | 0.5 | new |
-| Hourly Rate | per hour | $45 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Short-Form Video | per video | $60 | 1.5 |  | new |
+| YouTube Video (8-12 min) | per video | $250 | 6 |  | new |
+| Monthly Package (8 videos) | per month | $1,600 | 40 |  | new |
+| Podcast Clips | per clip | $25 | 0.5 |  | new |
+| Hourly Rate | per hour | $45 | 1 |  | new |
+
+## Graphic Design & Visual Communication
+
+### Logo Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Logo Starter (1-2 concepts) | per logo | $350 | 6 |  | new |
+| Logo Package (3 concepts, revisions, files) | per logo | $900 | 14 |  | new |
+| Logo + Mini Brand Guide | per project | $2,200 | 32 |  | new |
+| Logo Refresh / Redesign | per project | $600 | 10 |  | new |
+| Hourly Rate | per hour | $65 | 1 |  | new |
+
+### Brand Guidelines / Visual Identity Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Brand Guidelines (10-20 pages) | per project | $2,800 | 40 |  | new |
+| Full Visual Identity System | per project | $6,500 | 90 |  | new |
+| Brand Toolkit (templates + assets) | per project | $1,800 | 28 |  | new |
+| Hourly Rate | per hour | $75 | 1 |  | new |
+
+### Art Director  (BLS: Art Directors, median $55.22/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $800 | 8 |  | new |
+| Hourly Rate | per hour | $100 | 1 |  | new |
+| Campaign Art Direction | per project | $5,000 | 50 |  | new |
+| Photo / Video Shoot Direction | per day | $1,000 | 8 |  | new |
+| Monthly Retainer | per month | $4,000 | 40 |  | new |
+
+### Creative Director (Freelance)  (BLS: Art Directors, median $55.22/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Day Rate | per day | $1,200 | 8 |  | new |
+| Hourly Rate | per hour | $150 | 1 |  | new |
+| Campaign Concept & Direction | per project | $8,000 | 60 |  | new |
+| Creative Strategy Sprint (1 week) | per week | $5,000 | 40 |  | new |
+| Monthly Retainer | per month | $6,000 | 40 |  | new |
+
+### Editorial / Layout Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Per Page (editorial layout) | per page | $55 | 1 |  | new |
+| Magazine / Report Spread | per spread | $110 | 2 |  | new |
+| Annual / Corporate Report (24 pages) | per project | $3,200 | 50 |  | new |
+| Book Interior (text only) | per book | $700 | 12 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
+
+### Book Cover Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| eBook Cover | per cover | $350 | 6 |  | new |
+| Print Wrap (front, spine, back) | per cover | $650 | 10 |  | new |
+| Series Cover Package (3 books) | per series | $1,500 | 24 |  | new |
+| Pre-Made Cover (customised) | per cover | $140 | 2 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+### Social Media Graphic Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Single Post / Story | per graphic | $40 | 0.75 |  | new |
+| Carousel (5-8 slides) | per carousel | $160 | 3 |  | new |
+| Template Pack (10 editable templates) | per pack | $450 | 8 |  | new |
+| Monthly Content Package (12 graphics) | per month | $500 | 9 |  | new |
+| Hourly Rate | per hour | $50 | 1 |  | new |
+
+### Thumbnail & Channel Art Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Single Thumbnail | per thumbnail | $40 | 0.75 |  | new |
+| Thumbnail Bundle (8 a month) | per month | $280 | 6 |  | new |
+| Channel Art Kit (banner, avatar, end screens) | per kit | $220 | 4 |  | new |
+| Stream Overlay Package | per package | $350 | 6 |  | new |
+
+### Poster / Flyer / Event Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Poster | per poster | $180 | 3 | 11 × 17 in ×0.9; 12 × 18 in ×0.95; 18 × 24 in ×1; 24 × 36 in ×1.1; 27 × 40 in ×1.2; 36 × 48 in ×1.3 | new |
+| Flyer (front and back) | per flyer | $110 | 2 | A6 · 4 × 6 in ×0.85; A5 · 5.5 × 8.5 in ×0.9; A4 · Letter 8.5 × 11 in ×1; A3 · Tabloid 11 × 17 in ×1.2 | new |
+| Event Graphics Pack (poster, social, signage) | per event | $600 | 10 |  | new |
+| Festival / Series Key Art | per project | $1,400 | 22 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+### Infographic / Information Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Single Infographic | per infographic | $500 | 8 |  | new |
+| Chart / Data Visual Set (5 visuals) | per set | $650 | 10 |  | new |
+| Interactive / Animated Infographic | per project | $2,200 | 32 |  | new |
+| Report Visual System | per project | $3,000 | 45 |  | new |
+| Hourly Rate | per hour | $70 | 1 |  | new |
+
+### Digital Ad / Banner Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Static Ad Set (5 sizes) | per set | $320 | 5 |  | new |
+| Animated Banner Set (5 sizes) | per set | $750 | 12 |  | new |
+| Social Ad Creative Pack (6 variations) | per pack | $420 | 7 |  | new |
+| Monthly Ad Creative Retainer | per month | $1,800 | 30 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
+
+### Signage / Wayfinding Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sign Design (single) | per sign | $250 | 4 |  | new |
+| Wayfinding System (building) | per project | $6,000 | 80 |  | new |
+| Vehicle Wrap Design | per vehicle | $650 | 10 |  | new |
+| Storefront / Window Graphics | per project | $900 | 14 |  | new |
+| Hourly Rate | per hour | $80 | 1 |  | new |
+
+### Exhibit / Trade Show Designer  (BLS: Set and Exhibit Designers, median $36.17/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Booth Graphics (10x10) | per booth | $900 | 14 |  | new |
+| Booth Concept & Layout | per project | $2,500 | 36 |  | new |
+| Retail Display / Pop-up Design | per project | $1,800 | 26 |  | new |
+| Hourly Rate | per hour | $80 | 1 |  | new |
+
+### Brand Motion Designer (Logo Animation / Social)  (BLS: Special Effects Artists and Animators, median $49.06/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Logo Animation | per animation | $400 | 6 |  | new |
+| Animated Social Post (10-15 sec) | per post | $180 | 3 |  | new |
+| Explainer Motion (60 sec) | per video | $2,400 | 36 |  | new |
+| Title / Lower-Third Package | per package | $500 | 8 |  | new |
+| Hourly Rate | per hour | $80 | 1 |  | new |
+
+### Icon / Sticker / Merch Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Custom Icon Set (12 icons) | per set | $650 | 10 |  | new |
+| Sticker Sheet / Pack (6 designs) | per pack | $500 | 8 |  | new |
+| T-Shirt / Apparel Graphic | per design | $160 | 3 |  | new |
+| Merch Collection (5 designs) | per collection | $700 | 12 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+### Pattern / Surface Designer
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Seamless Pattern | per pattern | $250 | 5 |  | new |
+| Pattern Collection (6 patterns) | per collection | $1,200 | 24 |  | new |
+| Custom Print for a Brand | per project | $1,800 | 30 |  | new |
+| Licensing Royalty | % of sales | 6% |  |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
+
+### Stationery / Greeting Card Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Invitation Suite (invite, RSVP, details) | per suite | $550 | 9 |  | new |
+| Greeting Card Design | per card | $220 | 4 |  | new |
+| Custom Stationery Set | per set | $450 | 8 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+### Menu / Restaurant Graphics Designer  (BLS: Graphic Designers, median $30.27/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Menu Design | per menu | $350 | 6 |  | new |
+| Menu + Mini Brand Kit | per project | $1,800 | 28 |  | new |
+| Seasonal Menu Update | per update | $120 | 2 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+### Mascot / Character Designer  (BLS: Fine Artists, Including Painters, Sculptors, and Illustrators, median $26.68/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Mascot Design (concepts + final) | per mascot | $900 | 16 |  | new |
+| Character Sheet (poses + expressions) | per character | $600 | 10 |  | new |
+| Mascot Pose Pack (6 poses) | per pack | $450 | 8 |  | new |
+| Hourly Rate | per hour | $60 | 1 |  | new |
+
+### Print Production / Prepress Artist
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Print-Ready File Prep | per file | $60 | 1 |  | new |
+| Packaging / Label Production Artwork | per SKU | $90 | 1.5 |  | new |
+| Press Check / Proofing Day | per day | $450 | 8 |  | new |
+| Hourly Rate | per hour | $55 | 1 |  | new |
+
+## Print Services
+
+### Flyer Printing
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Digital Print Run (single-sided) | per flyer | $0.45 |  | A6 · 4 × 6 in ×0.45; A5 · 5.5 × 8.5 in ×0.65; A4 · Letter 8.5 × 11 in ×1; A3 · Tabloid 11 × 17 in ×1.6 | new |
+| Double-Sided Print Run | per flyer | $0.7 |  | A6 · 4 × 6 in ×0.45; A5 · 5.5 × 8.5 in ×0.65; A4 · Letter 8.5 × 11 in ×1; A3 · Tabloid 11 × 17 in ×1.6 | new |
+| Offset Print Run (1,000+) | per flyer | $0.12 |  | A6 · 4 × 6 in ×0.45; A5 · 5.5 × 8.5 in ×0.65; A4 · Letter 8.5 × 11 in ×1; A3 · Tabloid 11 × 17 in ×1.6 | new |
+| Print Setup & Proofing | per job | $40 |  |  | new |
+
+### Poster Printing (Large Format)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Poster Print (satin / matte) | per poster | $18 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Laminated / Mounted Poster | per poster | $34 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Rush Print (same day) | per poster | $30 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Print Setup & Colour Proof | per job | $35 |  |  | new |
+
+### Art Print / Poster Print Seller
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Open Edition Print | per print | $35 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Signed Limited Edition Print | per print | $85 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Framed Print | per print | $140 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+| Print Set (3 prints) | per set | $90 |  | 11 × 17 in ×0.55; 12 × 18 in ×0.65; 18 × 24 in ×1; 24 × 36 in ×1.8; 27 × 40 in ×2.3; 36 × 48 in ×3.4 | new |
+
+### Flyer & Poster Distribution
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hand-Out Shift (4 hours) | per 4-hr shift | $120 | 4 |  | new |
+| Poster Posting Route (up to 50 sites) | per route | $180 | 5 |  | new |
+| Door-to-Door Drop (1,000 flyers) | per 1,000 flyers | $220 | 10 |  | new |
+| Hourly Rate | per hour | $22 | 1 |  | new |
 
 ## Marketing & Advertising
 
 ### Marketing Strategist / Consultant
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $110 | 1 | new |
-| Marketing Audit | per audit | $1,800 | 16 | new |
-| Marketing Plan (90 days) | per project | $3,500 | 30 | new |
-| Strategy Workshop (half day) | per workshop | $1,500 | 8 | new |
-| Monthly Advisory Retainer | per month | $3,000 | 20 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $110 | 1 |  | new |
+| Marketing Audit | per audit | $1,800 | 16 |  | new |
+| Marketing Plan (90 days) | per project | $3,500 | 30 |  | new |
+| Strategy Workshop (half day) | per workshop | $1,500 | 8 |  | new |
+| Monthly Advisory Retainer | per month | $3,000 | 20 |  | new |
 
 ### Fractional CMO  (BLS: Marketing Managers, median $80.19/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly Retainer (part time) | per month | $6,000 | 40 | new |
-| Day Rate | per day | $1,200 | 8 | new |
-| Hourly Rate | per hour | $175 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Retainer (part time) | per month | $6,000 | 40 |  | new |
+| Day Rate | per day | $1,200 | 8 |  | new |
+| Hourly Rate | per hour | $175 | 1 |  | new |
 
 ### Brand Strategist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Brand Strategy Project | per project | $5,000 | 60 | new |
-| Positioning Workshop | per workshop | $1,800 | 10 | new |
-| Messaging Framework | per project | $2,200 | 24 | new |
-| Hourly Rate | per hour | $100 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Brand Strategy Project | per project | $5,000 | 60 |  | new |
+| Positioning Workshop | per workshop | $1,800 | 10 |  | new |
+| Messaging Framework | per project | $2,200 | 24 |  | new |
+| Hourly Rate | per hour | $100 | 1 |  | new |
 
 ### SEO Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $85 | 1 | new |
-| SEO Audit | per audit | $1,200 | 15 | new |
-| Keyword Research & Plan | per project | $600 | 8 | new |
-| Monthly SEO Retainer | per month | $1,500 | 15 | new |
-| On-Page Optimisation | per page | $120 | 1.5 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $85 | 1 |  | new |
+| SEO Audit | per audit | $1,200 | 15 |  | new |
+| Keyword Research & Plan | per project | $600 | 8 |  | new |
+| Monthly SEO Retainer | per month | $1,500 | 15 |  | new |
+| On-Page Optimisation | per page | $120 | 1.5 |  | new |
 
 ### Paid Ads Manager (PPC / Paid Social)  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Management Fee (share of ad spend) | % of ad spend | 12% |  | new |
-| Monthly Management Fee | per month | $1,500 | 15 | new |
-| Ad Account Setup | per project | $800 | 10 | new |
-| Ad Creative Set (3 variations) | per set | $250 | 3 | new |
-| Hourly Rate | per hour | $85 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Management Fee (share of ad spend) | % of ad spend | 12% |  |  | new |
+| Monthly Management Fee | per month | $1,500 | 15 |  | new |
+| Ad Account Setup | per project | $800 | 10 |  | new |
+| Ad Creative Set (3 variations) | per set | $250 | 3 |  | new |
+| Hourly Rate | per hour | $85 | 1 |  | new |
 
 ### Email Marketing Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Single Email / Newsletter | per email | $150 | 2 | new |
-| Welcome Flow (5 emails) | per flow | $900 | 12 | new |
-| Monthly Retainer (4 sends) | per month | $1,200 | 14 | new |
-| List & Deliverability Audit | per audit | $600 | 6 | new |
-| Hourly Rate | per hour | $70 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Single Email / Newsletter | per email | $150 | 2 |  | new |
+| Welcome Flow (5 emails) | per flow | $900 | 12 |  | new |
+| Monthly Retainer (4 sends) | per month | $1,200 | 14 |  | new |
+| List & Deliverability Audit | per audit | $600 | 6 |  | new |
+| Hourly Rate | per hour | $70 | 1 |  | new |
 
 ### Content Marketing Strategist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Content Strategy & Calendar | per project | $2,200 | 24 | new |
-| Blog Post (1,000 words) | per post | $350 | 4 | new |
-| Monthly Content Retainer | per month | $2,500 | 30 | new |
-| Hourly Rate | per hour | $75 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Content Strategy & Calendar | per project | $2,200 | 24 |  | new |
+| Blog Post (1,000 words) | per post | $350 | 4 |  | new |
+| Monthly Content Retainer | per month | $2,500 | 30 |  | new |
+| Hourly Rate | per hour | $75 | 1 |  | new |
 
 ### Influencer Marketing Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Campaign Management | per campaign | $1,500 | 20 | new |
-| Creator Sourcing & Outreach | per creator | $150 | 2 | new |
-| Monthly Retainer | per month | $2,500 | 30 | new |
-| Management Fee (share of creator budget) | % of campaign budget | 15% |  | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Campaign Management | per campaign | $1,500 | 20 |  | new |
+| Creator Sourcing & Outreach | per creator | $150 | 2 |  | new |
+| Monthly Retainer | per month | $2,500 | 30 |  | new |
+| Management Fee (share of creator budget) | % of campaign budget | 15% |  |  | new |
 
 ### PR Specialist / Publicist
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Monthly PR Retainer | per month | $3,000 | 30 | new |
-| Press Release (write and distribute) | per release | $450 | 4 | new |
-| Media Pitch Campaign | per campaign | $2,000 | 25 | new |
-| Hourly Rate | per hour | $90 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly PR Retainer | per month | $3,000 | 30 |  | new |
+| Press Release (write and distribute) | per release | $450 | 4 |  | new |
+| Media Pitch Campaign | per campaign | $2,000 | 25 |  | new |
+| Hourly Rate | per hour | $90 | 1 |  | new |
 
 ### Growth Marketer / CRO Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Hourly Rate | per hour | $100 | 1 | new |
-| A/B Test (design, run, report) | per test | $700 | 8 | new |
-| Conversion Audit | per audit | $1,800 | 20 | new |
-| Monthly Growth Retainer | per month | $3,500 | 35 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Hourly Rate | per hour | $100 | 1 |  | new |
+| A/B Test (design, run, report) | per test | $700 | 8 |  | new |
+| Conversion Audit | per audit | $1,800 | 20 |  | new |
+| Monthly Growth Retainer | per month | $3,500 | 35 |  | new |
 
 ### Marketing Analyst  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Analytics & Tracking Setup | per project | $1,500 | 20 | new |
-| Monthly Performance Report | per report | $600 | 6 | new |
-| Dashboard Build | per dashboard | $1,200 | 14 | new |
-| Hourly Rate | per hour | $80 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Analytics & Tracking Setup | per project | $1,500 | 20 |  | new |
+| Monthly Performance Report | per report | $600 | 6 |  | new |
+| Dashboard Build | per dashboard | $1,200 | 14 |  | new |
+| Hourly Rate | per hour | $80 | 1 |  | new |
 
 ### Marketing Automation / CRM Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Platform Setup & Migration | per project | $2,500 | 30 | new |
-| Workflow Build | per workflow | $400 | 5 | new |
-| Monthly Management | per month | $1,500 | 16 | new |
-| Hourly Rate | per hour | $95 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Platform Setup & Migration | per project | $2,500 | 30 |  | new |
+| Workflow Build | per workflow | $400 | 5 |  | new |
+| Monthly Management | per month | $1,500 | 16 |  | new |
+| Hourly Rate | per hour | $95 | 1 |  | new |
 
 ### Product Marketing / Launch Manager  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Launch Plan & Execution | per launch | $3,500 | 35 | new |
-| Messaging & Positioning | per project | $2,000 | 20 | new |
-| Monthly Retainer | per month | $4,000 | 40 | new |
-| Hourly Rate | per hour | $100 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Launch Plan & Execution | per launch | $3,500 | 35 |  | new |
+| Messaging & Positioning | per project | $2,000 | 20 |  | new |
+| Monthly Retainer | per month | $4,000 | 40 |  | new |
+| Hourly Rate | per hour | $100 | 1 |  | new |
 
 ### Affiliate / Partnerships Manager
 
-| Pricing model | Unit | Starting rate | Hours | Source |
-|---|---|---|---|---|
-| Commission (share of sales) | % of sales | 10% |  | new |
-| Program Setup | per project | $2,000 | 25 | new |
-| Monthly Management Fee | per month | $2,000 | 20 | new |
-| Hourly Rate | per hour | $80 | 1 | new |
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Commission (share of sales) | % of sales | 10% |  |  | new |
+| Program Setup | per project | $2,000 | 25 |  | new |
+| Monthly Management Fee | per month | $2,000 | 20 |  | new |
+| Hourly Rate | per hour | $80 | 1 |  | new |
+
+### Media Buyer / Planner
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Media Buying Fee | % of ad spend | 12% |  |  | new |
+| Media Plan | per plan | $1,200 | 14 |  | new |
+| Monthly Retainer | per month | $2,000 | 24 |  | new |
+| Hourly Rate | per hour | $85 | 1 |  | new |
+
+### Advertising Copywriter / Creative Concept  (BLS: Writers and Authors, median $36.98/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Campaign Concept & Taglines | per campaign | $1,200 | 14 |  | new |
+| Ad Script (30-60 sec) | per script | $450 | 5 |  | new |
+| Headline / Slogan Set (10 options) | per set | $300 | 4 |  | new |
+| Outdoor / Print Ad Copy | per ad | $250 | 3 |  | new |
+| Hourly Rate | per hour | $85 | 1 |  | new |
+
+### Direct Response / Funnel Copywriter  (BLS: Writers and Authors, median $36.98/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Sales Page | per page | $1,800 | 20 |  | new |
+| Email Launch Sequence (7 emails) | per sequence | $2,500 | 28 |  | new |
+| Video Sales Letter Script | per script | $2,000 | 22 |  | new |
+| Performance Bonus | % of sales | 5% |  |  | new |
+| Hourly Rate | per hour | $95 | 1 |  | new |
+
+### Brand Naming / Verbal Identity Writer  (BLS: Writers and Authors, median $36.98/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Naming Project (shortlist + checks) | per project | $3,000 | 30 |  | new |
+| Tagline / Positioning Statement | per project | $750 | 8 |  | new |
+| Brand Voice & Messaging Guide | per project | $2,500 | 28 |  | new |
+| Hourly Rate | per hour | $90 | 1 |  | new |
+
+### Video Ad Producer / Creative  (BLS: Producers and Directors, median $43.44/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Short Video Ad (15-30 sec) | per ad | $1,500 | 20 |  | new |
+| UGC-Style Ad Batch (5 variations) | per batch | $900 | 14 |  | new |
+| Full Commercial Spot (60 sec) | per spot | $6,000 | 70 |  | new |
+| Day Rate | per day | $700 | 8 |  | new |
+
+### Customer Research Specialist  (BLS: Market Research Analysts and Marketing Specialists, median $37.87/hr)
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Survey Project (design, run, report) | per project | $2,500 | 28 |  | new |
+| Customer Interview | per interview | $150 | 2 |  | new |
+| Research Report & Personas | per project | $3,500 | 40 |  | new |
+| Hourly Rate | per hour | $90 | 1 |  | new |
+
+### Agency Account Manager / Executive
+
+| Pricing model | Unit | Starting rate | Hours | Sizes | Source |
+|---|---|---|---|---|---|
+| Monthly Account Management | per month | $1,800 | 25 |  | new |
+| Campaign Coordination | per campaign | $1,200 | 16 |  | new |
+| Hourly Rate | per hour | $65 | 1 |  | new |
 

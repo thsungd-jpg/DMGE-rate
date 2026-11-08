@@ -4,6 +4,8 @@ import { Field } from "../../components/kit";
 import { IconDownload, IconLock, IconUpload, IconVisual } from "../../icons";
 import { PALETTE } from "../../styles/palette";
 import { canWhiteLabel } from "../../utils/subscription";
+import { brandTokens } from "../../utils/brandTheme";
+import { useTheme } from "../../styles/theme";
 import SettingsCard, { Group } from "./SettingsCard";
 
 const MAX_LOGO_BYTES = 2 * 1024 * 1024;
@@ -47,6 +49,8 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
   const [logoError, setLogoError] = useState("");
   const branding = profile.branding || {};
   const unlocked = canWhiteLabel(userTier);
+  const [theme] = useTheme();
+  const tokens = brandTokens(branding, { dark: theme !== "light" }); // what the app will really use (colours that would not read are replaced)
 
   const updateBranding = (patch) => {
     const p = { ...profile, branding: { ...profile.branding, ...patch } };
@@ -59,6 +63,13 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
     surface: isUnset(branding.surfaceColor) ? PALETTE.paper : branding.surfaceColor,
     text: isUnset(branding.textColor) ? PALETTE.ink : branding.textColor,
     accent: isUnset(branding.accentColor) ? PALETTE.pink : branding.accentColor,
+  };
+
+  const v = tokens?.vars || {};
+  const on = branding.overrideThemes !== false;
+  const pv = {
+    bg: (on && v["--brand-bg"]) || colors.bg, title: (on && v["--brand-title"]) || colors.text, glow: (on && v["--brand-glow"]) || colors.accent,
+    fill: (on && v["--brand-fill"]) || colors.accent, surface: (on && v["--brand-surface"]) || colors.surface, ink: (on && v["--brand-ink"]) || colors.text,
   };
 
   const onLogoPicked = (e) => {
@@ -74,7 +85,7 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
   };
 
   const resetTheme = () => {
-    const confirmReset = window.confirm("Reset agency colors to base scheme?");
+    const confirmReset = window.confirm("Reset your colors to the DMGE look? Your name and logo stay.");
     if (confirmReset) {
       const p = { ...profile, branding: { ...profile.branding, bgColor: "", surfaceColor: "", textColor: "", accentColor: "", overrideThemes: true } };
       setProfile(p); saveProfile(p, userTier, currentUser);
@@ -98,7 +109,7 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
       <SettingsCard
         id="branding" iconTone="lilac" icon={<IconVisual size={22} />}
         title="White-label branding"
-        description="Put your own name, logo and colors on invoices, PDFs and the app."
+        description="Put your own name, logo and colors on invoices, PDFs, emails and the app. Clients never see DMGE."
         aside={badge}
       >
         <div className="prof-locked">
@@ -114,7 +125,7 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
     <SettingsCard
       id="branding" iconTone="lilac" icon={<IconVisual size={22} />}
       title="White-label branding"
-      description="Put your own name, logo and colors on invoices, PDFs and the app."
+      description="Put your own name, logo and colors on invoices, PDFs, emails and the app. Clients never see DMGE."
       aside={badge}
     >
       <div className="prof-fields">
@@ -159,29 +170,35 @@ export default function BrandingCard({ profile, userTier, currentUser, setProfil
           />
           <span className="prof-switch-track" aria-hidden="true" />
           <span className="prof-switch-text">
-            <strong>Override discipline colors</strong>
-            Use your colors in place of each discipline&rsquo;s own palette.
+            <strong>Use my colors in the app</strong>
+            Recolors the scene, the paper pieces and the buttons you see. Invoices and PDFs always use them.
           </span>
         </label>
 
         <div className="prof-colors">
-          <ColorField id="prof-c-bg" label="Background color" value={branding.bgColor} fallback={PALETTE.cream} onChange={(v) => updateBranding({ bgColor: v })} />
-          <ColorField id="prof-c-surface" label="Surface color" value={branding.surfaceColor} fallback={PALETTE.paper} onChange={(v) => updateBranding({ surfaceColor: v })} />
-          <ColorField id="prof-c-text" label="Logo primary color" value={branding.textColor} fallback={PALETTE.ink} onChange={(v) => updateBranding({ textColor: v })} />
-          <ColorField id="prof-c-accent" label="Logo secondary color" value={branding.accentColor} fallback={PALETTE.pink} onChange={(v) => updateBranding({ accentColor: v })} />
+          <ColorField id="prof-c-bg" label="Scene background" value={branding.bgColor} fallback={PALETTE.cream} onChange={(v) => updateBranding({ bgColor: v })} />
+          <ColorField id="prof-c-surface" label="Paper and card color" value={branding.surfaceColor} fallback={PALETTE.paper} onChange={(v) => updateBranding({ surfaceColor: v })} />
+          <ColorField id="prof-c-text" label="Text color" value={branding.textColor} fallback={PALETTE.ink} onChange={(v) => updateBranding({ textColor: v })} />
+          <ColorField id="prof-c-accent" label="Accent color" value={branding.accentColor} fallback={PALETTE.pink} onChange={(v) => updateBranding({ accentColor: v })} />
         </div>
 
-        <div className="prof-preview" style={{ background: colors.bg }} aria-label="Brand preview" role="img">
-          <div className="prof-preview-card" style={{ background: colors.surface }}>
-            <div className="prof-preview-top">
-              {branding.logoBase64
-                ? <img src={branding.logoBase64} alt="" />
-                : <span className="prof-preview-mark" style={{ background: colors.accent }} />}
-              <b style={{ color: colors.text }}>{branding.companyName || profile.companyName || "Your brand"}</b>
-            </div>
-            <i style={{ background: colors.text, width: "62%" }} />
-            <i style={{ background: colors.text, width: "40%" }} />
-            <i className="prof-preview-accent" style={{ background: colors.accent }} />
+        {tokens && tokens.notes.length > 0 && branding.overrideThemes !== false && (
+          <p className="prof-note" role="status">
+            {tokens.notes.includes("text") && <>Your text color is hard to read on your background, so the app uses a readable one instead. </>}
+            {tokens.notes.includes("accent") && <>Your accent is too dark for button labels, so buttons use a lighter tint of it. </>}
+          </p>
+        )}
+
+        <div className="prof-preview" style={{ background: pv.bg }} aria-label="Brand preview, how your colors look in the app" role="img">
+          <div className="prof-preview-head" style={{ color: pv.title }}>
+            {branding.logoBase64 ? <img src={branding.logoBase64} alt="" /> : null}
+            <b>{branding.companyName || profile.companyName || "Your brand"}</b>
+            <span style={{ color: pv.glow }}> price</span>
+          </div>
+          <div className="prof-preview-card" style={{ background: pv.surface }}>
+            <i style={{ background: pv.ink, width: "62%" }} />
+            <i style={{ background: pv.ink, width: "40%" }} />
+            <span className="prof-preview-btn" style={{ background: pv.fill, color: "#2B2140" }}>Next</span>
           </div>
         </div>
       </div>

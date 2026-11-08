@@ -47,6 +47,15 @@ export function check(data, { roleSoc = ROLE_SOC, wages = WAGES } = {}) {
         if (kind === "percent" && Number(m.base) > 100) err(`${mw}: a percentage above 100 (${m.base})`);
         if (unitNoun(m).one === "unit") err(`${mw}: the unit "${m.unit}" is not one the app can word ("How many ...?")`);
         if (m.hours !== undefined && !(Number(m.hours) > 0)) err(`${mw}: hours must be above 0`);
+        if (m.qty !== undefined && !(Number(m.qty) > 0)) err(`${mw}: qty must be above 0`);
+        if (m.sizes !== undefined) {
+          if (!Array.isArray(m.sizes) || m.sizes.length < 2) err(`${mw}: sizes needs at least two`);
+          else {
+            const labels = new Set();
+            for (const z of m.sizes) { if (!z.label || !(Number(z.mult) > 0)) err(`${mw}: a size needs a label and a multiplier above 0`); if (labels.has(z.label)) err(`${mw}: duplicate size "${z.label}"`); labels.add(z.label); }
+            if (!m.sizes.some((z) => Number(z.mult) === 1)) err(`${mw}: one size must be the base (multiplier 1)`);
+          }
+        }
         // judgment: below the employee median per hour for a matching job
         const a = anchorFor(field, r.name);
         const hrs = Number(m.hours) || hoursPerUnit(m);
@@ -90,8 +99,8 @@ if (process.argv.includes("--table")) {
     out.push(`## ${pretty(field)}`, "");
     for (const r of f.roles) {
       const a = anchorFor(field, r.name);
-      out.push(`### ${r.name}${a ? `  (BLS: ${a.title}, median $${a.median}/hr)` : ""}`, "", "| Pricing model | Unit | Starting rate | Hours | Source |", "|---|---|---|---|---|");
-      r.models.forEach((m, i) => out.push(`| ${m.type} | ${m.unit} | ${fmt(m)} | ${m.hours ?? hoursPerUnit(m) ?? ""} | ${isOwner(field, r, m, i) ? "owner" : "new"} |`));
+      out.push(`### ${r.name}${a ? `  (BLS: ${a.title}, median $${a.median}/hr)` : ""}`, "", "| Pricing model | Unit | Starting rate | Hours | Sizes | Source |", "|---|---|---|---|---|---|");
+      r.models.forEach((m, i) => out.push(`| ${m.type} | ${m.unit} | ${fmt(m)} | ${m.hours ?? hoursPerUnit(m) ?? ""} | ${m.sizes ? m.sizes.map((z) => `${z.label} ×${z.mult}`).join("; ") : ""} | ${isOwner(field, r, m, i) ? "owner" : "new"} |`));
       out.push("");
     }
   }

@@ -205,6 +205,9 @@ body {
   background: rgba(43, 33, 64, 0.42); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
   animation: lqFade var(--dur-2) ease-out;
 }
+/* A dialog opened inside a page sits in that page's stacking layer (the page has to stay above the scene), so the fixed top bar and dock would paint over it and stay
+   clickable behind its scrim. While a dialog is open they step aside; the dialog's own scrim and focus trap cover the rest. */
+:root:has(.lq-overlay) :is(.app-topbar, .lq-dock, .lq-dock-handle, .lq-dock-sheet) { visibility: hidden !important; pointer-events: none !important; }
 .lq-modal-title { font-family: var(--font-display); font-weight: 400; font-size: clamp(28px, 5vw, 38px); letter-spacing: -0.01em; color: var(--ink); line-height: 1.2; }
 @keyframes lqFade { from { opacity: 0; } to { opacity: 1; } }
 

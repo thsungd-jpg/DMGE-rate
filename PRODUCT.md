@@ -19,13 +19,13 @@ A craft-aware quote that flows straight into a branded invoice: pricing responds
 Installable PWA on React and Vite, with Supabase auth and storage and Stripe subscriptions (Free, Pro, Agency). Works offline for the calculator; Agency adds cloud sync, analytics, CSV export and white-label branding. Invoices export to PDF and send by email through a Supabase edge function. Hosted on Netlify. Live site is `main`; redesign work lives on `redesign/liquid-ledger` and feature branches.
 
 ## Capabilities and Constraints
-- Tabs: Quote (calculator), Jobs (quotes and invoices with status), Templates, Clients (with rate multipliers, CSV import/export), Insights (Agency), Profile, Plans, Tutorial.
+- Tabs: Quote (a seven-step journey over 26 fields and 182 roles, including print jobs priced by size), Jobs (quotes and invoices with status; send several invoices at once), Templates, Clients (with rate multipliers, CSV import/export), Insights (Agency), Profile, Plans, Tutorial.
 - Tier limits and gating live in `src/utils/subscription.js`; handlers for Supabase and Stripe must not be altered by visual work.
 - Planned (see `docs/competitive-features-plan.md`): licensing split (done for photo/video), margin and buffer line, Stripe pay-online link on invoices (Agency, test mode only until live keys are approved), market-range band, tax and fee helpers.
 - Open: whether the Pro "Basic export" bullet is accurate; whether the invoice sheet total should use the quoted price (it currently uses base rate x units).
 
 ## Brand Commitments
-Name stays DMGE. The identity chosen in the redesign is "Sorbet Ink": a candy-marbled pastel liquid on warm cream by day and a black starfield by night, Instrument Serif headings with italic accent words, DM Sans for UI, DM Mono for figures, the "jelly pillow" logo mark. No retro or pixel styling.
+Name stays DMGE. The identity is the "scrapbook world": cut-paper pieces and a jelly blob on a black starfield by night and warm cream by day (the "Sorbet Ink" pastels), the "jelly pillow" logo mark, no boxed cards and no retro or pixel styling. Type is all open-licence (SIL OFL 1.1, self-hosted in `src/world/assets/fonts` with the licence texts): Modak for the big page titles (a cartoon face, with the glowing word in the accent), Titan One for figures and headings, Nunito for text. Proportions follow the golden ratio: a 38.2% content column beside a 61.8% scene, Fibonacci spacing, a type scale in steps of the 4th root of 1.618, body line-height about 1.6. Invoices, PDFs and the sign-in keep Instrument Serif, DM Sans and DM Mono. Agency white-label replaces the DMGE name, logo and colours in the app and on every invoice, PDF and email (colours are contrast-checked, see `src/utils/brandTheme.js`).
 
 ## Evidence on Hand
 Real: the working app and its mock-data test mode (`?mock=1`), generated brand art in `src/assets`, web research notes in `docs/competitive-features-plan.md`. Absent, so never fabricate: customer testimonials, user counts, case studies, press, market-rate datasets.

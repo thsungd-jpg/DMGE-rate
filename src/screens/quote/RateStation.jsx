@@ -3,7 +3,7 @@ import { Chip, Desc, Go, Group, Money, Row, Stepper, useDescribe } from "../../w
 import { EXPERIENCE, RATE_NAME, RATE_WAY } from "./describe";
 import { anchorFor } from "../../data/wageAnchors";
 import { calcBaseRate, RATE_FINDER_DEFAULTS } from "../../utils/baseRate";
-import { EXPERIENCE_DEFAULT, experienceMods, finderInputs, freelanceEquivalent, goalHourly, hourlyEquivalent, modelKind, RATE_MODES, ratesByMode, unitNoun } from "../../utils/rateModels";
+import { baseSize, EXPERIENCE_DEFAULT, experienceMods, finderInputs, freelanceEquivalent, goalHourly, hourlyEquivalent, modelKind, RATE_MODES, ratesByMode, sizesOf, unitNoun } from "../../utils/rateModels";
 import { money, rateText } from "./common";
 
 const MODE_TONE = { typical: "butter", goal: "mint", mine: "lilac" };
@@ -106,7 +106,7 @@ export default function RateStation({ ctx, patch, goTo }) {
 
       {rate.mode === "mine" && (
         <div className="qw-in">
-          <Group label={`Your rate, ${unit}`} hint="The number you already charge, or want to.">
+          <Group label={`Your rate, ${unit}`} hint={sizesOf(model) ? `The number you already charge, for the ${baseSize(model).label} size.` : "The number you already charge, or want to."}>
             <Money value={ownRate || ""} onChange={(v) => { setOwnRate(v === "" ? 0 : v); patch({ rateMode: "mine" }); }} label={`Your rate, ${unit}`} />
           </Group>
         </div>
@@ -115,6 +115,7 @@ export default function RateStation({ ctx, patch, goTo }) {
       <div className="qw-in qw-note qw-rate" aria-live="polite">
         <span className="qw-paper-lab">Your base rate</span>
         <b className="qw-rate-num">{rateText(rate.rate)}<small>{unit}</small></b>
+        {rate.sizeMult !== 1 && <span className="qw-paper-small">Includes <b>×{rate.sizeMult}</b> for {form.size}.</span>}
         {hourlyEq != null && !perHour && (
           <span className="qw-paper-small">
             About <b>{rateText(hourlyEq)} an hour</b> at {fast ? <>{Math.round(1 / rate.hours).toLocaleString("en-US")} {noun.many} an hour</> : <>{rate.hours} {rate.hours === 1 ? "hour" : "hours"} each</>}.
