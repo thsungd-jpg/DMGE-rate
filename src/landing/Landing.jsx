@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import "./landing.css";
-import LiquidCanvas from "./LiquidCanvas";
+import galaxy from "./galaxy.webp";
 import FloatingDock from "../components/FloatingDock";
 import { Wordmark } from "../components/Brand";
-import ThemeToggle from "../components/ThemeToggle";
 import { Hero, Pick, Context, Price, InvoiceCh, Plans, Launch } from "./chapters";
 import { pointer } from "./scene";
 
@@ -22,7 +21,6 @@ const prefersReduced = () => window.matchMedia?.("(prefers-reduced-motion: reduc
 export default function Landing({ onAuthSuccess, onOpenAuth, initialMode = "login" }) {
   const rootRef = useRef(null);
   const lenisRef = useRef(null);
-  const [noGL, setNoGL] = useState(false);
   const [active, setActive] = useState("top");
   const [reduced] = useState(prefersReduced);
 
@@ -100,6 +98,15 @@ export default function Landing({ onAuthSuccess, onOpenAuth, initialMode = "logi
     return () => clearTimeout(t);
   }, []);
 
+  // The landing is the night galaxy whatever the app's theme: switch to night while it is on screen, then put the visitor's theme back; the picture dims as you read on.
+  useEffect(() => {
+    const root = document.documentElement, was = root.dataset.theme;
+    root.dataset.theme = "dark";
+    const dim = () => rootRef.current?.style.setProperty("--dim", Math.min(1, window.scrollY / (window.innerHeight * 0.9)).toFixed(3));
+    dim(); window.addEventListener("scroll", dim, { passive: true });
+    return () => { window.removeEventListener("scroll", dim); if (was) root.dataset.theme = was; else delete root.dataset.theme; };
+  }, []);
+
   // Pointer position drives a gentle parallax on the liquid (hero + craft chapters).
   useEffect(() => {
     const onMove = (e) => { pointer.x = e.clientX / window.innerWidth; pointer.y = e.clientY / window.innerHeight; };
@@ -119,7 +126,7 @@ export default function Landing({ onAuthSuccess, onOpenAuth, initialMode = "logi
 
   return (
     <div className="ll-root" ref={rootRef}>
-      {noGL ? <div className="ll-fallback" aria-hidden="true" /> : <LiquidCanvas onUnsupported={() => setNoGL(true)} reducedMotion={reduced} />}
+      <div className="ll-galaxy" aria-hidden="true" style={{ backgroundImage: `url(${galaxy})` }} />
 
       <FloatingDock
         position="top"
@@ -127,7 +134,6 @@ export default function Landing({ onAuthSuccess, onOpenAuth, initialMode = "logi
         activeId={active}
         onSelect={scrollToId}
         ariaLabel="Page sections"
-        trailing={<ThemeToggle />}
         leading={
           <button type="button" onClick={() => scrollToId("top")} aria-label="DMGE, back to top" style={{ background: "none", border: "none", padding: 0, cursor: "pointer" }}>
             <Wordmark size={18} />

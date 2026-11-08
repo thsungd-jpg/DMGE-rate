@@ -168,3 +168,12 @@
     radial-gradient(40vmax 40vmax at 60% 80%, rgba(150, 90, 255, 0.3), transparent 60%),
     var(--cream);
 }
+
+/* the night galaxy: the landing's one picture (board B). The left of it is empty sky for the words; the rest dims as you read on. */
+.ll-galaxy { position: fixed; inset: 0; z-index: 0; background: #05030d center right / cover no-repeat; }
+.ll-galaxy::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(5, 3, 13, .86), rgba(5, 3, 13, .62) 34%, rgba(5, 3, 13, .12) 62%), rgba(5, 3, 13, calc(var(--dim, 0) * .72)); }
+@media (max-width: 700px) {
+  .ll-galaxy { background-position: 66% 22%; }
+  .ll-galaxy::after { background: linear-gradient(180deg, rgba(5, 3, 13, 0) 22%, rgba(5, 3, 13, .9) 62%), rgba(5, 3, 13, calc(var(--dim, 0) * .72)); }
+}
+.ll-root h1, .ll-root .ll-lede { text-shadow: 0 2px 24px rgba(5, 3, 13, .8); }
